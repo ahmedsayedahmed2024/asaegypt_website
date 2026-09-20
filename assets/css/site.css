@@ -456,3 +456,18 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
 .author span{font-size:.9rem;color:var(--muted)}
 .disc{font-size:.88rem;color:var(--muted);margin-top:26px}
 @media (max-width:1080px){.art-grid{grid-template-columns:1fr;gap:30px}.toc{position:static}}
+
+/* mobile menu button (top-left on all languages) */
+.menu-btn svg,.mobile-nav .close svg{width:24px;height:24px;display:block}
+.menu-btn{align-items:center;justify-content:center;width:44px;height:44px;border:1.5px solid rgba(255,255,255,.3);border-radius:var(--radius);padding:0}
+.site-header.solid .menu-btn{border-color:var(--line)}
+@media (max-width:1080px){
+  .menu-btn{display:flex;order:0}
+  .site-header .bar{justify-content:flex-start;gap:14px}
+  .logo{order:1}
+  .header-cta{order:2;margin-inline-start:auto}
+  html[dir="rtl"] .menu-btn{order:3}
+  html[dir="rtl"] .logo{order:1}
+  html[dir="rtl"] .header-cta{order:2}
+  .mobile-nav,html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
+}
