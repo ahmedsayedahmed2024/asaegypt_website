@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://asaegypt.com/sitemap.xml
