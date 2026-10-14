@@ -31,9 +31,9 @@
 {% macro nx_card(n, D) -%}
 <a class="nx-card nx-{{ n.section }} rv" href="{{ n.url }}">
   <span class="nx-chip">{{ n.section_label }}</span>
-  <h3>{{ n.title }}</h3>
-  <p>{{ n.summary }}</p>
-  <p class="nx-meta">{{ n.byline }} · <time datetime="{{ n.date_iso }}">{{ n.date }}</time></p>
+  <h3>{{ n.title|bidi(L) }}</h3>
+  <p>{{ n.summary|bidi(L) }}</p>
+  <p class="nx-meta">{{ n.byline|bidi(L) }} · <time datetime="{{ n.date_iso }}">{{ n.date }}</time></p>
   <span class="link-arrow">{{ D.read }} {{ I('FaArrowRight') }}</span>
 </a>
 {%- endmacro %}

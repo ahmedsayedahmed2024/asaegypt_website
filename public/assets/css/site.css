@@ -640,3 +640,4 @@ html[lang="ar"] .nx-chip{letter-spacing:0;font-size:.8rem}
 html[lang="ar"] .article .nx-close{font-style:normal}
 .nx-close span{color:var(--lime-dk);font-weight:800;font-style:normal}
 @media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}.nx-hero .nx-hero-bg{width:260px;inset-inline-end:-90px}}
+bdi.lt{white-space:nowrap}

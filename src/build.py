@@ -1,6 +1,6 @@
-import datetime, json, os, sys, time, importlib
+import datetime, json, os, re, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
-from markupsafe import Markup
+from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
 import mark, content_en, content_ar, articles_meta, news
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
@@ -41,6 +41,20 @@ MARK_BG = mark.svg('mark-bg')
 BRIEF_MARK = Markup(mark.svg('brief-mark'))
 
 env = Environment(loader=FileSystemLoader(os.path.join(ROOT, 'src/templates')), autoescape=True)
+
+# Arabic text with English words (Excel 2021, IFRS 9, XLOOKUP...): wrap each Latin run in <bdi class="lt">
+# so it keeps its own direction and is never split across lines. English pages are returned unchanged.
+LATIN_RUN = re.compile(r"[A-Za-z][A-Za-z0-9]*(?:[ .:!/+\-–][A-Za-z0-9]+)*")
+def bidi(s, L):
+    if L != 'ar':
+        return s
+    out, last = [], 0
+    for m in LATIN_RUN.finditer(s):
+        out += [escape(s[last:m.start()]), Markup('<bdi class="lt">'), escape(m.group()), Markup('</bdi>')]
+        last = m.end()
+    out.append(escape(s[last:]))
+    return Markup('').join(out)
+env.filters['bidi'] = bidi
 
 def link(key, L, from_path):
     target = path_for(key, L)
