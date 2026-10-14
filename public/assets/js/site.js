@@ -21,5 +21,31 @@
 
   document.querySelectorAll('.faq button').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',!o);b.nextElementSibling.hidden=o;})});
 
+  // homepage "ASA Briefing" hexagon: the active bar's fill animation (6s) drives the rotation,
+  // so pausing the animation (hover / keyboard focus) also pauses the rotation
+  var br=document.getElementById('brief');
+  if(br){
+    var slides=br.querySelectorAll('.brief-slide'),bars=br.querySelectorAll('.bar'),live=br.querySelector('.brief-slides'),cur=0;
+    var auto=!br.classList.contains('still');
+    live.setAttribute('aria-live',auto?'off':'polite');
+    var show=function(i){
+      cur=(i+slides.length)%slides.length;
+      slides.forEach(function(s,j){s.classList.toggle('on',j===cur)});
+      bars.forEach(function(b,j){b.classList.remove('on');b.classList.toggle('done',j<cur);if(j===cur){b.setAttribute('aria-current','true')}else{b.removeAttribute('aria-current')}});
+      void br.offsetWidth; // restart the fill animation
+      bars[cur].classList.add('on');
+    };
+    bars.forEach(function(b,j){b.addEventListener('click',function(){show(j)})});
+    if(auto){
+      br.addEventListener('animationend',function(e){if(e.animationName==='bFill'&&br.classList.contains('run'))show(cur+1)});
+      setTimeout(function(){br.classList.add('run')},br.classList.contains('intro')?2900:800);
+      var hover=false,focus=false,upd=function(){br.classList.toggle('paused',hover||focus)};
+      br.addEventListener('mouseenter',function(){hover=true;upd()});
+      br.addEventListener('mouseleave',function(){hover=false;upd()});
+      br.addEventListener('focusin',function(e){var fv=true;try{fv=e.target.matches(':focus-visible')}catch(x){}focus=fv;upd()});
+      br.addEventListener('focusout',function(e){if(!br.contains(e.relatedTarget)){focus=false;upd()}});
+    }
+  }
+
   var y=document.querySelectorAll('[data-year]');y.forEach(function(e){e.textContent=new Date().getFullYear()});
 })();

@@ -2,7 +2,7 @@ import datetime, json, os, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, content_en, content_ar, articles_meta
+import mark, content_en, content_ar, articles_meta, news
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST = os.path.join(ROOT, 'dist')
@@ -15,11 +15,13 @@ C = {'en': content_en, 'ar': content_ar}
 # route key -> path (en); ar = '/ar' + path
 ROUTES = {'home': '/', 'about': '/about/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
-          'contact': '/contact/', 'privacy': '/privacy/'}
+          'briefing': '/briefing/', 'contact': '/contact/', 'privacy': '/privacy/'}
 for s in content_en.SERVICES:
     ROUTES[s['key']] = f"/services/{s['slug']}/"
 for a in articles_meta.ARTICLES:
     ROUTES['art-' + a['slug']] = f"/insights/{a['slug']}/"
+for n in news.NEWS:
+    ROUTES['news-' + n['slug']] = f"/briefing/{n['slug']}/"
 
 def path_for(key, L):
     p = ROUTES[key]
@@ -33,6 +35,7 @@ def icon(name, cls=None):
 
 MARK = mark.svg('mark')
 MARK_BG = mark.svg('mark-bg')
+BRIEF_MARK = Markup(mark.svg('brief-mark'))
 
 env = Environment(loader=FileSystemLoader(os.path.join(ROOT, 'src/templates')), autoescape=True)
 
@@ -72,6 +75,39 @@ def featured(L, slugs, from_path='/'):
                             read=(f"{a['minutes']} min read" if L == 'en' else f"{a['minutes']} دقائق قراءة")))
     return out
 
+def news_by_date():
+    # newest first; items with the same date keep their order in news.py
+    return sorted(news.NEWS, key=lambda n: n['date'], reverse=True)
+
+def news_items(L, from_path):
+    i = 0 if L == 'en' else 1
+    out = []
+    for n in news_by_date():
+        out.append(dict(slug=n['slug'], url=link('news-' + n['slug'], L, from_path),
+                        cat=n['category'], cat_label=news.CATEGORIES[n['category']][i],
+                        region=n['region'], region_label=news.REGIONS[n['region']][i],
+                        title=n['title_' + L], short=n['short_' + L], summary=n['summary_' + L],
+                        body=n['body_' + L], source_name=n['source_name'], source_url=n['source_url'],
+                        note=n.get('note'), related=n.get('related'),
+                        date_iso=n['date'], date=fmt_date(n['date'], L)))
+    return out
+
+def brief_slots(L, from_path='/'):
+    """The five rotating items of the homepage banner: 2 newest news, 2 newest articles, the ECL service.
+    If fewer than 2 news items exist, the gap is filled with the next newest articles."""
+    H = C[L].HOME
+    ns = news_items(L, from_path)[:2]
+    arts = featured(L, latest(4 - len(ns)), from_path)
+    items = [dict(kind='news', chip=n['cat_label'], title=n['short'], summary=n['summary'], by=n['source_name'],
+                  date_iso=n['date_iso'], date=n['date'], url=n['url']) for n in ns]
+    items += [dict(kind='article', chip=H['brief_new'], title=a['title'], summary=a['summary'], by=a['author'],
+                   date_iso=a['date_iso'], date=a['date'], url=a['url']) for a in arts]
+    items.sort(key=lambda x: (x['date_iso'], x['kind'] == 'news'), reverse=True)
+    s = next(x for x in C[L].SERVICES if x['key'] == 'svc-ecl')
+    items.append(dict(kind='service', chip=H['brief_service'], title=s['name'], summary=s['desc'], by=H['brief_from'],
+                      date_iso=None, date=None, url=link('svc-ecl', L, from_path)))
+    return items
+
 def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx):
     mod = C[L]
     path = path_for(key, L)
@@ -97,7 +133,8 @@ def build(pages=None):
     for L in ('en', 'ar'):
         H = C[L].HOME
         built.append(render('home.html', 'home', L, H['title'], H['desc'], schema=ORG_SCHEMA,
-                            FEATURED=featured(L, latest(3), path_for('home', L))))
+                            FEATURED=featured(L, latest(3), path_for('home', L)),
+                            BRIEF=brief_slots(L, path_for('home', L)), BRIEF_MARK=BRIEF_MARK))
         # further pages are registered in pages.py when available
         try:
             import pages
@@ -105,6 +142,9 @@ def build(pages=None):
             built += pages.build_all(L, render, featured, path_for, C, ROUTES)
         except ImportError:
             pass
+        import briefing
+        importlib.reload(briefing)
+        built += briefing.build(L, render, featured, news_items, path_for)
     return built
 
 def build_404():

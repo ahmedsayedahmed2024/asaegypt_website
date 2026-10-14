@@ -13,6 +13,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - `content_en.py` / `content_ar.py`: header/footer strings, services, home page.
   - `pages_en.py` / `pages_ar.py`: inner pages.
   - `articles_meta.py` + `articles_en.py` / `articles_ar.py`: Insights.
+  - `news.py`: ASA Briefing (news). See "Briefing (news)" below.
 - Templates are in `src/templates/`.
 - English lives at `/` and Arabic at `/ar/`. **Every change must be made in both languages.**
 - Build locally:
@@ -45,6 +46,23 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
    - If unverified, describe the rule as established practice and flag the citation for Ahmed's review in the PR.
 9. Professional and tax news must come from official or primary sources (Egyptian Tax Authority, FRA, IFRS Foundation, IAASB, ESAA, official gazette, etc.). Link the source.
 10. Do not use Netlify (blocked in Egypt). Do not touch DNS email records (MX/TXT).
+
+## Briefing (news)
+- Items live in `src/news.py` → `NEWS` (list page `/briefing/`, item pages `/briefing/<slug>/`, same under `/ar/`). The two newest items also rotate in the homepage hexagon banner.
+- Each item is a dict:
+  - `slug`, `date` (YYYY-MM-DD)
+  - `category`: `"standards"` | `"tax"` | `"economy"` | `"tech"` (labels in `CATEGORIES`)
+  - `region`: `"egypt"` | `"gcc"` | `"global"` (labels in `REGIONS`)
+  - `title_en`, `title_ar`
+  - `short_en`, `short_ar`: banner headline, max ~10 words
+  - `summary_en`, `summary_ar`: 1–2 sentences
+  - `body_en`, `body_ar`: list of paragraphs
+  - `source_name`, `source_url`: official source (required)
+  - `note` (optional): `{type: "impact" | "tech", who_en, who_ar, accounting_en, accounting_ar, auditor_en, auditor_ar}`
+  - `related` (optional): slug of a related Insights article
+- **Every item needs an official source link** (see rule 9 above).
+- **Facts and numbers must match the source exactly.** Do not add facts, dates or figures that are not in the source.
+- **Items with a `note` (impact or tech) always go through a pull request for Ahmed's approval.**
 
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.

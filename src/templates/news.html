@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+<section class="page-hero art-hero">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('briefing') }}">{{ T.nav.briefing }}</a></nav>
+    <p class="kicker">{{ N.cat_label }}</p>
+    <h1>{{ N.title }}</h1>
+    <p class="lead">{{ N.summary }}</p>
+    <div class="meta"><span>{{ I('FaGlobe') }}{{ N.region_label }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ N.date_iso }}">{{ N.date }}</time></span>{% if N.note %}<span class="impact-badge">{{ D.badge }}</span>{% endif %}</div>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap">
+    <article class="article prose news-item">
+      {% for p in N.body %}<p>{{ p }}</p>{% endfor %}
+      <p class="news-source"><b>{{ D.source }}</b> <a href="{{ N.source_url }}" target="_blank" rel="noopener">{{ N.source_name }} {{ I('FaArrowRight','arrow') }}</a></p>
+      {% if N.note %}{% set nt = N.note %}
+      <aside class="asa-note asa-note-{{ nt.type }}" aria-labelledby="note-title">
+        <h2 id="note-title"><span class="hx lime" style="width:34px;height:30px;font-size:13px">{{ I('FaLightbulb' if nt.type=='tech' else 'FaChartLine') }}</span>{{ D.note_titles[nt.type] }}</h2>
+        <dl>
+          <div><dt>{{ D.note_rows.who }}</dt><dd>{{ nt['who_' + L] }}</dd></div>
+          <div><dt>{{ D.note_rows.accounting }}</dt><dd>{{ nt['accounting_' + L] }}</dd></div>
+          <div><dt>{{ D.note_rows.auditor }}</dt><dd>{{ nt['auditor_' + L] }}</dd></div>
+        </dl>
+      </aside>
+      <p class="disc note-disc">{{ D.note_disc }}</p>
+      {% endif %}
+      {% if RELATED %}
+      <a class="news-related" href="{{ RELATED.url }}"><small>{{ D.related }}</small><b>{{ RELATED.title }}</b><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
+      {% endif %}
+      <p style="margin-top:40px"><a class="btn btn-line" href="{{ P('briefing') }}">{{ D.back }} {{ I('FaArrowRight','arrow') }}</a></p>
+    </article>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

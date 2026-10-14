@@ -17,3 +17,11 @@
   <div class="body"><h3>{{ a.title }}</h3><p class="byline">{{ a.byline }}</p><p>{{ a.summary }}</p><div class="meta"><time datetime="{{ a.date_iso }}">{{ a.date }}</time><span>{{ a.read }}</span></div></div>
 </a>
 {%- endmacro %}
+{% macro news_card(n, D) -%}
+<a class="news-card rv" href="{{ n.url }}" data-cat="{{ n.cat }}" data-region="{{ n.region }}" data-impact="{{ 1 if n.note else 0 }}">
+  <div class="nc-top"><span class="cat-chip">{{ n.cat_label }}</span><span class="nc-region">{{ n.region_label }}</span><time datetime="{{ n.date_iso }}">{{ n.date }}</time></div>
+  <h3>{{ n.title }}</h3>
+  <p>{{ n.summary }}</p>
+  {% if n.note %}<span class="impact-badge">{{ D.badge }}</span>{% endif %}
+</a>
+{%- endmacro %}

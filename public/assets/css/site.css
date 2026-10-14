@@ -473,3 +473,108 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
   html[dir="rtl"] .header-cta{order:2}
   .mobile-nav,html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 }
+
+/* homepage: ASA Briefing hexagon (built from the mark; see home.html + site.js) */
+.brief{position:relative;width:100%;aspect-ratio:112/118;container-type:inline-size;color:#fff}
+.brief-mark,.brief-hex{position:absolute;inset:0;width:100%;height:100%}
+.brief-mark .s{opacity:.06}
+.brief-hex polygon{fill:rgba(255,255,255,.025);stroke:var(--lime);stroke-width:1.5px;vector-effect:non-scaling-stroke}
+.brief-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12.5% 14% 10.5%;
+  clip-path:polygon(27.23% .85%,72.77% .85%,99.55% 50%,72.77% 99.15%,27.23% 99.15%,.45% 50%)}
+.brief-label{display:inline-flex;align-items:center;gap:9px;font-size:clamp(10px,2.4cqi,12.5px);font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin:0}
+html[lang="ar"] .brief-label{letter-spacing:0;font-size:clamp(12px,2.8cqi,14.5px)}
+.brief-label .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);flex:none;animation:bPulse 2s ease-out infinite}
+@keyframes bPulse{0%{box-shadow:0 0 0 0 rgba(195,214,72,.65)}75%,100%{box-shadow:0 0 0 8px rgba(195,214,72,0)}}
+.brief-slides{flex:1;display:grid;width:100%;min-height:0}
+.brief-slide{grid-area:1/1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(9px,3cqi,16px);min-width:0;
+  opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease),visibility 0s .45s}
+.brief-slide.on{opacity:1;visibility:inherit;transform:none;transition:opacity .5s var(--ease) .1s,transform .5s var(--ease) .1s}
+.brief-chip{background:var(--blue);color:var(--graphite);font-size:clamp(10px,2.3cqi,12px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:2px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[lang="ar"] .brief-chip{letter-spacing:0;font-size:clamp(11px,2.5cqi,13px)}
+.brief-h{margin:0;max-width:100%;font-size:clamp(17px,5.6cqi,29px);font-weight:800;line-height:1.22;letter-spacing:-.015em;color:#fff;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+html[lang="ar"] .brief-h{letter-spacing:0;line-height:1.42;font-weight:700}
+.brief-sum{margin:0;max-width:100%;font-size:clamp(12px,2.9cqi,15px);color:var(--soft);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brief-meta{margin:0;max-width:100%;font-size:clamp(11px,2.5cqi,13px);color:#9AA0A8;line-height:1.4}
+.brief-read{font-size:clamp(12.5px,2.9cqi,15px);font-weight:700;color:var(--lime)}
+.brief-read::after{content:"";position:absolute;inset:0}
+.brief-read:hover{text-decoration:underline;text-underline-offset:4px}
+.brief-read:focus-visible{outline:none}
+.brief-read:focus-visible::after{outline:2px solid var(--lime);outline-offset:-2px;border-radius:2px}
+.brief-bars{display:flex;gap:6px;width:46%;margin-top:clamp(6px,2cqi,12px)}
+.brief .bar{flex:1;padding:8px 0;min-width:0}
+.brief .bar span{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+.brief .bar i{display:block;height:100%;background:var(--lime);transform:scaleX(0);transform-origin:left}
+html[dir="rtl"] .brief .bar i{transform-origin:right}
+.brief .bar:hover span{background:rgba(255,255,255,.4)}
+.brief .bar:focus-visible{outline:2px solid var(--lime);outline-offset:0}
+.brief .bar.done i,.brief.still .bar.on i,.brief:not(.js) .bar.on i{transform:none}
+.brief:not(.js) .brief-bars{visibility:hidden}
+.brief.run .bar.on i{animation:bFill 6s linear forwards}
+.brief.paused .bar.on i{animation-play-state:paused}
+@keyframes bFill{from{transform:scaleX(0)}to{transform:none}}
+/* intro: assemble (0–0.8s), rest, dim stripes (2.0–2.8s) + outline, then content */
+.brief.intro .brief-mark .s{animation:bDrop .5s var(--ease) calc(var(--i) * 25ms) both,bDim .3s ease calc(2s + var(--i) * 45ms) forwards}
+.brief.intro .brief-hex{animation:bShow .8s ease 2s both}
+.brief.intro .brief-in{animation:bShow .45s ease 2.45s both}
+/* later visits in the same session: ~0.8s */
+.brief.quick .brief-mark .s{animation:bDim .3s ease calc(var(--i) * 25ms) both}
+.brief.quick .brief-hex{animation:bShow .4s ease .1s both}
+.brief.quick .brief-in{animation:bShow .35s ease .45s both}
+@keyframes bDrop{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes bDim{from{opacity:1}to{opacity:.06}}
+@keyframes bShow{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
+@media (max-width:1080px){
+  .hero .art{order:0;justify-self:center;width:min(420px,100%);margin-top:16px}
+}
+@media (max-width:640px){
+  .hero .art{width:min(340px,100%);margin-top:8px}
+  .brief-sum{display:none}
+  .brief-h{font-size:18px}
+  .brief-in{padding-inline:13%}
+}
+
+/* Briefing list + item pages */
+.bf-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin:-22px 0 36px}
+.bf-row .filters{margin:0}
+.chips-sm button{padding:7px 14px;font-size:.84rem}
+.bf-toggle{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:.9rem;color:var(--ink)}
+.bf-toggle>span{width:38px;height:22px;border-radius:22px;background:var(--line);position:relative;flex:none;transition:background .2s}
+.bf-toggle>span::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
+.bf-toggle[aria-checked="true"]>span{background:var(--lime-dk)}
+.bf-toggle[aria-checked="true"]>span::after{transform:translateX(16px)}
+html[dir="rtl"] .bf-toggle[aria-checked="true"]>span::after{transform:translateX(-16px)}
+.bf-empty{padding:34px;background:var(--tint);border-radius:var(--radius);color:var(--muted);text-align:center;max-width:none}
+.bf-empty[hidden],.news-card[hidden]{display:none}
+.news-card{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:var(--radius);padding:24px 26px 26px;transition:transform .35s var(--ease),box-shadow .35s}
+.news-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.nc-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:.8rem;color:var(--muted)}
+.cat-chip{background:var(--blue);color:var(--graphite);font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px}
+html[lang="ar"] .cat-chip{letter-spacing:0;font-size:.8rem}
+.nc-region{font-weight:700;color:var(--ink)}
+.news-card h3{font-size:1.14rem;line-height:1.35}
+.news-card p{font-size:.93rem;color:var(--muted)}
+.impact-badge{align-self:flex-start;display:inline-block;background:var(--lime);color:var(--graphite);font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:2px;margin-top:auto}
+html[lang="ar"] .impact-badge{letter-spacing:0;font-size:.8rem}
+.art-hero .meta .impact-badge{margin-top:0}
+.news-item{margin-inline:auto}
+.news-source{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:.98rem!important}
+.news-source a{color:var(--blue-dk);font-weight:700;display:inline-flex;align-items:center;gap:8px}
+.news-source a svg{width:12px;height:12px}
+html[dir="rtl"] .news-source a svg{transform:scaleX(-1)}
+.asa-note{margin:34px 0 10px;background:var(--graphite);color:#fff;border-radius:var(--radius);padding:28px 30px;border-inline-start:4px solid var(--lime)}
+.asa-note h2{color:#fff;font-size:1.2rem!important;margin:0 0 18px!important;display:flex;align-items:center;gap:12px}
+.asa-note dl{display:grid;gap:14px}
+.asa-note dl>div{display:grid;grid-template-columns:170px 1fr;gap:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+.asa-note dt{color:var(--lime);font-weight:700;font-size:.92rem}
+.asa-note dd{color:var(--soft);font-size:1rem;line-height:1.7}
+.note-disc{margin-top:10px!important;font-size:.85rem!important}
+.news-related{display:block;margin-top:36px;padding:22px 24px;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .2s}
+.news-related:hover{border-color:var(--blue-dk)}
+.news-related small{display:block;font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+html[lang="ar"] .news-related small{letter-spacing:0;font-size:.88rem}
+.news-related b{display:block;color:var(--ink);font-size:1.1rem;margin-bottom:10px}
+@media (max-width:640px){.asa-note{padding:24px 20px}.asa-note dl>div{grid-template-columns:1fr;gap:4px}}
+/* header: keep nav labels on one line now that Briefing is in the menu */
+.nav>li>a,.nav>li>button{white-space:nowrap}
+@media (max-width:1240px) and (min-width:1081px){.nav{gap:0}.nav>li>a,.nav>li>button{padding:10px 9px;font-size:.9rem}.header-cta{gap:10px}}

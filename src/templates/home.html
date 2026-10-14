@@ -12,7 +12,28 @@
         <a class="btn btn-ghost" href="{{ P('services') }}">{{ H.cta2 }}</a>
       </div>
     </div>
-    <div class="art">{{ MARK|safe }}</div>
+    <div class="art">
+      <section class="brief" id="brief" aria-label="{{ H.brief_label }}">
+        {{ BRIEF_MARK|safe }}
+        <svg class="brief-hex" viewBox="-56 -59 112 118" aria-hidden="true"><polygon points="-25.5,-58 25.5,-58 55.5,0 25.5,58 -25.5,58 -55.5,0"/></svg>
+        <div class="brief-in">
+          <p class="brief-label"><span class="dot" aria-hidden="true"></span>{{ H.brief_label }}</p>
+          <div class="brief-slides" aria-live="off">
+            {% for b in BRIEF %}
+            <div class="brief-slide{% if loop.first %} on{% endif %}" id="brief-{{ loop.index }}" data-kind="{{ b.kind }}">
+              <span class="brief-chip">{{ b.chip }}</span>
+              <p class="brief-h">{{ b.title }}</p>
+              <p class="brief-sum">{{ b.summary }}</p>
+              <p class="brief-meta"><bdi>{{ b.by }}</bdi>{% if b.date %} · <time datetime="{{ b.date_iso }}">{{ b.date }}</time>{% endif %}</p>
+              <a class="brief-read" href="{{ b.url }}">{{ H.brief_read }} <span aria-hidden="true">{{ '←' if L=='ar' else '→' }}</span><span class="sr">: {{ b.title }}</span></a>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="brief-bars">{% for b in BRIEF %}<button type="button" class="bar{% if loop.first %} on{% endif %}" aria-controls="brief-{{ loop.index }}" aria-label="{{ H.brief_show }} {{ loop.index }}/{{ BRIEF|length }}: {{ b.title }}"{% if loop.first %} aria-current="true"{% endif %}><span><i></i></span></button>{% endfor %}</div>
+        </div>
+      </section>
+      <script>(function(){var b=document.getElementById('brief'),m='still';if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){m='intro';try{if(sessionStorage.getItem('asaIntro'))m='quick';sessionStorage.setItem('asaIntro','1')}catch(e){}}b.className+=' js '+m})();</script>
+    </div>
   </div>
   <div class="stats">
     <div class="wrap">
