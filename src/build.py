@@ -1,4 +1,4 @@
-import json, os, sys, time, importlib
+import datetime, json, os, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup
 sys.path.insert(0, os.path.dirname(__file__))
@@ -43,13 +43,32 @@ def link(key, L, from_path):
     depth = len([x for x in from_path.split('/') if x])
     return '../' * depth + target.lstrip('/') + 'index.html'
 
+MONTHS = {'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                  'September', 'October', 'November', 'December'],
+          'ar': ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس',
+                 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']}
+
+def fmt_date(iso, L):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.day} {MONTHS[L][d.month - 1]} {d.year}"
+
+def by_date():
+    # newest first; articles with the same date keep their order in articles_meta.py
+    return sorted(articles_meta.ARTICLES, key=lambda a: a['date'], reverse=True)
+
+def latest(n):
+    return [a['slug'] for a in by_date()[:n]]
+
 def featured(L, slugs, from_path='/'):
     i = 0 if L == 'en' else 1
     out = []
-    for a in articles_meta.ARTICLES:
+    for a in by_date():
         if a['slug'] in slugs:
+            author, role = a['author_' + L], a['role_' + L]
             out.append(dict(url=link('art-' + a['slug'], L, from_path), tag=a['tag'][i], title=a['title'][i],
-                            summary=a['summary'][i],
+                            summary=a['summary'][i], author=author, role=role,
+                            byline=(f"By {author}, {role}" if L == 'en' else f"بقلم {author}، {role}"),
+                            date_iso=a['date'], date=fmt_date(a['date'], L),
                             read=(f"{a['minutes']} min read" if L == 'en' else f"{a['minutes']} دقائق قراءة")))
     return out
 
@@ -78,7 +97,7 @@ def build(pages=None):
     for L in ('en', 'ar'):
         H = C[L].HOME
         built.append(render('home.html', 'home', L, H['title'], H['desc'], schema=ORG_SCHEMA,
-                            FEATURED=featured(L, ['transfer-pricing-egypt-guide', 'ecl-model-ifrs-9', 'financial-due-diligence'], path_for('home', L))))
+                            FEATURED=featured(L, latest(3), path_for('home', L))))
         # further pages are registered in pages.py when available
         try:
             import pages

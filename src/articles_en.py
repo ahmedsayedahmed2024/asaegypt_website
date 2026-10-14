@@ -1,5 +1,4 @@
-AX = dict(by="ASA Insights", date="September 2026", toc="In this article", key="Key takeaways",
-          author="ASA Insights", author_role="Audit, Tax & Advisory team — ASA Chartered Accountants and Consultants",
+AX = dict(toc="In this article", key="Key takeaways", published="Published",
           disc="This article is for general information only and does not constitute professional advice. Thresholds, rates and procedures change — please contact us or refer to the latest official sources before acting.",
           more="More insights")
 

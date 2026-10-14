@@ -30,7 +30,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
 - PR description: a short plain-language summary of what changed, in English.
 
 ## Non-negotiable content rules
-1. **No names or photos of individual people anywhere on the site.** The team is described collectively.
+1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article.** The team page stays collective.
 2. **No client names.**
 3. **No team headcount.** Use "a highly qualified professional team" / «فريق مهني على مستوى عالٍ من الكفاءة».
 4. The firm's Arabic name is exactly «أحمد سيد أحمد محاسبون قانونيون ومستشارون».
