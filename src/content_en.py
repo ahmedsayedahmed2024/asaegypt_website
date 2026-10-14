@@ -1,7 +1,7 @@
 T = dict(
     skip="Skip to content", home="Home", mainnav="Main navigation", menu="Open menu", close="Close menu",
     nav=dict(about="About", services="Services", who="Who We Serve", approach="Our Approach", people="Our Team",
-             insights="Insights", contact="Contact", privacy="Privacy Policy"),
+             insights="Insights", briefing="Briefing", contact="Contact", privacy="Privacy Policy"),
     cta_consult="Book a consultation", learn="Learn more", firm="The Firm",
     foot_about="A senior-led firm of chartered accountants and consultants providing audit, tax, IFRS and advisory services to organisations in Egypt, Saudi Arabia and beyond.",
     address="58A Teraat El Zomor St., Al Haram, Giza, Egypt",
@@ -84,4 +84,6 @@ HOME = dict(
            ("FaCircleCheck", "Report & follow through", "Clear conclusions and practical recommendations — and support after delivery.")],
     ins_k="Insights", ins_h="Technical thinking you can use.",
     ins_cta="All insights",
+    brief_label="ASA Briefing", brief_new="New article", brief_service="ASA service", brief_read="Read",
+    brief_show="Show item", brief_from="ASA",
 )

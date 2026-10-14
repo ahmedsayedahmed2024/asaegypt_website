@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.briefing,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="{{ D.topics }}" data-bf="cat"><button aria-pressed="true" data-v="*">{{ D.all }}</button>{% for k, label in CATS %}<button aria-pressed="false" data-v="{{ k }}">{{ label }}</button>{% endfor %}</div>
+    <div class="bf-row">
+      <div class="filters chips-sm" role="group" aria-label="{{ D.regions }}" data-bf="region"><button aria-pressed="true" data-v="*">{{ D.all }}</button>{% for k, label in REGIONS %}<button aria-pressed="false" data-v="{{ k }}">{{ label }}</button>{% endfor %}</div>
+      <button class="bf-toggle" role="switch" aria-checked="false" data-bf-impact><span aria-hidden="true"></span>{{ D.impact_only }}</button>
+    </div>
+    <div class="grid-3 news-grid">{% for n in ITEMS %}{{ m.news_card(n, D) }}{% endfor %}</div>
+    <p class="bf-empty" role="status"{% if ITEMS %} hidden{% endif %}>{{ D.empty }}</p>
+    <p style="margin-top:40px;color:var(--muted);font-size:.9rem">{{ D.disclaimer }}</p>
+  </div>
+</section>
+<script>
+(function(){
+  var st={cat:'*',region:'*',impact:false},cards=document.querySelectorAll('.news-card'),empty=document.querySelector('.bf-empty');
+  function apply(){var n=0;cards.forEach(function(c){var ok=(st.cat==='*'||c.dataset.cat===st.cat)&&(st.region==='*'||c.dataset.region===st.region)&&(!st.impact||c.dataset.impact==='1');c.hidden=!ok;if(ok)n++});empty.hidden=n>0}
+  document.querySelectorAll('[data-bf]').forEach(function(g){g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){st[g.dataset.bf]=b.dataset.v;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});apply()})})});
+  var t=document.querySelector('[data-bf-impact]');t.addEventListener('click',function(){st.impact=!st.impact;t.setAttribute('aria-checked',st.impact);apply()});
+})();
+</script>
+{% include "cta.html" %}
+{% endblock %}

@@ -312,6 +312,20 @@ INSIGHTS = dict(
     disclaimer="Articles are for general information only and do not constitute professional advice. Please contact us to discuss your specific circumstances.",
 )
 
+BRIEFING = dict(
+    title="ASA Briefing | Professional updates | ASA",
+    desc="Professional updates on financial reporting standards, Egyptian tax, the regional economy and technology — each linked to its official source, with ASA impact notes.",
+    kicker="Professional updates", h1="ASA Briefing",
+    lead="Short, sourced updates on standards, tax, the economy and technology — with ASA notes on what they mean for your financial statements and your audit.",
+    topics="Filter by topic", regions="Filter by region", all="All", impact_only="Impact notes only",
+    badge="Impact note", empty="Updates for this topic are coming soon.",
+    source="Source:", related="Related article", back="All updates",
+    note_titles=dict(impact="ASA Impact Note", tech="ASA Tech Note"),
+    note_rows=dict(who="Who is affected", accounting="Accounting impact", auditor="For auditors"),
+    note_disc="General professional commentary, not advice for any specific entity.",
+    disclaimer="Briefing items summarise official publications for general information. Always refer to the original source; please contact us to discuss your specific circumstances.",
+)
+
 CONTACT = dict(
     title="Contact ASA | Book a Consultation",
     desc="Contact ASA Chartered Accountants and Consultants in Giza, Egypt. Book a consultation on audit, tax, IFRS 9 / ECL or advisory.",
