@@ -6,9 +6,9 @@
     <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('next') }}" dir="ltr">{{ T.nav.next }}</a></nav>
     <a class="nx-mini" href="{{ P('next') }}">{{ m.nx_lockup('nx-sm') }}</a>
     <p class="kicker">{{ N.section_label }}</p>
-    <h1>{{ N.title }}</h1>
-    <p class="lead">{{ N.summary }}</p>
-    <div class="meta"><span>{{ I('FaPeopleGroup') }}{{ N.byline }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ N.date_iso }}">{{ N.date }}</time></span></div>
+    <h1>{{ N.title|bidi(L) }}</h1>
+    <p class="lead">{{ N.summary|bidi(L) }}</p>
+    <div class="meta"><span>{{ I('FaPeopleGroup') }}{{ N.byline|bidi(L) }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ N.date_iso }}">{{ N.date }}</time></span></div>
   </div>
 </section>
 <section class="sec sec-near">
@@ -16,17 +16,17 @@
     <article class="article prose news-item nx-item">
       {% set ns = namespace(q=0) %}
       {% for b in N.body %}
-        {% if b[0]=='h' %}<h2>{{ b[1] }}</h2>
-        {% elif b[0]=='p' %}<p>{{ b[1] }}</p>
-        {% elif b[0]=='ul' %}<ul>{% for x in b[1] %}<li>{{ x }}</li>{% endfor %}</ul>
+        {% if b[0]=='h' %}<h2>{{ b[1]|bidi(L) }}</h2>
+        {% elif b[0]=='p' %}<p>{{ b[1]|bidi(L) }}</p>
+        {% elif b[0]=='ul' %}<ul>{% for x in b[1] %}<li>{{ x|bidi(L) }}</li>{% endfor %}</ul>
         {% elif b[0]=='code' %}<pre class="nx-code" dir="ltr"><code>{{ b[1] }}</code></pre>
-        {% elif b[0]=='stages' %}<ol class="nx-stages">{% for s in b[1] %}<li class="nx-stage"><h3><span class="n" aria-hidden="true">0{{ loop.index }}</span>{{ s.name }}</h3><dl>
-          <div><dt>{{ D.stage_rows.own }}</dt><dd>{{ s.own }}</dd></div>
-          <div><dt>{{ D.stage_rows.skills }}</dt><dd>{{ s.skills }}</dd></div>
-          <div><dt>{{ D.stage_rows.habit }}</dt><dd>{{ s.habit }}</dd></div></dl></li>{% endfor %}</ol>
-        {% elif b[0]=='links' %}<ul class="nx-links">{% for label, url in b[1] %}<li>{% if url %}<a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a>{% else %}{{ label }}{% endif %}</li>{% endfor %}</ul>
-        {% elif b[0]=='quiz' %}<ol class="nx-quiz">{% for q, a in b[1] %}{% set ns.q = ns.q + 1 %}<li><p class="q">{{ q }}</p><button type="button" class="nx-quiz-btn" aria-expanded="false" aria-controls="qa-{{ ns.q }}" data-show="{{ D.quiz_show }}" data-hide="{{ D.quiz_hide }}" hidden>{{ D.quiz_show }}</button><p class="nx-quiz-a" id="qa-{{ ns.q }}"><b>{{ D.quiz_answer }}</b> {{ a }}</p></li>{% endfor %}</ol>
-        {% elif b[0]=='close' %}<p class="nx-close"><span aria-hidden="true">✓</span>{{ b[1] }}</p>
+        {% elif b[0]=='stages' %}<ol class="nx-stages">{% for s in b[1] %}<li class="nx-stage"><h3><span class="n" aria-hidden="true">0{{ loop.index }}</span>{{ s.name|bidi(L) }}</h3><dl>
+          <div><dt>{{ D.stage_rows.own }}</dt><dd>{{ s.own|bidi(L) }}</dd></div>
+          <div><dt>{{ D.stage_rows.skills }}</dt><dd>{{ s.skills|bidi(L) }}</dd></div>
+          <div><dt>{{ D.stage_rows.habit }}</dt><dd>{{ s.habit|bidi(L) }}</dd></div></dl></li>{% endfor %}</ol>
+        {% elif b[0]=='links' %}<ul class="nx-links">{% for label, url in b[1] %}<li>{% if url %}<a href="{{ url }}" target="_blank" rel="noopener">{{ label|bidi(L) }}</a>{% else %}{{ label|bidi(L) }}{% endif %}</li>{% endfor %}</ul>
+        {% elif b[0]=='quiz' %}<ol class="nx-quiz">{% for q, a in b[1] %}{% set ns.q = ns.q + 1 %}<li><p class="q">{{ q|bidi(L) }}</p><button type="button" class="nx-quiz-btn" aria-expanded="false" aria-controls="qa-{{ ns.q }}" data-show="{{ D.quiz_show }}" data-hide="{{ D.quiz_hide }}" hidden>{{ D.quiz_show }}</button><p class="nx-quiz-a" id="qa-{{ ns.q }}"><b>{{ D.quiz_answer }}</b> {{ a|bidi(L) }}</p></li>{% endfor %}</ol>
+        {% elif b[0]=='close' %}<p class="nx-close"><span aria-hidden="true">✓</span>{{ b[1]|bidi(L) }}</p>
         {% endif %}
       {% endfor %}
       <p class="disc">{{ D.disc }}</p>
