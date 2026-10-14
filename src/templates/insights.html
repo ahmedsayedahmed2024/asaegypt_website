@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.insights,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="{{ D.filter }}"><button aria-pressed="true" data-f="*">{{ D.all }}</button>{% for t in TAGS %}<button aria-pressed="false" data-f="{{ t }}">{{ t }}</button>{% endfor %}</div>
+    <div class="grid-3">{% for a in ALL %}{{ m.post_card(a) }}{% endfor %}</div>
+    <p style="margin-top:40px;color:var(--muted);font-size:.9rem">{{ D.disclaimer }}</p>
+  </div>
+</section>
+<script>
+document.querySelectorAll('.filters button').forEach(function(b){b.addEventListener('click',function(){var f=b.dataset.f;document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});document.querySelectorAll('.post').forEach(function(p){p.hidden=!(f==='*'||p.dataset.tag===f)})})});
+</script>
+{% include "cta.html" %}
+{% endblock %}

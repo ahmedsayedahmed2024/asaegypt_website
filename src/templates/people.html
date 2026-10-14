@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.people,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap two-col">
+    <div class="prose rv"><p class="kicker">{{ D.intro_k }}</p><h2>{{ D.intro_h }}</h2>{% for p in D.intro %}<p>{{ p }}</p>{% endfor %}</div>
+    <aside class="side-card rv">{{ MARK_BG|safe }}<h3>{{ D.glance_h }}</h3><ul>{% for g in D.glance %}<li>{{ I('FaCheck') }}<span>{{ g }}</span></li>{% endfor %}</ul><a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a></aside>
+  </div>
+  <div class="wrap" style="margin-top:80px"><div class="numbers rv">{% for n in D.nums %}<div><b dir="ltr">{{ n[0]|safe }}</b><span>{{ n[1] }}</span></div>{% endfor %}</div></div>
+</section>
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.exp_k }}</p><h2>{{ D.exp_h }}</h2></div><p class="lead">{{ D.exp_p }}</p></div>
+    <div class="grid-4">{% for x in D.exp %}<div class="pillar rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(x[0]) }}</span><h3>{{ x[1] }}</h3><p>{{ x[2] }}</p></div>{% endfor %}</div>
+  </div>
+</section>
+<section class="sec dark">
+  <div class="wrap two-col" style="align-items:center">
+    <div class="rv"><p class="kicker">{{ D.skills_k }}</p><h2>{{ D.skills_h }}</h2></div>
+    <div class="chips rv">{% for c in D.skills %}<span class="chip">{{ c }}</span>{% endfor %}</div>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.mem_k }}</p><h2>{{ D.mem_h }}</h2></div><p class="lead">{{ D.mem_p }}</p></div>
+    <div class="grid-4">{% for x in D.mems %}<div class="pillar rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(x[0]) }}</span><h3>{{ x[1] }}</h3><p>{{ x[2] }}</p></div>{% endfor %}</div>
+  </div>
+</section>
+<section class="sec tint">
+  <div class="wrap two-col" style="align-items:center">
+    <div class="rv"><p class="kicker">{{ D.join_k }}</p><h2>{{ D.join_h }}</h2><p class="lead" style="margin:18px 0 28px">{{ D.join_p }}</p><a class="btn btn-dark" href="mailto:ahmed.sayed@asaegypt.com?subject=Careers">{{ D.join_cta }} {{ I('FaArrowRight','arrow') }}</a></div>
+    <div class="rv" style="max-width:320px;justify-self:center">{{ MARK|safe }}</div>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

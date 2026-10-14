@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.who,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap">
+    {% for s in D.segments %}
+    <div class="seg-row rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s[0]) }}</span><div><h3>{{ s[1] }}</h3><p style="margin-top:10px">{{ s[2] }}</p></div><ul>{% for x in s[3] %}<li>{{ I('FaCheck') }}<span>{{ x }}</span></li>{% endfor %}</ul></div>
+    {% endfor %}
+  </div>
+</section>
+<section class="sec dark">
+  <div class="wrap two-col" style="align-items:center">
+    <div class="rv"><p class="kicker">{{ D.port_k }}</p><h2>{{ D.port_h }}</h2><p style="margin-top:18px">{{ D.port_p }}</p></div>
+    <div class="numbers rv" style="border-color:var(--graphite-3);grid-template-columns:1fr 1fr">{% for n in D.port_nums %}<div style="border-color:var(--graphite-3)"><b dir="ltr" style="color:#fff">{{ n[0]|safe }}</b><span style="color:var(--soft)">{{ n[1] }}</span></div>{% endfor %}</div>
+  </div>
+</section>
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.sec_k }}</p><h2>{{ D.sec_h }}</h2></div><p class="lead">{{ D.sec_p }}</p></div>
+    <div class="grid-3">{% for s in D.sectors %}<div class="sector rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s[0]) }}</span>{{ s[1] }}</div>{% endfor %}</div>
+    <p class="rv" style="margin-top:30px;color:var(--muted);font-size:.93rem">{{ D.conf }}</p>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

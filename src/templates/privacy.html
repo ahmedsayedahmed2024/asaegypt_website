@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.privacy,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec"><div class="wrap legal prose" style="max-width:860px">{{ D.body|safe }}</div></section>
+{% endblock %}

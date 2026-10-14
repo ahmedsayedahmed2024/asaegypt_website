@@ -1,0 +1,69 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.services,'services'),(S.name,None)], D.kicker, D.h1, D.lead, S.icon, True) }}
+<section class="sec">
+  <div class="wrap two-col">
+    <div class="prose rv">
+      <p class="kicker">{{ X.overview }}</p>
+      <h2>{{ D.ov_h }}</h2>
+      {% for p in D.ov %}<p>{{ p }}</p>{% endfor %}
+    </div>
+    <aside class="side-card rv">
+      {{ MARK_BG|safe }}
+      <h3>{{ X.why_title }}</h3>
+      <ul>{% for w in D.why %}<li>{{ I('FaCheck') }}<span>{{ w }}</span></li>{% endfor %}</ul>
+      <a class="btn btn-primary" href="{{ P('contact') }}">{{ X.talk }} {{ I('FaArrowRight','arrow') }}</a>
+    </aside>
+  </div>
+</section>
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ X.offer_k }}</p><h2>{{ D.offer_h }}</h2></div><p class="lead">{{ D.offer_p }}</p></div>
+    <div class="grid-2">
+      {% for o in D.offer %}<div class="offer rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(o[0]) }}</span><div><h3>{{ o[1] }}</h3><p>{{ o[2] }}</p></div></div>{% endfor %}
+    </div>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ X.approach_k }}</p><h2>{{ D.appr_h }}</h2></div><p class="lead">{{ D.appr_p }}</p></div>
+    <div class="steps">
+      {% for s in D.steps %}<div class="step rv"><div class="top"><span class="hx {{ 'dark' if loop.last else '' }}">{{ I(s[0]) }}</span><span class="line"></span></div><small>0{{ loop.index }}</small><h3>{{ s[1] }}</h3><p>{{ s[2] }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+<section class="sec dark">
+  <div class="wrap two-col">
+    <div class="rv">
+      <p class="kicker">{{ X.for_k }}</p>
+      <h2>{{ D.for_h }}</h2>
+      <div class="chips" style="margin-top:28px">{% for c in D.for_list %}<span class="chip">{{ c }}</span>{% endfor %}</div>
+    </div>
+    <div class="rv">
+      <p class="kicker">{{ X.faq_k }}</p>
+      <div class="faq" style="border-color:var(--graphite-3)">
+        {% for q in D.faq %}<div class="faq-item" style="border-color:var(--graphite-3)"><button aria-expanded="false" style="color:#fff">{{ q[0] }} {{ I('FaPlus') }}</button><div class="ans" hidden style="color:var(--soft)">{{ q[1] }}</div></div>{% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% if RELATED %}
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ T.nav.insights }}</p><h2>{{ X.related_h }}</h2></div><p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ C.HOME.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p></div>
+    <div class="grid-3">{% for a in RELATED %}{{ m.post_card(a) }}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ X.other_k }}</p><h2>{{ X.other_h }}</h2></div></div>
+    <div class="grid-3">
+      {% for s in SERVICES if s.key != S.key %}{% if loop.index <= 3 %}
+      <a class="card rv" href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><h3>{{ s.name }}</h3><p>{{ s.desc }}</p><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
+      {% endif %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

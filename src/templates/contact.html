@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(T.nav.contact,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap contact-grid">
+    <div class="rv">
+      <h2 style="margin-bottom:28px">{{ D.form_h }}</h2>
+      <form class="form" method="POST" action="https://formsubmit.co/ahmed.sayed@asaegypt.com">
+        <input type="hidden" name="_next" value="{{ SITE }}{{ path }}?sent=1">
+        <input type="hidden" name="_subject" value="New enquiry from asaegypt.com ({{ L|upper }})">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+                <div><label for="f-name">{{ D.f_name }} *</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div><label for="f-company">{{ D.f_company }}</label><input id="f-company" name="company" autocomplete="organization"></div>
+        <div><label for="f-email">{{ D.f_email }} *</label><input id="f-email" type="email" name="email" required autocomplete="email" dir="ltr"></div>
+        <div><label for="f-phone">{{ D.f_phone }}</label><input id="f-phone" type="tel" name="phone" autocomplete="tel" dir="ltr"></div>
+        <div class="full"><label for="f-service">{{ D.f_service }}</label><select id="f-service" name="service"><option value="">{{ D.f_choose }}</option>{% for s in SERVICES %}<option>{{ s.name }}</option>{% endfor %}<option>{{ D.f_other }}</option></select></div>
+        <div class="full"><label for="f-msg">{{ D.f_msg }} *</label><textarea id="f-msg" name="message" required></textarea></div>
+        <p class="note full">{{ D.f_note }}</p>
+        <div class="full"><button class="btn btn-dark" type="submit">{{ D.f_send }} {{ I('FaArrowRight','arrow') }}</button></div>
+      </form>
+      <div class="thanks" id="thanks"><h3>{{ D.thanks_h }}</h3><p>{{ D.thanks_p }}</p></div>
+    </div>
+    <div class="rv">
+      <div class="info-card">
+        <div class="row"><span class="hx">{{ I('FaLocationDot') }}</span><div><b>{{ D.visit }}</b>{{ T.address }}</div></div>
+        <div class="row"><span class="hx lime">{{ I('FaPhone') }}</span><div><b>{{ D.call }}</b><a href="tel:+201115652365"><span class="ltr">+20 111 565 2365</span></a></div></div>
+        <div class="row"><span class="hx">{{ I('FaEnvelope') }}</span><div><b>{{ D.write }}</b><a href="mailto:ahmed.sayed@asaegypt.com">ahmed.sayed@asaegypt.com</a></div></div>
+        <div class="row"><span class="hx lime">{{ I('FaWhatsapp') }}</span><div><b>WhatsApp</b><a href="https://wa.me/201115652365" target="_blank" rel="noopener">{{ D.wa }}</a></div></div>
+        <div class="row"><span class="hx">{{ I('FaClock') }}</span><div><b>{{ D.hours_t }}</b>{{ D.hours }}</div></div>
+      </div>
+      <div class="map"><iframe title="{{ D.map_t }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Teraat+El+Zomor+Street,+Al+Haram,+Giza,+Egypt&output=embed"></iframe></div>
+    </div>
+  </div>
+</section>
+<script>if(location.search.indexOf('sent=1')>-1){document.querySelector('.form').style.display='none';document.getElementById('thanks').classList.add('show')}</script>
+{% endblock %}

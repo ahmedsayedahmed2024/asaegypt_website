@@ -1,0 +1,19 @@
+{% macro hero(crumbs, kicker, h1, lead, icon=None, ctas=None) -%}
+<section class="page-hero">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a>{% for c in crumbs %}<span aria-hidden="true">/</span>{% if c[1] %}<a href="{{ P(c[1]) }}">{{ c[0] }}</a>{% else %}<span>{{ c[0] }}</span>{% endif %}{% endfor %}</nav>
+    {% if icon %}<span class="hx">{{ I(icon) }}</span>{% endif %}
+    <p class="kicker">{{ kicker }}</p>
+    <h1>{{ h1 }}</h1>
+    <p class="lead">{{ lead }}</p>
+    {% if ctas %}<div class="ctas"><a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a></div>{% endif %}
+  </div>
+</section>
+{%- endmacro %}
+{% macro post_card(a) -%}
+<a class="post rv" href="{{ a.url }}" data-tag="{{ a.tag }}">
+  <div class="thumb">{{ MARK|safe }}<span class="tag">{{ a.tag }}</span></div>
+  <div class="body"><h3>{{ a.title }}</h3><p>{{ a.summary }}</p><div class="meta"><span>{{ a.read }}</span></div></div>
+</a>
+{%- endmacro %}

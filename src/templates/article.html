@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+<section class="page-hero art-hero">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('insights') }}">{{ T.nav.insights }}</a></nav>
+    <p class="kicker">{{ A.tag }}</p>
+    <h1>{{ A.title }}</h1>
+    <p class="lead">{{ A.summary }}</p>
+    <div class="meta"><span>{{ I('FaUserTie') }}{{ AX.by }}</span><span>{{ I('FaClock') }}{{ A.read }}</span><span>{{ I('FaNewspaper') }}{{ AX.date }}</span></div>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap art-grid">
+    <aside class="toc"><b>{{ AX.toc }}</b><ol>{% for b in BODY if b[0]=='h' %}<li><a href="#s{{ loop.index }}">{{ b[1] }}</a></li>{% endfor %}</ol></aside>
+    <article class="article prose">
+      <div class="takeaways"><h3><span class="hx" style="width:30px;height:26px;font-size:12px">{{ I('FaCheck') }}</span>{{ AX.key }}</h3><ul>{% for k in KEY %}<li>{{ k }}</li>{% endfor %}</ul></div>
+      {% set ns = namespace(h=0) %}
+      {% for b in BODY %}
+        {% if b[0]=='h' %}{% set ns.h = ns.h + 1 %}<h2 id="s{{ ns.h }}">{{ b[1] }}</h2>
+        {% elif b[0]=='h3' %}<h3>{{ b[1] }}</h3>
+        {% elif b[0]=='p' %}<p>{{ b[1] }}</p>
+        {% elif b[0]=='ul' %}<ul>{% for x in b[1] %}<li>{{ x }}</li>{% endfor %}</ul>
+        {% elif b[0]=='ol' %}<ol style="padding-inline-start:22px;margin-bottom:1.2em">{% for x in b[1] %}<li style="margin-bottom:8px">{{ x }}</li>{% endfor %}</ol>
+        {% elif b[0]=='note' %}<div class="callout"><b>{{ b[1] }}</b>{{ b[2] }}</div>
+        {% elif b[0]=='table' %}<table><thead><tr>{% for c in b[1] %}<th>{{ c }}</th>{% endfor %}</tr></thead><tbody>{% for r in b[2] %}<tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>
+        {% endif %}
+      {% endfor %}
+      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div><b>{{ AX.author }}</b><span>{{ AX.author_role }}</span></div></div>
+      <p class="disc">{{ AX.disc }}</p>
+    </article>
+  </div>
+</section>
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ T.nav.insights }}</p><h2>{{ AX.more }}</h2></div><p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ C.HOME.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p></div>
+    <div class="grid-3">{% for a in RELATED %}{{ m.post_card(a) }}{% endfor %}</div>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

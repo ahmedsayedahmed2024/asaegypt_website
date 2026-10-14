@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block main %}
+{% set H = C.HOME %}
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="kicker">{{ H.kicker }}</p>
+      <h1>{{ H.h1|safe }}</h1>
+      <p class="lead">{{ H.lead }}</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a>
+        <a class="btn btn-ghost" href="{{ P('services') }}">{{ H.cta2 }}</a>
+      </div>
+    </div>
+    <div class="art">{{ MARK|safe }}</div>
+  </div>
+  <div class="stats">
+    <div class="wrap">
+      {% for s in H.stats %}<div class="stat"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1] }}</span></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap">
+    <p>{{ H.trust_title }}</p>
+    <ul>{% for t in H.trust %}<li><span class="hx {{ 'lime' if loop.index0==1 else '' }}">{{ I(t[0]) }}</span>{{ t[1] }}</li>{% endfor %}</ul>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker">{{ H.svc_k }}</p><h2>{{ H.svc_h }}</h2></div>
+      <p class="lead">{{ H.svc_p }}</p>
+    </div>
+    <div class="grid-3">
+      {% for s in SERVICES %}
+      <a class="card rv" href="{{ P(s.key) }}" style="transition-delay:{{ loop.index0*60 }}ms">
+        <span class="num">0{{ loop.index }}</span>
+        <span class="hx {{ 'lime' if loop.index0 in [1,3,5] else '' }}">{{ I(s.icon) }}</span>
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.desc }}</p>
+        <span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec dark">
+  <div class="wrap spot">
+    <div class="rv">
+      <p class="kicker">{{ H.ecl_k }}</p>
+      <h2>{{ H.ecl_h }}</h2>
+      <p style="margin-top:20px">{{ H.ecl_p }}</p>
+      <div class="badge-note"><b>{{ H.ecl_note_t }}</b>{{ H.ecl_note }}</div>
+      <p style="margin-top:28px"><a class="btn btn-primary" href="{{ P('svc-ecl') }}">{{ H.ecl_cta }} {{ I('FaArrowRight','arrow') }}</a></p>
+    </div>
+    <div class="spot-list">
+      {% for it in H.ecl_items %}
+      <div class="spot-item rv" style="transition-delay:{{ loop.index0*80 }}ms"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(it[0]) }}</span><div><h4>{{ it[1] }}</h4><p>{{ it[2] }}</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker">{{ H.who_k }}</p><h2>{{ H.who_h }}</h2></div>
+      <p class="lead">{{ H.who_p }}</p>
+    </div>
+    <div class="grid-3" style="grid-auto-rows:minmax(200px,auto)">
+      <div class="seg feature rv">
+        {{ MARK_BG|safe }}
+        <div class="big" dir="ltr">50+</div>
+        <h3>{{ H.who_feature_t }}</h3>
+        <p>{{ H.who_feature_p }}</p>
+      </div>
+      {% for s in H.segments %}
+      <div class="seg rv" style="transition-delay:{{ loop.index0*60 }}ms"><span class="hx {{ 'lime' if loop.index0 % 2 else 'tint' }}">{{ I(s[0]) }}</span><h3>{{ s[1] }}</h3><p>{{ s[2] }}</p></div>
+      {% endfor %}
+    </div>
+    <p style="margin-top:34px"><a class="link-arrow" href="{{ P('who') }}">{{ H.who_cta }} {{ I('FaArrowRight') }}</a></p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap why-grid" id="why">
+    <div class="rv why-head">
+      <p class="kicker">{{ H.why_k }}</p>
+      <h2>{{ H.why_h }}</h2>
+      <p class="lead" style="margin-top:18px">{{ H.why_p }}</p>
+      <p style="margin-top:28px"><a class="btn btn-dark" href="{{ P('about') }}">{{ H.why_cta }} {{ I('FaArrowRight','arrow') }}</a></p>
+    </div>
+    <div>
+      {% for r in H.reasons %}
+      <div class="reason rv"><span class="n">0{{ loop.index }}</span><div><h3>{{ r[0] }}</h3><p>{{ r[1] }}</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker">{{ H.how_k }}</p><h2>{{ H.how_h }}</h2></div>
+      <p class="lead">{{ H.how_p }}</p>
+    </div>
+    <div class="steps">
+      {% for s in H.steps %}
+      <div class="step rv" style="transition-delay:{{ loop.index0*90 }}ms">
+        <div class="top"><span class="hx {{ 'dark' if loop.last else '' }}">{{ I(s[0]) }}</span><span class="line"></span></div>
+        <small>0{{ loop.index }}</small><h3>{{ s[1] }}</h3><p>{{ s[2] }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker">{{ H.ins_k }}</p><h2>{{ H.ins_h }}</h2></div>
+      <p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ H.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p>
+    </div>
+    <div class="grid-3">
+      {% for a in FEATURED %}
+      <a class="post rv" href="{{ a.url }}" style="transition-delay:{{ loop.index0*80 }}ms">
+        <div class="thumb">{{ MARK|safe }}<span class="tag">{{ a.tag }}</span></div>
+        <div class="body"><h3>{{ a.title }}</h3><p>{{ a.summary }}</p><div class="meta"><span>{{ a.read }}</span></div></div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% include "cta.html" %}
+{% endblock %}
