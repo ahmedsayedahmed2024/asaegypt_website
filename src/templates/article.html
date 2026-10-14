@@ -23,6 +23,7 @@
         {% elif b[0]=='ul' %}<ul>{% for x in b[1] %}<li>{{ x }}</li>{% endfor %}</ul>
         {% elif b[0]=='ol' %}<ol style="padding-inline-start:22px;margin-bottom:1.2em">{% for x in b[1] %}<li style="margin-bottom:8px">{{ x }}</li>{% endfor %}</ol>
         {% elif b[0]=='note' %}<div class="callout"><b>{{ b[1] }}</b>{{ b[2] }}</div>
+        {% elif b[0]=='links' %}<ul>{% for label, url in b[1] %}<li><a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a></li>{% endfor %}</ul>
         {% elif b[0]=='table' %}<table><thead><tr>{% for c in b[1] %}<th>{{ c }}</th>{% endfor %}</tr></thead><tbody>{% for r in b[2] %}<tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>
         {% endif %}
       {% endfor %}

@@ -2,6 +2,13 @@
 # tag(en, ar), title(en, ar), summary(en, ar)
 # The byline (author + role) is the only place a person's name may appear on the site (CLAUDE.md rule 1).
 ARTICLES = [
+ dict(slug="ifrs-18-egypt-what-changes", minutes=7,
+      date="2026-10-14", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد",
+      role_en="Founder & Managing Partner", role_ar="المؤسس والشريك المدير",
+      tag=("IFRS","المعايير الدولية"),
+      title=("IFRS 18 in Egypt: what changes and when it applies","المعيار الدولي IFRS 18 في مصر: ما الذي يتغير ومتى يُطبَّق؟"),
+      summary=("IFRS 18 replaces IAS 1 from 2027. What changes in profit or loss, cash flows and notes — and whether the 2027 date applies to Egyptian statutory accounts.",
+               "يحل IFRS 18 محل IAS 1 اعتبارًا من 2027: ما الذي يتغير في قائمة الأرباح أو الخسائر والتدفقات النقدية والإيضاحات، وهل يسري موعد 2027 على القوائم المالية المصرية؟")),
  dict(slug="transfer-pricing-egypt-guide", minutes=18,
       date="2026-09-20", author_en="ASA Insights", author_ar="فريق ASA",
       role_en="Audit, Tax & Advisory team", role_ar="فريق المراجعة والضرائب والاستشارات",
