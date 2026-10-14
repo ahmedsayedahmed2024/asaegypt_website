@@ -3,7 +3,7 @@
 # The byline (author + role) is the only place a person's name may appear on the site (CLAUDE.md rule 1).
 ARTICLES = [
  dict(slug="ifrs-18-egypt-what-changes", minutes=7,
-      date="2026-10-14", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد",
+      date="2026-10-14", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
       role_en="Founder & Managing Partner", role_ar="المؤسس والشريك المدير",
       tag=("IFRS","المعايير الدولية"),
       title=("IFRS 18 in Egypt: what changes and when it applies","المعيار الدولي IFRS 18 في مصر: ما الذي يتغير ومتى يُطبَّق؟"),
