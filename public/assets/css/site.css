@@ -231,6 +231,7 @@ html[dir="rtl"] .step{padding:0 0 0 26px}
 .post .body{padding:6px 26px 28px;display:flex;flex-direction:column;gap:10px;flex:1}
 .post h3{font-size:1.14rem;line-height:1.35}
 .post p{font-size:.93rem;color:var(--muted)}
+.post .byline{font-size:.82rem;font-weight:600;color:var(--ink)}
 .post .meta{font-size:.8rem;color:var(--muted);display:flex;gap:14px;margin-top:auto}
 
 /* CTA band */
@@ -454,6 +455,7 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
 .author img{width:64px;height:64px}
 .author b{display:block;color:var(--ink)}
 .author span{font-size:.9rem;color:var(--muted)}
+.author div span{display:block}
 .disc{font-size:.88rem;color:var(--muted);margin-top:26px}
 @media (max-width:1080px){.art-grid{grid-template-columns:1fr;gap:30px}.toc{position:static}}
 

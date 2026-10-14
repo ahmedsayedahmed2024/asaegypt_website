@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% import "macros.html" as m with context %}
 {% block main %}
 {% set H = C.HOME %}
 <section class="hero">
@@ -126,12 +126,7 @@
       <p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ H.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p>
     </div>
     <div class="grid-3">
-      {% for a in FEATURED %}
-      <a class="post rv" href="{{ a.url }}" style="transition-delay:{{ loop.index0*80 }}ms">
-        <div class="thumb">{{ MARK|safe }}<span class="tag">{{ a.tag }}</span></div>
-        <div class="body"><h3>{{ a.title }}</h3><p>{{ a.summary }}</p><div class="meta"><span>{{ a.read }}</span></div></div>
-      </a>
-      {% endfor %}
+      {% for a in FEATURED %}{{ m.post_card(a, loop.index0*80) }}{% endfor %}
     </div>
   </div>
 </section>

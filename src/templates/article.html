@@ -7,7 +7,7 @@
     <p class="kicker">{{ A.tag }}</p>
     <h1>{{ A.title }}</h1>
     <p class="lead">{{ A.summary }}</p>
-    <div class="meta"><span>{{ I('FaUserTie') }}{{ AX.by }}</span><span>{{ I('FaClock') }}{{ A.read }}</span><span>{{ I('FaNewspaper') }}{{ AX.date }}</span></div>
+    <div class="meta"><span>{{ I('FaUserTie') }}{{ A.byline }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ A.date_iso }}">{{ A.date }}</time></span><span>{{ I('FaClock') }}{{ A.read }}</span></div>
   </div>
 </section>
 <section class="sec">
@@ -26,7 +26,7 @@
         {% elif b[0]=='table' %}<table><thead><tr>{% for c in b[1] %}<th>{{ c }}</th>{% endfor %}</tr></thead><tbody>{% for r in b[2] %}<tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>
         {% endif %}
       {% endfor %}
-      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div><b>{{ AX.author }}</b><span>{{ AX.author_role }}</span></div></div>
+      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div><b>{{ A.author }}</b><span>{{ A.role }}</span><span>{{ AX.published }} <time datetime="{{ A.date_iso }}">{{ A.date }}</time></span></div></div>
       <p class="disc">{{ AX.disc }}</p>
     </article>
   </div>
