@@ -25,3 +25,15 @@
   {% if n.note %}<span class="impact-badge">{{ D.badge }}</span>{% endif %}
 </a>
 {%- endmacro %}
+{% macro nx_lockup(cls='', tag='span') -%}
+<span class="nx-lock {{ cls }}"><img class="nx-spark" src="{{ R }}assets/img/asa-next-spark.svg" alt="" width="64" height="66"><span class="nx-txt"><{{ tag }} class="nx-word" dir="ltr" lang="en"><span class="a">ASA</span> <span class="n">NEXT</span></{{ tag }}><span class="nx-tag">{{ T.next_tagline }}</span></span></span>
+{%- endmacro %}
+{% macro nx_card(n, D) -%}
+<a class="nx-card nx-{{ n.section }} rv" href="{{ n.url }}">
+  <span class="nx-chip">{{ n.section_label }}</span>
+  <h3>{{ n.title }}</h3>
+  <p>{{ n.summary }}</p>
+  <p class="nx-meta">{{ n.byline }} · <time datetime="{{ n.date_iso }}">{{ n.date }}</time></p>
+  <span class="link-arrow">{{ D.read }} {{ I('FaArrowRight') }}</span>
+</a>
+{%- endmacro %}

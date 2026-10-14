@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+<section class="page-hero art-hero nx-hero">
+  <img class="nx-hero-bg" src="{{ R }}assets/img/asa-next-spark.svg" alt="" aria-hidden="true">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('next') }}" dir="ltr">{{ T.nav.next }}</a></nav>
+    <a class="nx-mini" href="{{ P('next') }}">{{ m.nx_lockup('nx-sm') }}</a>
+    <p class="kicker">{{ N.section_label }}</p>
+    <h1>{{ N.title }}</h1>
+    <p class="lead">{{ N.summary }}</p>
+    <div class="meta"><span>{{ I('FaPeopleGroup') }}{{ N.byline }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ N.date_iso }}">{{ N.date }}</time></span></div>
+  </div>
+</section>
+<section class="sec sec-near">
+  <div class="wrap">
+    <article class="article prose news-item nx-item">
+      {% set ns = namespace(q=0) %}
+      {% for b in N.body %}
+        {% if b[0]=='h' %}<h2>{{ b[1] }}</h2>
+        {% elif b[0]=='p' %}<p>{{ b[1] }}</p>
+        {% elif b[0]=='ul' %}<ul>{% for x in b[1] %}<li>{{ x }}</li>{% endfor %}</ul>
+        {% elif b[0]=='code' %}<pre class="nx-code" dir="ltr"><code>{{ b[1] }}</code></pre>
+        {% elif b[0]=='stages' %}<ol class="nx-stages">{% for s in b[1] %}<li class="nx-stage"><h3><span class="n" aria-hidden="true">0{{ loop.index }}</span>{{ s.name }}</h3><dl>
+          <div><dt>{{ D.stage_rows.own }}</dt><dd>{{ s.own }}</dd></div>
+          <div><dt>{{ D.stage_rows.skills }}</dt><dd>{{ s.skills }}</dd></div>
+          <div><dt>{{ D.stage_rows.habit }}</dt><dd>{{ s.habit }}</dd></div></dl></li>{% endfor %}</ol>
+        {% elif b[0]=='links' %}<ul class="nx-links">{% for label, url in b[1] %}<li>{% if url %}<a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a>{% else %}{{ label }}{% endif %}</li>{% endfor %}</ul>
+        {% elif b[0]=='quiz' %}<ol class="nx-quiz">{% for q, a in b[1] %}{% set ns.q = ns.q + 1 %}<li><p class="q">{{ q }}</p><button type="button" class="nx-quiz-btn" aria-expanded="false" aria-controls="qa-{{ ns.q }}" data-show="{{ D.quiz_show }}" data-hide="{{ D.quiz_hide }}" hidden>{{ D.quiz_show }}</button><p class="nx-quiz-a" id="qa-{{ ns.q }}"><b>{{ D.quiz_answer }}</b> {{ a }}</p></li>{% endfor %}</ol>
+        {% elif b[0]=='close' %}<p class="nx-close"><span aria-hidden="true">✓</span>{{ b[1] }}</p>
+        {% endif %}
+      {% endfor %}
+      <p class="disc">{{ D.disc }}</p>
+      <p style="margin-top:34px"><a class="btn btn-line" href="{{ P('next') }}">{{ D.back }} {{ I('FaArrowRight','arrow') }}</a></p>
+    </article>
+  </div>
+</section>
+{% include "cta.html" %}
+{% endblock %}

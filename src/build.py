@@ -3,6 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup
 sys.path.insert(0, os.path.dirname(__file__))
 import mark, content_en, content_ar, articles_meta, news
+import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST = os.path.join(ROOT, 'dist')
@@ -15,13 +16,15 @@ C = {'en': content_en, 'ar': content_ar}
 # route key -> path (en); ar = '/ar' + path
 ROUTES = {'home': '/', 'about': '/about/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
-          'briefing': '/briefing/', 'contact': '/contact/', 'privacy': '/privacy/'}
+          'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/'}
 for s in content_en.SERVICES:
     ROUTES[s['key']] = f"/services/{s['slug']}/"
 for a in articles_meta.ARTICLES:
     ROUTES['art-' + a['slug']] = f"/insights/{a['slug']}/"
 for n in news.NEWS:
     ROUTES['news-' + n['slug']] = f"/briefing/{n['slug']}/"
+for x in nextdata.NEXT:
+    ROUTES['nx-' + x['slug']] = f"/next/{x['slug']}/"
 
 def path_for(key, L):
     p = ROUTES[key]
@@ -92,6 +95,17 @@ def news_items(L, from_path):
                         date_iso=n['date'], date=fmt_date(n['date'], L)))
     return out
 
+def next_items(L, from_path):
+    # newest first; items with the same date keep their order in next.py
+    i = 0 if L == 'en' else 1
+    out = []
+    for x in sorted(nextdata.NEXT, key=lambda x: x['date'], reverse=True):
+        out.append(dict(slug=x['slug'], url=link('nx-' + x['slug'], L, from_path), section=x['section'],
+                        section_label=nextdata.SECTIONS[x['section']][i], title=x['title_' + L],
+                        summary=x['summary_' + L], body=x['body_' + L], byline=x['byline_' + L],
+                        date_iso=x['date'], date=fmt_date(x['date'], L)))
+    return out
+
 def brief_slots(L, from_path='/'):
     """The five rotating items of the homepage banner: 2 newest news, 2 newest articles, the ECL service.
     If fewer than 2 news items exist, the gap is filled with the next newest articles."""
@@ -145,6 +159,9 @@ def build(pages=None):
         import briefing
         importlib.reload(briefing)
         built += briefing.build(L, render, featured, news_items, path_for)
+        import asanext
+        importlib.reload(asanext)
+        built += asanext.build(L, render, next_items, path_for)
     return built
 
 def build_404():
