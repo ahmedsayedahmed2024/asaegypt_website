@@ -73,9 +73,9 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - On dark (#23262B): "ASA" #C5C9CF, "NEXT" #C3D648.
   - On light: "ASA" #5F646C, "NEXT" #8FA21A.
 - Humour (Junior Desk only): tasteful. No jokes about people, clients or other firms. No slang, no politics, no religion.
-- Professional qualifications: link the official body; never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
+- Professional qualifications: link the official body (ACCA, AICPA, SOCPA, ESAA: https://esaa.org.eg/); never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
 
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.
 - Arabic: eloquent Modern Standard Arabic (فصحى), not a literal translation of the English.
-- Write mixed Latin terms with spaces, e.g. «ACCA و CPA و SOCPA» (avoids bidi issues).
+- In Arabic, attach «و» to the English word that follows, with no space: «ACCA وCPA وSOCPA», «Excel 2021 وMicrosoft 365». A separate «و» can end up alone at the end of a line.
