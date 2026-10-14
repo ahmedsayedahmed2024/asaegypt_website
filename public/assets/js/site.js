@@ -36,6 +36,18 @@
       bars[cur].classList.add('on');
     };
     bars.forEach(function(b,j){b.addEventListener('click',function(){show(j)})});
+    // summary: at most 2 lines, cut at a whole word with "…" (CSS line-clamp is the no-JS fallback)
+    var sums=br.querySelectorAll('.brief-sum');
+    var fit=function(){sums.forEach(function(el){
+      var full=el.getAttribute('data-full');if(full===null){full=el.textContent.trim();el.setAttribute('data-full',full)}
+      el.classList.add('fit');el.textContent=full;
+      if(!el.offsetHeight)return; // hidden on small screens
+      var max=2*parseFloat(getComputedStyle(el).lineHeight)+1,words=full.split(/\s+/);
+      while(el.scrollHeight>max&&words.length>1){words.pop();el.textContent=words.join(' ').replace(/[\s,،;:.\-—–]+$/,'')+'…'}
+    })};
+    fit();
+    var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(fit,150)});
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
     if(auto){
       br.addEventListener('animationend',function(e){if(e.animationName==='bFill'&&br.classList.contains('run'))show(cur+1)});
       setTimeout(function(){br.classList.add('run')},br.classList.contains('intro')?2900:800);

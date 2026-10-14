@@ -494,7 +494,8 @@ html[lang="ar"] .brief-chip{letter-spacing:0;font-size:clamp(11px,2.5cqi,13px)}
 .brief-h{margin:0;max-width:100%;font-size:clamp(17px,5.6cqi,29px);font-weight:800;line-height:1.22;letter-spacing:-.015em;color:#fff;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 html[lang="ar"] .brief-h{letter-spacing:0;line-height:1.42;font-weight:700}
-.brief-sum{margin:0;max-width:100%;font-size:clamp(12px,2.9cqi,15px);color:var(--soft);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brief-sum{margin:0;max-width:100%;font-size:clamp(12px,2.9cqi,15px);color:var(--soft);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.brief-sum.fit{display:block;-webkit-line-clamp:unset}
 .brief-meta{margin:0;max-width:100%;font-size:clamp(11px,2.5cqi,13px);color:#9AA0A8;line-height:1.4}
 .brief-read{font-size:clamp(12.5px,2.9cqi,15px);font-weight:700;color:var(--lime)}
 .brief-read::after{content:"";position:absolute;inset:0}
@@ -578,3 +579,4 @@ html[lang="ar"] .news-related small{letter-spacing:0;font-size:.88rem}
 /* header: keep nav labels on one line now that Briefing is in the menu */
 .nav>li>a,.nav>li>button{white-space:nowrap}
 @media (max-width:1240px) and (min-width:1081px){.nav{gap:0}.nav>li>a,.nav>li>button{padding:10px 9px;font-size:.9rem}.header-cta{gap:10px}}
+.sec.sec-near{padding-top:clamp(40px,5vw,65px)}
