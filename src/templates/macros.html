@@ -19,7 +19,7 @@
 {%- endmacro %}
 {% macro news_card(n, D) -%}
 <a class="news-card rv" href="{{ n.url }}" data-cat="{{ n.cat }}" data-region="{{ n.region }}" data-impact="{{ 1 if n.note else 0 }}">
-  <div class="nc-top"><span class="cat-chip">{{ n.cat_label }}</span><span class="nc-region">{{ n.region_label }}</span><time datetime="{{ n.date_iso }}">{{ n.date }}</time></div>
+  <div class="nc-top"><span class="cat-chip">{{ n.cat_label }}</span><span class="nc-region">{{ n.region_label }}</span><span class="nc-src"><bdi>{{ n.source_name }}</bdi> · <time datetime="{{ n.date_iso }}">{{ n.date }}</time></span></div>
   <h3>{{ n.title }}</h3>
   <p>{{ n.summary }}</p>
   {% if n.note %}<span class="impact-badge">{{ D.badge }}</span>{% endif %}

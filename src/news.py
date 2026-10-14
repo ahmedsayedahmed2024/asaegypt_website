@@ -12,7 +12,7 @@ CATEGORIES = {
 REGIONS = {
     'egypt': ("Egypt", "مصر"),
     'gcc': ("GCC", "الخليج"),
-    'global': ("Global", "العالم"),
+    'global': ("Global", "دولي"),
 }
 
 NEWS = [
@@ -36,8 +36,8 @@ NEWS = [
       note=dict(type="impact",
                 who_en="Entities reporting under IFRS, including Egyptian subsidiaries reporting to foreign groups.",
                 who_ar="المنشآت التي تعد قوائمها وفق المعايير الدولية، ومنها الشركات التابعة المصرية التي ترفع تقاريرها لمجموعات أجنبية.",
-                accounting_en="The 2026 comparative statement of profit or loss is restated, and first-quarter 2027 interim statements already use the new structure.",
-                accounting_ar="إعادة عرض قائمة الأرباح أو الخسائر المقارنة لسنة 2026، وتطبيق الهيكل الجديد بدءًا من القوائم الدورية للربع الأول من 2027.",
+                accounting_en="For December year-end entities, the 2026 comparative statement of profit or loss is restated, and first-quarter 2027 interim statements already use the new structure.",
+                accounting_ar="بالنسبة للمنشآت التي تنتهي سنتها المالية في 31 ديسمبر، يُعاد عرض قائمة الأرباح أو الخسائر المقارنة لسنة 2026، ويُطبَّق الهيكل الجديد بدءًا من القوائم الدورية للربع الأول من 2027.",
                 auditor_en="Plan procedures over category classification, new subtotals and comparative reclassifications.",
                 auditor_ar="التخطيط لإجراءات المراجعة على تصنيف الفئات والمجاميع الفرعية الجديدة وإعادة تبويب أرقام المقارنة."),
       related="ifrs-18-egypt-what-changes"),
