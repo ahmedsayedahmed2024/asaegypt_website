@@ -59,5 +59,12 @@
     }
   }
 
+  // ASA NEXT quiz: answers are visible without JS; with JS they are hidden until "Show answer"
+  document.querySelectorAll('.nx-quiz-btn').forEach(function(b){
+    var a=document.getElementById(b.getAttribute('aria-controls'));if(!a)return;
+    a.hidden=true;b.hidden=false;
+    b.addEventListener('click',function(){var o=a.hidden;a.hidden=!o;b.setAttribute('aria-expanded',o);b.textContent=o?b.dataset.hide:b.dataset.show});
+  });
+
   var y=document.querySelectorAll('[data-year]');y.forEach(function(e){e.textContent=new Date().getFullYear()});
 })();

@@ -579,4 +579,64 @@ html[lang="ar"] .news-related small{letter-spacing:0;font-size:.88rem}
 /* header: keep nav labels on one line now that Briefing is in the menu */
 .nav>li>a,.nav>li>button{white-space:nowrap}
 @media (max-width:1240px) and (min-width:1081px){.nav{gap:0}.nav>li>a,.nav>li>button{padding:10px 9px;font-size:.9rem}.header-cta{gap:10px}}
+/* the logo, menu and buttons never shrink or overlap; the menu tightens step by step on smaller desktops */
+@media (min-width:1081px){.site-header .logo,.site-header .nav,.header-cta{flex:none}}
+@media (min-width:1081px){.site-header .bar{gap:16px}.nav>li>a,.nav>li>button{padding:10px 8px}.header-cta{gap:10px}}
+@media (max-width:1240px) and (min-width:1081px){.nav>li>a,.nav>li>button{padding:10px 6px;font-size:.84rem}.header-cta .btn{padding:10px 13px;font-size:.84rem}.lang{padding:6px 9px;font-size:.84rem}}
 .sec.sec-near{padding-top:clamp(40px,5vw,65px)}
+
+/* ASA NEXT — lockup (icon + "ASA NEXT" wordmark, always in English) */
+.nx-lock{display:inline-flex;align-items:center;gap:.55em;line-height:1}
+.nx-spark{width:2.3em;height:auto;flex:none}
+.nx-txt{display:flex;flex-direction:column;align-items:flex-start}
+.nx-lock .nx-word{font-family:var(--f-en);font-size:1em;font-weight:800;letter-spacing:.01em;line-height:1;margin:0;color:inherit;white-space:nowrap}
+.nx-word .a{color:#C5C9CF}.nx-word .n{color:#C3D648}
+.nx-tag{font-size:.36em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-top:.55em}
+html[lang="ar"] .nx-tag{letter-spacing:0;font-size:.5em;font-family:var(--f-ar)}
+.nx-light .nx-word .a{color:#5F646C}.nx-light .nx-word .n{color:#8FA21A}.nx-light .nx-tag{color:var(--muted)}
+.nx-xl{font-size:clamp(2.6rem,6.2vw,4.6rem);margin-bottom:26px}
+.nx-md{font-size:1.65rem}.nx-sm{font-size:1.1rem}
+/* menu item */
+.nav-next b{font-weight:800;color:var(--lime)}
+.site-header.solid .nav-next b{color:#8FA21A}
+/* homepage teaser band */
+.nx-band{background:var(--tint);border-bottom:1px solid var(--line)}
+.nx-band-in{display:flex;align-items:center;gap:18px 30px;flex-wrap:wrap;padding-block:22px}
+.nx-band-p{flex:1;min-width:230px;color:var(--muted);font-size:.95rem;max-width:none}
+.nx-band-in:hover .link-arrow svg{transform:translateX(4px)}
+html[dir="rtl"] .nx-band-in:hover .link-arrow svg{transform:scaleX(-1) translateX(4px)}
+/* landing + item pages */
+.nx-hero .nx-hero-bg{position:absolute;inset-inline-end:-40px;top:70px;width:420px;opacity:.12;pointer-events:none}
+.nx-hero .lead{max-width:60ch}
+.nx-mini{display:inline-block;margin-bottom:26px}
+.nx-card{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:var(--radius);padding:24px 26px 26px;transition:transform .35s var(--ease),box-shadow .35s}
+.nx-card.nx-desk{border-top-color:var(--lime)}
+.nx-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.nx-chip{align-self:flex-start;background:var(--blue);color:var(--graphite);font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px}
+.nx-desk .nx-chip{background:var(--lime)}
+html[lang="ar"] .nx-chip{letter-spacing:0;font-size:.8rem}
+.nx-card h3{font-size:1.14rem;line-height:1.35}
+.nx-card p{font-size:.93rem;color:var(--muted)}
+.nx-card .nx-meta{font-size:.8rem}
+.nx-card .link-arrow{margin-top:auto}
+.nx-stages{list-style:none;display:grid;gap:16px;margin:8px 0 34px}
+.nx-stage{border:1px solid var(--line);border-inline-start:3px solid var(--blue);border-radius:var(--radius);padding:20px 24px}
+.nx-stage:nth-child(even){border-inline-start-color:var(--lime)}
+.article .nx-stage h3{margin:0 0 12px;display:flex;align-items:baseline;gap:12px;font-size:1.15rem}
+.nx-stage h3 .n{font-size:.8rem;font-weight:800;color:var(--blue-dk)}
+.nx-stage dl{display:grid;gap:10px}
+.nx-stage dl>div{display:grid;grid-template-columns:170px 1fr;gap:16px}
+.nx-stage dt{font-weight:700;color:var(--ink);font-size:.92rem}
+.nx-stage dd{color:var(--text);font-size:.98rem;line-height:1.7}
+.nx-code{background:var(--graphite);color:#E9ECEF;padding:14px 18px;border-radius:var(--radius);white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;margin:0 0 1.3em;text-align:left;font:500 .92rem/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.nx-quiz{list-style:none;display:grid;gap:14px;margin:6px 0 26px}
+.nx-quiz li{background:var(--tint);border-radius:var(--radius);padding:18px 22px}
+.article .nx-quiz .q{font-weight:700;color:var(--ink);margin:0}
+.nx-quiz-btn{margin-top:12px;border:1.5px solid var(--ink);border-radius:var(--radius);padding:7px 14px;font-weight:700;font-size:.88rem;color:var(--ink);background:#fff}
+.nx-quiz-btn:hover{background:var(--ink);color:#fff}
+.article .nx-quiz-a{margin:12px 0 0}
+.nx-quiz-a[hidden]{display:none}
+.article .nx-close{margin-top:30px;padding:16px 20px;border:1px dashed var(--lime-dk);border-radius:var(--radius);color:var(--ink);font-style:italic;display:flex;gap:12px}
+html[lang="ar"] .article .nx-close{font-style:normal}
+.nx-close span{color:var(--lime-dk);font-weight:800;font-style:normal}
+@media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}.nx-hero .nx-hero-bg{width:260px;inset-inline-end:-90px}}

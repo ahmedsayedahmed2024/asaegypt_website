@@ -1,7 +1,7 @@
 T = dict(
     skip="Skip to content", home="Home", mainnav="Main navigation", menu="Open menu", close="Close menu",
     nav=dict(about="About", services="Services", who="Who We Serve", approach="Our Approach", people="Our Team",
-             insights="Insights", briefing="Briefing", contact="Contact", privacy="Privacy Policy"),
+             insights="Insights", briefing="Briefing", next="ASA NEXT", contact="Contact", privacy="Privacy Policy"),
     cta_consult="Book a consultation", learn="Learn more", firm="The Firm",
     foot_about="A senior-led firm of chartered accountants and consultants providing audit, tax, IFRS and advisory services to organisations in Egypt, Saudi Arabia and beyond.",
     address="58A Teraat El Zomor St., Al Haram, Giza, Egypt",
@@ -9,6 +9,7 @@ T = dict(
     taxreg="Tax Registration No.",
     cta_k="Let's talk", cta_h="Clear answers start with the right conversation.",
     cta_p="Tell us about your reporting, tax or advisory needs. We aim to respond within one business day.",
+    next_tagline="Your next step", next_band="For juniors in their first five years in audit, tax and advisory.", next_cta="Explore ASA NEXT",
 )
 
 SERVICES = [

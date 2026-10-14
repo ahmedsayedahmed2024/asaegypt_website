@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+<section class="page-hero nx-hero">
+  <img class="nx-hero-bg" src="{{ R }}assets/img/asa-next-spark.svg" alt="" aria-hidden="true">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><span dir="ltr">{{ T.nav.next }}</span></nav>
+    {{ m.nx_lockup('nx-xl', 'h1') }}
+    <p class="lead">{{ D.intro }}</p>
+  </div>
+</section>
+{% for key, label, desc, items in BLOCKS %}
+<section class="sec{{ ' sec-near' if loop.first }}{{ ' tint' if not loop.first }} nx-block" id="{{ key }}" aria-labelledby="h-{{ key }}">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker" dir="ltr">ASA NEXT</p><h2 id="h-{{ key }}">{{ label }}</h2></div><p class="lead">{{ desc }}</p></div>
+    {% if items %}<div class="grid-3">{% for n in items %}{{ m.nx_card(n, D) }}{% endfor %}</div>
+    {% else %}<p class="bf-empty">{{ D.empty }}</p>{% endif %}
+  </div>
+</section>
+{% endfor %}
+{% include "cta.html" %}
+{% endblock %}

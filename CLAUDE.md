@@ -14,6 +14,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - `pages_en.py` / `pages_ar.py`: inner pages.
   - `articles_meta.py` + `articles_en.py` / `articles_ar.py`: Insights.
   - `news.py`: ASA Briefing (news). See "Briefing (news)" below.
+  - `next.py`: ASA NEXT (content for juniors). See "ASA NEXT" below.
 - Templates are in `src/templates/`.
 - English lives at `/` and Arabic at `/ar/`. **Every change must be made in both languages.**
 - Build locally:
@@ -63,6 +64,16 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
 - **Every item needs an official source link** (see rule 9 above).
 - **Facts and numbers must match the source exactly.** Do not add facts, dates or figures that are not in the source.
 - **Items with a `note` (impact or tech) always go through a pull request for Ahmed's approval.**
+
+## ASA NEXT
+- Content for juniors in their first five years in audit, tax and advisory.
+- Items live in `src/next.py` → `NEXT`. Each item: `slug`, `section` (`"first5"` or `"desk"`), `title_en/ar`, `summary_en/ar`, `body_en/ar` (list of blocks; the block types are listed at the top of the file), `date`, `byline_en/ar` ("ASA Team" / «فريق ASA»).
+- Pages: landing `/next/` (blocks "First 5" / «أول 5 سنين» and "Junior Desk" / «ركن الجونيور»), items `/next/<slug>/`, same under `/ar/`. Built by `src/asanext.py`.
+- Lockup: Spark icon (`public/assets/img/asa-next-spark.svg`) + wordmark "ASA NEXT", always in English on both sites (never «نكست»), weight 800. Tagline: "Your next step" / «الخطوة التالية».
+  - On dark (#23262B): "ASA" #C5C9CF, "NEXT" #C3D648.
+  - On light: "ASA" #5F646C, "NEXT" #8FA21A.
+- Humour (Junior Desk only): tasteful. No jokes about people, clients or other firms. No slang, no politics, no religion.
+- Professional qualifications: link the official body; never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
 
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.

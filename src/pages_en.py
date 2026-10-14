@@ -326,6 +326,19 @@ BRIEFING = dict(
     disclaimer="Briefing items summarise official publications for general information. Always refer to the original source; please contact us to discuss your specific circumstances.",
 )
 
+NEXT_PAGE = dict(
+    title="ASA NEXT | Career growth and practical tips for juniors | ASA",
+    desc="ASA NEXT: career guidance and practical tips for juniors in their first five years in audit, tax and advisory.",
+    intro="For juniors in their first five years in audit, tax and advisory: a clear path to grow, and practical help for the work in front of you.",
+    blocks=dict(first5="A clear view of the road ahead: what each stage asks of you, the skills that move you forward and the qualifications worth planning for.",
+                desk="Practical tips for the daily work, one common mistake to avoid and a quick quiz — with a light touch."),
+    empty="New content for this section is coming soon.",
+    read="Read", back="Back to ASA NEXT",
+    stage_rows=dict(own="What you own", skills="Skills to build", habit="One habit that helps"),
+    quiz_show="Show answer", quiz_hide="Hide answer", quiz_answer="Answer:",
+    disc="General guidance for professional development. It does not describe the terms of any specific role or firm.",
+)
+
 CONTACT = dict(
     title="Contact ASA | Book a Consultation",
     desc="Contact ASA Chartered Accountants and Consultants in Giza, Egypt. Book a consultation on audit, tax, IFRS 9 / ECL or advisory.",
