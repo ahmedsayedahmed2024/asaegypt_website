@@ -16,6 +16,25 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="uae-top-up-tax-scope-registration-guide", date="2026-10-08", category="economy", region="gcc",
+      title_en="UAE Federal Tax Authority issues guide on scope and registration for the Top-up Tax on multinationals",
+      title_ar="الهيئة الاتحادية للضرائب في الإمارات تصدر دليلًا بشأن نطاق الضريبة الإضافية على الشركات متعددة الجنسيات والتسجيل فيها",
+      short_en="UAE issues Top-up Tax guide on scope and registration",
+      short_ar="الإمارات تصدر دليل نطاق الضريبة الإضافية والتسجيل فيها",
+      summary_en="The UAE Federal Tax Authority has published a guide explaining which multinational groups fall within the Domestic Minimum Top-up Tax (QDMTT) and how in-scope entities register.",
+      summary_ar="أصدرت الهيئة الاتحادية للضرائب في الإمارات دليلًا يوضح المجموعات متعددة الجنسيات الخاضعة للضريبة المحلية الإضافية الدنيا (QDMTT)، وإجراءات تسجيل المنشآت الواقعة في نطاقها.",
+      body_en=[
+          "The UAE Federal Tax Authority (FTA) has issued a Top-up Tax Guide on Scope and Registration for multinational enterprise (MNE) groups. It covers how to determine whether a group is within the scope of the Qualified Domestic Minimum Top-up Tax (QDMTT) legislation, which entities are and are not subject to the tax, and the registration process and timelines.",
+          "The guide includes worked examples on permanent establishments, joint ventures, flow-through and hybrid entities, the location of entities, and the filing of the Pillar Two Information Return. It is aimed at those responsible for the tax affairs of group entities and at tax agents.",
+          "According to the FTA, the QDMTT applies for fiscal years beginning on or after 1 January 2025 to UAE constituent entities of MNE groups with annual revenue of EUR 750 million or more in the ultimate parent's consolidated financial statements in at least two of the four preceding fiscal years. Groups operating only within the UAE are outside its scope, whatever their revenue.",
+      ],
+      body_ar=[
+          "أصدرت الهيئة الاتحادية للضرائب في دولة الإمارات دليلًا إرشاديًا بشأن نطاق الضريبة الإضافية والتسجيل فيها، موجّهًا إلى مجموعات الشركات متعددة الجنسيات. ويبيّن الدليل كيفية تحديد خضوع المجموعة لتشريع الضريبة المحلية الإضافية الدنيا المؤهلة (QDMTT)، والمنشآت الخاضعة للضريبة وغير الخاضعة لها، فضلًا عن إجراءات التسجيل ومواعيده.",
+          "ويتضمن الدليل أمثلة تطبيقية تتناول المنشآت الدائمة، والمشروعات المشتركة، والمنشآت الشفافة ضريبيًا والمنشآت الهجينة، وتحديد موقع المنشآت، وتقديم إقرار معلومات الركيزة الثانية. وهو موجّه إلى القائمين على الشؤون الضريبية لمنشآت المجموعات، وإلى الوكلاء الضريبيين.",
+          "ووفقًا للهيئة، تسري هذه الضريبة على الفترات الضريبية التي تبدأ في 1 يناير 2025 أو بعده، وتنطبق على المنشآت المكوِّنة الكائنة في الإمارات والتابعة لمجموعات متعددة الجنسيات تبلغ إيراداتها السنوية 750 مليون يورو أو أكثر في القوائم المالية الموحدة للمنشأة الأم النهائية، وذلك في سنتين على الأقل من السنوات المالية الأربع السابقة. أما المجموعات التي يقتصر نشاطها على داخل الإمارات فلا تخضع لها أيًّا كان حجم إيراداتها.",
+      ],
+      source_name="UAE Federal Tax Authority",
+      source_url="https://tax.gov.ae/en/media.centre/news/federal.tax.authority.issues.new.guide.on.scope.and.registration.for.topup.tax.on.multinational.enterprises.aspx"),
  dict(slug="ifrs-18-effective-2027", date="2026-10-14", category="standards", region="global",
       title_en="IFRS 18 applies from 1 January 2027 — comparatives must be restated",
       title_ar="المعيار IFRS 18 يسري اعتبارًا من 1 يناير 2027 مع إعادة عرض أرقام المقارنة",
