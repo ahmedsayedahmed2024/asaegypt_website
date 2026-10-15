@@ -27,6 +27,7 @@
           <div><dt>{{ D.stage_rows.habit }}</dt><dd>{{ s.habit|bidi(L) }}</dd></div></dl></li>{% endfor %}</ol>
         {% elif b[0]=='links' %}<ul class="nx-links">{% for label, url in b[1] %}<li>{% if url %}<a href="{{ url }}" target="_blank" rel="noopener">{{ label|bidi(L) }}</a>{% else %}{{ label|bidi(L) }}{% endif %}</li>{% endfor %}</ul>
         {% elif b[0]=='quiz' %}<ol class="nx-quiz">{% for q, a in b[1] %}{% set ns.q = ns.q + 1 %}<li><p class="q">{{ q|bidi(L) }}</p><button type="button" class="nx-quiz-btn" aria-expanded="false" aria-controls="qa-{{ ns.q }}" data-show="{{ D.quiz_show }}" data-hide="{{ D.quiz_hide }}" hidden>{{ D.quiz_show }}</button><p class="nx-quiz-a" id="qa-{{ ns.q }}"><b>{{ D.quiz_answer }}</b> {{ a|bidi(L) }}</p></li>{% endfor %}</ol>
+        {% elif b[0]=='see' %}<p class="nx-see">{{ b[1].lead }} <a href="{{ P(b[1].key) }}">{{ b[1].title|bidi(L) }}</a></p>
         {% elif b[0]=='close' %}<p class="nx-close"><span aria-hidden="true">✓</span>{{ b[1]|bidi(L) }}</p>
         {% endif %}
       {% endfor %}

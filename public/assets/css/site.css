@@ -659,6 +659,8 @@ html[lang="ar"] .nx-chip{letter-spacing:0;font-size:.8rem}
 .article .nx-close{margin-top:30px;padding:16px 20px;border:1px dashed var(--lime-dk);border-radius:var(--radius);color:var(--ink);font-style:italic;display:flex;gap:12px}
 html[lang="ar"] .article .nx-close{font-style:normal}
 .nx-close span{color:var(--lime-dk);font-weight:800;font-style:normal}
+.article .nx-see{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-weight:600}
+.article .nx-see a{color:var(--blue-dk);text-decoration:underline;text-underline-offset:3px}
 @media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}.nx-hero .nx-hero-bg{width:260px;inset-inline-end:-90px}}
 bdi.lt{white-space:nowrap}
 

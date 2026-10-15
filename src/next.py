@@ -10,6 +10,8 @@
 #   ('h', text) heading · ('p', text) paragraph · ('ul', [items]) bullet list
 #   ('code', text) formula, shown left-to-right · ('stages', [dict(name, own, skills, habit)])
 #   ('links', [(label, url or None)]) · ('quiz', [(question, answer)]) · ('close', text) light closing line
+#   ('see', dict(lead, title, key)) one-line link to another page of the site: lead text, then the linked title
+#     (key = a route key, e.g. "art-<article slug>")
 
 SECTIONS = {
     'first5': ("First 5", "أول 5 سنين"),
@@ -61,6 +63,7 @@ NEXT = [
                   "Write for the next reader: every working paper should explain what was done, why and what was concluded.",
                   "Keep learning: standards, tax rules and tools change, and the best professionals change with them."]),
           ('p', "Five years pass quickly. Treat each engagement as training for the next stage, and you will be ready for it before the title arrives."),
+          ('see', dict(lead="Related reading:", title="AI and jobs: who gets replaced, and who moves ahead?", key="art-ai-and-jobs-accounting")),
       ],
       body_ar=[
           ('p', "تصنع السنوات الخمس الأولى في المراجعة والضرائب والاستشارات ملامح مسيرتك المهنية كلها. فالعمل يتطور بسرعة: تبدأ بمهام محددة الإطار، ثم تصبح خطوةً بعد خطوة من يخطط للعمل ويراجعه ويُسأل عنه. وتعرض هذه الخريطة المراحل الأربع التي يمر بها أغلب المهنيين، وما يصنع الفارق في كل منها."),
@@ -97,6 +100,7 @@ NEXT = [
                   "اكتب لمن يقرأ بعدك: كل ورقة عمل ينبغي أن توضح ما الذي نُفذ، ولماذا، وما الذي انتهيت إليه.",
                   "واصل التعلم: المعايير والقواعد الضريبية والأدوات تتغير، وأفضل المهنيين يتطورون معها."]),
           ('p', "تمضي السنوات الخمس سريعًا. فاجعل كل تكليف تدريبًا على المرحلة التالية، تجد نفسك مستعدًا لها قبل أن يصلك المسمى."),
+          ('see', dict(lead="اقرأ أيضًا:", title="الذكاء الاصطناعي والوظائف: مَن يُستبدَل، ومَن يتقدّم؟", key="art-ai-and-jobs-accounting")),
       ]),
  dict(slug="junior-desk-lookups-and-quiz", section="desk", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",

@@ -97,7 +97,7 @@ def featured(L, slugs, from_path='/'):
             out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
                             cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=a['title'][i],
                             summary=a['summary'][i], author=author, role=role,
-                            byline=(f"By {author}, {role}" if L == 'en' else f"بقلم {author}، {role}"),
+                            byline=(f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else ""),
                             date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
                             read=read_time(a['minutes'], L)))
     return out
