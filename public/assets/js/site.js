@@ -46,7 +46,7 @@
       cur=(i+slides.length)%slides.length;
       load(cur);load(cur+1);paint();
       slides.forEach(function(s,j){s.classList.toggle('on',j===cur)});
-      bars.forEach(function(b,j){b.classList.remove('on');b.classList.toggle('done',j<cur);if(j===cur){b.setAttribute('aria-current','true')}else{b.removeAttribute('aria-current')}});
+      bars.forEach(function(b,j){b.classList.remove('on');if(j===cur){b.setAttribute('aria-current','true')}else{b.removeAttribute('aria-current')}});
       void br.offsetWidth; // restart the fill animation
       bars[cur].classList.add('on');
     };

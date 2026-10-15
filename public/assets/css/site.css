@@ -508,8 +508,12 @@ html[lang="ar"] .brief-h{letter-spacing:0;line-height:1.42;font-weight:700}
 .brief .bar i{display:block;height:100%;background:var(--lime);transform:scaleX(0);transform-origin:left}
 html[dir="rtl"] .brief .bar i{transform-origin:right}
 .brief .bar:hover span{background:rgba(255,255,255,.4)}
+/* the dash of the item now shown: lime track, filling over the 6s; the other dashes stay plain */
+.brief .bar{transition:flex-grow .3s var(--ease)}
+.brief .bar.on{flex-grow:2.2}
+.brief .bar.on span{background:rgba(195,214,72,.45)}
 .brief .bar:focus-visible{outline:2px solid var(--lime);outline-offset:0}
-.brief .bar.done i,.brief.still .bar.on i,.brief:not(.js) .bar.on i{transform:none}
+.brief.still .bar.on i,.brief:not(.js) .bar.on i{transform:none}
 .brief:not(.js) .brief-bars{visibility:hidden}
 .brief.run .bar.on i{animation:bFill 6s linear forwards}
 .brief.paused .bar.on i{animation-play-state:paused}
@@ -523,7 +527,7 @@ html[dir="rtl"] .brief .bar i{transform-origin:right}
 .brief.quick .brief-hex{animation:bShow .4s ease .1s both}
 .brief.quick .brief-in{animation:bShow .35s ease .45s both}
 @keyframes bDrop{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
-@keyframes bDim{from{opacity:1}to{opacity:.06}}
+@keyframes bDim{from{opacity:1}to{opacity:var(--mk,.06)}}
 @keyframes bShow{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
 @media (max-width:1080px){
   .hero .art{order:0;justify-self:center;width:min(420px,100%);margin-top:16px}
@@ -759,11 +763,18 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 .brief-media{position:absolute;inset:0;clip-path:polygon(27.23% .85%,72.77% .85%,99.55% 50%,72.77% 99.15%,27.23% 99.15%,.45% 50%)}
 .brief-pic{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
 .brief-pic.on,.brief:not(.js) .brief-pic[data-i="0"]{opacity:1}
-.brief-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(1.5px) saturate(.9) brightness(.85);transform:scale(1.04);transition:transform 0s linear .8s}
+.brief-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(1px) brightness(.92);transform:scale(1.04);transition:transform 0s linear .8s}
 .brief-pic.on img{transform:scale(1.12);transition:transform 16s linear}
-/* dark glass, stronger at the bottom: keeps every line of text at WCAG AA contrast, even over a white photo */
-.brief-pic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,38,43,.8) 0%,rgba(35,38,43,.83) 45%,rgba(35,38,43,.93) 100%)}
-.brief-slide.has-img .brief-meta{color:var(--soft)}
+/* light frosted glass: the photo stays recognisable; the dark gradient sits mainly behind the text (centre and lower part),
+   so every line of text keeps WCAG AA contrast. The label at the top gets its own small dark backing. */
+.brief-pic::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse 50% 40% at 50% 58%,rgba(35,38,43,.55),rgba(35,38,43,0) 100%),
+  linear-gradient(180deg,rgba(35,38,43,.18) 0%,rgba(35,38,43,.24) 20%,rgba(35,38,43,.5) 36%,rgba(35,38,43,.68) 60%,rgba(35,38,43,.76) 80%,rgba(35,38,43,.8) 100%)}
+.brief-media~.brief-mark{--mk:.035}
+.brief-media~.brief-mark .s{opacity:.035}
+.brief-media~.brief-in .brief-label{background:rgba(35,38,43,.78);padding:5px 11px;border-radius:2px}
+.brief-slide.has-img .brief-h,.brief-slide.has-img .brief-sum,.brief-slide.has-img .brief-meta,.brief-slide.has-img .brief-read{text-shadow:0 1px 2px rgba(20,22,26,.55),0 0 14px rgba(20,22,26,.45)}
+.brief-slide.has-img .brief-sum,.brief-slide.has-img .brief-meta{color:#E1E4E8}
 .brief.intro .brief-media{animation:bShow .8s ease 2.2s both}
 .brief.quick .brief-media{animation:bShow .4s ease .4s both}
 @media (prefers-reduced-motion:reduce){.brief-pic{transition:opacity .8s ease!important}.brief-pic img,.brief-pic.on img{transform:scale(1.04)!important}}
@@ -773,9 +784,11 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 .news-card.has-thumb,.nx-card.has-thumb{padding-top:0;overflow:hidden}
 .news-card .thumb,.nx-card .thumb{aspect-ratio:16/8;background:var(--graphite);position:relative;overflow:hidden;margin:0 -26px 4px}
 .news-card .thumb svg,.nx-card .thumb svg{position:absolute;width:62%;inset-inline-end:-8%;top:-18%;opacity:.9}
-/* item pages: wide image band under the dark header, with the photo credit */
+/* item pages: wide image band under the dark header, with the photo credit.
+   A shallow band: about a third of the screen height (200–380px) and never taller than 32% of the width,
+   so the start of the text stays in view on laptops; phones keep the 200px band. */
 .img-band{margin-top:clamp(28px,4vw,44px)}
-.img-band-frame{height:clamp(200px,32vw,420px);border-radius:10px;overflow:hidden;background:var(--graphite)}
+.img-band-frame{height:clamp(200px,32vw,420px);height:clamp(200px,min(33vh,32vw),380px);height:clamp(200px,min(33svh,32vw),380px);border-radius:10px;overflow:hidden;background:var(--graphite)}
 .img-band-frame img{display:block;width:100%;height:100%;object-fit:cover}
 .img-band figcaption{margin-top:10px;font-size:.8rem;color:var(--muted)}
 .img-band figcaption a{color:inherit;text-decoration:underline;text-underline-offset:3px}
