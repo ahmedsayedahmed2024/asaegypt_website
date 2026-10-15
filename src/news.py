@@ -3,7 +3,10 @@
 # Items with a note (impact / tech) always go through a pull request for Ahmed's approval.
 # "date" is the source's publication date. "added" (YYYY-MM-DD) is the day the item went live on asaegypt.com:
 # REQUIRED on every item; the homepage hexagon is ordered by it. "added_at" (optional "HH:MM" UTC) only orders
-# items added on the same day (missing = end of that day). "image" is optional (images come in a later phase).
+# items added on the same day (missing = end of that day).
+# "image": the item's photo (REQUIRED for new items when a suitable photo exists; see CLAUDE.md, "Images"):
+#   dict(source=photo page URL, photographer, site="Unsplash"|"Pexels", licence, alt_en, alt_ar).
+#   Files: public/assets/img/content/briefing/<slug>-lg.webp and <slug>-card.webp.
 
 CATEGORIES = {
     'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),
@@ -26,6 +29,10 @@ NEWS = [
       short_ar="الإمارات تصدر دليل نطاق الضريبة الإضافية والتسجيل فيها",
       summary_en="The UAE Federal Tax Authority has published a guide explaining which multinational groups fall within the Domestic Minimum Top-up Tax (QDMTT) and how in-scope entities register.",
       summary_ar="أصدرت الهيئة الاتحادية للضرائب في الإمارات دليلًا يوضح المجموعات متعددة الجنسيات الخاضعة للضريبة المحلية الإضافية الدنيا (QDMTT)، وإجراءات تسجيل المنشآت الواقعة في نطاقها.",
+      image=dict(source="https://unsplash.com/photos/modern-skyscrapers-rise-above-a-blue-ocean-with-boat-YwGd8qGY5BA",
+                 photographer="raghul ayyasamy", site="Unsplash", licence="Unsplash License",
+                 alt_en="Abu Dhabi skyline across the water under a clear blue sky",
+                 alt_ar="أفق مدينة أبوظبي عبر المياه تحت سماء زرقاء صافية"),
       body_en=[
           "The UAE Federal Tax Authority (FTA) has issued a Top-up Tax Guide on Scope and Registration for multinational enterprise (MNE) groups. It covers how to determine whether a group is within the scope of the Qualified Domestic Minimum Top-up Tax (QDMTT) legislation, which entities are and are not subject to the tax, and the registration process and timelines.",
           "The guide includes worked examples on permanent establishments, joint ventures, flow-through and hybrid entities, the location of entities, and the filing of the Pillar Two Information Return. It is aimed at those responsible for the tax affairs of group entities and at tax agents.",
@@ -45,6 +52,10 @@ NEWS = [
       short_ar="IFRS 18 يسري من 2027: خطط لإعادة العرض الآن",
       summary_en="IFRS 18 replaces IAS 1 for annual reporting periods beginning on or after 1 January 2027, with new defined subtotals in the statement of profit or loss.",
       summary_ar="يحل المعيار IFRS 18 محل المعيار IAS 1 للفترات المالية السنوية التي تبدأ في 1 يناير 2027 أو بعده، ويستحدث مجاميع فرعية محددة في قائمة الأرباح أو الخسائر.",
+      image=dict(source="https://unsplash.com/photos/white-notebook-with-pen-on-top-1ixT36dfuSQ",
+                 photographer="Diana Polekhina", site="Unsplash", licence="Unsplash License",
+                 alt_en="Blank spiral notebook with a pen on a grey surface",
+                 alt_ar="دفتر حلزوني فارغ وقلم على سطح رمادي"),
       body_en=[
           "IFRS 18 Presentation and Disclosure in Financial Statements replaces IAS 1 for annual reporting periods beginning on or after 1 January 2027, with early application permitted.",
           "It introduces two defined subtotals in the statement of profit or loss — operating profit and profit before financing and income taxes — requires disclosure of management-defined performance measures, and sets new principles for aggregation and disaggregation.",

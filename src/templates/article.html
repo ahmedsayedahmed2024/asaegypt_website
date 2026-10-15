@@ -9,8 +9,9 @@
     <p class="lead">{{ A.summary }}</p>
     <div class="meta"><span>{{ I('FaUserTie') }}{{ A.byline }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ A.date_iso }}">{{ A.date }}</time></span><span>{{ I('FaClock') }}{{ A.read }}</span></div>
   </div>
-</section>
-<section class="sec">
+</section>{% if A.image %}
+{{ m.img_band(A.image) }}{% endif %}
+<section class="sec{{ ' sec-near' if A.image }}">
   <div class="wrap art-grid">
     <aside class="toc"><b>{{ AX.toc }}</b><ol>{% for b in BODY if b[0]=='h' %}<li><a href="#s{{ loop.index }}">{{ b[1] }}</a></li>{% endfor %}</ol></aside>
     <article class="article prose">

@@ -10,7 +10,8 @@
     <p class="lead">{{ N.summary|bidi(L) }}</p>
     <div class="meta"><span>{{ I('FaPeopleGroup') }}{{ N.byline|bidi(L) }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ N.date_iso }}">{{ N.date }}</time></span></div>
   </div>
-</section>
+</section>{% if N.image %}
+{{ m.img_band(N.image) }}{% endif %}
 <section class="sec sec-near">
   <div class="wrap">
     <article class="article prose news-item nx-item">
