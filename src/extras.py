@@ -2,7 +2,7 @@ import os, sys, datetime
 sys.path.insert(0, os.path.dirname(__file__))
 import build as B
 D = B.DIST
-urls = sorted(set(B.ROUTES.values()))
+urls = sorted(set(v for k, v in B.ROUTES.items() if k not in B.NO_SITEMAP))
 today = datetime.date.today().isoformat()
 sm = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
 for u in urls:

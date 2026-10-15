@@ -10,6 +10,15 @@ T = dict(
     cta_k="Let's talk", cta_h="Clear answers start with the right conversation.",
     cta_p="Tell us about your reporting, tax or advisory needs. We aim to respond within one business day.",
     next_tagline="Your next step", next_band="For juniors in their first five years in audit, tax and advisory.", next_cta="Explore ASA NEXT",
+    search=dict(btn="Search", label="Search the site", ph="Search articles, Briefing, ASA NEXT, services…", close="Close search",
+                also="Also search Arabic", all="See all results", none="No results for", try_="Try one of these:",
+                hint="Type at least 2 characters", kbd="↑ ↓ to move · Enter to open · Esc to close", loading="Loading…",
+                count="results", other="العربية", other_lang="ar", go="Search",
+                groups=dict(insights="Insights", briefing="Briefing", next="ASA NEXT", services="Services", pages="Pages"),
+                title="Search | ASA Chartered Accountants and Consultants", desc="Search ASA Insights, ASA Briefing, ASA NEXT, our services and pages.",
+                kicker="Search", h1="Search the site", lead="Find articles, Briefing updates, ASA NEXT guides, services and pages.",
+                nojs="Search needs JavaScript, which is turned off in your browser. You can still browse our articles and updates:",
+                notfound="Or search the site:"),
 )
 
 SERVICES = [
@@ -85,6 +94,6 @@ HOME = dict(
            ("FaCircleCheck", "Report & follow through", "Clear conclusions and practical recommendations — and support after delivery.")],
     ins_k="Insights", ins_h="Technical thinking you can use.",
     ins_cta="All insights",
-    brief_label="ASA Briefing", brief_new="New article", brief_service="ASA service", brief_read="Read",
-    brief_show="Show item", brief_from="ASA",
+    brief_label="ASA Briefing", brief_read="Read", brief_show="Show item",
+    brief_prev="Previous", brief_next="Next", brief_insight="Insights",
 )

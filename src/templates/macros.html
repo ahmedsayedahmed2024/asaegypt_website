@@ -12,8 +12,8 @@
 </section>
 {%- endmacro %}
 {% macro post_card(a, delay=None) -%}
-<a class="post rv" href="{{ a.url }}" data-tag="{{ a.tag }}"{% if delay is not none %} style="transition-delay:{{ delay }}ms"{% endif %}>
-  <div class="thumb">{{ MARK|safe }}<span class="tag">{{ a.tag }}</span></div>
+<a class="post rv" href="{{ a.url }}" data-tag="{{ a.cat }}"{% if delay is not none %} style="transition-delay:{{ delay }}ms"{% endif %}>
+  <div class="thumb">{% if a.image %}<img class="thumb-img" src="{{ a.image }}" alt="" loading="lazy">{% else %}{{ MARK|safe }}{% endif %}<span class="tag">{{ a.tag }}</span></div>
   <div class="body"><h3>{{ a.title }}</h3><p class="byline">{{ a.byline }}</p><p>{{ a.summary }}</p><div class="meta"><time datetime="{{ a.date_iso }}">{{ a.date }}</time><span>{{ a.read }}</span></div></div>
 </a>
 {%- endmacro %}

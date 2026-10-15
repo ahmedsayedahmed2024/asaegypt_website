@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="art">
-      <section class="brief" id="brief" aria-label="{{ H.brief_label }}">
+      <section class="brief" id="brief" aria-label="{{ H.brief_label }}" aria-roledescription="carousel" tabindex="0">
         {{ BRIEF_MARK|safe }}
         <svg class="brief-hex" viewBox="-56 -59 112 118" aria-hidden="true"><polygon points="-25.5,-58 25.5,-58 55.5,0 25.5,58 -25.5,58 -55.5,0"/></svg>
         <div class="brief-in">
@@ -29,7 +29,11 @@
             </div>
             {% endfor %}
           </div>
-          <div class="brief-bars">{% for b in BRIEF %}<button type="button" class="bar{% if loop.first %} on{% endif %}" aria-controls="brief-{{ loop.index }}" aria-label="{{ H.brief_show }} {{ loop.index }}/{{ BRIEF|length }}: {{ b.title }}"{% if loop.first %} aria-current="true"{% endif %}><span><i></i></span></button>{% endfor %}</div>
+          <div class="brief-ctrl">
+            <button type="button" class="brief-arrow" data-step="-1" aria-label="{{ H.brief_prev }}" title="{{ H.brief_prev }}"><svg class="hxo" viewBox="0 0 30 26" aria-hidden="true"><polygon points="7.5,1 22.5,1 29,13 22.5,25 7.5,25 1,13"/></svg>{{ I('ChevPrev','chev') }}</button>
+            <div class="brief-bars">{% for b in BRIEF %}<button type="button" class="bar{% if loop.first %} on{% endif %}" aria-controls="brief-{{ loop.index }}" aria-label="{{ H.brief_show }} {{ loop.index }}/{{ BRIEF|length }}: {{ b.title }}"{% if loop.first %} aria-current="true"{% endif %}><span><i></i></span></button>{% endfor %}</div>
+            <button type="button" class="brief-arrow" data-step="1" aria-label="{{ H.brief_next }}" title="{{ H.brief_next }}"><svg class="hxo" viewBox="0 0 30 26" aria-hidden="true"><polygon points="7.5,1 22.5,1 29,13 22.5,25 7.5,25 1,13"/></svg>{{ I('ChevNext','chev') }}</button>
+          </div>
         </div>
       </section>
       <script>(function(){var b=document.getElementById('brief'),m='still';if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){m='intro';try{if(sessionStorage.getItem('asaIntro'))m='quick';sessionStorage.setItem('asaIntro','1')}catch(e){}}b.className+=' js '+m})();</script>
