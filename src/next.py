@@ -19,7 +19,7 @@ SECTIONS = {
 NEXT = [
  dict(slug="first-five-years-roadmap", section="first5", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
-      image=dict(kind="illustration",
+      image=dict(focus="95% 20%", kind="illustration",
                  alt_en="Illustration: four hexagon steps rising toward a lime spark",
                  alt_ar="رسم توضيحي: أربع درجات سداسية الشكل تصعد نحو نجمة خضراء ليمونية"),
       title_en="Your first five years: a simple roadmap",
@@ -100,7 +100,7 @@ NEXT = [
       ]),
  dict(slug="junior-desk-lookups-and-quiz", section="desk", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
-      image=dict(kind="illustration",
+      image=dict(focus="55% 50%", kind="illustration",
                  alt_en="Illustration: a spreadsheet grid with one highlighted lookup row and a small question mark",
                  alt_ar="رسم توضيحي: جدول بيانات يبرز فيه صف بحث واحد، مع علامة استفهام صغيرة"),
       title_en="Junior Desk: lookups, a common mistake and a 3-question quiz",

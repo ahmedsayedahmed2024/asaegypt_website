@@ -18,7 +18,7 @@
         {# item images, clipped to the hexagon under the logo stripes; site.js loads the current and the next one #}
         <div class="brief-media" aria-hidden="true">
           {% for b in BRIEF if b.image %}{% set i = b.image %}{% set at = '' if loop.first and b is sameas BRIEF[0] else 'data-' %}
-          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %}{% if not at %} fetchpriority="high"{% endif %} alt="" decoding="async"></span>
+          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img style="object-position:{{ i.focus }}" {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %}{% if not at %} fetchpriority="high"{% endif %} alt="" decoding="async"></span>
           {% endfor %}
         </div>
         {%- endif %}
