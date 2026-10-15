@@ -1,5 +1,7 @@
 # ASA NEXT — content for juniors in their first five years (see CLAUDE.md, "ASA NEXT").
 # Two sections: "first5" (career path and growth) and "desk" (Junior Desk: daily tips, a common mistake, a quiz).
+# "added" (YYYY-MM-DD, the day the item went live on asaegypt.com) is REQUIRED; the homepage hexagon is ordered by it.
+# "added_at" (optional "HH:MM" UTC) only orders items added on the same day. "image" is optional (later phase).
 # Humour (Junior Desk only): tasteful; no jokes about people, clients or other firms; no slang, politics or religion.
 #
 # Body blocks (list of tuples), rendered by templates/next_item.html:
@@ -13,7 +15,7 @@ SECTIONS = {
 }
 
 NEXT = [
- dict(slug="first-five-years-roadmap", section="first5", date="2026-10-14",
+ dict(slug="first-five-years-roadmap", section="first5", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
       title_en="Your first five years: a simple roadmap",
       title_ar="سنواتك الخمس الأولى: خريطة بسيطة",
@@ -91,7 +93,7 @@ NEXT = [
                   "واصل التعلم: المعايير والقواعد الضريبية والأدوات تتغير، وأفضل المهنيين يتطورون معها."]),
           ('p', "تمضي السنوات الخمس سريعًا. فاجعل كل تكليف تدريبًا على المرحلة التالية، تجد نفسك مستعدًا لها قبل أن يصلك المسمى."),
       ]),
- dict(slug="junior-desk-lookups-and-quiz", section="desk", date="2026-10-14",
+ dict(slug="junior-desk-lookups-and-quiz", section="desk", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
       title_en="Junior Desk: lookups, a common mistake and a 3-question quiz",
       title_ar="ركن الجونيور: دوال البحث، وغلطة شائعة، وكويز من 3 أسئلة",

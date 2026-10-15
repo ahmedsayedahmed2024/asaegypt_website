@@ -11,12 +11,21 @@ SITE = 'https://asaegypt.com'
 REL = '--rel' in sys.argv  # relative links for offline preview
 V = str(int(time.time()))
 ICONS = json.load(open(os.path.join(ROOT, 'src/icons.json')))
+# small line icons drawn for the site (not from react-icons)
+_LINE = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+ICONS.update({
+    'Search': _LINE + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>',
+    'ChevPrev': _LINE + '<path d="m14.5 6-6 6 6 6"/></svg>',
+    'ChevNext': _LINE + '<path d="m9.5 6 6 6-6 6"/></svg>',
+})
 C = {'en': content_en, 'ar': content_ar}
 
 # route key -> path (en); ar = '/ar' + path
 ROUTES = {'home': '/', 'about': '/about/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
-          'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/'}
+          'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/',
+          'search': '/search/'}
+NO_SITEMAP = {'search'}  # utility pages left out of sitemap.xml
 for s in content_en.SERVICES:
     ROUTES[s['key']] = f"/services/{s['slug']}/"
 for a in articles_meta.ARTICLES:
@@ -85,10 +94,11 @@ def featured(L, slugs, from_path='/'):
     for a in by_date():
         if a['slug'] in slugs:
             author, role = a['author_' + L], a['role_' + L]
-            out.append(dict(url=link('art-' + a['slug'], L, from_path), tag=a['tag'][i], title=a['title'][i],
+            out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
+                            cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=a['title'][i],
                             summary=a['summary'][i], author=author, role=role,
                             byline=(f"By {author}, {role}" if L == 'en' else f"بقلم {author}، {role}"),
-                            date_iso=a['date'], date=fmt_date(a['date'], L),
+                            date_iso=a['date'], date=fmt_date(a['date'], L), image=a.get('image', ''),
                             read=(f"{a['minutes']} min read" if L == 'en' else f"{a['minutes']} دقائق قراءة")))
     return out
 
@@ -105,7 +115,7 @@ def news_items(L, from_path):
                         region=n['region'], region_label=news.REGIONS[n['region']][i],
                         title=n['title_' + L], short=n['short_' + L], summary=n['summary_' + L],
                         body=n['body_' + L], source_name=n['source_name'], source_url=n['source_url'],
-                        note=n.get('note'), related=n.get('related'),
+                        note=n.get('note'), related=n.get('related'), image=n.get('image', ''),
                         date_iso=n['date'], date=fmt_date(n['date'], L)))
     return out
 
@@ -116,25 +126,59 @@ def next_items(L, from_path):
     for x in sorted(nextdata.NEXT, key=lambda x: x['date'], reverse=True):
         out.append(dict(slug=x['slug'], url=link('nx-' + x['slug'], L, from_path), section=x['section'],
                         section_label=nextdata.SECTIONS[x['section']][i], title=x['title_' + L],
-                        summary=x['summary_' + L], body=x['body_' + L], byline=x['byline_' + L],
+                        summary=x['summary_' + L], body=x['body_' + L], byline=x['byline_' + L], image=x.get('image', ''),
                         date_iso=x['date'], date=fmt_date(x['date'], L)))
     return out
 
+BRIEF_COUNT = 8  # items in the homepage hexagon
+
+def added_key(item, kind):
+    """Sort key for "newest added to asaegypt.com". `added` is required (CLAUDE.md); if it is missing the
+    build warns and falls back to `date`. `added_at` (HH:MM UTC) only orders items added on the same day;
+    without it an item counts as added at the end of that day."""
+    if not item.get('added'):
+        print(f"WARNING: {kind} '{item['slug']}' has no 'added' date; using 'date' ({item['date']}) instead")
+    return (item.get('added') or item['date']) + ' ' + item.get('added_at', '24:00')
+
+def recently_added(n=BRIEF_COUNT):
+    """The n items most recently added to the site, across Insights, Briefing and ASA NEXT: [(kind, slug)].
+    Newest first; ties keep the order of the data files (newer items sit higher in each list)."""
+    pool = [(added_key(a, 'article'), 'article', a['slug']) for a in articles_meta.ARTICLES]
+    pool += [(added_key(x, 'news'), 'news', x['slug']) for x in news.NEWS]
+    pool += [(added_key(x, 'next'), 'next', x['slug']) for x in nextdata.NEXT]
+    pool.sort(key=lambda p: p[0], reverse=True)  # stable: same key keeps file order
+    return [(kind, slug) for _, kind, slug in pool[:n]]
+
 def brief_slots(L, from_path='/'):
-    """The five rotating items of the homepage banner: 2 newest news, 2 newest articles, the ECL service.
-    If fewer than 2 news items exist, the gap is filled with the next newest articles."""
+    """The rotating items of the homepage hexagon: the BRIEF_COUNT items most recently added to the site."""
     H = C[L].HOME
-    ns = news_items(L, from_path)[:2]
-    arts = featured(L, latest(4 - len(ns)), from_path)
-    items = [dict(kind='news', chip=n['cat_label'], title=n['short'], summary=n['summary'], by=n['source_name'],
-                  date_iso=n['date_iso'], date=n['date'], url=n['url']) for n in ns]
-    items += [dict(kind='article', chip=H['brief_new'], title=a['title'], summary=a['summary'], by=a['author'],
-                   date_iso=a['date_iso'], date=a['date'], url=a['url']) for a in arts]
-    items.sort(key=lambda x: (x['date_iso'], x['kind'] == 'news'), reverse=True)
-    s = next(x for x in C[L].SERVICES if x['key'] == 'svc-ecl')
-    items.append(dict(kind='service', chip=H['brief_service'], title=s['name'], summary=s['desc'], by=H['brief_from'],
-                      date_iso=None, date=None, url=link('svc-ecl', L, from_path)))
+    ns = {n['slug']: n for n in news_items(L, from_path)}
+    xs = {x['slug']: x for x in next_items(L, from_path)}
+    items = []
+    for kind, slug in recently_added():
+        if kind == 'news':
+            n = ns[slug]
+            items.append(dict(kind=kind, chip=n['cat_label'], title=n['short'], summary=n['summary'], by=n['source_name'],
+                              date_iso=n['date_iso'], date=n['date'], url=n['url'], image=n['image']))
+        elif kind == 'article':
+            a = featured(L, [slug], from_path)[0]
+            items.append(dict(kind=kind, chip=f"{H['brief_insight']} · {a['tag']}", title=a['title'], summary=a['summary'],
+                              by=a['author'], date_iso=a['date_iso'], date=a['date'], url=a['url'], image=a['image']))
+        else:
+            x = xs[slug]
+            items.append(dict(kind=kind, chip=f"ASA NEXT · {x['section_label']}", title=x['title'], summary=x['summary'],
+                              by=x['byline'], date_iso=x['date_iso'], date=x['date'], url=x['url'], image=x['image']))
     return items
+
+def search_cfg(L, R, from_path):
+    """Settings and strings for public/assets/js/search.js (passed in the search panel's data-cfg)."""
+    other = 'ar' if L == 'en' else 'en'
+    S = C[L].T['search']
+    nav = C[L].T['nav']
+    P = lambda k: link(k, L, from_path)
+    return dict(lang=L, other=other, v=V, idx=f"{R}assets/search/{L}.json", idx2=f"{R}assets/search/{other}.json",
+                page=P('search'), months=MONTHS[L], s={k: v for k, v in S.items() if k not in ('title', 'desc', 'kicker', 'h1', 'lead', 'nojs', 'notfound')},
+                links=[[nav['insights'], P('insights')], [nav['briefing'], P('briefing')], [nav['contact'], P('contact')]])
 
 def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx):
     mod = C[L]
@@ -146,7 +190,7 @@ def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx
         pass
     html = env.get_template(tpl).render(
         L=L, SITE=SITE, V=V, T=mod.T, C=mod, SERVICES=mod.SERVICES, I=icon, P=lambda k: link(k, L, path), R=R,
-        MARK=MARK, MARK_BG=MARK_BG, title=title, desc=desc, path=path,
+        MARK=MARK, MARK_BG=MARK_BG, title=title, desc=desc, path=path, SEARCH=search_cfg(L, R, path),
         alt_en=path_for(key, 'en'), alt_ar=path_for(key, 'ar'), alt_other=link(key, other, path),
         section=section, solid=solid, schema=Markup(schema), **ctx)
     out = os.path.join(DIST, path.lstrip('/'), 'index.html')
@@ -176,11 +220,15 @@ def build(pages=None):
         import asanext
         importlib.reload(asanext)
         built += asanext.build(L, render, next_items, path_for)
+        import search
+        importlib.reload(search)
+        built += search.build(L, render, featured, news_items, next_items, path_for, C, DIST)
     return built
 
 def build_404():
     html = env.get_template('404.html').render(L='en', SITE=SITE, V=V, T=content_en.T, C=content_en, SERVICES=content_en.SERVICES, I=icon,
         P=lambda k: path_for(k, 'en'), R='/', MARK=MARK, MARK_BG=MARK_BG, title='Page not found | ASA', desc='', path='/404.html',
+        SEARCH=search_cfg('en', '/', '/404.html'), S_AR=content_ar.T['search'], noindex=True,
         alt_en='/', alt_ar='/ar/', alt_other='/ar/', section=None, solid=False, schema='')
     open(os.path.join(DIST, '404.html'), 'w', encoding='utf-8').write(html)
 

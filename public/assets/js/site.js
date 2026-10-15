@@ -1,7 +1,7 @@
 (function(){
   var h=document.querySelector('.site-header');
   var forceSolid=h&&h.hasAttribute('data-solid');
-  function onScroll(){ if(!h)return; if(forceSolid||window.scrollY>40){h.classList.add('solid')}else{h.classList.remove('solid')} }
+  function onScroll(){ if(!h)return; if(forceSolid||h.classList.contains('search-open')||window.scrollY>40){h.classList.add('solid')}else{h.classList.remove('solid')} }
   onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
 
   var mn=document.querySelector('.mobile-nav');
@@ -36,6 +36,21 @@
       bars[cur].classList.add('on');
     };
     bars.forEach(function(b,j){b.addEventListener('click',function(){show(j)})});
+    // previous / next: arrows, left/right keys while the hexagon has focus, and swipe on touch screens.
+    // show() restarts the 6s fill animation, so the timer restarts too. In Arabic "next" is to the left.
+    var rtl=document.documentElement.dir==='rtl';
+    br.querySelectorAll('.brief-arrow').forEach(function(a){a.addEventListener('click',function(){show(cur+(+a.getAttribute('data-step')))})});
+    br.addEventListener('keydown',function(e){
+      if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight'||e.altKey||e.ctrlKey||e.metaKey)return;
+      e.preventDefault();show(cur+((e.key==='ArrowRight')!==rtl?1:-1));
+    });
+    var tx=null,ty=0;
+    br.addEventListener('touchstart',function(e){if(e.touches.length===1){tx=e.touches[0].clientX;ty=e.touches[0].clientY}else{tx=null}},{passive:true});
+    br.addEventListener('touchend',function(e){
+      if(tx===null)return;var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;tx=null;
+      if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.2)return;
+      show(cur+((dx<0)!==rtl?1:-1));
+    },{passive:true});
     // summary: at most 2 lines, cut at a whole word with "…" (CSS line-clamp is the no-JS fallback)
     var sums=br.querySelectorAll('.brief-sum');
     var fit=function(){sums.forEach(function(el){

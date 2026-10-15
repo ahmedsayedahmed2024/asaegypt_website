@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{ title }}</title>
 <meta name="description" content="{{ desc }}">
-<link rel="canonical" href="{{ SITE }}{{ path }}">
+{% if noindex %}<meta name="robots" content="noindex,follow">
+{% endif %}<link rel="canonical" href="{{ SITE }}{{ path }}">
 <link rel="alternate" hreflang="en" href="{{ SITE }}{{ alt_en }}">
 <link rel="alternate" hreflang="ar" href="{{ SITE }}{{ alt_ar }}">
 <link rel="alternate" hreflang="x-default" href="{{ SITE }}{{ alt_en }}">
@@ -50,12 +51,30 @@
         <li><a href="{{ P('contact') }}"{% if section=='contact' %} aria-current="page"{% endif %}>{{ T.nav.contact }}</a></li>
       </ul>
     </nav>
+    <button type="button" class="search-btn" data-open-search aria-label="{{ T.search.btn }}" title="{{ T.search.btn }} (/)" aria-expanded="false" aria-controls="site-search">{{ I('Search') }}</button>
     <div class="header-cta">
       <a class="lang" href="{{ alt_other }}" lang="{{ 'en' if L=='ar' else 'ar' }}" hreflang="{{ 'en' if L=='ar' else 'ar' }}">{{ 'English' if L=='ar' else 'العربية' }}</a>
       <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }}</a>
     </div>
   </div>
+  <div class="search-panel" id="site-search" role="dialog" aria-label="{{ T.search.label }}" hidden data-cfg='{{ SEARCH|tojson }}'>
+    <div class="wrap">
+      <form class="sp-form" role="search" action="{{ P('search') }}" method="get">
+        <span class="sp-ico">{{ I('Search') }}</span>
+        <input class="sp-input" type="search" name="q" placeholder="{{ T.search.ph }}" aria-label="{{ T.search.label }}" autocomplete="off" spellcheck="false" enterkeyhint="search"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sp-list">
+        <button type="button" class="sp-close" data-close-search aria-label="{{ T.search.close }}">{{ I('FaXmark') }}</button>
+      </form>
+      <div class="sp-opts">
+        <button type="button" class="bf-toggle sp-also" role="switch" aria-checked="false"><span aria-hidden="true"></span>{{ T.search.also }}</button>
+        <span class="sp-keys" aria-hidden="true">{{ T.search.kbd|bidi(L) }}</span>
+      </div>
+      <div class="sp-results" id="sp-list" role="listbox" aria-label="{{ T.search.label }}"></div>
+      <p class="sp-status sr" role="status" aria-live="polite"></p>
+    </div>
+  </div>
 </header>
+<div class="search-scrim" data-close-search hidden></div>
 <div class="mobile-nav" aria-label="{{ T.mainnav }}">
   <div class="top"><img src="{{ R }}assets/img/logo_white.png" alt="ASA"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
@@ -116,5 +135,6 @@
 </footer>
 <a class="wa" href="https://wa.me/201115652365" target="_blank" rel="noopener" aria-label="WhatsApp">{{ I('FaWhatsapp') }}</a>
 <script src="{{ R }}assets/js/site.js?v={{ V }}" defer></script>
+<script src="{{ R }}assets/js/search.js?v={{ V }}" defer></script>
 </body>
 </html>

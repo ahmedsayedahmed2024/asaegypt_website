@@ -4,6 +4,17 @@ PC = {'en': pages_en, 'ar': pages_ar}
 def all_articles(L, featured, path_for, from_path):
     return featured(L, [a['slug'] for a in articles_meta.ARTICLES], from_path)
 
+def insight_tabs(L):
+    """Category tabs for /insights/: only categories used by at least one article, most articles first
+    (ties keep the order of articles_meta.CATEGORIES). Labels come from that one list."""
+    i = 0 if L == 'en' else 1
+    keys = list(articles_meta.CATEGORIES)
+    count = {}
+    for a in articles_meta.ARTICLES:
+        count[a['category']] = count.get(a['category'], 0) + 1
+    used = sorted(count, key=lambda k: (-count[k], keys.index(k)))
+    return [(k, articles_meta.CATEGORIES[k][i]) for k in used]
+
 def build_all(L, render, featured, path_for, C, ROUTES):
     importlib.reload(pages_en); importlib.reload(pages_ar)
     D = PC[L]; mod = C[L]; out = []
@@ -19,10 +30,8 @@ def build_all(L, render, featured, path_for, C, ROUTES):
         out.append(render(tpl, key, L, obj['title'], obj['desc'], section=sec, D=obj))
     I = D.INSIGHTS
     arts = all_articles(L, featured, path_for, path_for('insights', L))
-    tags = []
-    for a in arts:
-        if a['tag'] not in tags: tags.append(a['tag'])
-    out.append(render('insights.html', 'insights', L, I['title'], I['desc'], section='insights', D=I, ALL=arts, TAGS=tags))
+    out.append(render('insights.html', 'insights', L, I['title'], I['desc'], section='insights', D=I, ALL=arts,
+                      TABS=insight_tabs(L)))
     try:
         import articles
         importlib.reload(articles)

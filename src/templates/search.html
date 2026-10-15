@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(S.kicker,None)], S.kicker, S.h1, S.lead) }}
+<section class="sec sec-near search-page" data-search-page>
+  <div class="wrap">
+    <form class="sp-form sp-form-page" role="search" action="{{ P('search') }}" method="get">
+      <span class="sp-ico">{{ I('Search') }}</span>
+      <input class="sp-input" type="search" name="q" placeholder="{{ S.ph }}" aria-label="{{ S.label }}" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      <button class="btn btn-dark sp-go" type="submit">{{ S.go }}</button>
+    </form>
+    <div class="sp-opts">
+      <button type="button" class="bf-toggle sp-also" role="switch" aria-checked="false" hidden><span aria-hidden="true"></span>{{ S.also }}</button>
+      <span class="sp-count" role="status" aria-live="polite"></span>
+    </div>
+    <div class="sp-results sp-results-page"></div>
+    <noscript>
+      <div class="sp-nojs">
+        <p>{{ S.nojs }}</p>
+        <p><a class="link-arrow" href="{{ P('insights') }}">{{ T.nav.insights }} {{ I('FaArrowRight') }}</a> <a class="link-arrow" href="{{ P('briefing') }}">{{ T.nav.briefing }} {{ I('FaArrowRight') }}</a></p>
+      </div>
+    </noscript>
+  </div>
+</section>
+{% endblock %}

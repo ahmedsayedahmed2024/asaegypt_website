@@ -1,6 +1,9 @@
 # ASA Briefing — professional news items (see CLAUDE.md, "Briefing (news)").
 # Every item needs an official source link, and its facts and numbers must match that source exactly.
 # Items with a note (impact / tech) always go through a pull request for Ahmed's approval.
+# "date" is the source's publication date. "added" (YYYY-MM-DD) is the day the item went live on asaegypt.com:
+# REQUIRED on every item; the homepage hexagon is ordered by it. "added_at" (optional "HH:MM" UTC) only orders
+# items added on the same day (missing = end of that day). "image" is optional (images come in a later phase).
 
 CATEGORIES = {
     'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),
@@ -16,7 +19,7 @@ REGIONS = {
 }
 
 NEWS = [
- dict(slug="uae-top-up-tax-scope-registration-guide", date="2026-10-08", category="economy", region="gcc",
+ dict(slug="uae-top-up-tax-scope-registration-guide", date="2026-10-08", added="2026-10-15", added_at="04:15", category="economy", region="gcc",
       title_en="UAE Federal Tax Authority issues guide on scope and registration for the Top-up Tax on multinationals",
       title_ar="الهيئة الاتحادية للضرائب في الإمارات تصدر دليلًا بشأن نطاق الضريبة الإضافية على الشركات متعددة الجنسيات والتسجيل فيها",
       short_en="UAE issues Top-up Tax guide on scope and registration",
@@ -35,7 +38,7 @@ NEWS = [
       ],
       source_name="UAE Federal Tax Authority",
       source_url="https://tax.gov.ae/en/media.centre/news/federal.tax.authority.issues.new.guide.on.scope.and.registration.for.topup.tax.on.multinational.enterprises.aspx"),
- dict(slug="ifrs-18-effective-2027", date="2026-10-14", category="standards", region="global",
+ dict(slug="ifrs-18-effective-2027", date="2026-10-14", added="2026-10-14", added_at="17:13", category="standards", region="global",
       title_en="IFRS 18 applies from 1 January 2027 — comparatives must be restated",
       title_ar="المعيار IFRS 18 يسري اعتبارًا من 1 يناير 2027 مع إعادة عرض أرقام المقارنة",
       short_en="IFRS 18 applies from 2027: plan the restatement now",
