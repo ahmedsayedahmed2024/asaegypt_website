@@ -70,7 +70,7 @@ ARTICLES = [
                  alt_en="Magnifying glass on a white marble desk next to a closed laptop",
                  alt_ar="عدسة مكبرة على مكتب من الرخام الأبيض بجوار حاسوب محمول مغلق"),
       title=("Financial due diligence: scope, procedures and red flags","الفحص النافي للجهالة: النطاق والإجراءات وإشارات الخطر")
-      , summary=("What a buyer or investor should expect from a financial due diligence — quality of earnings, net debt, working capital and deal risks.",
+      , summary=("What a buyer or investor should expect from financial due diligence — quality of earnings, net debt, working capital and deal risks.",
                "ما الذي ينبغي أن يتوقعه المشتري أو المستثمر من الفحص النافي للجهالة — جودة الأرباح وصافي الدين ورأس المال العامل ومخاطر الصفقة.")),
  dict(slug="ecl-trade-receivables-provision-matrix", minutes=8,
       added="2026-09-20", added_at="13:11",
@@ -119,7 +119,7 @@ ARTICLES = [
                  alt_ar="لقطة جوية لجسر معلّق بالكابلات يمتد فوق مياه مفتوحة"),
       title=("Claiming double tax treaty benefits in Egypt","الاستفادة من اتفاقيات منع الازدواج الضريبي في مصر"),
       summary=("Tax residency, beneficial ownership and the documents you need to apply reduced withholding rates with confidence.",
-               "الإقامة الضريبية والمستفيد الفعلي والمستندات اللازمة لتطبيق أسعار الخصم المخفضة بثقة.")),
+               "الإقامة الضريبية والمستفيد الفعلي والمستندات اللازمة لتطبيق أسعار الضريبة المستقطعة المخفضة بثقة.")),
  dict(slug="tax-inspection-readiness", minutes=9,
       added="2026-09-20", added_at="13:11",
       date="2026-09-20", author_en="ASA Insights", author_ar="فريق ASA",
@@ -155,5 +155,5 @@ ARTICLES = [
                  alt_ar="مساحة عمل مفتوحة بطاولات خشبية طويلة ومقاعد خالية"),
       title=("Your startup's first audit: what investors expect","أول مراجعة لشركتك الناشئة: ماذا يتوقع المستثمرون؟"),
       summary=("Getting audit-ready early — revenue, share-based payments, convertible instruments and the controls investors look for.",
-               "كيف تستعد للمراجعة مبكرًا — الإيرادات، والمدفوعات المبنية على الأسهم، والأدوات القابلة للتحويل، والضوابط التي يبحث عنها المستثمرون.")),
+               "كيف تستعد للمراجعة مبكرًا — الإيرادات، والمدفوعات المبنية على أسهم، والأدوات القابلة للتحويل، والضوابط التي يبحث عنها المستثمرون.")),
 ]

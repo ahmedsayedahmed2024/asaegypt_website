@@ -84,7 +84,7 @@ SVC = {
     ov=["IFRS 9 and its Egyptian equivalent, EAS 47, require entities to recognise expected — not incurred — credit losses. For many companies, this is the most judgemental number in the financial statements.",
         "We design ECL methodologies, build models and independently validate existing ones for corporates, non-bank financial institutions and groups. International accounting networks in Egypt and Saudi Arabia also engage us as ECL specialists on their client engagements.",
         "Every engagement ends with a clear, documented conclusion — so management, auditors and regulators can see exactly how the number was built and why it is reasonable."],
-    why=["Dedicated ECL specialism, not a side service", "Engaged by international networks as ECL specialist", "Both simplified and general approach expertise",
+    why=["Dedicated ECL specialism, not a side service", "Engaged by international networks as an ECL specialist", "Both simplified and general approach expertise",
          "Formal validation opinion with clear grading", "Models delivered with full documentation"],
     offer_h="From methodology to validation opinion.", offer_p="We support you at any point — building a first model, refreshing assumptions or validating an existing approach.",
     offer=[("FaLayerGroup", "Methodology design", "Segmentation, staging criteria, SICR and default definitions aligned with IFRS 9 / EAS 47."),
@@ -141,7 +141,7 @@ SVC = {
     ov_h="Advisory grounded in audit discipline.",
     ov=["Our advisory work draws on the same rigour we bring to audit: evidence, documentation and a healthy scepticism about the numbers.",
         "We support investors and management teams through transactions, planning and restructuring — focusing on what actually drives value and risk.",
-        "Where specialist valuations are required, we coordinate with licensed valuers and provide agreed-upon procedure reports that give stakeholders comfort."],
+        "Where specialist valuations are required, we coordinate with licensed valuers and provide agreed-upon procedures reports that give stakeholders comfort."],
     why=["Audit-grade rigour applied to advisory", "Senior-led, practical and fast", "Clear red-flag reporting for decision makers",
          "Experience with startups, corporates and investors", "Coordination with valuers and legal advisers"],
     offer_h="Advisory services across the business lifecycle.", offer_p="Practical support for investment, planning and change.",
@@ -158,9 +158,9 @@ SVC = {
            ("FaCircleCheck", "Advise", "Concise findings and recommendations for decision makers.")],
     for_h="For investors, boards and management teams.",
     for_list=["Private equity & venture investors", "Acquirers & sellers", "Lenders", "Boards & audit committees", "Founders raising capital", "Groups restructuring"],
-    faq=[("How long does a financial due diligence take?", "Typically two to six weeks depending on the size of the target and the availability of information. We agree a timetable at the outset."),
+    faq=[("How long does financial due diligence take?", "Typically two to six weeks depending on the size of the target and the availability of information. We agree a timetable at the outset."),
          ("What is the difference between due diligence and an audit?", "An audit gives an opinion on financial statements; due diligence focuses on the specific risks and value drivers relevant to a transaction or investment decision."),
-         ("Do you perform valuations?", "Where formal valuations are required, we coordinate with licensed valuers and can issue agreed-upon procedure reports on specific inputs.")],
+         ("Do you perform valuations?", "Where formal valuations are required, we coordinate with licensed valuers and can issue agreed-upon procedures reports on specific inputs.")],
     related=['financial-due-diligence', 'startups-first-audit', 'ecl-model-ifrs-9']),
  'svc-intl': dict(
     title="International Services & Market Entry | ASA",
@@ -238,7 +238,7 @@ WHO = dict(
     ],
     port_k="Our portfolio", port_h="More than fifty active clients in Egypt and abroad.",
     port_p="Our client portfolio spans corporate groups, growing businesses, venture-backed startups and international clients — supported by a team with Big Four and international network experience.",
-    port_nums=[("50<i>+</i>", "Active clients"), ("20<i>+</i>", "Venture-backed companies audited"), ("2", "Core markets: Egypt & KSA"), ("9", "Sectors served")],
+    port_nums=[("50<i>+</i>", "Active clients"), ("20<i>+</i>", "Venture-backed companies we audit"), ("2", "Core markets: Egypt & KSA"), ("9", "Sectors served")],
     sec_k="Sector experience", sec_h="Experience across the economy.", sec_p="Our partners and managers have served clients across a broad range of industries.",
     sectors=[("FaIndustry", "Industrial & manufacturing"), ("FaLaptopCode", "Technology & digital"), ("FaCity", "Real estate & contracting"),
              ("FaLandmark", "Financial institutions & funds"), ("FaHotel", "Tourism & hospitality"), ("FaHospital", "Healthcare"),
@@ -361,7 +361,7 @@ PRIVACY = dict(
 <h2>How we use it</h2><ul><li>To respond to your enquiry and provide the information you request.</li><li>To assess and prepare proposals for professional services.</li><li>To comply with professional and legal obligations.</li></ul>
 <h2>Sharing</h2><p>We do not sell your personal information. We share it only with service providers who help us operate the website and handle enquiries, and where required by law or professional regulation.</p>
 <h2>Retention and security</h2><p>We keep enquiry information only as long as necessary for the purposes above, and apply appropriate safeguards to protect it.</p>
-<h2>Your choices</h2><p>You may ask us to access, correct or delete the information you have provided by emailing <a href="mailto:ahmed.sayed@asaegypt.com">ahmed.sayed@asaegypt.com</a>.</p>
+<h2>Your choices</h2><p>You may request access to the information you have provided, or ask us to correct or delete it by emailing <a href="mailto:ahmed.sayed@asaegypt.com">ahmed.sayed@asaegypt.com</a>.</p>
 <h2>Client confidentiality</h2><p>Information relating to client engagements is governed by our professional confidentiality obligations and engagement terms, not by this website policy.</p>
 <h2>Updates</h2><p>We may update this policy from time to time. The current version is always available on this page.</p>""",
 )
