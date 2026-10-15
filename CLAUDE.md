@@ -22,6 +22,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   rm -rf dist && mkdir dist && cp -r public/. dist/ && python src/build.py && python src/extras.py && python src/check_links.py
   ```
 - Deploy: GitHub Actions (`.github/workflows/deploy.yml`) builds and publishes to GitHub Pages on every push to `main`. Never commit `dist/`.
+- `public/google2c63994b9b91f271.html` is required by Google Search Console to verify the site. It is published as-is at https://asaegypt.com/google2c63994b9b91f271.html. **Never delete, rename or edit it**, and never add it to the sitemap.
 
 ## Workflow
 - Work on a `claude/...` branch and open a Pull Request. Ahmed approves by merging.
