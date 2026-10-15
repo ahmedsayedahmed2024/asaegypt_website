@@ -101,6 +101,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 ## Insights (articles)
 - Metadata in `src/articles_meta.py` → `ARTICLES`; text in `articles_en.py` / `articles_ar.py` → `ART[slug]`.
 - Each article has `added` (see above) and `category`: a key of `CATEGORIES` in `articles_meta.py`.
+- Byline: the default for articles not signed by a person is **"ASA Insights Team" / «فريق ASA»**: `author_en="ASA Insights Team"`, `author_ar="فريق ASA"`, `role_en=""`, `role_ar=""`. It shows as "By ASA Insights Team" / «بقلم فريق ASA». Articles signed by a person keep their name and job title (e.g. "By Ahmed Sayed Ahmed, Founder & Managing Partner").
 - `CATEGORIES` is the one place for Insights categories (EN + AR names). The tabs on `/insights/` are built from it automatically: a tab appears only when at least one article uses that category; order is All, then categories by number of articles (most first).
 - **When a new article needs a category that does not exist yet, add it to `CATEGORIES` in both languages.** Its tab then appears automatically. Never hard-code tabs in the template.
 
