@@ -1,9 +1,14 @@
-"""Fail the build if any internal link or asset in dist/ points to a missing file."""
+"""Fail the build if any internal link or asset in dist/ points to a missing file,
+or if any image in public/ is over the size limit (CLAUDE.md, "Images")."""
 import os, re, sys
 from urllib.parse import urlparse, unquote
 
-DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'dist')
-pat = re.compile(r'(?:href|src)="([^"#?]+)')
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DIST = os.path.join(ROOT, 'dist')
+pat = re.compile(r'(?:href|src)="([^"#?]+)')  # also matches data-src
+srcset = re.compile(r'srcset="([^"]+)"')      # also matches data-srcset
+IMG_EXT = ('.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg', '.avif')
+IMG_MAX_KB = 300
 missing = set()
 pages = 0
 for root, _, files in os.walk(DIST):
@@ -12,7 +17,8 @@ for root, _, files in os.walk(DIST):
             continue
         pages += 1
         html = open(os.path.join(root, f), encoding='utf-8').read()
-        for url in pat.findall(html):
+        urls = pat.findall(html) + [c.split()[0] for v in srcset.findall(html) for c in v.split(',') if c.strip()]
+        for url in urls:
             u = urlparse(url)
             if u.scheme or u.netloc or url.startswith(('mailto:', 'tel:', 'data:')):
                 continue
@@ -24,8 +30,17 @@ for root, _, files in os.walk(DIST):
             if not os.path.exists(target):
                 missing.add((os.path.relpath(os.path.join(root, f), DIST), url))
 print(f'{pages} pages checked')
+big = []
+for root, _, files in os.walk(os.path.join(ROOT, 'public')):
+    for f in files:
+        path = os.path.join(root, f)
+        if f.lower().endswith(IMG_EXT) and os.path.getsize(path) > IMG_MAX_KB * 1024:
+            big.append((os.path.relpath(path, ROOT), os.path.getsize(path) // 1024))
+for path, kb in big:
+    print(f'IMAGE TOO LARGE: {path} is {kb} KB (limit {IMG_MAX_KB} KB)')
 if missing:
     for page, url in sorted(missing):
         print(f'BROKEN: {page} -> {url}')
+if missing or big:
     sys.exit(1)
-print('All internal links OK')
+print(f'All internal links OK; all images in public/ are under {IMG_MAX_KB} KB')

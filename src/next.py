@@ -1,7 +1,9 @@
 # ASA NEXT — content for juniors in their first five years (see CLAUDE.md, "ASA NEXT").
 # Two sections: "first5" (career path and growth) and "desk" (Junior Desk: daily tips, a common mistake, a quiz).
 # "added" (YYYY-MM-DD, the day the item went live on asaegypt.com) is REQUIRED; the homepage hexagon is ordered by it.
-# "added_at" (optional "HH:MM" UTC) only orders items added on the same day. "image" is optional (later phase).
+# "added_at" (optional "HH:MM" UTC) only orders items added on the same day.
+# "image": every item gets its own original SVG illustration in the ASA NEXT style (no photos; see CLAUDE.md, "Images"):
+#   dict(kind="illustration", alt_en, alt_ar). File: public/assets/img/content/next/<slug>.svg.
 # Humour (Junior Desk only): tasteful; no jokes about people, clients or other firms; no slang, politics or religion.
 #
 # Body blocks (list of tuples), rendered by templates/next_item.html:
@@ -17,6 +19,9 @@ SECTIONS = {
 NEXT = [
  dict(slug="first-five-years-roadmap", section="first5", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
+      image=dict(kind="illustration",
+                 alt_en="Illustration: four hexagon steps rising toward a lime spark",
+                 alt_ar="رسم توضيحي: أربع درجات سداسية الشكل تصعد نحو نجمة خضراء ليمونية"),
       title_en="Your first five years: a simple roadmap",
       title_ar="سنواتك الخمس الأولى: خريطة بسيطة",
       summary_en="Associate, senior, supervisor, manager: what you own at each stage, the skills to build and one habit that helps — plus the professional qualifications worth planning for.",
@@ -95,6 +100,9 @@ NEXT = [
       ]),
  dict(slug="junior-desk-lookups-and-quiz", section="desk", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",
+      image=dict(kind="illustration",
+                 alt_en="Illustration: a spreadsheet grid with one highlighted lookup row and a small question mark",
+                 alt_ar="رسم توضيحي: جدول بيانات يبرز فيه صف بحث واحد، مع علامة استفهام صغيرة"),
       title_en="Junior Desk: lookups, a common mistake and a 3-question quiz",
       title_ar="ركن الجونيور: دوال البحث، وغلطة شائعة، وكويز من 3 أسئلة",
       summary_en="Pull trial balance figures into a lead schedule with XLOOKUP, avoid the VLOOKUP trap that fails silently, and test yourself with three quick questions.",

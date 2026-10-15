@@ -540,9 +540,13 @@ html[dir="rtl"] .brief .bar i{transform-origin:right}
 .bf-row .filters{margin:0}
 .chips-sm button{padding:7px 14px;font-size:.84rem}
 .bf-toggle{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:.9rem;color:var(--ink)}
-.bf-toggle>span{width:38px;height:22px;border-radius:22px;background:var(--line);position:relative;flex:none;transition:background .2s}
-.bf-toggle>span::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
-.bf-toggle[aria-checked="true"]>span{background:var(--lime-dk)}
+/* switch: a clear outline and track colour in both states (off: grey track, dark outline; on: dark lime) */
+.bf-toggle>span{width:38px;height:22px;border-radius:22px;background:#D5DCE2;box-shadow:inset 0 0 0 1.5px var(--muted);position:relative;flex:none;transition:background .2s,box-shadow .2s}
+.bf-toggle>span::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px var(--muted),0 1px 3px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
+.bf-toggle:hover>span{background:#C8D0D7}
+.bf-toggle:focus-visible{outline:2px solid var(--blue-dk);outline-offset:3px;border-radius:2px}
+.bf-toggle[aria-checked="true"]>span{background:var(--lime-dk);box-shadow:inset 0 0 0 1.5px var(--lime-dk)}
+.bf-toggle[aria-checked="true"]>span::after{box-shadow:0 1px 3px rgba(0,0,0,.25)}
 .bf-toggle[aria-checked="true"]>span::after{transform:translateX(16px)}
 html[dir="rtl"] .bf-toggle[aria-checked="true"]>span::after{transform:translateX(-16px)}
 .bf-empty{padding:34px;background:var(--tint);border-radius:var(--radius);color:var(--muted);text-align:center;max-width:none}
@@ -749,3 +753,30 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 .brief:focus{outline:none}
 .brief:focus-visible .brief-hex polygon{stroke-width:3px}
 @media (max-width:640px){.brief-ctrl{width:64%}.brief-ctrl .brief-bars{gap:3px}}
+
+/* images (SHOW_IMAGES in src/config.py; see CLAUDE.md, "Images") */
+/* homepage hexagon: the current item's image, clipped to the hexagon under the logo stripes, behind dark glass */
+.brief-media{position:absolute;inset:0;clip-path:polygon(27.23% .85%,72.77% .85%,99.55% 50%,72.77% 99.15%,27.23% 99.15%,.45% 50%)}
+.brief-pic{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
+.brief-pic.on,.brief:not(.js) .brief-pic[data-i="0"]{opacity:1}
+.brief-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(1.5px) saturate(.9) brightness(.85);transform:scale(1.04);transition:transform 0s linear .8s}
+.brief-pic.on img{transform:scale(1.12);transition:transform 16s linear}
+/* dark glass, stronger at the bottom: keeps every line of text at WCAG AA contrast, even over a white photo */
+.brief-pic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,38,43,.8) 0%,rgba(35,38,43,.83) 45%,rgba(35,38,43,.93) 100%)}
+.brief-slide.has-img .brief-meta{color:var(--soft)}
+.brief.intro .brief-media{animation:bShow .8s ease 2.2s both}
+.brief.quick .brief-media{animation:bShow .4s ease .4s both}
+@media (prefers-reduced-motion:reduce){.brief-pic{transition:opacity .8s ease!important}.brief-pic img,.brief-pic.on img{transform:scale(1.04)!important}}
+/* card frames: Insights (.post) already has one; Briefing and ASA NEXT cards get the same frame */
+.thumb .thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.post:hover .thumb-img,.news-card:hover .thumb-img,.nx-card:hover .thumb-img{transform:scale(1.03)}
+.news-card.has-thumb,.nx-card.has-thumb{padding-top:0;overflow:hidden}
+.news-card .thumb,.nx-card .thumb{aspect-ratio:16/8;background:var(--graphite);position:relative;overflow:hidden;margin:0 -26px 4px}
+.news-card .thumb svg,.nx-card .thumb svg{position:absolute;width:62%;inset-inline-end:-8%;top:-18%;opacity:.9}
+/* item pages: wide image band under the dark header, with the photo credit */
+.img-band{margin-top:clamp(28px,4vw,44px)}
+.img-band-frame{height:clamp(200px,32vw,420px);border-radius:10px;overflow:hidden;background:var(--graphite)}
+.img-band-frame img{display:block;width:100%;height:100%;object-fit:cover}
+.img-band figcaption{margin-top:10px;font-size:.8rem;color:var(--muted)}
+.img-band figcaption a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.img-band figcaption a:hover{color:var(--ink)}

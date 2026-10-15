@@ -2,7 +2,7 @@ import datetime, json, os, re, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, content_en, content_ar, articles_meta, news
+import mark, config, content_en, content_ar, articles_meta, news
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -98,9 +98,29 @@ def featured(L, slugs, from_path='/'):
                             cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=a['title'][i],
                             summary=a['summary'][i], author=author, role=role,
                             byline=(f"By {author}, {role}" if L == 'en' else f"بقلم {author}، {role}"),
-                            date_iso=a['date'], date=fmt_date(a['date'], L), image=a.get('image', ''),
+                            date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
                             read=(f"{a['minutes']} min read" if L == 'en' else f"{a['minutes']} دقائق قراءة")))
     return out
+
+# Images (see CLAUDE.md, "Images"). Files live in public/assets/img/content/<section>/:
+# photos as <slug>-lg.webp (1600px) + <slug>-card.webp (800px), ASA NEXT illustrations as <slug>.svg.
+IMG_DIR = 'assets/img/content'
+IMG_SECTION = {'article': 'articles', 'news': 'briefing', 'next': 'next'}
+
+def image_for(item, kind, L):
+    """An item's image for the templates (paths relative to the site root), or None when the item has no
+    image or images are switched off (SHOW_IMAGES in config.py). A missing file stops the build."""
+    im = item.get('image')
+    if not (config.SHOW_IMAGES and im):
+        return None
+    base = f"{IMG_DIR}/{IMG_SECTION[kind]}/{item['slug']}"
+    illustration = im.get('kind') == 'illustration'
+    lg, card = (base + '.svg', base + '.svg') if illustration else (base + '-lg.webp', base + '-card.webp')
+    for f in (lg, card):
+        if not os.path.exists(os.path.join(ROOT, 'public', f)):
+            sys.exit(f"ERROR: {kind} '{item['slug']}' has an image but public/{f} is missing")
+    return dict(lg=lg, card=card, alt=im['alt_' + L], illustration=illustration,
+                photographer=im.get('photographer'), site=im.get('site'), source=im.get('source'))
 
 def news_by_date():
     # newest first; items with the same date keep their order in news.py
@@ -115,7 +135,7 @@ def news_items(L, from_path):
                         region=n['region'], region_label=news.REGIONS[n['region']][i],
                         title=n['title_' + L], short=n['short_' + L], summary=n['summary_' + L],
                         body=n['body_' + L], source_name=n['source_name'], source_url=n['source_url'],
-                        note=n.get('note'), related=n.get('related'), image=n.get('image', ''),
+                        note=n.get('note'), related=n.get('related'), image=image_for(n, 'news', L),
                         date_iso=n['date'], date=fmt_date(n['date'], L)))
     return out
 
@@ -126,7 +146,7 @@ def next_items(L, from_path):
     for x in sorted(nextdata.NEXT, key=lambda x: x['date'], reverse=True):
         out.append(dict(slug=x['slug'], url=link('nx-' + x['slug'], L, from_path), section=x['section'],
                         section_label=nextdata.SECTIONS[x['section']][i], title=x['title_' + L],
-                        summary=x['summary_' + L], body=x['body_' + L], byline=x['byline_' + L], image=x.get('image', ''),
+                        summary=x['summary_' + L], body=x['body_' + L], byline=x['byline_' + L], image=image_for(x, 'next', L),
                         date_iso=x['date'], date=fmt_date(x['date'], L)))
     return out
 
@@ -190,7 +210,7 @@ def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx
         pass
     html = env.get_template(tpl).render(
         L=L, SITE=SITE, V=V, T=mod.T, C=mod, SERVICES=mod.SERVICES, I=icon, P=lambda k: link(k, L, path), R=R,
-        MARK=MARK, MARK_BG=MARK_BG, title=title, desc=desc, path=path, SEARCH=search_cfg(L, R, path),
+        MARK=MARK, MARK_BG=MARK_BG, IMAGES=config.SHOW_IMAGES, title=title, desc=desc, path=path, SEARCH=search_cfg(L, R, path),
         alt_en=path_for(key, 'en'), alt_ar=path_for(key, 'ar'), alt_other=link(key, other, path),
         section=section, solid=solid, schema=Markup(schema), **ctx)
     out = os.path.join(DIST, path.lstrip('/'), 'index.html')

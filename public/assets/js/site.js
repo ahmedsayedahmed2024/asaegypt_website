@@ -28,8 +28,23 @@
     var slides=br.querySelectorAll('.brief-slide'),bars=br.querySelectorAll('.bar'),live=br.querySelector('.brief-slides'),cur=0;
     var auto=!br.classList.contains('still');
     live.setAttribute('aria-live',auto?'off':'polite');
+    // item images (.brief-pic, one per item that has an image): only the current and the next one are loaded;
+    // the current one fades in once it has loaded. Items without an image show the logo background.
+    var pics={};
+    var load=function(i){
+      var p=pics[(i+slides.length)%slides.length],im=p&&p.querySelector('img');
+      if(!im||!im.hasAttribute('data-src'))return;
+      if(im.hasAttribute('data-srcset'))im.srcset=im.getAttribute('data-srcset');
+      im.src=im.getAttribute('data-src');im.removeAttribute('data-src');
+    };
+    var paint=function(){for(var k in pics){var im=pics[k].querySelector('img');pics[k].classList.toggle('on',+k===cur&&im.complete&&im.naturalWidth>0)}};
+    br.querySelectorAll('.brief-pic').forEach(function(p){pics[p.getAttribute('data-i')]=p;p.querySelector('img').addEventListener('load',paint)});
+    load(0);paint();
+    var pre=function(){load(cur+1)}; // the next image, after the page has finished loading
+    if(document.readyState==='complete')pre();else window.addEventListener('load',pre);
     var show=function(i){
       cur=(i+slides.length)%slides.length;
+      load(cur);load(cur+1);paint();
       slides.forEach(function(s,j){s.classList.toggle('on',j===cur)});
       bars.forEach(function(b,j){b.classList.remove('on');b.classList.toggle('done',j<cur);if(j===cur){b.setAttribute('aria-current','true')}else{b.removeAttribute('aria-current')}});
       void br.offsetWidth; // restart the fill animation

@@ -14,13 +14,21 @@
     </div>
     <div class="art">
       <section class="brief" id="brief" aria-label="{{ H.brief_label }}" aria-roledescription="carousel" tabindex="0">
+        {%- if BRIEF|selectattr('image')|list %}
+        {# item images, clipped to the hexagon under the logo stripes; site.js loads the current and the next one #}
+        <div class="brief-media" aria-hidden="true">
+          {% for b in BRIEF if b.image %}{% set i = b.image %}{% set at = '' if loop.first and b is sameas BRIEF[0] else 'data-' %}
+          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %}{% if not at %} fetchpriority="high"{% endif %} alt="" decoding="async"></span>
+          {% endfor %}
+        </div>
+        {%- endif %}
         {{ BRIEF_MARK|safe }}
         <svg class="brief-hex" viewBox="-56 -59 112 118" aria-hidden="true"><polygon points="-25.5,-58 25.5,-58 55.5,0 25.5,58 -25.5,58 -55.5,0"/></svg>
         <div class="brief-in">
           <p class="brief-label"><span class="dot" aria-hidden="true"></span>{{ H.brief_label }}</p>
           <div class="brief-slides" aria-live="off">
             {% for b in BRIEF %}
-            <div class="brief-slide{% if loop.first %} on{% endif %}" id="brief-{{ loop.index }}" data-kind="{{ b.kind }}">
+            <div class="brief-slide{% if loop.first %} on{% endif %}{% if b.image %} has-img{% endif %}" id="brief-{{ loop.index }}" data-kind="{{ b.kind }}">
               <span class="brief-chip">{{ b.chip }}</span>
               <p class="brief-h">{{ b.title }}</p>
               <p class="brief-sum">{{ b.summary }}</p>

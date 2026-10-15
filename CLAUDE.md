@@ -7,7 +7,8 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
 - `src/` is the source: Python + Jinja2.
   - `build.py`: routes, rendering, and the 404 page.
   - `extras.py`: `sitemap.xml`, `robots.txt`, and `CNAME`.
-  - `check_links.py`: fails the build on broken internal links.
+  - `check_links.py`: fails the build on broken internal links (including image `srcset`) and on any image in `public/` over 300 KB.
+  - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images").
   - `search.py`: the search pages and the search index. See "Site search" below.
 - `public/` holds static files (`assets/` CSS/JS/fonts/images, `CNAME`). They are copied into `dist/` before the build.
 - Content lives in:
@@ -55,12 +56,45 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - `added` is not the same as `date`. For Briefing, `date` is the source's publication date; `added` is the day the item went live on our site.
   - `added_at` (optional, `"HH:MM"` in UTC): the time it was added. It only decides the order of items added on the same day. Set it to the current UTC time when adding an item. An item without it counts as added at the end of its day.
   - Put new items at the top of their list in the data file.
-- `image` (optional, all three): leave it out for now. Images come in a later phase; without it everything looks as today.
+- `image`: see "Images" below. Every new article and Briefing item gets a photo; every new ASA NEXT item gets an illustration.
 
 ## Homepage hexagon
 - Shows the 8 items most recently **added** to the site, from Insights, Briefing and ASA NEXT together, newest first (sorted by `added`, then `added_at`). 6 seconds per item.
 - Built by `brief_slots()` in `src/build.py`; the count is `BRIEF_COUNT`. Briefing items use `short_en/ar` as the headline.
 - Controls: previous / next arrows (mirrored in Arabic), progress bars, swipe on touch screens, left/right keys when the hexagon has focus. It pauses on hover and keyboard focus. The intro animation plays once per browser session. With reduced motion it does not rotate.
+
+## Images
+Every new Insights article and every new Briefing item MUST get a matching photo under these rules **on the day it is published** (the daily routine follows this). Every new ASA NEXT item MUST get a new original illustration (see "ASA NEXT illustrations" below). If no suitable photo is found, publish without `image` (the logo background and striped placeholder are used) and say so in the PR or final message.
+
+### Source
+- Real photos only, from **Unsplash** (unsplash.com) or **Pexels** (pexels.com), under their free licences that allow commercial use. Never Unsplash+ (premium) photos. Never any other website.
+- If a site needs an API key or blocks the download, do not use another website: stop and report exactly what is needed.
+- Store in the item's data: `image=dict(source=<photo page URL>, photographer=<name as shown on the photo page>, site="Unsplash"|"Pexels", licence="Unsplash License"|"Pexels License", alt_en=..., alt_ar=...)`.
+- Alt text: describe what the photo shows, in both languages (Arabic in فصحى, not a literal translation).
+
+### Content (very strict)
+- Calm, professional, neutral images that clearly match the topic: documents, calculators, charts on paper or screens, modern office interiors, architecture, city skylines (Cairo, Gulf cities, global finance districts), servers, chips and abstract technology, ports and trade, etc.
+- Prefer NO identifiable people. If people appear: business attire, modest, seen from behind, from a distance or hands only. Never close-up faces.
+- NEVER: anything suggestive or revealing, alcohol, smoking, gambling, weapons, violence, religious symbols, political symbols, flags, politicians, protests, maps with disputed borders, logos or brands of any company (including other audit firms), visible text or numbers that could be read as real data, AI-art style images, money piles or "get rich" clichés.
+- Check every photo at full size before using it (small logos, signs, names on papers, readable numbers). A small crop or a soft blur of a minor detail is fine; mention it in the PR.
+- Each image must be different from the images already used on the site.
+
+### Size and format
+- WebP, two versions per photo: `<slug>-lg.webp` (1600px wide, target under 180 KB) and `<slug>-card.webp` (800px wide, target under 70 KB).
+- Path: `public/assets/img/content/<section>/` with section `articles`, `briefing` or `next`.
+- Never commit the original full-size download. Never commit an image over 300 KB (the build fails).
+
+### ASA NEXT illustrations (no photos)
+- One original SVG per item: `public/assets/img/content/next/<slug>.svg`, data `image=dict(kind="illustration", alt_en=..., alt_ar=...)`.
+- Style: dark #23262B background, lime #C3D648, the logo blues (#80CAE3, #A6D8EE, #B2DCF2), the Spark star, hexagon and stripe motifs. Flat, modern, no people, no text (no letters or numerals).
+
+### Where images appear (built automatically from the data)
+- Homepage hexagon: the item's image clipped to the hexagon under dark glass and the logo stripes (fades in, slow zoom; only the current and next image are loaded). Items without an image show the logo background.
+- Insights, Briefing and ASA NEXT cards: the card image (800px); striped placeholder when there is no image.
+- Article, Briefing and ASA NEXT item pages: a wide image band under the dark header, with the credit "Photo: <name> / Unsplash" / «تصوير: <name> / Unsplash» (no credit for illustrations).
+
+### Switch
+- `SHOW_IMAGES` in `src/config.py`. `False` makes the site look exactly as it did before images (logo background in the hexagon, striped card placeholders, no image band). Files and data stay in place.
 
 ## Insights (articles)
 - Metadata in `src/articles_meta.py` → `ARTICLES`; text in `articles_en.py` / `articles_ar.py` → `ART[slug]`.
