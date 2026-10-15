@@ -99,8 +99,14 @@ def featured(L, slugs, from_path='/'):
                             summary=a['summary'][i], author=author, role=role,
                             byline=(f"By {author}, {role}" if L == 'en' else f"بقلم {author}، {role}"),
                             date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
-                            read=(f"{a['minutes']} min read" if L == 'en' else f"{a['minutes']} دقائق قراءة")))
+                            read=read_time(a['minutes'], L)))
     return out
+
+def read_time(n, L):
+    """Reading time: "7 min read" / «7 دقائق قراءة». Arabic: 3–10 take «دقائق», 11 and above «دقيقة» («18 دقيقة قراءة»)."""
+    if L == 'en':
+        return f"{n} min read"
+    return f"{n} {'دقائق' if 3 <= n <= 10 else 'دقيقة'} قراءة"
 
 # Images (see CLAUDE.md, "Images"). Files live in public/assets/img/content/<section>/:
 # photos as <slug>-lg.webp (1600px) + <slug>-card.webp (800px), ASA NEXT illustrations as <slug>.svg.

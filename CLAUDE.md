@@ -139,4 +139,8 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.
 - Arabic: eloquent Modern Standard Arabic (فصحى), not a literal translation of the English.
+- Arabic reading times (built by `read_time()` in `src/build.py`): 3–10 minutes take «دقائق» («7 دقائق قراءة»); 11–99 take «دقيقة» («18 دقيقة قراءة»).
+- Fixed terms:
+  - Share-based payments in Arabic: always «المدفوعات المبنية على أسهم» (never «المبنية على الأسهم» or «على أساس الأسهم»).
+  - QDMTT = Qualified Domestic Minimum Top-up Tax / «ضريبة الحد الأدنى التكميلية المحلية المؤهلة (QDMTT)». Use the full name with the abbreviation.
 - In Arabic, attach «و» to the English word that follows, with no space: «ACCA وCPA وSOCPA», «Excel 2021 وMicrosoft 365». A separate «و» can end up alone at the end of a line.
