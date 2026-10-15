@@ -42,12 +42,12 @@
 
 {% macro card_img(i) -%}
 {# card frame image: decorative, the card's title names the link #}
-<img class="thumb-img" src="{{ R }}{{ i.card }}" alt="" loading="lazy" decoding="async">
+<img class="thumb-img" src="{{ R }}{{ i.card }}" style="object-position:{{ i.focus }}" alt="" loading="lazy" decoding="async">
 {%- endmacro %}
 {% macro img_band(i) -%}
 {# wide image band under the dark header of an article / Briefing / ASA NEXT page #}
 <figure class="img-band wrap">
-  <div class="img-band-frame"><img src="{{ R }}{{ i.lg }}"{% if not i.illustration %} srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(min-width: 1240px) 1144px, 92vw"{% endif %} alt="{{ i.alt }}" decoding="async" fetchpriority="high"></div>
+  <div class="img-band-frame"><img src="{{ R }}{{ i.lg }}" style="object-position:{{ i.focus }}"{% if not i.illustration %} srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(min-width: 1240px) 1144px, 92vw"{% endif %} alt="{{ i.alt }}" decoding="async" fetchpriority="high"></div>
   {% if not i.illustration %}<figcaption>{{ T.photo }}: <a href="{{ i.source }}" target="_blank" rel="noopener"><bdi>{{ i.photographer }}</bdi></a> / <bdi>{{ i.site }}</bdi></figcaption>{% endif %}
 </figure>
 {%- endmacro %}

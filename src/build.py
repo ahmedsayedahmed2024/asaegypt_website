@@ -125,7 +125,12 @@ def image_for(item, kind, L):
     for f in (lg, card):
         if not os.path.exists(os.path.join(ROOT, 'public', f)):
             sys.exit(f"ERROR: {kind} '{item['slug']}' has an image but public/{f} is missing")
-    return dict(lg=lg, card=card, alt=im['alt_' + L], illustration=illustration,
+    # focus: the image's focal point as CSS object-position ("x% y%"), so the subject stays in view when the
+    # image is cropped (image band, cards, homepage hexagon). Optional; the centre is used when it is missing.
+    focus = im.get('focus', '50% 50%')
+    if not re.fullmatch(r'(100|[1-9]?\d)% (100|[1-9]?\d)%', focus):
+        sys.exit(f"ERROR: {kind} '{item['slug']}' has an invalid image focus {focus!r} (expected e.g. \"70% 50%\")")
+    return dict(lg=lg, card=card, alt=im['alt_' + L], illustration=illustration, focus=focus,
                 photographer=im.get('photographer'), site=im.get('site'), source=im.get('source'))
 
 def news_by_date():

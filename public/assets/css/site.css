@@ -266,6 +266,18 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.mark .s{opacity:1;transform:none}}
 
+/* desktop hero: the hexagon is sized from the window HEIGHT so the whole of it (arrows and dashes included) fits
+   between the fixed header (84px) and the bottom of the screen: height = clamp(380px, 100vh - header - 2 x gap, column width).
+   The text column scales with the height too, so it never makes the row taller than the hexagon. Tablet/mobile unchanged. */
+@media (min-width:1081px){
+  .hero{--hg:clamp(14px,3.4vh,44px)}
+  .hero .wrap{padding-top:calc(84px + var(--hg));padding-bottom:calc(131px + var(--hg))}
+  .hero .art{width:clamp(361px,calc((100vh - 84px - 2 * var(--hg)) * 112 / 118),100%)}
+  .hero h1{font-size:clamp(2.3rem,min(5.2vw,8.6vh),4.3rem);margin-bottom:clamp(12px,2.8vh,26px)}
+  .hero .kicker{margin-bottom:clamp(10px,2vh,18px)}
+  .hero .lead{font-size:clamp(1.02rem,min(1.5vw,2.3vh),1.25rem);margin-bottom:clamp(18px,4.2vh,38px)}
+}
+
 /* responsive */
 @media (max-width:1080px){
   .nav,.header-cta .btn{display:none}

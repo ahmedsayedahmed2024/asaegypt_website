@@ -61,6 +61,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
 ## Homepage hexagon
 - Shows the 8 items most recently **added** to the site, from Insights, Briefing and ASA NEXT together, newest first (sorted by `added`, then `added_at`). 6 seconds per item.
 - Built by `brief_slots()` in `src/build.py`; the count is `BRIEF_COUNT`. Briefing items use `short_en/ar` as the headline.
+- Size (desktop, wider than 1080px): set from the window height so the whole hexagon, arrows and dashes included, is visible on first load at 100% zoom: height = 100vh − header (84px) − gaps, at least 380px, at most the column width (about 523px). The hero text scales with the height too. Tablet and mobile have their own fixed sizes.
 - Controls: previous / next arrows (mirrored in Arabic), progress bars, swipe on touch screens, left/right keys when the hexagon has focus. It pauses on hover and keyboard focus. The intro animation plays once per browser session. With reduced motion it does not rotate.
 
 ## Images
@@ -69,7 +70,8 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 ### Source
 - Real photos only, from **Unsplash** (unsplash.com) or **Pexels** (pexels.com), under their free licences that allow commercial use. Never Unsplash+ (premium) photos. Never any other website.
 - If a site needs an API key or blocks the download, do not use another website: stop and report exactly what is needed.
-- Store in the item's data: `image=dict(source=<photo page URL>, photographer=<name as shown on the photo page>, site="Unsplash"|"Pexels", licence="Unsplash License"|"Pexels License", alt_en=..., alt_ar=...)`.
+- Store in the item's data: `image=dict(focus="x% y%", source=<photo page URL>, photographer=<name as shown on the photo page>, site="Unsplash"|"Pexels", licence="Unsplash License"|"Pexels License", alt_en=..., alt_ar=...)`.
+- **Every new image (photo or illustration) gets a focus point**: `focus` is the main subject's position as CSS `object-position` ("x% y%", e.g. `"70% 50%"`; 0% 0% is the top-left corner). It keeps the subject in view where the image is cropped: the wide image band on item pages (crops top and bottom), the cards, and the near-square homepage hexagon (crops the sides). Pick the sharp, recognisable part (e.g. the sharp edge of a paper stack, not its blurred middle) and check the band, a card and the hexagon in the browser. Without `focus` the centre is used; an invalid value stops the build.
 - Alt text: describe what the photo shows, in both languages (Arabic in فصحى, not a literal translation).
 
 ### Content (very strict)
@@ -85,7 +87,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 - Never commit the original full-size download. Never commit an image over 300 KB (the build fails).
 
 ### ASA NEXT illustrations (no photos)
-- One original SVG per item: `public/assets/img/content/next/<slug>.svg`, data `image=dict(kind="illustration", alt_en=..., alt_ar=...)`.
+- One original SVG per item: `public/assets/img/content/next/<slug>.svg`, data `image=dict(focus="x% y%", kind="illustration", alt_en=..., alt_ar=...)`.
 - Style: dark #23262B background, lime #C3D648, the logo blues (#80CAE3, #A6D8EE, #B2DCF2), the Spark star, hexagon and stripe motifs. Flat, modern, no people, no text (no letters or numerals).
 
 ### Where images appear (built automatically from the data)
