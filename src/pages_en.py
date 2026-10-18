@@ -326,6 +326,15 @@ BRIEFING = dict(
     disclaimer="Briefing items summarise official publications for general information. Always refer to the original source; please contact us to discuss your specific circumstances.",
 )
 
+LATEST = dict(
+    title="Latest from ASA | ASA",
+    desc="The three most recent updates from ASA Briefing and ASA Insights.",
+    kicker="Latest", h1="Latest from ASA",
+    lead="The three most recent updates from ASA Briefing and ASA Insights, newest first.",
+    kicker_news="ASA Briefing", kicker_article="ASA Insights", new="New", read="Read",
+    all_briefing="All Briefing", all_insights="All Insights",
+)
+
 NEXT_PAGE = dict(
     title="ASA NEXT | Career growth and practical tips for juniors | ASA",
     desc="ASA NEXT: career guidance and practical tips for juniors in their first five years in audit, tax and advisory.",
