@@ -24,7 +24,8 @@ CATS = {
 
 # Institution registry: acronym -> (category, English name, Arabic name or None, reference number or None).
 # Each institution has its MAIN category (when it has several roles). Arabic names are taken from the
-# approved Arabic text. The reference gives the card's "Official site" link (from the references list).
+# approved Arabic text. The reference gives the card's "Official site" link (from the references list);
+# a URL instead of a number links an official site that is not in the references (approved by Ahmed).
 INST = {
     'IFAC': ('pao', "International Federation of Accountants", "الاتحاد الدولي للمحاسبين", 1),
     'IAASB': ('std', "International Auditing and Assurance Standards Board", "المجلس الدولي لمعايير المراجعة والتأكيد", 27),
@@ -41,7 +42,7 @@ INST = {
     'GASB': ('std', "Governmental Accounting Standards Board", "مجلس معايير المحاسبة الحكومية الأمريكي", 31),
     'FAF': ('std', "Financial Accounting Foundation", "مؤسسة المحاسبة المالية الأمريكية", 31),
     'PCAOB': ('reg', "Public Company Accounting Oversight Board", "مجلس الرقابة على محاسبة الشركات العامة", 32),
-    'SEC': ('reg', "Securities and Exchange Commission", "هيئة الأوراق المالية والبورصات الأمريكية", None),
+    'SEC': ('reg', "Securities and Exchange Commission", "هيئة الأوراق المالية والبورصات الأمريكية", "https://www.sec.gov/"),
     'IFIAR': ('net', "International Forum of Independent Audit Regulators", "المنتدى الدولي لهيئات الرقابة المستقلة على المراجعة", 8),
     'FRC': ('reg', "Financial Reporting Council", "مجلس التقارير المالية البريطاني", 11),
     'CEAOB': ('reg', "Committee of European Auditing Oversight Bodies", "لجنة الهيئات الأوروبية للرقابة على المراجعة", 42),
@@ -200,7 +201,7 @@ def model(slug_, L, ref_urls=None):
         e = INST[acr]
         cid = 'i-' + slug(acr)
         ids.setdefault(acr, cid)
-        ref = refs.get(e[3]) if e[3] else None
+        ref = dict(url=e[3]) if isinstance(e[3], str) else refs.get(e[3]) if e[3] else None
         other = c['other'] or (e[2] if L == 'en' else e[1])
         return dict(kind='inst', id=cid, acr=acr, cat=e[0], n=c['n'], name=c['name'], other=other,
                     badge=BADGE_LINES.get(acr, (acr,)), blocks=[block(b) for b in c['blocks']],
