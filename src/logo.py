@@ -2,7 +2,8 @@
 
 Writes public/assets/img/logo-asa.svg (white wordmark, for dark backgrounds), logo-asa-dark.svg
 (grey wordmark, for light backgrounds) and favicon.svg. With --png (needs cairosvg) it also writes
-favicon-32.png, apple-touch-icon.png and logo_color@3x.png.
+favicon-32.png, apple-touch-icon.png, logo_color@3x.png and signature/logo-sig.png (email signature logo,
+grey wordmark, 450x134 = 3x of 150x45, transparent; its URL must never change).
 The hexagon (12 straight-edged stripes) and the "ASA" wordmark are traced from the original logo artwork,
 which is final (trademark): do not change the shapes. The wordmark is outlined, so no font is needed.
 The large homepage hexagon (mark.py) is a separate, slightly different drawing; it is not used here.
@@ -84,3 +85,5 @@ if __name__ == '__main__':
         # 180px tile on the dark brand background; the mark is 146px tall, as before
         write('apple-touch-icon.png', png(icon_svg('#23262B', 180 / 146), 180, 180))
         write('logo_color@3x.png', png(logo_svg(GREY), W * 3, H * 3))
+        os.makedirs(os.path.join(IMG, 'signature'), exist_ok=True)
+        write('signature/logo-sig.png', png(logo_svg(GREY), 450, 134))

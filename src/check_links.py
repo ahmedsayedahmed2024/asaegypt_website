@@ -1,5 +1,6 @@
 """Fail the build if any internal link or asset in dist/ points to a missing file,
-or if any image in public/ is over the size limit (CLAUDE.md, "Images")."""
+or if any image is over the size limit (CLAUDE.md, "Images"): every image in public/, and every image the
+build generates into dist/ (e.g. the email signature banners in dist/assets/img/signature/)."""
 import os, re, sys
 from urllib.parse import urlparse, unquote
 
@@ -31,11 +32,15 @@ for root, _, files in os.walk(DIST):
                 missing.add((os.path.relpath(os.path.join(root, f), DIST), url))
 print(f'{pages} pages checked')
 big = []
-for root, _, files in os.walk(os.path.join(ROOT, 'public')):
-    for f in files:
-        path = os.path.join(root, f)
-        if f.lower().endswith(IMG_EXT) and os.path.getsize(path) > IMG_MAX_KB * 1024:
-            big.append((os.path.relpath(path, ROOT), os.path.getsize(path) // 1024))
+PUBLIC = os.path.join(ROOT, 'public')
+for base in (PUBLIC, DIST):
+    for root, _, files in os.walk(base):
+        for f in files:
+            path = os.path.join(root, f)
+            if base == DIST and os.path.exists(os.path.join(PUBLIC, os.path.relpath(path, DIST))):
+                continue  # copied from public/: already checked
+            if f.lower().endswith(IMG_EXT) and os.path.getsize(path) > IMG_MAX_KB * 1024:
+                big.append((os.path.relpath(path, ROOT), os.path.getsize(path) // 1024))
 for path, kb in big:
     print(f'IMAGE TOO LARGE: {path} is {kb} KB (limit {IMG_MAX_KB} KB)')
 if missing:
@@ -43,4 +48,4 @@ if missing:
         print(f'BROKEN: {page} -> {url}')
 if missing or big:
     sys.exit(1)
-print(f'All internal links OK; all images in public/ are under {IMG_MAX_KB} KB')
+print(f'All internal links OK; all images in public/ and generated images in dist/ are under {IMG_MAX_KB} KB')

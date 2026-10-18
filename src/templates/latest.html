@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block main %}
+{{ m.hero([(D.h1,None)], D.kicker, D.h1, D.lead) }}
+<section class="sec">
+  <div class="wrap">
+    <div class="grid-3">{% for x in ITEMS %}
+      <a class="post latest-card rv" href="{{ x.url }}">
+        <div class="thumb">{% if x.image %}{{ m.card_img(x.image) }}{% else %}{{ MARK|safe }}{% endif %}<span class="tag">{{ x.kicker|bidi(L) }}</span></div>
+        <div class="body">
+          <p class="lt-kick"><span>{{ x.tag }}</span>{% if x.new %}<span class="lt-new">{{ D.new }}</span>{% endif %}</p>
+          <h3>{{ x.title|bidi(L) }}</h3>
+          <p>{{ x.summary|bidi(L) }}</p>
+          <div class="meta"><span>{{ x.meta_page|join(' · ') }}</span><span class="lt-read">{{ D.read }} {{ I('FaArrowRight') }}</span></div>
+        </div>
+      </a>{% endfor %}
+    </div>
+    <div class="lt-more">
+      <a class="btn btn-dark" href="{{ P('briefing') }}">{{ D.all_briefing }} {{ I('FaArrowRight','arrow') }}</a>
+      <a class="btn btn-line" href="{{ P('insights') }}">{{ D.all_insights }} {{ I('FaArrowRight','arrow') }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

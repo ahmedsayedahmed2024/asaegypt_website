@@ -24,8 +24,8 @@ C = {'en': content_en, 'ar': content_ar}
 ROUTES = {'home': '/', 'about': '/about/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
           'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/',
-          'search': '/search/'}
-NO_SITEMAP = {'search'}  # utility pages left out of sitemap.xml
+          'search': '/search/', 'latest': '/latest/'}
+NO_SITEMAP = {'search', 'latest'}  # utility pages left out of sitemap.xml
 for s in content_en.SERVICES:
     ROUTES[s['key']] = f"/services/{s['slug']}/"
 for a in articles_meta.ARTICLES:
@@ -171,12 +171,11 @@ def added_key(item, kind):
         print(f"WARNING: {kind} '{item['slug']}' has no 'added' date; using 'date' ({item['date']}) instead")
     return (item.get('added') or item['date']) + ' ' + item.get('added_at', '24:00')
 
-def recently_added(n=BRIEF_COUNT):
-    """The n items most recently added to the site, across Insights, Briefing and ASA NEXT: [(kind, slug)].
-    Newest first; ties keep the order of the data files (newer items sit higher in each list)."""
-    pool = [(added_key(a, 'article'), 'article', a['slug']) for a in articles_meta.ARTICLES]
-    pool += [(added_key(x, 'news'), 'news', x['slug']) for x in news.NEWS]
-    pool += [(added_key(x, 'next'), 'next', x['slug']) for x in nextdata.NEXT]
+def recently_added(n=BRIEF_COUNT, kinds=('article', 'news', 'next')):
+    """The n items most recently added to the site, across Insights, Briefing and ASA NEXT (or only `kinds`):
+    [(kind, slug)]. Newest first; ties keep the order of the data files (newer items sit higher in each list)."""
+    data = {'article': articles_meta.ARTICLES, 'news': news.NEWS, 'next': nextdata.NEXT}
+    pool = [(added_key(x, kind), kind, x['slug']) for kind in ('article', 'news', 'next') if kind in kinds for x in data[kind]]
     pool.sort(key=lambda p: p[0], reverse=True)  # stable: same key keeps file order
     return [(kind, slug) for _, kind, slug in pool[:n]]
 
@@ -254,6 +253,9 @@ def build(pages=None):
         import search
         importlib.reload(search)
         built += search.build(L, render, featured, news_items, next_items, path_for, C, DIST)
+        import signature_banner
+        importlib.reload(signature_banner)
+        built += signature_banner.build_page(L, render, sys.modules[__name__])
     return built
 
 def build_404():
@@ -267,3 +269,5 @@ if __name__ == '__main__':
     b = build()
     build_404()
     print(len(b), 'pages')
+    import signature_banner
+    signature_banner.build_banners(DIST, sys.modules[__name__])  # email signature banner; never fails the build

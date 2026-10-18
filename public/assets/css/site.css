@@ -807,3 +807,12 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 .img-band figcaption{margin-top:10px;font-size:.8rem;color:var(--muted)}
 .img-band figcaption a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .img-band figcaption a:hover{color:var(--ink)}
+/* /latest/: the 3 items of the email signature banner */
+.latest-card .lt-kick{display:flex;align-items:center;gap:10px;font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.latest-card .lt-new{background:var(--lime);color:var(--graphite);font-size:.68rem;font-weight:800;letter-spacing:.08em;padding:3px 7px}
+.latest-card .meta{align-items:center}
+.latest-card .lt-read{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--blue-dk)}
+.latest-card .lt-read svg{width:12px;height:12px}
+html[dir="rtl"] .latest-card .lt-read svg{transform:scaleX(-1)}
+html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
+.lt-more{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
