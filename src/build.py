@@ -229,7 +229,7 @@ def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx
     open(out, 'w', encoding='utf-8').write(html)
     return path
 
-ORG_SCHEMA = '''<script type="application/ld+json">{"@context":"https://schema.org","@type":"AccountingService","name":"ASA Chartered Accountants and Consultants","alternateName":"أحمد سيد أحمد محاسبون قانونيون ومستشارون","url":"https://asaegypt.com","logo":"https://asaegypt.com/assets/img/logo_color.png","telephone":"+201115652365","email":"ahmed.sayed@asaegypt.com","foundingDate":"2022","address":{"@type":"PostalAddress","streetAddress":"58A Teraat El Zomor St., Al Haram","addressLocality":"Giza","addressCountry":"EG"},"areaServed":["EG","SA"]}</script>'''
+ORG_SCHEMA = '''<script type="application/ld+json">{"@context":"https://schema.org","@type":"AccountingService","name":"ASA Chartered Accountants and Consultants","alternateName":"أحمد سيد أحمد محاسبون قانونيون ومستشارون","url":"https://asaegypt.com","logo":"https://asaegypt.com/assets/img/logo_color@3x.png","telephone":"+201115652365","email":"ahmed.sayed@asaegypt.com","foundingDate":"2022","address":{"@type":"PostalAddress","streetAddress":"58A Teraat El Zomor St., Al Haram","addressLocality":"Giza","addressCountry":"EG"},"areaServed":["EG","SA"]}</script>'''
 
 def build(pages=None):
     built = []

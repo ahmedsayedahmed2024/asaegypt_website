@@ -111,7 +111,7 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 .mobile-nav{visibility:hidden}
 .mobile-nav.open{transform:none!important;visibility:visible}
 .mobile-nav .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
-.mobile-nav .top img{height:30px}
+.mobile-nav .top img{height:30px;width:auto}
 .mobile-nav .close{color:#fff;font-size:24px;padding:8px}
 .mobile-nav a{color:#fff;font-size:1.2rem;font-weight:600;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .mobile-nav a.sub{font-size:1rem;font-weight:500;color:var(--soft);padding-inline-start:18px}
