@@ -75,7 +75,7 @@ def stripes_order():
 # balance label column. Names too long for their place wrap onto two lines (WRAP); the viewBoxes hold every label.
 LAYOUT = {
     'wide': dict(box={'en': '-590 -277 1180 538', 'ar': '-525 -280 1050 556'}, s=1,
-                 step_nm=27, step_nm2=25, step_en=21, bal_x=350),
+                 step_nm=27, step_nm2=25, step_en=21, bal_x={'en': 350, 'ar': 320}),
     'narrow': dict(box={'en': '-365 -258 730 523', 'ar': '-365 -252 730 506'}, s=.85,
                    step_nm=30, step_nm2=28, step_en=23, bal_x=None),
 }
@@ -186,7 +186,8 @@ def diagram(L, variant):
     # balance names and their two pillars, outside the hexagon (Arabic: on the left; English: on the right)
     if lay['bal_x']:
         sgn = -1 if L == 'ar' else 1
-        bxl, anc = sgn * lay['bal_x'], 'end' if L == 'ar' else 'start'
+        bxl, anc = sgn * lay['bal_x'][L], 'end' if L == 'ar' else 'start'
+        dy = 20 if L == 'ar' else 18   # the Arabic pillar pairs are set larger (site.css)
         o.append('<g class="hxd-bals">')
         for i, (a, b, _) in enumerate(BALANCES):
             y = G[a][1]
@@ -195,7 +196,7 @@ def diagram(L, variant):
             if y != 0:   # dotted leader from the side's end to the label
                 x_end = max(abs(G[a][0]), abs(G[b][0])) + 26
                 lead = f'<line x1="{bxl - sgn * 14:g}" y1="{y:g}" x2="{sgn * x_end:g}" y2="{y:g}" stroke="#4A4F57" stroke-width="1.5" stroke-dasharray="3 5"/>'
-            pair = ''.join(f'<text class="hxd-bp" x="{bxl:g}" y="{y + 18 + 17 * j:g}" text-anchor="{anc}">{E(t)}</text>'
+            pair = ''.join(f'<text class="hxd-bp" x="{bxl:g}" y="{y + dy + 17 * j:g}" text-anchor="{anc}">{E(t)}</text>'
                            for j, t in enumerate(WRAP[variant].get(bal['pair'], [bal['pair']])))
             o.append(f'<g class="hxd-bal" data-b="{i}">{lead}<text class="hxd-bn" x="{bxl:g}" y="{y - 4:g}" text-anchor="{anc}">{E(bal["name"])}</text>{pair}</g>')
         o.append('</g>')

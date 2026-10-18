@@ -849,6 +849,9 @@ html[lang="ar"] .hxg-hero .lead{line-height:1.8}
 html[lang="ar"] .hxd .hxd-nm,html[lang="ar"] .hxd .hxd-bn,html[lang="ar"] .hxd .hxd-bp,html[lang="ar"] .hxd .hxd-tr{font-family:var(--f-ar)}
 html[lang="ar"] .hxd .hxd-nm{font-size:22px}
 html[lang="ar"] .hxd .hxd-tr-lat{font-family:var(--f-en)}
+/* Arabic page: the English pillar names and the balance pairs stay readable (about 12px / 14px at 1366px wide) */
+html[lang="ar"] .hxd-wide .hxd-en{font-size:14.5px}
+html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 .hxd-narrow .hxd-num{font-size:18px}.hxd-narrow .hxd-nm,html[lang="ar"] .hxd-narrow .hxd-nm{font-size:25px}.hxd-narrow .hxd-en{font-size:15px}.hxd-narrow .hxd-tr{font-size:24px}
 .hxd-v,.hxd-hit{cursor:pointer}
 .hxd.alive .hxd-v,.hxd.alive .hxd-bal,.hxd.alive .hxd-beams line,.hxd.alive .hxd-stripes{transition:opacity .3s}
