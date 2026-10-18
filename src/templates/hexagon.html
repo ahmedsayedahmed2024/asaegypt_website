@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block main %}
+{# ASA Hexagon. Text: pages_en/pages_ar.HEXAGON; diagram and icons: hexagon.py; animation: assets/js/hexagon.js #}
+<section class="hxg-hero" id="hxg" aria-labelledby="hxg-h1">
+  <script>(function(){if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))document.getElementById('hxg').className+=' hxg-pre'})();</script>
+  <div class="hxg-fold">
+    <div class="wrap hxg-head">
+      <p class="kicker hxg-kick" dir="ltr" lang="en">{{ D.kicker }}</p>
+      <h1 id="hxg-h1" class="hxg-title">{% for t in D.h1 %}{% if not loop.first %}<span class="dot"> · </span>{% endif %}<span>{{ t }}</span>{% endfor %}</h1>
+      <p class="lead">{{ D.lead|bidi(L) }}</p>
+    </div>
+    <figure class="hxg-stage" role="group" aria-label="{{ D.figure }}">
+      {{ WIDE }}{{ NARROW }}
+      <figcaption class="sr">
+        <ol>{% for p in D.pillars %}<li>{{ p.name }}</li>{% endfor %}</ol>
+        <ul>{% for b in D.balances %}<li>{{ b.name }}: {{ b.pair }}</li>{% endfor %}</ul>
+        <p>{{ D.trust }}</p>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="wrap hxg-tail">
+    <div class="hxg-info">
+      <div class="hxg-msg on" data-b="-1">
+        <ul class="hxg-blist">{% for b in D.balances %}<li><b>{{ b.name }}</b><span>{{ b.pair }}</span></li>{% endfor %}</ul>
+        <p class="hxg-hint">{{ D.hint }}</p>
+      </div>
+      {% for b in D.balances %}<p class="hxg-msg" data-b="{{ loop.index0 }}"><b>{{ b.name }}</b> <span class="sep">—</span> <span class="pr">{{ b.pair }}</span><br>{{ b.text }}</p>{% endfor %}
+    </div>
+    <button type="button" class="hxg-replay" hidden><span aria-hidden="true">↻</span> {{ D.replay }}</button>
+  </div>
+</section>
+
+<section class="sec hxg-why" aria-labelledby="hxg-why">
+  {{ COMB }}
+  <div class="wrap">
+    <div class="prose rv">
+      <h2 id="hxg-why">{{ D.why_h }}</h2>
+      {% for p in D.why %}<p>{{ p|safe }}</p>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec tint hxg-hive" aria-labelledby="hxg-hive">
+  <div class="wrap">
+    <div class="hxg-sh rv"><h2 id="hxg-hive">{{ D.hive_h }}</h2><p class="lead">{{ D.hive_p }}</p></div>
+    <div class="grid-4">
+      {% for h in D.hive %}<div class="hxg-card rv" style="transition-delay:{{ loop.index0*70 }}ms">{{ HIVE_ICONS[loop.index0] }}<h3>{{ h.name }}</h3><p>{{ h.text }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec hxg-pillars" aria-labelledby="hxg-pillars">
+  <div class="wrap">
+    <div class="hxg-sh rv"><h2 id="hxg-pillars">{{ D.pillars_h }}</h2><p class="lead">{{ D.pillars_p|bidi(L) }}</p></div>
+    <ol class="grid-3 hxg-plist">
+      {% for p in D.pillars %}
+      <li class="hxg-pillar rv" style="transition-delay:{{ (loop.index0 % 3)*70 }}ms">
+        <div class="hxg-ptop">{{ PILLAR_ICONS[loop.index0] }}<span class="hxg-pn" dir="ltr">{{ loop.index }}</span></div>
+        <h3>{{ p.name }}</h3>
+        <p>{{ p.define|bidi(L) }}</p>
+        <p class="hxg-work"><b>{{ D.work }}</b> {{ p.practice|bidi(L) }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="sec dark hxg-bals" aria-labelledby="hxg-bals">
+  <div class="wrap">
+    <div class="hxg-sh rv"><h2 id="hxg-bals">{{ D.balances_h }}</h2><p class="lead">{{ D.balances_p }}</p></div>
+    <div class="hxg-brows">
+      {% for b in D.balances %}
+      <div class="hxg-brow rv">
+        {{ BALANCE_ICONS[loop.index0] }}
+        <div class="hxg-bhead"><h3>{{ b.name }}</h3><p class="hxg-bpair">{{ b.pair }}</p></div>
+        <p class="hxg-btext">{{ b.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="hxg-close rv">{{ D.close|safe }}</p>
+  </div>
+</section>
+
+<section class="sec hxg-end" aria-labelledby="hxg-practice">
+  <div class="wrap">
+    <div class="prose rv">
+      <h2 id="hxg-practice">{{ D.practice_h }}</h2>
+      <p>{{ D.practice|safe }}</p>
+      <h3>{{ D.began_h }}</h3>
+      <p>{{ D.began }}</p>
+    </div>
+    <p class="hxg-refs rv">{{ D.refs|bidi(L) }}</p>
+  </div>
+</section>
+<script src="{{ R }}assets/js/hexagon.js?v={{ V }}" defer></script>
+{% endblock %}

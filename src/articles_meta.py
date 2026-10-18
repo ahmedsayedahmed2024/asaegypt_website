@@ -76,7 +76,7 @@ ARTICLES = [
  dict(slug="ifrs-18-egypt-what-changes", minutes=7,
       added="2026-10-14", added_at="09:52",
       date="2026-10-14", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
-      role_en="Founder & Managing Partner", role_ar="المؤسس والشريك المدير",
+      role_en="Managing Partner", role_ar="الشريك المدير",
       category="ifrs",
       image=dict(focus="82% 55%", source="https://unsplash.com/photos/stack-of-papers-V29UWcALNko",
                  photographer="ron dyar", site="Unsplash", licence="Unsplash License",

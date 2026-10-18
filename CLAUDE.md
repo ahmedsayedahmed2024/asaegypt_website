@@ -1,7 +1,8 @@
 # asaegypt.com — instructions for Claude
 
 Website of **ASA Chartered Accountants and Consultants** (أحمد سيد أحمد محاسبون قانونيون ومستشارون), Giza, Egypt.
-Owner: Ahmed Sayed, Founder & Managing Partner.
+Owner: Ahmed Sayed, Managing Partner.
+**Ahmed's title everywhere: "Managing Partner" / «الشريك المدير» (never "Founder").**
 
 ## How the site is built
 - `src/` is the source: Python + Jinja2.
@@ -11,6 +12,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images").
   - `search.py`: the search pages and the search index. See "Site search" below.
   - `signature_banner.py`: the email signature banner and the `/latest/` pages. See "Email signature banner" below.
+  - `hexagon.py`: the ASA Hexagon page (diagram, icons, Open Graph images). See "ASA Hexagon" below.
   - `logo.py`: writes the vector logo files (`logo-asa.svg`, `logo-asa-dark.svg`, `favicon.svg`; with `--png` also `favicon-32.png`, `apple-touch-icon.png`, `logo_color@3x.png`). Run by hand only when the logo changes; not part of the build.
 - `public/` holds static files (`assets/` CSS/JS/fonts/images, `CNAME`). They are copied into `dist/` before the build.
 - Content lives in:
@@ -106,7 +108,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 ## Insights (articles)
 - Metadata in `src/articles_meta.py` → `ARTICLES`; text in `articles_en.py` / `articles_ar.py` → `ART[slug]`.
 - Each article has `added` (see above) and `category`: a key of `CATEGORIES` in `articles_meta.py`.
-- Byline: the default for articles not signed by a person is **"ASA Insights Team" / «فريق ASA»**: `author_en="ASA Insights Team"`, `author_ar="فريق ASA"`, `role_en=""`, `role_ar=""`. It shows as "By ASA Insights Team" / «بقلم فريق ASA». Articles signed by a person keep their name and job title (e.g. "By Ahmed Sayed Ahmed, Founder & Managing Partner").
+- Byline: the default for articles not signed by a person is **"ASA Insights Team" / «فريق ASA»**: `author_en="ASA Insights Team"`, `author_ar="فريق ASA"`, `role_en=""`, `role_ar=""`. It shows as "By ASA Insights Team" / «بقلم فريق ASA». Articles signed by a person keep their name and job title (e.g. "By Ahmed Sayed Ahmed, Managing Partner" / «بقلم أحمد سيد أحمد، الشريك المدير»).
 - `CATEGORIES` is the one place for Insights categories (EN + AR names). The tabs on `/insights/` are built from it automatically: a tab appears only when at least one article uses that category; order is All, then categories by number of articles (most first).
 - **When a new article needs a category that does not exist yet, add it to `CATEGORIES` in both languages.** Its tab then appears automatically. Never hard-code tabs in the template.
 
@@ -115,9 +117,19 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 - The banner shows each item's own `date` (for Briefing, the source's publication date), never the `added` date.
 - Only professional published content may appear in the banner: it is generated from the site data, nothing else.
 - The banner links to `/latest/` and `/ar/latest/` (`?utm_source=email&utm_medium=signature`): the same 3 items as cards. These pages are `noindex` and stay out of the sitemap and the menu.
+- Under the hexagon mark: a small "ASA HEXAGON" tag (lime, letter-spaced), in every frame and in both languages.
 - How it works: headless Chromium (Playwright) draws each frame from an HTML/SVG template with the site's fonts embedded; Pillow builds the GIF; gifsicle shrinks it. Frame 1 must always be item 1, complete (Outlook on Windows shows only the first frame). Each GIF must stay under 290 KB (`check_links.py` fails the build on any image over 300 KB, generated banners included; no exceptions); if it is too big, the script uses fewer animation steps first, then lossy compression.
 - If rendering fails, the build does not fail: it keeps the banners currently on asaegypt.com, or writes a simple static banner, and prints a warning.
 - `public/assets/img/signature/logo-sig.png` (the signature logo, 450x134, from `logo-asa-dark.svg`) is written by `python src/logo.py --png`.
+
+## ASA Hexagon
+- Page `/hexagon/` and `/ar/hexagon/`: text in `pages_en.py` / `pages_ar.py` → `HEXAGON` (approved by Ahmed: never add to it or "improve" it); diagram, icons and Open Graph images in `src/hexagon.py`; animation in `public/assets/js/hexagon.js`.
+- **Fixed, never change:** the six pillars (1 Independence / الاستقلالية, 2 Quality & professional behaviour / الجودة والسلوك المهني, 3 Integrity / النزاهة, 4 Objectivity / الموضوعية, 5 Confidentiality / السرية, 6 Competence & due care / الكفاءة والعناية المهنية); the three balances (top line 1–2 Balance of credibility / ميزان المصداقية, middle dashed line 3–4 Balance of judgement / ميزان الحكم, bottom line 5–6 Balance of responsibility / ميزان المسؤولية); and the corner order: Arabic 1 top-right, 2 top-left, 3 right, 4 left, 5 bottom-right, 6 bottom-left; English mirrored (1 top-left, 2 top-right, 3 left, 4 right, 5 bottom-left, 6 bottom-right).
+- The diagram's hexagon outline and stripes come from the traced logo geometry (`logo.py`); never redraw them.
+- **Never** add religious references, self-praise or any personal story to this page or anywhere on the site. **Never** publish internal methodology details (internal file names, codes, templates or quality routes).
+- "ASA Hexagon" is always written in Latin letters, with capital A-S-A and capital H, in both languages (never «هيكساجون ASA» or «ASA هيكساجون»). In the menu: "ASA" in the menu colour and "Hexagon" in the logo blue #80CAE3 (#1C7AA6 on the white header).
+- Header: "ASA Hexagon" comes right after About / «من نحن». Contact / «تواصل معنا» is not in the top menu (it stays in the mobile menu and the footer); the whole header stays on one line from 1081px up.
+- Open Graph images (`public/assets/img/og-hexagon-en.png`, `og-hexagon-ar.png`, 1200x630): redraw them with `python src/hexagon.py --og` (after a build) whenever the page title or the diagram changes.
 
 ## Site search
 - Header search button on every page (EN "Search" / AR «بحث»), shortcuts "/" and Ctrl+K, and the search pages `/search/` and `/ar/search/` (`?q=`). The 404 page has a search box.

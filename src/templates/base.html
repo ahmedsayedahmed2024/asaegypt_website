@@ -14,7 +14,7 @@
 <meta property="og:title" content="{{ title }}">
 <meta property="og:description" content="{{ desc }}">
 <meta property="og:url" content="{{ SITE }}{{ path }}">
-<meta property="og:image" content="{{ SITE }}/assets/img/og.png">
+<meta property="og:image" content="{{ SITE }}{{ og_image or '/assets/img/og.png' }}">
 <meta property="og:locale" content="{{ 'ar_EG' if L=='ar' else 'en_US' }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#23262B">
@@ -37,6 +37,7 @@
     <nav aria-label="{{ T.mainnav }}">
       <ul class="nav">
         <li><a href="{{ P('about') }}"{% if section=='about' %} aria-current="page"{% endif %}>{{ T.nav.about }}</a></li>
+        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
         <li class="has-dd">
           <button aria-expanded="false" aria-haspopup="true"{% if section=='services' %} style="color:var(--lime);opacity:1"{% endif %}>{{ T.nav.services }} {{ I('FaChevronDown') }}</button>
           <div class="dropdown">
@@ -48,7 +49,6 @@
         <li><a href="{{ P('insights') }}"{% if section=='insights' %} aria-current="page"{% endif %}>{{ T.nav.insights }}</a></li>
         <li><a href="{{ P('briefing') }}"{% if section=='briefing' %} aria-current="page"{% endif %}>{{ T.nav.briefing }}</a></li>
         <li><a class="nav-next" href="{{ P('next') }}"{% if section=='next' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span></a></li>
-        <li><a href="{{ P('contact') }}"{% if section=='contact' %} aria-current="page"{% endif %}>{{ T.nav.contact }}</a></li>
       </ul>
     </nav>
     <button type="button" class="search-btn" data-open-search aria-label="{{ T.search.btn }}" title="{{ T.search.btn }} (/)" aria-expanded="false" aria-controls="site-search">{{ I('Search') }}</button>
@@ -79,6 +79,7 @@
   <div class="top"><img src="{{ R }}assets/img/logo-asa.svg" alt="ASA" width="101" height="30"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
   <a href="{{ P('about') }}">{{ T.nav.about }}</a>
+  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
   <a href="{{ P('services') }}">{{ T.nav.services }}</a>
   {% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}
   <a href="{{ P('who') }}">{{ T.nav.who }}</a>
@@ -110,6 +111,7 @@
       <h4>{{ T.firm }}</h4>
       <ul>
         <li><a href="{{ P('about') }}">{{ T.nav.about }}</a></li>
+        <li><a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
         <li><a href="{{ P('approach') }}">{{ T.nav.approach }}</a></li>
         <li><a href="{{ P('who') }}">{{ T.nav.who }}</a></li>
         <li><a href="{{ P('people') }}">{{ T.nav.people }}</a></li>
@@ -120,7 +122,7 @@
       </ul>
     </div>
     <div>
-      <h4>{{ T.nav.contact }}</h4>
+      <h4><a href="{{ P('contact') }}">{{ T.nav.contact }}</a></h4>
       <ul class="contact">
         <li>{{ I('FaLocationDot') }}<span>{{ T.address }}</span></li>
         <li>{{ I('FaPhone') }}<a href="tel:+201115652365"><span class="ltr">+20 111 565 2365</span></a></li>
