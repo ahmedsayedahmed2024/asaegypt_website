@@ -5,9 +5,13 @@
 #   author_en, author_ar, role_en, role_ar: a named author with their job title, or for team articles
 #     author "ASA Insights Team" / "فريق ASA" with empty roles (byline "By ASA Insights Team" / «بقلم فريق ASA»),
 #   category (a key of CATEGORIES below), title(en, ar), summary(en, ar),
+#   short (optional): (en, ar) shorter title for the homepage hexagon, cards and the email banner,
+#   reviewed (optional, YYYY-MM-DD): "Last reviewed" date of a reference guide (src/guide.py),
 #   image: the article's photo (REQUIRED for new articles when a suitable photo exists; see CLAUDE.md, "Images"):
 #     dict(source=photo page URL, photographer, site="Unsplash"|"Pexels", licence, alt_en, alt_ar).
 #     Files: public/assets/img/content/articles/<slug>-lg.webp and <slug>-card.webp.
+#     A reference guide may use an original cover instead: dict(kind="cover", focus, alt_en, alt_ar) with
+#     <slug>.svg (image band) + <slug>-card.webp (cards) + <slug>-og.png (share image), drawn by src/guide_cover.py.
 # The byline (author + role) is the only place a person's name may appear on the site (CLAUDE.md rule 1).
 
 # The one place for Insights categories (EN, AR). The tabs on /insights/ are built from the categories
@@ -22,9 +26,24 @@ CATEGORIES = {
     'startups': ("Startups", "الشركات الناشئة"),
     'ai-tech': ("AI & Technology", "الذكاء الاصطناعي والتقنية"),
     'economy': ("Economy", "الاقتصاد"),
+    'guides': ("Professional guides", "أدلة مهنية"),
 }
 
 ARTICLES = [
+ dict(slug="global-accounting-auditing-institutions", minutes=20,
+      added="2026-10-18", added_at="19:18",
+      date="2026-10-18", reviewed="2026-10-18", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
+      role_en="Managing Partner", role_ar="الشريك المدير",
+      category="guides",
+      image=dict(focus="50% 50%", kind="cover",
+                 alt_en="Illustration: a loose honeycomb of hexagon badges carrying the acronyms of accounting and auditing institutions, in five colours on a dark background",
+                 alt_ar="رسم توضيحي: خلية سداسية متباعدة من شارات تحمل اختصارات مؤسسات المحاسبة والمراجعة بخمسة ألوان على خلفية داكنة"),
+      title=("The Institutions Behind the Global Accounting and Auditing Profession",
+             "المؤسسات والهيئات التي تشكّل مهنة المحاسبة والمراجعة حول العالم"),
+      short=("Who sets, enforces and licenses: the profession's institutions",
+             "من يضع القواعد ومن يراقب ومن يرخّص: خريطة مؤسسات المهنة"),
+      summary=("A structured map of the institutions that set standards, oversee audit quality, educate accountants and license auditors, with their counterparts in Egypt and Saudi Arabia.",
+               "خريطة منظمة للجهات التي تضع المعايير وتراقب جودة المراجعة وتؤهل المحاسبين وترخّص للمراجعين، مع الجهات المقابلة في مصر والسعودية.")),
  dict(slug="ai-in-audit-what-has-changed", minutes=7,
       added="2026-10-16", added_at="21:30",
       date="2026-10-16", author_en="ASA Insights Team", author_ar="فريق ASA",

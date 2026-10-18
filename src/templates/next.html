@@ -8,11 +8,11 @@
     <p class="lead">{{ D.intro }}</p>
   </div>
 </section>
-{% for key, label, desc, items in BLOCKS %}
+{% for key, label, desc, items, refs in BLOCKS %}
 <section class="sec{{ ' sec-near' if loop.first }}{{ ' tint' if not loop.first }} nx-block" id="{{ key }}" aria-labelledby="h-{{ key }}">
   <div class="wrap">
     <div class="sec-head rv"><div><p class="kicker" dir="ltr">ASA NEXT</p><h2 id="h-{{ key }}">{{ label }}</h2></div><p class="lead">{{ desc }}</p></div>
-    {% if items %}<div class="grid-3">{% for n in items %}{{ m.nx_card(n, D) }}{% endfor %}</div>
+    {% if items or refs %}<div class="grid-3">{% for a in refs %}{{ m.nx_ref(a, D) }}{% endfor %}{% for n in items %}{{ m.nx_card(n, D) }}{% endfor %}</div>
     {% else %}<p class="bf-empty">{{ D.empty }}</p>{% endif %}
   </div>
 </section>

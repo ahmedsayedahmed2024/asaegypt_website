@@ -18,6 +18,13 @@ SECTIONS = {
     'desk': ("Junior Desk", "ركن الجونيور"),
 }
 
+# Reference cards on the /next/ landing page: Insights reference guides that help juniors, shown first in
+# their block. key = the guide's route key; the card takes the guide's image, summary, byline and date.
+REFS = [
+ dict(key="art-global-accounting-auditing-institutions", section="first5",
+      title_en="Reference: who's who in the profession", title_ar="مرجع: من هو من في المهنة"),
+]
+
 NEXT = [
  dict(slug="first-five-years-roadmap", section="first5", date="2026-10-14", added="2026-10-14", added_at="18:01",
       byline_en="ASA Team", byline_ar="فريق ASA",

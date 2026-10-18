@@ -96,5 +96,19 @@
     b.addEventListener('click',function(){var o=a.hidden;a.hidden=!o;b.setAttribute('aria-expanded',o);b.textContent=o?b.dataset.hide:b.dataset.show});
   });
 
+  // phones: the floating buttons (WhatsApp, back to top) step aside while the page scrolls down, so they never sit
+  // over the text being read; they come back when scrolling up, at the top and at the end of the page
+  var fabMq=window.matchMedia('(max-width: 767px)'),fabY=window.scrollY,fabT;
+  function fab(){
+    var y=window.scrollY,end=y+window.innerHeight>=document.documentElement.scrollHeight-160,away=document.body.classList.contains('fab-away');
+    if(!fabMq.matches||y<80||end)away=false;
+    else if(y>fabY+6)away=true;
+    else if(y<fabY-6)away=false;
+    document.body.classList.toggle('fab-away',away);fabY=y;
+    clearTimeout(fabT);
+    if(!away&&fabMq.matches&&y>=80&&!end)fabT=setTimeout(function(){document.body.classList.add('fab-away')},2500); // back out of the way after a pause
+  }
+  window.addEventListener('scroll',fab,{passive:true});
+
   var y=document.querySelectorAll('[data-year]');y.forEach(function(e){e.textContent=new Date().getFullYear()});
 })();

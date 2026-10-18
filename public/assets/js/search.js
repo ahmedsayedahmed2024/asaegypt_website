@@ -7,7 +7,7 @@
   var cfg=JSON.parse(panel.getAttribute('data-cfg')),S=cfg.s;
   var GROUPS=['insights','briefing','next','services','pages'];
   var PER_GROUP=5,MIN_CHARS=2;
-  var WEIGHT={t:100,c:10,m:10,b:1};          // title > summary (and category) > body
+  var WEIGHT={t:100,k:30,c:10,m:10,b:1};     // title > keywords > summary (and category) > body
   var WORD=/[\p{L}\p{N}\p{M}ـ]+/gu;     // a word in the original text (keeps Arabic marks inside the word)
   var store=function(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}};
 
@@ -66,7 +66,7 @@
         var vocab=new Map();
         list.forEach(function(d,i){
           d.lang=lang;d.i=i;d.f={};
-          ['t','c','m','b'].forEach(function(k){
+          ['t','k','c','m','b'].forEach(function(k){
             var set=new Set();
             (norm(d[k]||'').match(WORD)||[]).forEach(function(w){variants(w).forEach(function(v){set.add(v);vocab.set(v,1)})});
             d.f[k]=set;

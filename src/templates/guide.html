@@ -1,0 +1,114 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{# Reference guide (long Insights article with a structured body). Page model: src/guide.py. Script: assets/js/guide.js #}
+{% set U = GM.U %}{% set G = GM.G %}
+{% macro hex() %}<svg viewBox="0 0 100 87" aria-hidden="true" focusable="false"><polygon points="25,2 75,2 98,43.5 75,85 25,85 2,43.5"/></svg>{% endmacro %}
+{% macro badge(b) %}<span class="hxb cat-{{ b.cat }}">{{ hex() }}<b{% if b.badge|length > 1 %} class="two"{% elif b.acr|length > 4 %} class="long"{% endif %} dir="ltr" lang="en">{% for l in b.badge %}<span>{{ l }}</span>{% endfor %}</b></span>{% endmacro %}
+{% macro anchor(id) %}<a class="g-anchor" href="#{{ id }}" aria-label="{{ U.copy }}" title="{{ U.copy }}" data-copied="{{ U.copied }}">#</a>{% endmacro %}
+{% macro table(t) %}
+<div class="g-table{{ ' g-table-wide' if t.wide }}"><table>
+  <thead><tr>{% for h in t.head %}<th scope="col">{{ h|rich(L) }}</th>{% endfor %}</tr></thead>
+  <tbody>{% for r in t.rows %}
+    <tr{% if r.id %} id="{{ r.id }}" tabindex="-1"{% endif %}{% if r.cat %} class="cat-{{ r.cat }}"{% endif %}>{% for c in r.cells %}{% set lab = t.short[loop.index0] %}{% if loop.first %}<th scope="row">{% else %}<td data-l="{{ lab }}"><span class="gv">{% endif %}{% if loop.index0 == t.badge_col and r.acr %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% elif loop.first and r.cat and t.badge_col is none %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% endif %}{{ c|gcell(L) }}{% if loop.first %}</th>{% else %}</span></td>{% endif %}{% endfor %}</tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endmacro %}
+{% macro blocks(bs) %}{% for b in bs %}
+  {% if b.kind == 'p' %}<p{% if b.id %} id="{{ b.id }}" tabindex="-1"{% endif %}>{{ b.text|rich(L) }}</p>
+  {% elif b.kind == 'note' %}<aside class="g-note"><b class="g-note-k">{{ U.note|rich(L) }}</b><p>{{ b.text|rich(L) }}</p></aside>
+  {% elif b.kind == 'ul' %}<ul>{% for x in b.list %}<li>{{ x|rich(L) }}</li>{% endfor %}</ul>
+  {% elif b.kind == 'ol' %}<ol class="g-ol">{% for x in b.list %}<li>{{ x|rich(L) }}</li>{% endfor %}</ol>
+  {% elif b.kind == 'h3' %}<h3 class="g-h3">{{ b.text|rich(L) }}</h3>
+  {% elif b.kind == 'table' %}{{ table(b) }}
+  {% elif b.kind == 'steps' %}<ol class="g-steps">{% for t, x in b.list %}<li><span class="g-step-n" aria-hidden="true">{{ hex() }}<b>{{ loop.index }}</b></span><p><strong>{{ t|rich(L) }}</strong> {{ x|rich(L) }}</p></li>{% endfor %}</ol>
+  {% elif b.kind == 'cites' %}<p class="g-cites"><span>{{ U.sources }}</span>{% for c in b.chips %}<a class="g-chip" id="{{ c.id }}" href="#ref-{{ c.a }}" data-a="{{ c.a }}" data-z="{{ c.z }}" aria-label="{{ c.aria }}">{{ c.label }}</a>{% endfor %}</p>
+  {% elif b.kind == 'fig' %}<figure class="gfig" id="figure-{{ b.n }}">
+    {% if b.n < 3 %}<div class="gfig-in"><div class="gfig-w">{{ FIG(b.n, L, 'w', b.caption) }}</div><div class="gfig-n">{{ FIG(b.n, L, 'n', b.caption) }}</div></div>
+    {% else %}<div class="gfig-in g-path-wrap">
+      <ol class="g-path">{% for s in F3.steps %}<li class="g-step" style="--i:{{ loop.index0 }}"><span class="g-hex">{{ hex() }}<b>{{ loop.index }}</b></span><span class="g-step-t">{{ s }}</span></li>{% endfor %}</ol>
+      <div class="g-auth" style="--i:4"><b>{{ F3.end }}</b><span>{{ F3.end_sub }}</span></div>
+      <p class="g-path-note">{{ F3.note }}</p>
+    </div>{% endif %}
+    <figcaption><b>{{ b.caption|rich(L) }}</b>{% if b.text %}<span>{{ b.text|rich(L) }}</span>{% endif %}</figcaption>
+  </figure>
+  {% elif b.kind == 'inst' %}<article class="g-inst cat-{{ b.cat }}" id="{{ b.id }}" tabindex="-1" aria-labelledby="{{ b.id }}-h">
+    <header class="g-inst-head">{{ badge(b) }}
+      <div><span class="g-inst-n">{{ b.n }}</span><h3 id="{{ b.id }}-h">{{ b.name|rich(L) }}</h3>
+        <p class="g-inst-other" lang="{{ 'ar' if L == 'en' else 'en' }}" dir="{{ 'rtl' if L == 'en' else 'ltr' }}">{{ b.other }}</p></div>
+      {{ anchor(b.id) }}
+    </header>
+    {{ blocks(b.blocks) }}
+    {% if b.link %}<p class="g-off"><a href="{{ b.link.url }}" target="_blank" rel="noopener">{{ b.link.label }} <span aria-hidden="true">↗</span></a></p>{% endif %}
+  </article>
+  {% endif %}
+{% endfor %}{% endmacro %}
+{% block main %}
+<section class="page-hero art-hero g-hero">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('insights') }}">{{ T.nav.insights }}</a></nav>
+    <p class="kicker">{{ A.tag }}</p>
+    <h1>{{ A.title }}</h1>
+    <p class="g-label"><span>{{ U.reading }}</span><span aria-hidden="true">·</span><span>{{ U.reviewed }} <time datetime="{{ A.reviewed_iso }}">{{ A.reviewed }}</time></span></p>
+    <p class="lead">{{ G.lead }}</p>
+    <div class="meta"><span>{{ I('FaUserTie') }}{{ A.byline }}</span><span>{{ I('FaNewspaper') }}<time datetime="{{ A.date_iso }}">{{ A.date }}</time></span><span>{{ I('FaClock') }}{{ A.read }}</span></div>
+  </div>
+</section>{% if A.image %}
+{{ m.img_band(A.image) }}{% endif %}
+<div class="guide" id="guide">
+  <div class="g-bar">
+    <div class="wrap"><button type="button" class="g-bar-btn" aria-controls="g-toc" aria-expanded="false">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <b>{{ U.contents }}</b><span class="g-bar-now" aria-live="off"></span></button></div>
+    <span class="g-bar-prog" aria-hidden="true"><i></i></span>
+  </div>
+  <div class="g-scrim" hidden></div>
+  <div class="wrap g-grid{{ ' sec-near' if A.image }}">
+    <nav class="g-toc" id="g-toc" aria-label="{{ U.contents }}">
+      <div class="g-toc-head"><b>{{ U.contents }}</b><button type="button" class="g-toc-close" aria-label="{{ U.close }}">{{ I('FaXmark') }}</button></div>
+      <p class="g-toc-note">{{ G.toc_note }}</p>
+      <div class="g-toc-list">
+        <span class="g-prog" role="progressbar" aria-label="{{ U.progress }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></span>
+        <div class="g-toc-scroll"><ol>{% for t in GM.toc %}<li><a href="#{{ t.id }}" data-s="{{ t.id }}">{% if t.num %}<span class="g-tn">{{ t.num }}</span>{% endif %}<span class="g-tl">{{ t.label|rich(L) }}</span></a></li>{% endfor %}</ol></div>
+      </div>
+    </nav>
+    <article class="article prose g-body">
+      <div class="g-find">
+        <label for="g-find-in">{{ U.find }}</label>
+        <div class="g-find-box">{{ I('Search') }}<input id="g-find-in" type="search" placeholder="{{ U.find_ph }}" autocomplete="off" spellcheck="false" enterkeyhint="go"
+             role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="g-find-list" aria-describedby="g-find-eg"></div>
+        <p class="g-find-eg" id="g-find-eg">{{ U.find_eg|rich(L) }}</p>
+        <ul class="g-find-list" id="g-find-list" role="listbox" aria-label="{{ U.find }}" hidden></ul>
+        <p class="g-find-st sr" role="status" aria-live="polite"></p>
+        <script type="application/json" id="g-find-data">{{ {'items': GM.find, 'none': U.find_none, 'cats': GM.cats}|tojson }}</script>
+      </div>
+      {% for s in GM.sections %}
+      <section class="g-sec" id="{{ s.id }}" aria-labelledby="{{ s.id }}-h">
+        <h2 id="{{ s.id }}-h">{% if s.n %}<span class="g-n{{ ' g-n-w' if L == 'ar' }}">{{ s.n }}{{ ':' if L == 'ar' }}</span> {% endif %}{{ s.title|rich(L) }}{{ anchor(s.id) }}</h2>
+        {% if s.id == 'references' %}
+          <p>{{ G.refs_intro|rich(L) }}</p>
+          <p class="g-checked">{{ G.checked }}</p>
+          <details class="g-refs" id="g-refs">
+            <summary><span class="g-open">{{ U.refs_show.format(n=GM.nrefs) }}</span><span class="g-close">{{ U.refs_hide }}</span>{{ I('FaChevronDown') }}</summary>
+            <ol class="g-reflist">{% for r in GM.refs %}<li id="ref-{{ r.n }}" tabindex="-1"><span class="g-rn">[{{ '%02d' % r.n }}]</span><span class="g-rt"><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.title|rich(L) }}</a> <bdi class="g-host">{{ r.host }}</bdi></span>{% if r.back %}<a class="g-back" href="#{{ r.back }}" aria-label="{{ U.back }}" title="{{ U.back }}">↩</a>{% endif %}</li>{% endfor %}</ol>
+          </details>
+        {% else %}{{ blocks(s.blocks) }}{% endif %}
+        {% if s.id == 'institution-types' %}
+        <div class="g-legend" role="note" aria-label="{{ U.legend }}"><b>{{ U.legend }}</b><ul>{% for c in GM.legend %}<li><span class="hxs cat-{{ c.key }}" aria-hidden="true"></span>{{ c.label }}</li>{% endfor %}</ul></div>
+        {% endif %}
+      </section>
+      {% endfor %}
+      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div><b>{{ A.author }}</b>{% if A.role %}<span>{{ A.role }}</span>{% endif %}<span>{{ AX.published }} <time datetime="{{ A.date_iso }}">{{ A.date }}</time></span></div></div>
+      <p class="disc">{{ AX.disc }}</p>
+    </article>
+  </div>
+</div>
+<a class="g-top" href="#main" aria-label="{{ U.top }}" title="{{ U.top }}" hidden><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 6-6 6 6"/></svg></a>
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ T.nav.insights }}</p><h2>{{ AX.more }}</h2></div><p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ C.HOME.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p></div>
+    <div class="grid-3">{% for a in RELATED %}{{ m.post_card(a) }}{% endfor %}</div>
+  </div>
+</section>
+{% include "cta.html" %}
+<script src="{{ R }}assets/js/guide.js?v={{ V }}" defer></script>
+{% endblock %}

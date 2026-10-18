@@ -70,7 +70,7 @@ def latest_items(L, B, from_path='/'):
             x = arts[slug]
             cat = articles_meta.CATEGORIES[x['category']][i]
             read = B.read_time(x['minutes'], L)
-            d = dict(kicker=D['kicker_article'], tag=cat, title=x['title'][i], short=x['title'][i],
+            d = dict(kicker=D['kicker_article'], tag=cat, title=x['title'][i], short=x.get('short', x['title'])[i],
                      summary=x['summary'][i], meta=[cat, read], meta_page=[cat, read],
                      url=B.link('art-' + slug, L, from_path), image=B.image_for(x, 'article', L), date_iso=x['date'])
         added = datetime.date.fromisoformat(x.get('added') or x['date'])

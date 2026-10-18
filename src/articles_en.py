@@ -3,6 +3,10 @@ AX = dict(toc="In this article", key="Key takeaways", published="Published",
           more="More insights")
 
 ART = {
+# reference guide: the text is in guide_en.py, rendered by templates/guide.html (src/guide.py)
+'global-accounting-auditing-institutions': dict(
+ related=['ifrs-18-egypt-what-changes', 'ai-in-audit-what-has-changed', 'ai-deepfakes-financial-fraud'],
+ key=[], body=[], guide=True),
 'ai-in-audit-what-has-changed': dict(
  related=['ai-deepfakes-financial-fraud', 'ai-and-jobs-accounting', 'ifrs-18-egypt-what-changes'],
  key=["Today, data analytics and AI tools can analyse an entire population in a short time.",

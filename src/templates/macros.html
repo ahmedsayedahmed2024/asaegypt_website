@@ -14,7 +14,7 @@
 {% macro post_card(a, delay=None) -%}
 <a class="post rv" href="{{ a.url }}" data-tag="{{ a.cat }}"{% if delay is not none %} style="transition-delay:{{ delay }}ms"{% endif %}>
   <div class="thumb">{% if a.image %}{{ card_img(a.image) }}{% else %}{{ MARK|safe }}{% endif %}<span class="tag">{{ a.tag }}</span></div>
-  <div class="body"><h3>{{ a.title }}</h3><p class="byline">{{ a.byline }}</p><p>{{ a.summary }}</p><div class="meta"><time datetime="{{ a.date_iso }}">{{ a.date }}</time><span>{{ a.read }}</span></div></div>
+  <div class="body"><h3>{{ a.card_title or a.title }}</h3><p class="byline">{{ a.byline }}</p><p>{{ a.summary }}</p><div class="meta"><time datetime="{{ a.date_iso }}">{{ a.date }}</time><span>{{ a.read }}</span></div></div>
 </a>
 {%- endmacro %}
 {% macro news_card(n, D) -%}
@@ -37,6 +37,17 @@
   <p>{{ n.summary|bidi(L) }}</p>
   <p class="nx-meta">{{ n.byline|bidi(L) }} · <time datetime="{{ n.date_iso }}">{{ n.date }}</time></p>
   <span class="link-arrow">{{ D.read }} {{ I('FaArrowRight') }}</span>
+</a>
+{%- endmacro %}
+{% macro nx_ref(a, D) -%}
+{# ASA NEXT landing: card linking to an Insights reference guide (next.REFS) #}
+<a class="nx-card nx-ref rv{{ ' has-thumb' if IMAGES }}" href="{{ a.url }}">{% if IMAGES %}
+  <div class="thumb">{% if a.image %}{{ card_img(a.image) }}{% else %}{{ MARK|safe }}{% endif %}</div>{% endif %}
+  <span class="nx-chip">{{ D.ref_chip }}</span>
+  <h3>{{ a.title|bidi(L) }}</h3>
+  <p>{{ a.summary|bidi(L) }}</p>
+  <p class="nx-meta">{{ a.byline|bidi(L) }} · <time datetime="{{ a.date_iso }}">{{ a.date }}</time></p>
+  <span class="link-arrow">{{ D.ref_read }} {{ I('FaArrowRight') }}</span>
 </a>
 {%- endmacro %}
 

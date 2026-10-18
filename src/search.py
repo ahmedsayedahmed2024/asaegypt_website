@@ -2,11 +2,12 @@
 (dist/assets/search/en.json, dist/assets/search/ar.json), built from the site data at build time.
 
 Each index entry: g (group: insights | briefing | next | services | pages), t (title), m (summary),
-c (category label), d (date, YYYY-MM-DD or ""), u (URL), b (body as plain text).
+c (category label), d (date, YYYY-MM-DD or ""), u (URL), b (body as plain text),
+k (optional keywords: the institution acronyms and names of a reference guide, see guide.keywords()).
 Matching and ranking run in the browser: public/assets/js/search.js. No external service, no tracking.
 """
 import html, json, os, re, importlib
-import articles_meta, news, articles_en, articles_ar, pages_en, pages_ar
+import articles_meta, news, articles_en, articles_ar, pages_en, pages_ar, guide
 import next as nextdata
 
 AC = {'en': articles_en, 'ar': articles_ar}
@@ -45,8 +46,13 @@ def build_index(L, featured, news_items, next_items, path_for, C):
     out = []
     for a in featured(L, [x['slug'] for x in articles_meta.ARTICLES], '/'):
         d = A.ART[a['slug']]
-        out.append(dict(g='insights', t=a['title'], m=a['summary'], c=a['tag'], d=a['date_iso'],
-                        u=path_for('art-' + a['slug'], L), b=body([d.get('key'), d['body']])))
+        e = dict(g='insights', t=a['title'], m=a['summary'], c=a['tag'], d=a['date_iso'],
+                 u=path_for('art-' + a['slug'], L), b=body([d.get('key'), d['body']]))
+        if d.get('guide'):  # reference guide: its text and the institutions it covers
+            G = guide.GUIDES[a['slug']][L].GUIDE
+            e['b'] = body([[s['title'], s['blocks']] for s in G['sections']]).replace('**', '')
+            e['k'] = guide.keywords(a['slug'], L)
+        out.append(e)
     for n in news_items(L, '/'):
         note = n['note'] or {}
         out.append(dict(g='briefing', t=n['title'], m=n['summary'], c=n['cat_label'], d=n['date_iso'],
