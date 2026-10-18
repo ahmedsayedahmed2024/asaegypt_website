@@ -10,6 +10,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   - `check_links.py`: fails the build on broken internal links (including image `srcset`) and on any image in `public/` over 300 KB.
   - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images").
   - `search.py`: the search pages and the search index. See "Site search" below.
+  - `logo.py`: writes the vector logo files (`logo-asa.svg`, `logo-asa-dark.svg`, `favicon.svg`; with `--png` also `favicon-32.png`, `apple-touch-icon.png`, `logo_color@3x.png`). Run by hand only when the logo changes; not part of the build.
 - `public/` holds static files (`assets/` CSS/JS/fonts/images, `CNAME`). They are copied into `dist/` before the build.
 - Content lives in:
   - `content_en.py` / `content_ar.py`: header/footer strings, services, home page.
@@ -24,6 +25,7 @@ Owner: Ahmed Sayed, Founder & Managing Partner.
   rm -rf dist && mkdir dist && cp -r public/. dist/ && python src/build.py && python src/extras.py && python src/check_links.py
   ```
 - Deploy: GitHub Actions (`.github/workflows/deploy.yml`) builds and publishes to GitHub Pages on every push to `main`. Never commit `dist/`.
+- **The site logo is the vector file**: `public/assets/img/logo-asa.svg` (white wordmark, dark backgrounds) and `logo-asa-dark.svg` (grey wordmark, light header). Never replace it with a raster image. The logo is final (to be registered as a trademark): its hexagon and wordmark are traced exactly from the original artwork, so never redraw them or swap in the homepage hexagon from `mark.py` (a slightly different drawing). Keep `logo_color.png` and `email-qr.png` unchanged: the email signature uses them.
 - `public/google2c63994b9b91f271.html` is required by Google Search Console to verify the site. It is published as-is at https://asaegypt.com/google2c63994b9b91f271.html. **Never delete, rename or edit it**, and never add it to the sitemap.
 
 ## Workflow
