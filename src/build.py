@@ -21,7 +21,7 @@ ICONS.update({
 C = {'en': content_en, 'ar': content_ar}
 
 # route key -> path (en); ar = '/ar' + path
-ROUTES = {'home': '/', 'about': '/about/', 'services': '/services/', 'who': '/who-we-serve/',
+ROUTES = {'home': '/', 'about': '/about/', 'hexagon': '/hexagon/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
           'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/',
           'search': '/search/', 'latest': '/latest/'}
@@ -250,6 +250,9 @@ def build(pages=None):
         import asanext
         importlib.reload(asanext)
         built += asanext.build(L, render, next_items, path_for)
+        import hexagon
+        importlib.reload(hexagon)
+        built += hexagon.build(L, render, path_for)
         import search
         importlib.reload(search)
         built += search.build(L, render, featured, news_items, next_items, path_for, C, DIST)

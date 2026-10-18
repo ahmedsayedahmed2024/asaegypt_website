@@ -1,6 +1,6 @@
 T = dict(
     skip="Skip to content", home="Home", mainnav="Main navigation", menu="Open menu", close="Close menu",
-    nav=dict(about="About", services="Services", who="Who We Serve", approach="Our Approach", people="Our Team",
+    nav=dict(hexagon="ASA Hexagon", about="About", services="Services", who="Who We Serve", approach="Our Approach", people="Our Team",
              insights="Insights", briefing="Briefing", next="ASA NEXT", contact="Contact", privacy="Privacy Policy"),
     cta_consult="Book a consultation", learn="Learn more", firm="The Firm", photo="Photo",
     foot_about="A senior-led firm of chartered accountants and consultants providing audit, tax, IFRS and advisory services to organisations in Egypt, Saudi Arabia and beyond.",

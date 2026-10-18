@@ -59,12 +59,13 @@ def build_index(L, featured, news_items, next_items, path_for, C):
         out.append(dict(g='services', t=s['name'], m=s['desc'], c='', d='', u=path_for(s['key'], L),
                         b=body([s['short'], D.SVC[s['key']]])))
     nav = T['nav']
-    pages = [('home', T['home'], C[L].HOME), ('about', nav['about'], D.ABOUT), ('services', nav['services'], D.SERVICES_HUB),
+    pages = [('home', T['home'], C[L].HOME), ('about', nav['about'], D.ABOUT), ('hexagon', nav['hexagon'], D.HEXAGON),
+             ('services', nav['services'], D.SERVICES_HUB),
              ('who', nav['who'], D.WHO), ('approach', nav['approach'], D.APPROACH), ('people', nav['people'], D.PEOPLE),
              ('insights', nav['insights'], D.INSIGHTS), ('briefing', nav['briefing'], D.BRIEFING),
              ('next', nav['next'], D.NEXT_PAGE), ('contact', nav['contact'], D.CONTACT), ('privacy', nav['privacy'], D.PRIVACY)]
     for key, title, obj in pages:
-        fields = {k: v for k, v in obj.items() if not k.startswith(('f_', 'thanks_', 'map_'))}  # skip form labels
+        fields = {k: v for k, v in obj.items() if not k.startswith(('f_', 'thanks_', 'map_')) and k not in ('hint', 'replay')}  # skip form labels and buttons
         out.append(dict(g='pages', t=title, m=clean(obj['desc']), c='', d='', u=path_for(key, L), b=body(fields)))
     return out
 

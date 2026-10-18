@@ -124,11 +124,13 @@ def mark_svg():
 
 
 TEMPLATE = """<!doctype html><html lang="{L}" dir="{dir}"><head><meta charset="utf-8"><style>
-{fonts}
+{fonts}{lat}
 *{{margin:0;padding:0;box-sizing:border-box}}
 html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#23262B}}
 body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiased;position:relative}}
-.mark{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px}}
+.mk{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}}
+.mark{{display:block;width:70px;height:74px}}
+.mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:7.5px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
 .items{{position:absolute;top:0;bottom:12px;inset-inline-start:116px;inset-inline-end:18px}}
 .item{{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0}}
 .kick{{display:flex;align-items:center;gap:6px;height:14px;font-weight:700;color:#C3D648;white-space:nowrap}}
@@ -144,7 +146,7 @@ body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiase
 .dashes i.on{{background:#C3D648}}
 bdi{{unicode-bidi:isolate}}
 </style></head><body>
-{mark}
+<div class="mk">{mark}<span class="tag">ASA HEXAGON</span></div>
 <div class="items">{items}</div>
 <div class="dashes">{dashes}</div>
 <script>
@@ -200,7 +202,8 @@ def banner_html(L, items):
     data = dict(rtl=ar, titleMax=title_lh * 2, titleLh=title_lh,
                 items=[dict(kicker=it['kicker'], title=it['short'], meta=' · '.join(it['meta'])) for it in items])
     return TEMPLATE.format(
-        L=L, dir='rtl' if ar else 'ltr', fonts=fonts_css(L), W=W, H=H, mark=mark_svg(), mark_top=(H - 86) // 2,
+        L=L, dir='rtl' if ar else 'ltr', fonts=fonts_css(L), lat=font_face('Lat', 800, 'pjs-800.woff2'),
+        W=W, H=H, mark=mark_svg(), mark_top=(H - 86) // 2,
         items=item_html, dashes='<i></i>' * len(items), data=json.dumps(data, ensure_ascii=False),
         kick_size=11 if ar else 9.5, kick_ls='0' if ar else '2px', kick_tt='' if ar else 'text-transform:uppercase',
         new_size=10 if ar else 8, new_ls='0' if ar else '1px',
@@ -343,16 +346,19 @@ def static_banner(out_dir):
     for L in ('en', 'ar'):
         im = Image.new('RGB', (W * s, H * s), '#23262B')
         dr = ImageDraw.Draw(im)
-        k = 86 * s / 252
-        x_mark = 18 * s if L == 'en' else (W - 18 - 82) * s
+        k = 74 * s / 252  # the mark (74px tall) and the "ASA HEXAGON" tag under it, in the 82x86 column
+        x_mark = (18 + 6) * s if L == 'en' else (W - 18 - 82 + 6) * s
         for colour, d in stripes():
             pts = [tuple(map(float, q.split())) for q in re.findall(r'[ML]\s*([-\d.]+ [-\d.]+)', d)]
             dr.polygon([(x_mark + (x + 1.5) * k, (H - 86) / 2 * s + (y - 7.5) * k) for x, y in pts], fill=colour)
         try:
             big = ImageFont.truetype(os.path.join(FONTS, 'pjs-700.woff2'), 15 * s)
             small = ImageFont.truetype(os.path.join(FONTS, 'pjs-400.woff2'), 11 * s)
+            tag = ImageFont.truetype(os.path.join(FONTS, 'pjs-800.woff2'), round(7.5 * s))
         except Exception:
-            big = small = ImageFont.load_default()
+            big = small = tag = ImageFont.load_default()
+        x_col = (18 + 41) * s if L == 'en' else (W - 18 - 41) * s
+        dr.text((x_col, ((H - 86) / 2 + 86) * s), 'ASA HEXAGON', font=tag, fill='#C3D648', anchor='md')
         anchor, x = ('la', 116 * s) if L == 'en' else ('ra', (W - 116) * s)
         dr.text((x, 38 * s), 'ASA Briefing · ASA Insights', font=big, fill='#FFFFFF', anchor=anchor)
         dr.text((x, 62 * s), 'asaegypt.com' + ('/latest' if L == 'en' else '/ar/latest'), font=small, fill='#C3D648', anchor=anchor)
