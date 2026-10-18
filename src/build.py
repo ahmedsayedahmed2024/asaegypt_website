@@ -64,6 +64,8 @@ def bidi(s, L):
     out.append(escape(s[last:]))
     return Markup('').join(out)
 env.filters['bidi'] = bidi
+import guide  # reference guides: **bold**, links and Arabic bidi in the guide text
+env.filters['rich'] = guide.rich
 
 def link(key, L, from_path):
     target = path_for(key, L)
@@ -96,6 +98,8 @@ def featured(L, slugs, from_path='/'):
             author, role = a['author_' + L], a['role_' + L]
             out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
                             cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=a['title'][i],
+                            card_title=a.get('short', a['title'])[i],
+                            reviewed_iso=a.get('reviewed'), reviewed=a.get('reviewed') and fmt_date(a['reviewed'], L),
                             summary=a['summary'][i], author=author, role=role,
                             byline=(f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else ""),
                             date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
@@ -120,8 +124,11 @@ def image_for(item, kind, L):
     if not (config.SHOW_IMAGES and im):
         return None
     base = f"{IMG_DIR}/{IMG_SECTION[kind]}/{item['slug']}"
-    illustration = im.get('kind') == 'illustration'
-    lg, card = (base + '.svg', base + '.svg') if illustration else (base + '-lg.webp', base + '-card.webp')
+    illustration = im.get('kind') in ('illustration', 'cover')  # drawn images: no photo credit
+    if im.get('kind') == 'cover':  # reference guide cover (src/guide_cover.py): SVG band, WebP cards
+        lg, card = base + '.svg', base + '-card.webp'
+    else:
+        lg, card = (base + '.svg', base + '.svg') if illustration else (base + '-lg.webp', base + '-card.webp')
     for f in (lg, card):
         if not os.path.exists(os.path.join(ROOT, 'public', f)):
             sys.exit(f"ERROR: {kind} '{item['slug']}' has an image but public/{f} is missing")
@@ -192,7 +199,7 @@ def brief_slots(L, from_path='/'):
                               date_iso=n['date_iso'], date=n['date'], url=n['url'], image=n['image']))
         elif kind == 'article':
             a = featured(L, [slug], from_path)[0]
-            items.append(dict(kind=kind, chip=f"{H['brief_insight']} · {a['tag']}", title=a['title'], summary=a['summary'],
+            items.append(dict(kind=kind, chip=f"{H['brief_insight']} · {a['tag']}", title=a['card_title'], summary=a['summary'],
                               by=a['author'], date_iso=a['date_iso'], date=a['date'], url=a['url'], image=a['image']))
         else:
             x = xs[slug]
@@ -249,7 +256,7 @@ def build(pages=None):
         built += briefing.build(L, render, featured, news_items, path_for)
         import asanext
         importlib.reload(asanext)
-        built += asanext.build(L, render, next_items, path_for)
+        built += asanext.build(L, render, next_items, path_for, featured)
         import hexagon
         importlib.reload(hexagon)
         built += hexagon.build(L, render, path_for)

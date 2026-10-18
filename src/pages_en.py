@@ -342,7 +342,7 @@ NEXT_PAGE = dict(
     blocks=dict(first5="A clear view of the road ahead: what each stage asks of you, the skills that move you forward and the qualifications worth planning for.",
                 desk="Practical tips for the daily work, one common mistake to avoid and a quick quiz — with a light touch."),
     empty="New content for this section is coming soon.",
-    read="Read", back="Back to ASA NEXT",
+    read="Read", back="Back to ASA NEXT", ref_chip="Reference guide", ref_read="Open the guide",
     stage_rows=dict(own="What you own", skills="Skills to build", habit="One habit that helps"),
     quiz_show="Show answer", quiz_hide="Hide answer", quiz_answer="Answer:",
     disc="General guidance for professional development. It does not describe the terms of any specific role or firm.",
