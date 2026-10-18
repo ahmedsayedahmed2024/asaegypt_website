@@ -22,6 +22,29 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="egypt-moodys-upgrade-b3", date="2026-10-17", added="2026-10-18", added_at="04:17", category="economy", region="egypt",
+      title_en="Ministry of Finance responds to Moody's upgrade of Egypt's rating to B3 with a positive outlook",
+      title_ar="وزارة المالية تعلّق على رفع «موديز» تصنيف مصر إلى B3 مع نظرة مستقبلية إيجابية",
+      short_en="Moody's upgrades Egypt to B3, outlook positive",
+      short_ar="«موديز» ترفع تصنيف مصر إلى B3 بنظرة إيجابية",
+      summary_en="Following Moody's upgrade of Egypt's credit rating to B3 with a positive outlook, the Ministry of Finance issued a statement setting out the fiscal and external indicators behind the move.",
+      summary_ar="عقب رفع مؤسسة «موديز» التصنيف الائتماني لمصر إلى B3 مع نظرة مستقبلية إيجابية، أصدرت وزارة المالية بيانًا استعرضت فيه المؤشرات المالية والخارجية المرتبطة بهذه الخطوة.",
+      image=dict(focus="40% 62%", source="https://unsplash.com/photos/the-sun-is-setting-over-a-city-with-tall-buildings-Oh6ZTXzPKe0",
+                 photographer="Jens Aber", site="Unsplash", licence="Unsplash License",
+                 alt_en="Cairo skyline in silhouette against an orange sunset sky",
+                 alt_ar="أفق القاهرة يرتسم ظلًّا داكنًا أمام سماء الغروب البرتقالية"),
+      body_en=[
+          "Moody's has raised Egypt's credit rating to B3 with a positive outlook. In a statement published by the Egyptian Tax Authority, the Ministry of Finance attributed the upgrade to economic and fiscal reforms that, in its words, have stabilised public finances, strengthened reserves and accelerated economic activity.",
+          "The ministry cited three indicators: government debt reduced to 81.9% of GDP in June 2026; net international reserves of USD 57 billion in September 2026; and tax revenues rising to 13% of GDP, an increase of 1.6% of GDP over two years, which it said was achieved without additional burdens.",
+          "The statement also acknowledged high debt-service costs and said the ministry will work to reduce them faster, improve the business environment, increase private investment and create fiscal space for more spending on health, education and targeted social protection.",
+      ],
+      body_ar=[
+          "رفعت مؤسسة «موديز» التصنيف الائتماني لمصر إلى B3 مع نظرة مستقبلية إيجابية. وفي بيان نشرته مصلحة الضرائب المصرية، عزت وزارة المالية هذه الخطوة إلى الإصلاحات الاقتصادية والمالية التي أسهمت، بحسب البيان، في استقرار المالية العامة وتعزيز الاحتياطيات وتسريع وتيرة النشاط الاقتصادي.",
+          "واستشهدت الوزارة بثلاثة مؤشرات: انخفاض الدين الحكومي إلى 81.9% من الناتج المحلي في يونيو 2026، وارتفاع صافي الاحتياطيات الدولية إلى 57 مليار دولار في سبتمبر 2026، وزيادة الإيرادات الضريبية إلى 13% من الناتج المحلي، بارتفاع قدره 1.6% من الناتج خلال عامين، مؤكدةً أن ذلك تحقق دون أعباء إضافية.",
+          "وأقرّ البيان بارتفاع تكلفة خدمة الدين، مشيرًا إلى أن الوزارة ستعمل على خفضها بوتيرة أسرع، وعلى تحسين بيئة الأعمال وزيادة الاستثمارات الخاصة، وإتاحة حيز مالي يسمح بزيادة الإنفاق على الصحة والتعليم والحماية الاجتماعية الموجهة.",
+      ],
+      source_name="Egyptian Ministry of Finance (via the Egyptian Tax Authority)",
+      source_url="https://www.eta.gov.eg/ar/news/alaqtsad-almsry-bat-akthr-qdrt-ly-alnmw-rghm-alsdmat"),
  dict(slug="uae-top-up-tax-scope-registration-guide", date="2026-10-08", added="2026-10-15", added_at="04:15", category="economy", region="gcc",
       title_en="UAE Federal Tax Authority issues guide on scope and registration for the Top-up Tax on multinationals",
       title_ar="الهيئة الاتحادية للضرائب في الإمارات تصدر دليلًا بشأن نطاق الضريبة الإضافية على الشركات متعددة الجنسيات والتسجيل فيها",
