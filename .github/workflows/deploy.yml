@@ -3,6 +3,10 @@ name: Build and deploy asaegypt.com
 on:
   push:
     branches: [main]
+  # daily rebuild at 05:30 UTC (8:30 AM Cairo), after the daily news routine, so the email signature banner
+  # and its NEW tag refresh even on days when nothing is pushed
+  schedule:
+    - cron: '30 5 * * *'
   workflow_dispatch:
 
 permissions:

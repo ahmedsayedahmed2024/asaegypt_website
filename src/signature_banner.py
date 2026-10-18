@@ -59,7 +59,7 @@ def latest_items(L, B, from_path='/'):
     out = []
     for pos, (kind, slug) in enumerate(B.recently_added(COUNT, ('article', 'news'))):
         if kind == 'news':
-            x = items[slug]
+            x = items[slug]  # meta shows the source's date (`date`), never `added`
             title = x['title_' + L]
             region = news.REGIONS[x['region']][i]
             d = dict(kicker=D['kicker_news'], tag=news.CATEGORIES[x['category']][i], title=title,
