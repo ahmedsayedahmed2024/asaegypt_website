@@ -182,6 +182,22 @@ def rich(s, L):
         html += Markup('<strong>') + frag + Markup('</strong>') if i % 2 else frag
     return html
 
+def cell(s, L):
+    """A table cell. Arabic cells of the form "ACR — name" keep the dash on wide screens; on phones (stacked cards)
+    each part goes on its own line with no dash, and the English full name of "ACR — English — Arabic" is left out."""
+    if L != 'ar' or ' — ' not in s:
+        return rich(s, L)
+    parts = s.split(' — ')
+    out = Markup('')
+    for i, p in enumerate(parts):
+        cls = 'gc-p' + (' gc-a' if i == 0 else '')
+        if len(parts) == 3 and i == 1 and not re.search(r'[\u0600-\u06FF]', p):
+            cls += ' gc-en'
+        if i:
+            out += Markup('<span class="gc-sep"> — </span>')
+        out += Markup(f'<span class="{cls}">') + rich(p, L) + Markup('</span>')
+    return out
+
 # ---------- page model ----------
 def model(slug_, L, ref_urls=None):
     G = GUIDES[slug_][L].GUIDE

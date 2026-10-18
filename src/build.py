@@ -66,6 +66,7 @@ def bidi(s, L):
 env.filters['bidi'] = bidi
 import guide  # reference guides: **bold**, links and Arabic bidi in the guide text
 env.filters['rich'] = guide.rich
+env.filters['gcell'] = guide.cell
 
 def link(key, L, from_path):
     target = path_for(key, L)

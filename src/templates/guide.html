@@ -8,7 +8,7 @@
 <div class="g-table{{ ' g-table-wide' if t.wide }}"><table>
   <thead><tr>{% for h in t.head %}<th scope="col">{{ h|rich(L) }}</th>{% endfor %}</tr></thead>
   <tbody>{% for r in t.rows %}
-    <tr{% if r.id %} id="{{ r.id }}" tabindex="-1"{% endif %}{% if r.cat %} class="cat-{{ r.cat }}"{% endif %}>{% for c in r.cells %}{% set lab = t.short[loop.index0] %}{% if loop.first %}<th scope="row">{% else %}<td data-l="{{ lab }}">{% endif %}{% if loop.index0 == t.badge_col and r.acr %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% elif loop.first and r.cat and t.badge_col is none %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% endif %}{{ c|rich(L) }}{% if loop.first %}</th>{% else %}</td>{% endif %}{% endfor %}</tr>{% endfor %}
+    <tr{% if r.id %} id="{{ r.id }}" tabindex="-1"{% endif %}{% if r.cat %} class="cat-{{ r.cat }}"{% endif %}>{% for c in r.cells %}{% set lab = t.short[loop.index0] %}{% if loop.first %}<th scope="row">{% else %}<td data-l="{{ lab }}"><span class="gv">{% endif %}{% if loop.index0 == t.badge_col and r.acr %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% elif loop.first and r.cat and t.badge_col is none %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% endif %}{{ c|gcell(L) }}{% if loop.first %}</th>{% else %}</span></td>{% endif %}{% endfor %}</tr>{% endfor %}
   </tbody>
 </table></div>
 {% endmacro %}

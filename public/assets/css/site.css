@@ -1137,6 +1137,11 @@ html[lang="ar"] .g-legend b{letter-spacing:0;font-size:.9rem}
   .g-body .g-table td::before{content:attr(data-l);font-size:.74rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.5;padding-top:2px}
   html[lang="ar"] .g-body .g-table td::before{letter-spacing:0;text-transform:none;font-size:.82rem}
   .g-body .g-table-wide td{grid-template-columns:minmax(0,1fr);gap:2px}
+  /* Arabic "ACR — name" cells: acronym on one line, Arabic name on the next, no dash (src/guide.py, cell()) */
+  .g-table .gc-p{display:block}
+  .g-table .gc-sep,.g-table .gc-p.gc-en{display:none}
+  .g-table .gv{display:block;min-width:0}
+  .g-table td .gc-a{font-weight:700;color:var(--ink)}
 }
 
 /* figures: dark panel; SVG for figures 1-2 (wide and phone layouts), hexagon path for figure 3 */
@@ -1229,3 +1234,13 @@ html[dir="rtl"] .g-back{transform:scaleX(-1)}
 .g-top svg{width:20px;height:20px}
 .g-top[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.g-path-wrap .g-step *{transition:none!important}}
+
+/* floating WhatsApp / back-to-top buttons on phones: smaller, tucked into the corner, out of the way while reading
+   (site.js adds body.fab-away while the page scrolls down), and the footer ends clear of them */
+@media (max-width:767px){
+  .wa{width:48px;height:48px;font-size:23px;bottom:calc(12px + env(safe-area-inset-bottom,0px));inset-inline-end:12px;transition:transform .3s var(--ease),opacity .3s}
+  .g-top{width:40px;height:40px;bottom:calc(70px + env(safe-area-inset-bottom,0px));inset-inline-end:16px;transition:transform .3s var(--ease),opacity .3s}
+  .g-top svg{width:18px;height:18px}
+  body.fab-away .wa,body.fab-away .g-top{opacity:0;transform:translateY(20px);pointer-events:none}
+  .site-footer .bottom{padding-bottom:calc(var(--fab-clear,78px) + env(safe-area-inset-bottom,0px))}
+}
