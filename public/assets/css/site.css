@@ -829,14 +829,14 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 /* ---------- ASA Hexagon (/hexagon/): see hexagon.py and assets/js/hexagon.js ---------- */
 .hxg-hero{position:relative;background:radial-gradient(ellipse 60% 55% at 50% 64%,#2B2F35 0%,var(--graphite) 60%,#1B1D21 100%);color:#fff;text-align:center;overflow:hidden;isolation:isolate}
 .hxg-fold{display:flex;flex-direction:column;padding-top:84px}
-.hxg-head{padding-top:clamp(12px,4vh,46px)}
-.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(6px,1.6vh,16px)}
-.hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(6px,1.6vh,16px)}
+.hxg-head{padding-top:clamp(8px,2.6vh,30px)}
+.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(4px,1.1vh,12px)}
+.hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}
 html[lang="ar"] .hxg-title{font-weight:700;line-height:1.4}
 .hxg-title .dot{color:var(--lime)}
-.hxg-hero .lead{color:var(--soft);max-width:84ch;margin-inline:auto;font-size:clamp(.92rem,min(1.4vw,2.05vh),1.12rem);line-height:1.68}
+.hxg-hero .lead{color:var(--soft);max-width:760px;margin-inline:auto;font-size:clamp(.92rem,min(1.4vw,2.05vh),1.12rem);line-height:1.68}
 html[lang="ar"] .hxg-hero .lead{line-height:1.8}
-.hxg-stage{position:relative;width:100%;max-width:1320px;margin:clamp(4px,1.4vh,16px) auto 0;padding-inline:var(--gut)}
+.hxg-stage{position:relative;width:100%;max-width:1320px;margin:clamp(2px,.9vh,10px) auto 0;padding-inline:var(--gut)}
 .hxd{display:block;width:100%;height:auto;overflow:hidden;direction:ltr;font-family:var(--f-en);-webkit-tap-highlight-color:transparent}
 .hxd-narrow{display:none}
 .hxd text{font-family:var(--f-en)}
@@ -877,7 +877,7 @@ html[lang="ar"] .hxd .hxd-tr-lat{font-family:var(--f-en)}
    Portrait tablets keep the normal flow: there the width limits the diagram, not the height */
 @media (min-width:700px) and (min-aspect-ratio:1/1){
   .hxg-hero{--tail:150px}
-  .hxg-fold{height:100vh;height:100svh;min-height:340px;max-height:1000px}
+  .hxg-fold{height:100vh;height:100svh;min-height:340px;max-height:1000px;padding-bottom:28px}
   .hxg-stage{flex:1 1 0;min-height:0}
   .hxg-stage .hxd{position:absolute;top:0;inset-inline-start:var(--gut);width:calc(100% - 2 * var(--gut));height:100%}
 }
@@ -887,7 +887,7 @@ html[lang="ar"] .hxd .hxd-tr-lat{font-family:var(--f-en)}
 }
 /* short screens (e.g. 125–150% zoom on a laptop): a more compact title and lead leave more room for the diagram */
 @media (min-width:700px) and (max-height:640px){
-  .hxg-hero .lead{max-width:118ch;font-size:.86rem;line-height:1.55}
+  .hxg-hero .lead{font-size:.86rem;line-height:1.55}
   .hxg-title{font-size:clamp(1.4rem,min(4vw,5.6vh),2.4rem)}
 }
 @media (max-width:699px){
