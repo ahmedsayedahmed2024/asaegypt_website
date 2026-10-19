@@ -41,7 +41,7 @@
         <li class="has-dd">
           <button aria-expanded="false" aria-haspopup="true"{% if section=='services' %} style="color:var(--lime);opacity:1"{% endif %}>{{ T.nav.services }} {{ I('FaChevronDown') }}</button>
           <div class="dropdown">
-            {% for s in SERVICES %}<a href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><span><b>{{ s.name }}</b><small>{{ s.short }}</small></span></a>{% endfor %}
+            {% for s in SERVICES %}<a href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><span><b>{{ s.name }}</b><small>{{ s.short }}</small></span></a>{% endfor %}<p class="more">{{ T.more }}</p>
           </div>
         </li>
         <li><a href="{{ P('who') }}"{% if section=='who' %} aria-current="page"{% endif %}>{{ T.nav.who }}</a></li>
@@ -81,7 +81,7 @@
   <a href="{{ P('about') }}">{{ T.nav.about }}</a>
   <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
   <a href="{{ P('services') }}">{{ T.nav.services }}</a>
-  {% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}
+  {% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}<p class="sub more">{{ T.more }}</p>
   <a href="{{ P('who') }}">{{ T.nav.who }}</a>
   <a href="{{ P('approach') }}">{{ T.nav.approach }}</a>
   <a href="{{ P('people') }}">{{ T.nav.people }}</a>
@@ -105,7 +105,7 @@
     </div>
     <div>
       <h4>{{ T.nav.services }}</h4>
-      <ul>{% for s in SERVICES %}<li><a href="{{ P(s.key) }}">{{ s.name }}</a></li>{% endfor %}</ul>
+      <ul>{% for s in SERVICES %}<li><a href="{{ P(s.key) }}">{{ s.name }}</a></li>{% endfor %}<li class="more">{{ T.more }}</li></ul>
     </div>
     <div>
       <h4>{{ T.firm }}</h4>
