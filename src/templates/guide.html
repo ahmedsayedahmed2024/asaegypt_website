@@ -107,7 +107,7 @@
           <p class="g-checked">{{ G.checked }}</p>
           <details class="g-refs" id="g-refs">
             <summary><span class="g-open">{{ U.refs_show.format(n=GM.nrefs) }}</span><span class="g-close">{{ U.refs_hide }}</span>{{ I('FaChevronDown') }}</summary>
-            <ol class="g-reflist">{% for r in GM.refs %}<li id="ref-{{ r.n }}" tabindex="-1"><span class="g-rn">[{{ '%02d' % r.n }}]</span><span class="g-rt"><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.title|rich(L) }}</a> <bdi class="g-host">{{ r.host }}</bdi></span>{% if r.back %}<a class="g-back" href="#{{ r.back }}" aria-label="{{ U.back }}" title="{{ U.back }}">↩</a>{% endif %}</li>{% endfor %}</ol>
+            <ol class="g-reflist">{% for r in GM.refs %}<li id="ref-{{ r.n }}" tabindex="-1"><span class="g-rn">[{{ '%02d' % r.n }}]</span><span class="g-rt"><a href="{{ r.url }}" target="_blank" rel="noopener"{% if r.ltr %} dir="ltr" lang="en"{% endif %}>{{ r.title|rich('en' if r.ltr else L) }}</a> <bdi class="g-host">{{ r.host }}</bdi></span>{% if r.back %}<a class="g-back" href="#{{ r.back }}" aria-label="{{ U.back }}" title="{{ U.back }}">↩</a>{% endif %}</li>{% endfor %}</ol>
           </details>
         {% else %}{{ blocks(s.blocks) }}{% endif %}
         {% if s.id == 'institution-types' %}

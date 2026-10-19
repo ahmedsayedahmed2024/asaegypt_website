@@ -222,7 +222,9 @@ def model(slug_, L, ref_urls=None):
     i = 0 if L == 'en' else 1
     ids = {}            # acronym -> element id of its card or table row (first occurrence)
     rows_seen = []
-    refs = {n: dict(n=n, title=t, url=u, host=h, back=None) for n, t, u, h in G['refs']}
+    # an all-English reference title on the Arabic page is shown as one left-to-right run (keeps ‘quotes’ in place)
+    refs = {n: dict(n=n, title=t, url=u, host=h, back=None, ltr=L == 'ar' and not re.search(r'[\u0600-\u06FF]', t))
+            for n, t, u, h in G['refs']}
     chip_no = [0]
 
     def inst_name(acr, lang):

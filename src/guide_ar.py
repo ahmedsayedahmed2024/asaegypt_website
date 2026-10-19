@@ -193,23 +193,24 @@ GUIDE = dict(
     ('p', 'وتعمل لجنة تفسيرات IFRS ضمن المنظومة الفنية المرتبطة بمعايير المحاسبة الدولية.'),
     ('p', 'ويبدأ السريان الدولي لمعيار IFRS 18 على الفترات السنوية التي تبدأ في 1 يناير 2027 أو بعده، مع السماح بالتطبيق المبكر وفق شروطه ومتطلبات الاعتماد المحلية.'),
     ('p', 'هذه المنظومة مستقلة عن منظومة IAASB وIESBA، رغم الارتباط الوثيق بين المعايير المحاسبية ومعايير المراجعة في التطبيق العملي.'),
+    ('h3', '3.5 المؤسسات الأمريكية المعنية بالتقارير المالية'),
     ('inst', dict(
       acr='FASB',
-      n='3.5',
+      n='3.5.1',
       name='مجلس معايير المحاسبة المالية الأمريكي',
       other='Financial Accounting Standards Board',
       blocks=[
        ('p', 'يتولى وضع معايير المحاسبة المالية الأمريكية US GAAP لمنشآت القطاع الخاص والجهات الأخرى الخاضعة لاختصاصه.')])),
     ('inst', dict(
       acr='GASB',
-      n='3.6',
+      n='3.5.2',
       name='مجلس معايير المحاسبة الحكومية الأمريكي',
       other='Governmental Accounting Standards Board',
       blocks=[
        ('p', 'مسؤول عن وضع معايير المحاسبة والتقارير المالية لحكومات الولايات والحكومات المحلية الأمريكية.')])),
     ('inst', dict(
       acr='FAF',
-      n='3.7',
+      n='3.5.3',
       name='مؤسسة المحاسبة المالية الأمريكية',
       other='Financial Accounting Foundation',
       blocks=[
@@ -260,23 +261,24 @@ GUIDE = dict(
       blocks=[
        ('p', 'يعد الجهة المختصة الرئيسية بالرقابة على المراجعة القانونية في المملكة المتحدة.'),
        ('p', 'ويتولى وضع معايير مراجعة بريطانية، والإشراف على الجهات المهنية المعترف بها لأغراض التسجيل والتأهيل، والرقابة المباشرة على بعض المراجعات، فضلًا عن التحقيق والإنفاذ في حدود اختصاصاته.')])),
+    ('h3', '4.5 جهات رقابية أخرى مهمة'),
     ('inst', dict(
       acr='CEAOB',
-      n='4.5',
+      n='4.5.1',
       name='لجنة الهيئات الأوروبية للرقابة على المراجعة',
       other='Committee of European Auditing Oversight Bodies',
       blocks=[
        ('p', 'تدعم التعاون والتنسيق بين سلطات الرقابة على المراجعة في الاتحاد الأوروبي.')])),
     ('inst', dict(
       acr='CPAB',
-      n='4.6',
+      n='4.5.2',
       name='مجلس المساءلة العامة الكندي',
       other='Canadian Public Accountability Board',
       blocks=[
        ('p', 'يشرف على جودة مراجعة الجهات المُصدرة التي تقع ضمن اختصاصه في كندا، مع وجود متطلبات ترخيص وتسجيل أخرى على مستوى المقاطعات.')])),
     ('inst', dict(
       acr='ASIC',
-      n='4.7',
+      n='4.5.3',
       name='هيئة الأوراق المالية والاستثمارات الأسترالية',
       other='Australian Securities and Investments Commission',
       blocks=[
@@ -717,7 +719,7 @@ GUIDE = dict(
   (69, 'CAPA — Confederation of Asian and Pacific Accountants', 'https://www.capa-apac.org/', 'www.capa-apac.org'),
   (70, 'Accountancy Europe — Professional representation', 'https://accountancyeurope.eu/', 'accountancyeurope.eu'),
   (71, 'World Bank — Accounting and Auditing ROSC', 'https://www.worldbank.org/en/programs/rosc', 'www.worldbank.org'),
-  (72, 'Egyptian Society of Accountants and Auditors', 'https://esaa.org.eg/', 'esaa.org.eg'),
+  (72, 'Egyptian Society of Accountants and Auditors', 'https://web.esaa.org.eg/', 'web.esaa.org.eg'),
   (73, 'Central Bank of Egypt — Banking regulation', 'https://www.cbe.org.eg/', 'www.cbe.org.eg'),
   (74, 'Saudi Central Bank — Banking regulation', 'https://www.sama.gov.sa/', 'www.sama.gov.sa'),
   (75, 'Egypt Accountability State Authority', 'https://asa.gov.eg/', 'asa.gov.eg'),
@@ -726,7 +728,7 @@ GUIDE = dict(
   (78, 'The IIA — Current Global Internal Audit Standards and effective date', 'https://www.theiia.org/en/standards/', 'www.theiia.org'),
   (79, 'COSO — Enterprise Risk Management', 'https://www.coso.org/guidance-erm', 'www.coso.org'),
   (80, 'ICAS — How to correctly use ‘CA’ and ‘Chartered Accountants’', 'https://icas.com/regulation/guidance-and-helpsheets/how-to-correctly-use-ca-and-chartered-accountants', 'icas.com'),
-  (81, 'ICAEW — ACA training routes outside the UK (example: Kenya)', 'https://careers.icaew.com/find-your-route/aca-training-in-kenya', 'careers.icaew.com'),
+  (81, 'ICAEW — ACA training in the Middle East', 'https://www.icaew.com/For-current-ACA-students/training-agreement/aca-training-in-other-countries/middle-east', 'www.icaew.com'),
   (82, 'IFAC — Egyptian Society of Accountants & Auditors (member profile)', 'https://www.ifac.org/about-ifac/membership/members/egyptian-society-accountants-auditors', 'www.ifac.org'),
   (83, 'ESAA — Articles of association and bylaws (Arabic)', 'https://res.cloudinary.com/dfym0acue/image/upload/esaa-publications/articles-of-association-bylaws.pdf', 'res.cloudinary.com'),
   (84, 'Law No. 133 of 1951 on Practising Accounting and Auditing (Egypt) — text, unofficial copy', 'https://egylawsite.wordpress.com/2014/12/16/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%B1%D9%82%D9%85-133-%D9%84%D8%B3%D9%86%D8%A9-1951%D8%A8%D9%85%D8%B2%D8%A7%D9%88%D9%84%D8%A9-%D9%85%D9%87%D9%86%D8%A9-%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9/', 'egylawsite.wordpress.com'),
