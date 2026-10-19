@@ -70,7 +70,7 @@ HOME = dict(
               ("FaEarthAfrica", "International & Gulf clients", "Cross-border reporting, KSA finance support and Egypt market entry.")],
     who_cta="See how we support each client group",
     why_k="Why ASA", why_h="Boutique attention. Large-firm discipline.",
-    why_p="Our partners and managers bring experience from Big Four and leading international network firms — applied with the focus and accessibility of an independent firm.",
+    why_p="Our team brings experience from Big Four and leading international network firms — applied with the focus and accessibility of an independent firm.",
     why_cta="About the firm",
     reasons=[("Professional oversight", "Every engagement is overseen by experienced professionals. You speak with the people doing the work."),
              ("Large-firm methodology", "Quality control, inspection and training disciplines developed over two decades inside international networks."),
