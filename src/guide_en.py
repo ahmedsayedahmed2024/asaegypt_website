@@ -10,12 +10,18 @@
 #          ('inst', dict(acr, n, name, other, blocks)) institution card; acr is a key of guide.INST
 #            (category colour, names, official site); other = the name in the other language
 # **bold** marks bold words inside a text.
+# [text](#id) links to another part of the guide (a card, a section or a quick guide).
+# Section option: sub=[(id, label)] extra entries under the section in the contents list.
+# ('quick', dict(id, n, title, intro, cards=[dict(id, name, rows=[(label, text)])], faq_title,
+#                faq=[(question, answer, id of the card it refers to)], disclaimer)) quick guide: country cards,
+#   a "Common questions" accordion (also FAQPage structured data) and a disclaimer line;
+#   "[21, 37]" in a card row links references 21 and 37.
 
 GUIDE = dict(
  title='The Institutions Behind the Global Accounting and Auditing Profession',
  lead='A Comprehensive Professional Guide to Standard Setters, Regulators, Oversight Bodies, Professional Institutes, and Audit Licensing Authorities',
  toc_note='A guide for accountants and auditors at every career stage',
- checked='Sources last checked on 18 October 2026',
+ checked='Sources last checked on 19 October 2026',
  sections=[
   dict(
    id='introduction',
@@ -257,6 +263,7 @@ GUIDE = dict(
    n='5',
    title='International Professional Accountancy Bodies',
    toc=None,
+   sub=[('i-esaa', '5.1 ESAA')],
    blocks=[
     ('p', 'Professional institutes play a central role in education, qualification, membership, and continuing professional development.'),
     ('p', 'Some also exercise delegated or statutory regulatory responsibilities.'),
@@ -264,18 +271,37 @@ GUIDE = dict(
       head=['Acronym', 'Full title', 'Principal area of influence'],
       rows=[
        ['AICPA', 'American Institute of Certified Public Accountants', 'US professional accountancy, CPA examination development, and standards for certain nonissuer engagements'],
-       ['ICAEW', 'Institute of Chartered Accountants in England and Wales', 'ACA qualification, professional regulation, and authorised audit registration'],
+       ['ICAEW', 'Institute of Chartered Accountants in England and Wales', 'ACA qualification (members use ACA or FCA), professional regulation, and authorised audit registration'],
        ['ACCA', 'Association of Chartered Certified Accountants', 'International professional qualification and membership'],
-       ['ICAS', 'Institute of Chartered Accountants of Scotland', 'Chartered accountancy qualification and professional regulation'],
-       ['CAI', 'Chartered Accountants Ireland', 'Chartered accountancy qualification and recognised audit registration'],
+       ['ICAS', 'Institute of Chartered Accountants of Scotland', 'Chartered accountancy qualification and professional regulation; members use the designation CA'],
+       ['CAI', 'Chartered Accountants Ireland', 'Chartered accountancy qualification (members use ACA or FCA) and recognised audit registration'],
        ['CIMA', 'Chartered Institute of Management Accountants', 'Management accounting, financial leadership, and business strategy'],
        ['CIPFA', 'Chartered Institute of Public Finance and Accountancy', 'Public finance and public-sector accountancy'],
-       ['CA ANZ', 'Chartered Accountants Australia and New Zealand', 'Chartered accountancy qualification and membership'],
+       ['CA ANZ', 'Chartered Accountants Australia and New Zealand', 'Chartered accountancy qualification and membership; members use the designation CA'],
        ['CPA Australia', 'CPA Australia', 'CPA qualification and professional development'],
        ['IMA', 'Institute of Management Accountants', 'Management accounting and the CMA qualification'],
        ['IIA', 'The Institute of Internal Auditors', 'Internal auditing standards, education, and CIA certification'],
        ['ISACA', 'Originally Information Systems Audit and Control Association', 'Information systems audit, technology risk, and CISA certification'],
-       ['CFA Institute', 'CFA Institute', 'Investment analysis, financial analysis, and professional ethics']])),
+       ['CFA Institute', 'CFA Institute', 'Investment analysis, financial analysis, and professional ethics'],
+       ['ESAA', 'Egyptian Society of Accountants and Auditors', 'Professional qualification, fellowship and continuing professional development in Egypt']])),
+    ('note', '“CA” is not a single qualification. In the United Kingdom, members of ICAS use the letters CA, while members of ICAEW use ACA or FCA. In Ireland, members of Chartered Accountants Ireland use ACA or FCA, and in Australia and New Zealand, members of CA ANZ use CA. What these chartered routes share is practical training with an employer authorised by the institute, not residence in a particular country. Most authorised employers are in the institute’s home country, but some institutes, such as ICAEW, also authorise employers in other countries.'),
+    ('cites', [(46, 46), (48, 49), (52, 52), (80, 81)]),
+    ('inst', dict(
+      acr='ESAA',
+      n='5.1',
+      name='ESAA — Egyptian Society of Accountants and Auditors',
+      other='جمعية المحاسبين والمراجعين المصرية',
+      blocks=[
+       ('p', 'The Egyptian Society of Accountants and Auditors (ESAA) was established by Royal Decree in 1946 and later received statutory recognition by Ministerial Order No. 2280. It is a voluntary professional accountancy organisation, a member of IFAC since 1980, and a member of the Federation of Mediterranean Certified Accountants.'),
+       ('p', 'ESAA’s role centres on the qualification and professional development of accountants and auditors in Egypt:'),
+       ('ul', ['**Qualification:** full membership requires a commerce degree (accounting) or its equivalent, three years of practical training after graduation, and passing the Society’s intermediate and final examinations. Other routes exist for members of approved foreign professional bodies and for holders of a doctorate in accounting with relevant experience.',
+               '**Fellowship:** a member may be granted the title of Fellow after five years of membership.',
+               '**Continuing professional development:** members must complete 120 hours of CPD over each three-year period, and ESAA monitors compliance.',
+               '**Professional conduct:** ESAA has an Investigation and Disciplinary Committee for its members.',
+               '**Technical input:** ESAA provides technical recommendations to the relevant authorities on revisions to the Egyptian Accounting Standards and the Egyptian auditing standards.',
+               '**Training:** ESAA runs a professional academy and training programmes, including an IFRS diploma.']),
+       ('note', 'ESAA membership is also a direct route to practice rights in Egypt. Under Law No. 133 of 1951, members of the Society are registered directly in the table of accountants and auditors (Article 11) and may approve the financial statements of joint stock companies without the five-year practice period required of others (Article 25). Practice still requires Egyptian nationality, registration in the Ministry of Finance General Register and membership of the Syndicate of Commerce and, for certain entities, registration with the FRA or the Central Bank of Egypt (see [11.1](#i-mof) and [11.5](#who-can-sign)).'),
+       ('cites', [(20, 20), (82, 84)])])),
     ('p', 'The AICPA and CIMA are also associated through the **Association of International Certified Professional Accountants**.'),
     ('p', 'A distinction should be made between professional designations, such as CPA, ACA, CMA, CIA, CISA, and CFA, and the organisations that administer or support them.'),
     ('p', "Professional qualifications may demonstrate substantial competence, but statutory audit authorisation remains subject to the applicable jurisdiction's legal requirements."),
@@ -401,6 +427,7 @@ GUIDE = dict(
    n='11',
    title='Who Grants the Legal Right to Conduct and Sign Statutory Audits?',
    toc=None,
+   sub=[('who-can-sign', '11.5 Quick guide: who can sign')],
    blocks=[
     ('p', 'This is one of the most consequential distinctions in professional practice.'),
     ('p', 'A practitioner may possess a highly respected international qualification, hold membership in a leading professional institute, and have considerable practical experience without being legally authorised to sign statutory audit reports in a particular jurisdiction.'),
@@ -418,7 +445,7 @@ GUIDE = dict(
        ('p', 'Additional requirements apply to particular sectors.'),
        ('p', "The **Financial Regulatory Authority (FRA)** maintains an auditors' register for relevant listed entities and non-banking financial activities within its regulatory jurisdiction."),
        ('p', 'The **Central Bank of Egypt (CBE)** also establishes additional eligibility requirements and maintains an approved register for bank auditors.'),
-       ('p', 'The Syndicate of Commerce has statutory professional responsibilities, while the **Egyptian Society of Accountants and Auditors (ESAA)** plays an important role in professional education, development, and representation.'),
+       ('p', 'The Syndicate of Commerce has statutory professional responsibilities, while the **Egyptian Society of Accountants and Auditors (ESAA)** plays an important role in professional education, development, and representation ([see 5.1](#i-esaa)).'),
        ('p', 'Consequently, registration with the Ministry of Finance should not be interpreted as automatically satisfying every sector-specific audit eligibility requirement.')])),
     ('inst', dict(
       acr='SOCPA',
@@ -456,6 +483,47 @@ GUIDE = dict(
        ('p', '**www.auditregister.org.uk**'),
        ('p', 'For audits of public interest entities (PIEs), both the firm and the responsible individual must additionally be registered on the FRC PIE Auditor Register. This is separate from, and additional to, RSB registration. Updated regulations and guidance took effect on 20 April 2026.'),
        ('p', "Both the firm's authorisation and the appropriate status of the individuals responsible for statutory audit work must be considered.")])),
+    ('quick', dict(
+      id='who-can-sign',
+      n='11.5',
+      title='Quick guide: who can sign an audit report in Egypt, Saudi Arabia, the UK and the US',
+      intro='A qualification brings professional recognition. The right to sign a statutory audit report comes from the country where the audit is carried out.',
+      cards=[
+       dict(id='sign-egypt', name='Egypt', rows=[
+        ('Who grants the right', 'The Ministry of Finance, through the General Register of Accountants and Auditors (Law No. 133 of 1951). Membership of the Syndicate of Commerce is also required, and the FRA and the Central Bank of Egypt keep additional registers for the entities they supervise.'),
+        ('Nationality', 'Required. Article 2 of the Law requires the applicant to be Egyptian and resident in Egypt, so a non-Egyptian cannot be registered to practise, even with ESAA membership or a foreign qualification.'),
+        ('ESAA members', 'Registered directly in the table of accountants and auditors (Article 11) and may approve the financial statements of joint stock companies straight away (Article 25).'),
+        ('Other registered auditors', 'May approve joint stock company financial statements after at least five years of practice on their own account from the date of registration (Article 25).'),
+        ('Foreign qualifications (ACCA, ACA, CPA)', 'Do not by themselves give the right to sign in Egypt; the nationality and registration conditions still apply.'),
+        ('Where to check', 'Ministry of Finance [21, 37]; FRA auditors’ portal [22].')]),
+       dict(id='sign-saudi', name='Saudi Arabia', rows=[
+        ('Who grants the right', 'A licence under the Law of the Accounting and Auditing Profession (Royal Decree M/59, 1442H), applied for through SOCPA.'),
+        ('Nationality', 'Required. The applicant must be a Saudi national, a full member of SOCPA, hold a bachelor’s degree in accounting or a relevant specialty, and have at least one year of relevant experience (Article 3).'),
+        ('Non-Saudis', 'Cannot hold the licence in their own name.'),
+        ('New licensees', 'May not audit joint stock companies, banks or public bodies until five years after obtaining the licence.'),
+        ('Where to check', 'SOCPA licensing services [24, 25]; the Law [85].')]),
+       dict(id='sign-uk', name='United Kingdom', rows=[
+        ('Who grants the right', 'An individual must be a member of a Recognised Supervisory Body and meet its registration requirements, including an audit qualification. Audits are carried out through firms registered as auditors. The FRC oversees the system.'),
+        ('Qualifying bodies', 'ACCA, ICAEW, ICAS, Chartered Accountants Ireland and AIA.'),
+        ('ACCA members', 'Yes. An ACCA member who holds an audit qualification, working through a firm registered as auditors by ACCA, can carry out UK statutory audits. Passing the ACCA exams alone is not enough.'),
+        ('Nationality', 'Not a condition; eligibility depends on qualification and registration.'),
+        ('Foreign-qualified accountants', 'Some overseas qualifications are recognised; others must re-qualify. Ask the relevant supervisory body.'),
+        ('Where to check', '[86, 87, 11, 13].')]),
+       dict(id='sign-us', name='United States', rows=[
+        ('Who grants the right', 'A CPA licence issued by a State Board of Accountancy. Audits of public companies are also carried out through firms registered with the PCAOB.'),
+        ('CPA holders', 'Passing the CPA Exam is not a licence; the state’s education and experience requirements must also be met.'),
+        ('Nationality', 'There is no single national rule. Some states require a Social Security number or set residency conditions, so check the chosen state.'),
+        ('Holders of ACCA, ESAA or SOCPA qualifications', 'No direct route; they must pass the Uniform CPA Examination through a state board. Members of CPA Australia, CA ANZ, CPA Canada, Chartered Accountants Ireland, CPA Ireland, IMCP (Mexico) and SAICA may instead sit the shorter IQEX.'),
+        ('Where to check', 'NASBA [10, 88] and the chosen state board.')])],
+      faq_title='Common questions',
+      faq=[
+       ('Can an ACCA member sign audit reports in England?', 'Yes, with an audit qualification and through a firm registered as auditors.', 'sign-uk'),
+       ('Can an ACCA member sign audit reports in Egypt?', 'Not on the basis of ACCA alone; Egyptian nationality, registration with the Ministry of Finance and Syndicate membership are required.', 'sign-egypt'),
+       ('Does ESAA membership allow joint stock company audits straight away?', 'Yes. Members are registered directly and may approve joint stock company financial statements without the five-year period.', 'sign-egypt'),
+       ('Can a non-Egyptian who holds ESAA membership sign audits in Egypt?', 'No. Egyptian nationality is a condition of registration.', 'sign-egypt'),
+       ('Can a non-Saudi obtain a SOCPA practice licence?', 'No. The licence requires Saudi nationality.', 'sign-saudi'),
+       ('Does a US CPA need US citizenship?', 'Not as a national rule; some states require a Social Security number or residency.', 'sign-us')],
+      disclaimer='General guide based on the official sources listed, checked on 19 October 2026. Conditions change; confirm with the relevant authority before applying. This is not legal advice.')),
     ('h3', 'Comparison of Statutory Audit Authorisation'),
     ('table', dict(
       head=['Jurisdiction', 'Principal licensing or registration body', 'Additional considerations'],
@@ -537,7 +605,7 @@ GUIDE = dict(
    title='References and official sources',
    toc=None,
    blocks=[])],
- refs_intro='Official and institutional sources for the article and regulatory verification as at 18 October 2026. Bracketed references in the text refer to this list. Reference titles contain clickable source links.',
+ refs_intro='Official and institutional sources for the article and regulatory verification as at 19 October 2026. Bracketed references in the text refer to this list. Reference titles contain clickable source links.',
  refs=[
   (1, 'IFAC — International Federation of Accountants', 'https://www.ifac.org/who-we-are/our-purpose', 'www.ifac.org'),
   (2, 'IFAC — Revised Statements of Membership Obligations, 2026', 'https://www.ifac.org/news-events/2026-03/ifac-revises-statements-membership-obligations-strengthen-global-accountancy-profession', 'www.ifac.org'),
@@ -559,7 +627,7 @@ GUIDE = dict(
   (18, 'IESBA — Global Ethics Sustainability Standards', 'https://www.ethicsboard.org/focus-areas/global-ethics-sustainability-standards', 'www.ethicsboard.org'),
   (19, 'IFAC — Forum of Firms', 'https://www.ifac.org/forum-of-firms', 'www.ifac.org'),
   (20, 'IFAC — Egypt Jurisdiction Profile', 'https://www.ifac.org/about-ifac/membership/profile/egypt', 'www.ifac.org'),
-  (21, 'Egyptian Ministry of Finance', 'https://mof.gov.eg/', 'mof.gov.eg'),
+  (21, 'Egyptian Ministry of Finance — Register and Professional Services', 'https://mof.gov.eg/', 'mof.gov.eg'),
   (22, "Egyptian Financial Regulatory Authority — Auditors' Portal", 'https://fra.gov.eg/auditors-portal/', 'fra.gov.eg'),
   (23, 'IFAC — Saudi Arabia Jurisdiction Profile', 'https://www.ifac.org/about-ifac/membership/profile/saudi-arabia', 'www.ifac.org'),
   (24, 'SOCPA — Professional Licensing', 'https://socpa.org.sa/Socpa/Licensed-Accountants/Registration.aspx', 'socpa.org.sa'),
@@ -610,11 +678,21 @@ GUIDE = dict(
   (69, 'CAPA — Confederation of Asian and Pacific Accountants', 'https://www.capa-apac.org/', 'www.capa-apac.org'),
   (70, 'Accountancy Europe — Professional representation', 'https://accountancyeurope.eu/', 'accountancyeurope.eu'),
   (71, 'World Bank — Accounting and Auditing ROSC', 'https://www.worldbank.org/en/programs/rosc', 'www.worldbank.org'),
-  (72, 'Egyptian Society of Accountants and Auditors', 'https://esaa.org.eg/', 'esaa.org.eg'),
+  (72, 'Egyptian Society of Accountants and Auditors', 'https://web.esaa.org.eg/', 'web.esaa.org.eg'),
   (73, 'Central Bank of Egypt — Banking regulation', 'https://www.cbe.org.eg/', 'www.cbe.org.eg'),
   (74, 'Saudi Central Bank — Banking regulation', 'https://www.sama.gov.sa/', 'www.sama.gov.sa'),
   (75, 'Egypt Accountability State Authority', 'https://asa.gov.eg/', 'asa.gov.eg'),
   (76, 'Saudi General Court of Audit', 'https://www.gca.gov.sa/', 'www.gca.gov.sa'),
   (77, 'SOCPA — Documents endorsing international standards', 'https://socpa.org.sa/Socpa/Pages/Knowledge-Center/101.aspx?lang=en-us', 'socpa.org.sa'),
   (78, 'The IIA — Current Global Internal Audit Standards and effective date', 'https://www.theiia.org/en/standards/', 'www.theiia.org'),
-  (79, 'COSO — Enterprise Risk Management', 'https://www.coso.org/guidance-erm', 'www.coso.org')])
+  (79, 'COSO — Enterprise Risk Management', 'https://www.coso.org/guidance-erm', 'www.coso.org'),
+  (80, 'ICAS — How to correctly use ‘CA’ and ‘Chartered Accountants’', 'https://icas.com/regulation/guidance-and-helpsheets/how-to-correctly-use-ca-and-chartered-accountants', 'icas.com'),
+  (81, 'ICAEW — ACA training in the Middle East', 'https://www.icaew.com/For-current-ACA-students/training-agreement/aca-training-in-other-countries/middle-east', 'www.icaew.com'),
+  (82, 'IFAC — Egyptian Society of Accountants & Auditors (member profile)', 'https://www.ifac.org/about-ifac/membership/members/egyptian-society-accountants-auditors', 'www.ifac.org'),
+  (83, 'ESAA — Articles of association and bylaws (Arabic)', 'https://res.cloudinary.com/dfym0acue/image/upload/esaa-publications/articles-of-association-bylaws.pdf', 'res.cloudinary.com'),
+  (84, 'Law No. 133 of 1951 on Practising Accounting and Auditing (Egypt) — text, unofficial copy', 'https://egylawsite.wordpress.com/2014/12/16/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%B1%D9%82%D9%85-133-%D9%84%D8%B3%D9%86%D8%A9-1951%D8%A8%D9%85%D8%B2%D8%A7%D9%88%D9%84%D8%A9-%D9%85%D9%87%D9%86%D8%A9-%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9/', 'egylawsite.wordpress.com'),
+  (85, 'SOCPA — Law of the Accounting and Auditing Profession (Royal Decree M/59, 1442H)', 'https://socpa.org.sa/SOCPA/files/06/066109b0-5a63-47b6-8fd5-10546e7ca91b.pdf', 'socpa.org.sa'),
+  (86, 'UK Government — Regulated professions: Statutory audit', 'https://www.regulated-professions.service.gov.uk/professions/statutory-audit', 'www.regulated-professions.service.gov.uk'),
+  (87, 'ACCA — Our certificates explained (audit qualification and firms registered as auditors)', 'https://www.accaglobal.com/gb/en/member/find-an-accountant/certificates.html', 'www.accaglobal.com'),
+  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org'),
+  (89, 'ESAA — Official website', 'https://web.esaa.org.eg/', 'web.esaa.org.eg')])

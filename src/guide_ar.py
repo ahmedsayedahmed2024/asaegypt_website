@@ -10,12 +10,18 @@
 #          ('inst', dict(acr, n, name, other, blocks)) institution card; acr is a key of guide.INST
 #            (category colour, names, official site); other = the name in the other language
 # **bold** marks bold words inside a text.
+# [text](#id) links to another part of the guide (a card, a section or a quick guide).
+# Section option: sub=[(id, label)] extra entries under the section in the contents list.
+# ('quick', dict(id, n, title, intro, cards=[dict(id, name, rows=[(label, text)])], faq_title,
+#                faq=[(question, answer, id of the card it refers to)], disclaimer)) quick guide: country cards,
+#   a "Common questions" accordion (also FAQPage structured data) and a disclaimer line;
+#   "[21, 37]" in a card row links references 21 and 37.
 
 GUIDE = dict(
  title='المؤسسات والهيئات التي تشكّل مهنة المحاسبة والمراجعة حول العالم',
  lead='دليل مهني شامل لفهم جهات إصدار المعايير، والرقابة، والتنظيم، والتأهيل، والترخيص بمزاولة المهنة',
  toc_note='دليل للمحاسبين والمراجعين في مختلف مراحل المسار المهني',
- checked='آخر تحقق من المصادر 18 أكتوبر 2026',
+ checked='آخر تحقق من المصادر 19 أكتوبر 2026',
  sections=[
   dict(
    id='introduction',
@@ -55,7 +61,7 @@ GUIDE = dict(
    blocks=[
     ('inst', dict(
       acr='IFAC',
-      n='1',
+      n='2.1',
       name='الاتحاد الدولي للمحاسبين',
       other='International Federation of Accountants',
       blocks=[
@@ -68,7 +74,7 @@ GUIDE = dict(
        ('p', 'ومن المهم توضيح أن عضوية IFAC تكون أساسًا للمنظمات المهنية، وليست ترخيصًا شخصيًا يمنح أي محاسب حق ممارسة المراجعة في جميع الدول.')])),
     ('inst', dict(
       acr='IAASB',
-      n='2',
+      n='2.2',
       name='المجلس الدولي لمعايير المراجعة والتأكيد',
       other='International Auditing and Assurance Standards Board',
       blocks=[
@@ -89,7 +95,7 @@ GUIDE = dict(
        ('p', 'والجدير بالذكر أن بعض المعايير المنشورة في دليل 2026 تصبح نافذة دوليًا في ديسمبر 2026؛ ومن ثم يجب التفرقة بين تاريخ إصدار المعيار وتاريخ بدء تطبيقه.')])),
     ('inst', dict(
       acr='IESBA',
-      n='3',
+      n='2.3',
       name='المجلس الدولي لمعايير أخلاقيات المهنة للمحاسبين',
       other='International Ethics Standards Board for Accountants',
       blocks=[
@@ -103,7 +109,7 @@ GUIDE = dict(
        ('p', 'وهنا تظهر قاعدة أساسية: قد تُنفذ إجراءات المراجعة من الناحية الفنية بصورة سليمة، ومع ذلك يكون الارتباط غير مقبول مهنيًا بسبب الإخلال بمتطلبات الاستقلالية أو الأخلاقيات.')])),
     ('inst', dict(
       acr='IFEA',
-      n='4',
+      n='2.4',
       name='المؤسسة الدولية للأخلاقيات والمراجعة',
       other='International Foundation for Ethics and Audit',
       blocks=[
@@ -112,7 +118,7 @@ GUIDE = dict(
        ('p', 'ويتمثل الفرق هنا بين المؤسسة الحاضنة، والمجلس الذي يضع المعيار، والجهة التي تراقب سلامة عملية وضعه.')])),
     ('inst', dict(
       acr='PIOB',
-      n='5',
+      n='2.5',
       name='مجلس الإشراف على المصلحة العامة',
       other='Public Interest Oversight Board',
       blocks=[
@@ -121,14 +127,14 @@ GUIDE = dict(
        ('p', 'لكن اختصاصه لا يعني أنه جهة تفتيش مباشرة على كل مكتب مراجعة في العالم.')])),
     ('inst', dict(
       acr='MG',
-      n='6',
+      n='2.6',
       name='مجموعة المراقبة',
       other='Monitoring Group',
       blocks=[
        ('p', 'تضم مجموعة المراقبة جهات رقابية ومؤسسات مالية دولية، وتركز على تقييم فعالية منظومة وضع المعايير ومدى استقلالها واستجابتها للمصلحة العامة.')])),
     ('inst', dict(
       acr='SAC',
-      n='7',
+      n='2.7',
       name='المجلس الاستشاري لأصحاب المصلحة',
       other='Stakeholder Advisory Council',
       blocks=[
@@ -153,7 +159,7 @@ GUIDE = dict(
     ('p', 'لا تنفصل مهنة المراجعة عن المعايير المحاسبية. فالمراجع لا يختبر الأرقام والإفصاحات بمعزل عن إطار إعداد التقارير المالية المطبق على المنشأة.'),
     ('inst', dict(
       acr='IFRS Foundation',
-      n='8',
+      n='3.1',
       name='مؤسسة المعايير الدولية للتقرير المالي',
       other='International Financial Reporting Standards Foundation',
       blocks=[
@@ -161,7 +167,7 @@ GUIDE = dict(
        ('p', 'وتتكون منظومتها الحاكمة من مجلس مراقبة، وأمناء مسؤولين عن الحوكمة والتوجه الاستراتيجي، ومجلسين مستقلين لوضع المعايير.')])),
     ('inst', dict(
       acr='IASB',
-      n='9',
+      n='3.2',
       name='مجلس معايير المحاسبة الدولية',
       other='International Accounting Standards Board',
       blocks=[
@@ -170,7 +176,7 @@ GUIDE = dict(
        ('p', 'ويشمل الإطار أيضًا معايير IAS التي ما زالت سارية، رغم اختلاف التسمية التاريخية.')])),
     ('inst', dict(
       acr='ISSB',
-      n='10',
+      n='3.3',
       name='مجلس معايير الاستدامة الدولية',
       other='International Sustainability Standards Board',
       blocks=[
@@ -178,7 +184,7 @@ GUIDE = dict(
        ('ul', ['IFRS S1: المتطلبات العامة للإفصاح عن المعلومات المالية المتعلقة بالاستدامة.', 'IFRS S2: الإفصاحات المتعلقة بالمناخ.'])])),
     ('inst', dict(
       acr='IFRS IC',
-      n='11',
+      n='3.4',
       name='لجنة تفسيرات المعايير الدولية',
       other='IFRS Interpretations Committee',
       blocks=[
@@ -187,23 +193,24 @@ GUIDE = dict(
     ('p', 'وتعمل لجنة تفسيرات IFRS ضمن المنظومة الفنية المرتبطة بمعايير المحاسبة الدولية.'),
     ('p', 'ويبدأ السريان الدولي لمعيار IFRS 18 على الفترات السنوية التي تبدأ في 1 يناير 2027 أو بعده، مع السماح بالتطبيق المبكر وفق شروطه ومتطلبات الاعتماد المحلية.'),
     ('p', 'هذه المنظومة مستقلة عن منظومة IAASB وIESBA، رغم الارتباط الوثيق بين المعايير المحاسبية ومعايير المراجعة في التطبيق العملي.'),
+    ('h3', '3.5 مؤسسات التقارير المالية في الولايات المتحدة'),
     ('inst', dict(
       acr='FASB',
-      n='12',
+      n='3.5.1',
       name='مجلس معايير المحاسبة المالية الأمريكي',
       other='Financial Accounting Standards Board',
       blocks=[
        ('p', 'يتولى وضع معايير المحاسبة المالية الأمريكية US GAAP لمنشآت القطاع الخاص والجهات الأخرى الخاضعة لاختصاصه.')])),
     ('inst', dict(
       acr='GASB',
-      n='13',
+      n='3.5.2',
       name='مجلس معايير المحاسبة الحكومية الأمريكي',
       other='Governmental Accounting Standards Board',
       blocks=[
        ('p', 'مسؤول عن وضع معايير المحاسبة والتقارير المالية لحكومات الولايات والحكومات المحلية الأمريكية.')])),
     ('inst', dict(
       acr='FAF',
-      n='14',
+      n='3.5.3',
       name='مؤسسة المحاسبة المالية الأمريكية',
       other='Financial Accounting Foundation',
       blocks=[
@@ -220,7 +227,7 @@ GUIDE = dict(
     ('p', 'ومن هنا تأتي أهمية هيئات الرقابة المستقلة.'),
     ('inst', dict(
       acr='PCAOB',
-      n='15',
+      n='4.1',
       name='مجلس الرقابة على محاسبة الشركات العامة',
       other='Public Company Accounting Oversight Board — الولايات المتحدة',
       blocks=[
@@ -231,7 +238,7 @@ GUIDE = dict(
        ('p', 'ومن المهم التفرقة بين معايير PCAOB Auditing Standards ومعايير ISA الدولية، إذ تختلف متطلبات كل إطار بحسب نوع المنشأة والاختصاص القانوني.')])),
     ('inst', dict(
       acr='SEC',
-      n='16',
+      n='4.2',
       name='هيئة الأوراق المالية والبورصات الأمريكية',
       other='Securities and Exchange Commission',
       blocks=[
@@ -239,7 +246,7 @@ GUIDE = dict(
        ('p', 'وتشرف SEC على PCAOB وفقًا للإطار التشريعي المنظم، كما تتولى تنظيم الإفصاحات والالتزامات المتعلقة بالجهات الخاضعة لقوانين الأوراق المالية.')])),
     ('inst', dict(
       acr='IFIAR',
-      n='17',
+      n='4.3',
       name='المنتدى الدولي لهيئات الرقابة المستقلة على المراجعة',
       other='International Forum of Independent Audit Regulators',
       blocks=[
@@ -248,29 +255,30 @@ GUIDE = dict(
        ('p', 'ولا يمثل IFIAR سلطة ترخيص عالمية تمنح المراجعين الحق في العمل بجميع الدول.')])),
     ('inst', dict(
       acr='FRC',
-      n='18',
+      n='4.4',
       name='مجلس التقارير المالية البريطاني',
       other='Financial Reporting Council — المملكة المتحدة',
       blocks=[
        ('p', 'يعد الجهة المختصة الرئيسية بالرقابة على المراجعة القانونية في المملكة المتحدة.'),
        ('p', 'ويتولى وضع معايير مراجعة بريطانية، والإشراف على الجهات المهنية المعترف بها لأغراض التسجيل والتأهيل، والرقابة المباشرة على بعض المراجعات، فضلًا عن التحقيق والإنفاذ في حدود اختصاصاته.')])),
+    ('h3', '4.5 جهات رقابية أخرى مهمة'),
     ('inst', dict(
       acr='CEAOB',
-      n='19',
+      n='4.5.1',
       name='لجنة الهيئات الأوروبية للرقابة على المراجعة',
       other='Committee of European Auditing Oversight Bodies',
       blocks=[
        ('p', 'تدعم التعاون والتنسيق بين سلطات الرقابة على المراجعة في الاتحاد الأوروبي.')])),
     ('inst', dict(
       acr='CPAB',
-      n='20',
+      n='4.5.2',
       name='مجلس المساءلة العامة الكندي',
       other='Canadian Public Accountability Board',
       blocks=[
        ('p', 'يشرف على جودة مراجعة الجهات المُصدرة التي تقع ضمن اختصاصه في كندا، مع وجود متطلبات ترخيص وتسجيل أخرى على مستوى المقاطعات.')])),
     ('inst', dict(
       acr='ASIC',
-      n='21',
+      n='4.5.3',
       name='هيئة الأوراق المالية والاستثمارات الأسترالية',
       other='Australian Securities and Investments Commission',
       blocks=[
@@ -282,6 +290,7 @@ GUIDE = dict(
    n='خامسًا',
    title='المعاهد والجمعيات المهنية الدولية',
    toc=None,
+   sub=[('i-esaa', '5.1 ESAA')],
    blocks=[
     ('p', 'تمثل هذه المؤسسات ركيزة أساسية في إعداد الكفاءات المهنية، وتطوير المعارف، ووضع متطلبات العضوية، ونشر الممارسات الجيدة.'),
     ('p', 'ويمكن تلخيص أبرزها فيما يلي:'),
@@ -289,18 +298,37 @@ GUIDE = dict(
       head=['الاختصار', 'الاسم الكامل بالإنجليزية', 'الاسم العربي والدور الأساسي'],
       rows=[
        ['AICPA', 'American Institute of Certified Public Accountants', 'المعهد الأمريكي للمحاسبين القانونيين المعتمدين؛ من أبرز المؤسسات المهنية الأمريكية، وله دور في معايير مراجعة المنشآت غير الخاضعة لنظام PCAOB'],
-       ['ICAEW', 'Institute of Chartered Accountants in England and Wales', 'معهد المحاسبين القانونيين في إنجلترا وويلز؛ يقدم مؤهل ACA وله اختصاصات تنظيمية معترف بها'],
+       ['ICAEW', 'Institute of Chartered Accountants in England and Wales', 'معهد المحاسبين القانونيين في إنجلترا وويلز؛ يقدم مؤهل ACA (ويحمل أعضاؤه لقب ACA أو FCA) وله اختصاصات تنظيمية معترف بها'],
        ['ACCA', 'Association of Chartered Certified Accountants', 'جمعية المحاسبين القانونيين المعتمدين؛ تقدم تأهيلًا وعضوية مهنية دولية'],
-       ['ICAS', 'Institute of Chartered Accountants of Scotland', 'معهد المحاسبين القانونيين في اسكتلندا؛ مؤسسة عريقة للتأهيل والتنظيم المهني'],
-       ['CAI', 'Chartered Accountants Ireland', 'المحاسبون القانونيون في أيرلندا؛ هيئة مهنية ولها اختصاصات تسجيل وتنظيم في نطاقات محددة'],
+       ['ICAS', 'Institute of Chartered Accountants of Scotland', 'معهد المحاسبين القانونيين في اسكتلندا؛ مؤسسة عريقة للتأهيل والتنظيم المهني، ويحمل أعضاؤه لقب CA'],
+       ['CAI', 'Chartered Accountants Ireland', 'المحاسبون القانونيون في أيرلندا؛ هيئة مهنية ولها اختصاصات تسجيل وتنظيم في نطاقات محددة، ويحمل أعضاؤها لقب ACA أو FCA'],
        ['CIMA', 'Chartered Institute of Management Accountants', 'المعهد القانوني للمحاسبين الإداريين؛ يركز على المحاسبة الإدارية والقيادة المالية'],
        ['CIPFA', 'Chartered Institute of Public Finance and Accountancy', 'المعهد القانوني للمالية العامة والمحاسبة؛ متخصص في القطاع العام'],
-       ['CA ANZ', 'Chartered Accountants Australia and New Zealand', 'المحاسبون القانونيون في أستراليا ونيوزيلندا؛ هيئة مهنية للتأهيل والتطوير'],
+       ['CA ANZ', 'Chartered Accountants Australia and New Zealand', 'المحاسبون القانونيون في أستراليا ونيوزيلندا؛ هيئة مهنية للتأهيل والتطوير، ويحمل أعضاؤها لقب CA'],
        ['CPA Australia', 'CPA Australia', 'مؤسسة مهنية أسترالية تمنح مؤهل CPA'],
        ['IMA', 'Institute of Management Accountants', 'معهد المحاسبين الإداريين؛ من أبرز الجهات المرتبطة بمؤهل CMA'],
        ['IIA', 'The Institute of Internal Auditors', 'معهد المراجعين الداخليين؛ المرجع العالمي الأبرز للمراجعة الداخلية ومؤهل CIA'],
        ['ISACA', 'Information Systems Audit and Control Association — الاسم الأصلي', 'جمعية مهنية متخصصة في مراجعة نظم المعلومات والحوكمة التقنية، ومن مؤهلاتها CISA'],
-       ['CFA Institute', 'CFA Institute', 'معهد المحللين الماليين؛ متخصص في التحليل المالي والاستثمار والأخلاقيات المهنية']])),
+       ['CFA Institute', 'CFA Institute', 'معهد المحللين الماليين؛ متخصص في التحليل المالي والاستثمار والأخلاقيات المهنية'],
+       ['ESAA', 'Egyptian Society of Accountants and Auditors', 'جمعية المحاسبين والمراجعين المصرية؛ التأهيل المهني والزمالة والتطوير المهني المستمر في مصر']])),
+    ('note', '«CA» ليس مؤهلًا واحدًا. ففي المملكة المتحدة يستخدم أعضاء ICAS لقب CA، بينما يستخدم أعضاء ICAEW لقب ACA أو FCA. وفي أيرلندا يستخدم أعضاء CAI لقب ACA أو FCA، وفي أستراليا ونيوزيلندا يستخدم أعضاء CA ANZ لقب CA. والقاسم المشترك بين هذه المسارات هو التدريب العملي لدى جهة عمل معتمدة من المعهد، لا الإقامة في بلد معين. وتتركز معظم جهات التدريب المعتمدة في بلد المعهد، لكن بعض المعاهد، مثل ICAEW، تعتمد جهات تدريب في دول أخرى أيضًا.'),
+    ('cites', [(46, 46), (48, 49), (52, 52), (80, 81)]),
+    ('inst', dict(
+      acr='ESAA',
+      n='5.1',
+      name='ESAA — جمعية المحاسبين والمراجعين المصرية',
+      other='Egyptian Society of Accountants and Auditors',
+      blocks=[
+       ('p', 'تأسست جمعية المحاسبين والمراجعين المصرية (ESAA) بمرسوم ملكي عام 1946، ثم حصلت على اعتراف رسمي بموجب القرار الوزاري رقم 2280. وهي منظمة مهنية محاسبية تطوعية، وعضو في الاتحاد الدولي للمحاسبين IFAC منذ عام 1980، وعضو في اتحاد المحاسبين المعتمدين لدول البحر المتوسط.'),
+       ('p', 'ويتركز دور الجمعية في تأهيل المحاسبين والمراجعين في مصر وتطويرهم المهني:'),
+       ('ul', ['**التأهيل:** تشترط العضوية العاملة الحصول على بكالوريوس التجارة (شعبة المحاسبة) أو ما يعادله، وقضاء ثلاث سنوات من التدريب العملي بعد التخرج، واجتياز الامتحانين المتوسط والنهائي اللذين تعقدهما الجمعية. وتوجد مسارات أخرى لأعضاء الهيئات المهنية الأجنبية المعتمدة، ولحملة الدكتوراه في المحاسبة ذوي الخبرة المناسبة.',
+               '**الزمالة:** يجوز منح العضو لقب «زميل» بعد مرور خمس سنوات على عضويته.',
+               '**التطوير المهني المستمر:** يلتزم الأعضاء بـ 120 ساعة من التطوير المهني المستمر خلال كل ثلاث سنوات، وتتابع الجمعية الالتزام بها.',
+               '**السلوك المهني:** لدى الجمعية لجنة للتحقيق والتأديب تختص بأعضائها.',
+               '**الرأي الفني:** تقدم الجمعية توصيات فنية للجهات المختصة بشأن تعديل معايير المحاسبة المصرية ومعايير المراجعة المصرية.',
+               '**التدريب:** تدير الجمعية أكاديمية مهنية وبرامج تدريبية، منها دبلوم في المعايير الدولية للتقرير المالي IFRS.']),
+       ('note', 'وعضوية الجمعية طريق مباشر لحقوق المزاولة في مصر أيضًا؛ إذ يقضي القانون رقم 133 لسنة 1951 بقيد أعضاء الجمعية مباشرة في جدول المحاسبين والمراجعين (المادة 11)، ويجيز لهم اعتماد ميزانيات شركات المساهمة دون اشتراط مدة الخمس سنوات المطلوبة من غيرهم (المادة 25). ويظل حق المزاولة مشروطًا بالجنسية المصرية، والقيد في السجل العام للمحاسبين والمراجعين بوزارة المالية، وعضوية نقابة التجاريين، إضافة إلى القيد لدى الهيئة العامة للرقابة المالية أو البنك المركزي المصري بالنسبة لبعض الجهات ([انظر 11.1](#i-mof) و[11.5](#who-can-sign)).'),
+       ('cites', [(20, 20), (82, 84)])])),
     ('p', 'ومن المفيد معرفة أن AICPA وCIMA تعملان ضمن مؤسسة مهنية مشتركة باسم:'),
     ('p', '**Association of International Certified Professional Accountants**'),
     ('p', 'كذلك فإن مؤهلات مثل CPA وACA وACCA وCMA وCIA وCISA وCFA ليست جميعها أسماء مؤسسات؛ فبعضها مؤهلات أو ألقاب مهنية، بينما تشير الأسماء الأخرى إلى المؤسسات التي تمنحها أو تدير متطلباتها.'),
@@ -314,7 +342,7 @@ GUIDE = dict(
    blocks=[
     ('inst', dict(
       acr='IIA',
-      n='22',
+      n='6.1',
       name='معهد المراجعين الداخليين',
       other='The Institute of Internal Auditors',
       blocks=[
@@ -328,7 +356,7 @@ GUIDE = dict(
        ('p', 'ويجب التفرقة هنا بين نطاق عمل المراجع الداخلي ووظيفته داخل منظومة الحوكمة، وبين مسؤولية المراجع الخارجي عن إبداء الرأي في القوائم المالية.')])),
     ('inst', dict(
       acr='COSO',
-      n='23',
+      n='6.2',
       name='لجنة المنظمات الراعية للجنة تريدواي',
       other='Committee of Sponsoring Organizations of the Treadway Commission',
       blocks=[
@@ -434,6 +462,7 @@ GUIDE = dict(
    n='الحادي عشر',
    title='من يمنح المحاسب حق مزاولة المراجعة والتوقيع على تقريرها؟',
    toc=None,
+   sub=[('who-can-sign', '11.5 دليل سريع: من يحق له التوقيع')],
    blocks=[
     ('p', 'ربما يكون هذا من أكثر الجوانب أهمية، وأكثرها عرضة للالتباس.'),
     ('p', 'فالمحاسب قد يحمل مؤهلًا دوليًا رفيع المستوى، وينتمي إلى جمعية مهنية مرموقة، ويتمتع بخبرة عملية كبيرة، دون أن يكون مخولًا قانونًا بتوقيع تقارير المراجعة في دولة معينة.'),
@@ -442,7 +471,7 @@ GUIDE = dict(
     ('p', 'وقد تتطلب المرحلة الأخيرة تسجيلات أو موافقات إضافية بحسب طبيعة المنشأة.'),
     ('inst', dict(
       acr='MoF',
-      n='1',
+      n='11.1',
       name='مصر: السجل العام للمحاسبين والمراجعين والجهات القطاعية',
       other='Ministry of Finance — General Register of Accountants and Auditors',
       blocks=[
@@ -452,12 +481,12 @@ GUIDE = dict(
        ('p', 'لكن القيد العام لا يعني تلقائيًا أهلية مراجعة جميع المنشآت دون استثناء.'),
        ('p', 'فالهيئة العامة للرقابة المالية **FRA — Financial Regulatory Authority** تحتفظ بسجل لمراقبي الحسابات الخاضعين لاختصاصها، وتضع متطلبات إضافية لفئات معينة من الشركات والأنشطة المالية غير المصرفية.'),
        ('p', 'كما يطبق البنك المركزي المصري **CBE — Central Bank of Egypt** متطلبات خاصة على مراجعي البنوك، بما في ذلك القيد بالسجل المعتمد لديه.'),
-       ('p', 'وتؤدي النقابة العامة للتجاريين، في إطار اختصاصاتها القانونية، دورًا في التنظيم والعضوية المهنية، بينما تضطلع جمعية المحاسبين والمراجعين المصرية ESAA بدور مهم في التأهيل والتطوير والممارسات المهنية.'),
+       ('p', 'وتؤدي النقابة العامة للتجاريين، في إطار اختصاصاتها القانونية، دورًا في التنظيم والعضوية المهنية، بينما تضطلع جمعية المحاسبين والمراجعين المصرية ESAA بدور مهم في التأهيل والتطوير والممارسات المهنية ([انظر 5.1](#i-esaa)).'),
        ('note', '**مثال توضيحي:** قد يكون المحاسب مقيدًا بالسجل العام وله أهلية مراجعة شركات معينة، لكن تكليفه بمراجعة بنك أو شركة تخضع لمتطلبات خاصة لدى الهيئة العامة للرقابة المالية يستلزم التحقق من استيفاء القيد أو الموافقات الإضافية ذات الصلة.'),
        ('p', 'ويجب كذلك عدم الخلط بين السجل العام لمزاولة المهنة وأي سجلات أو آليات اعتماد خاصة بالتعاملات الضريبية.')])),
     ('inst', dict(
       acr='SOCPA',
-      n='2',
+      n='11.2',
       name='المملكة العربية السعودية: الهيئة السعودية للمراجعين والمحاسبين',
       other='SOCPA — Saudi Organization for Chartered and Professional Accountants',
       blocks=[
@@ -468,7 +497,7 @@ GUIDE = dict(
        ('p', 'كما تخضع مراجعة المنشآت المدرجة وغيرها من الجهات المنظمة لمتطلبات إضافية تصدرها السلطات القطاعية المختصة، ومنها هيئة السوق المالية CMA والبنك المركزي السعودي SAMA بحسب الحالة.')])),
     ('inst', dict(
       acr='State Boards',
-      n='3',
+      n='11.3',
       name='الولايات المتحدة: مجالس المحاسبة في الولايات',
       other='State Boards of Accountancy',
       blocks=[
@@ -482,7 +511,7 @@ GUIDE = dict(
        ('p', 'وبالنسبة لمراجعة الشركات المُصدرة الخاضعة لقواعد PCAOB، يتعين مراعاة متطلبات تسجيل مكتب المراجعة لدى PCAOB بالإضافة إلى متطلبات التراخيص والممارسة المحلية المنطبقة.')])),
     ('inst', dict(
       acr='RSBs',
-      n='4',
+      n='11.4',
       name='المملكة المتحدة: جهات الإشراف المعترف بها',
       other='Recognised Supervisory Bodies — RSBs',
       blocks=[
@@ -495,6 +524,47 @@ GUIDE = dict(
        ('p', '**Register of Statutory Auditors — www.auditregister.org.uk**'),
        ('p', 'ولمراجعة منشآت المصلحة العامة PIEs، يلزم أيضًا تسجيل المكتب والفرد المسؤول عن توقيع التقرير في سجل FRC الخاص بهذه المنشآت، إضافة إلى تسجيل RSB. وقد بدأ سريان اللوائح والإرشادات المحدثة لهذا السجل في 20 أبريل 2026.'),
        ('p', 'ولا يكفي مجرد اجتياز اختبارات ACA أو ACCA لمنح مكتب حق إجراء المراجعة القانونية؛ إذ يجب استيفاء متطلبات التأهيل والتسجيل والممارسة المعمول بها.')])),
+    ('quick', dict(
+      id='who-can-sign',
+      n='11.5',
+      title='دليل سريع: من يحق له التوقيع على تقرير المراجعة في مصر والسعودية والمملكة المتحدة والولايات المتحدة',
+      intro='المؤهل يمنح الاعتراف المهني، أما حق التوقيع على تقرير المراجعة القانونية فيأتي من الدولة التي تُجرى فيها المراجعة.',
+      cards=[
+       dict(id='sign-egypt', name='مصر', rows=[
+        ('من يمنح الحق', 'وزارة المالية من خلال السجل العام للمحاسبين والمراجعين (القانون رقم 133 لسنة 1951)، مع اشتراط عضوية نقابة التجاريين، وتحتفظ الهيئة العامة للرقابة المالية والبنك المركزي المصري بسجلات إضافية للجهات الخاضعة لإشرافهما.'),
+        ('الجنسية', 'شرط أساسي؛ إذ تشترط المادة 2 من القانون أن يكون طالب القيد مصريًا مقيمًا في مصر، فلا يجوز قيد غير المصري لمزاولة المهنة ولو كان عضوًا في الجمعية أو حاملًا لمؤهل أجنبي.'),
+        ('أعضاء جمعية المحاسبين والمراجعين المصرية', 'يُقيدون مباشرة في جدول المحاسبين والمراجعين (المادة 11)، ويحق لهم اعتماد ميزانيات شركات المساهمة مباشرة (المادة 25).'),
+        ('باقي المقيدين', 'يحق لهم اعتماد ميزانيات شركات المساهمة بعد مزاولة المهنة لحسابهم الخاص مدة لا تقل عن خمس سنوات من تاريخ القيد (المادة 25).'),
+        ('المؤهلات الأجنبية (ACCA وACA وCPA)', 'لا تمنح وحدها حق التوقيع في مصر، وتظل شروط الجنسية والقيد واجبة.'),
+        ('للأوراق والإجراءات', 'وزارة المالية [21، 37]، وبوابة المراجعين بالهيئة العامة للرقابة المالية [22].')]),
+       dict(id='sign-saudi', name='السعودية', rows=[
+        ('من يمنح الحق', 'ترخيص وفق نظام مهنة المحاسبة والمراجعة (المرسوم الملكي رقم م/59 لعام 1442هـ)، ويُقدَّم الطلب عن طريق الهيئة السعودية للمراجعين والمحاسبين.'),
+        ('الجنسية', 'شرط أساسي؛ إذ يشترط أن يكون طالب الترخيص سعودي الجنسية، وعضوًا أساسيًا في الهيئة، وحاصلًا على درجة البكالوريوس في المحاسبة أو تخصص ذي صلة، ولديه خبرة لا تقل عن سنة (المادة 3).'),
+        ('غير السعوديين', 'لا يجوز لهم الحصول على الترخيص بأسمائهم.'),
+        ('المرخص لهم حديثًا', 'لا يجوز لهم مراجعة حسابات شركات المساهمة والبنوك والجهات العامة قبل مرور خمس سنوات من تاريخ الترخيص.'),
+        ('للأوراق والإجراءات', 'خدمات التراخيص بالهيئة [24، 25]، ونص النظام [85].')]),
+       dict(id='sign-uk', name='المملكة المتحدة', rows=[
+        ('من يمنح الحق', 'يجب أن يكون الفرد عضوًا في إحدى هيئات الإشراف المعترف بها (Recognised Supervisory Body) وأن يستوفي متطلبات التسجيل لديها، ومنها مؤهل المراجعة، وتتم المراجعة من خلال مكاتب مسجلة كمراجعين، ويشرف على المنظومة مجلس التقارير المالية FRC.'),
+        ('هيئات التأهيل', 'ACCA وICAEW وICAS وCAI وAIA.'),
+        ('حامل ACCA', 'نعم؛ يحق لعضو ACCA الحاصل على مؤهل المراجعة، ومن خلال مكتب مسجل كمراجع لدى ACCA، إجراء المراجعة القانونية في المملكة المتحدة، ولا يكفي اجتياز اختبارات ACCA وحده.'),
+        ('الجنسية', 'ليست شرطًا؛ فالأهلية تقوم على المؤهل والتسجيل.'),
+        ('أصحاب المؤهلات الأجنبية', 'يُعترف ببعض المؤهلات الأجنبية، ويُطلب من غيرهم إعادة التأهيل، ويُرجع في ذلك إلى هيئة الإشراف المختصة.'),
+        ('للأوراق والإجراءات', '[86، 87، 11، 13].')]),
+       dict(id='sign-us', name='الولايات المتحدة', rows=[
+        ('من يمنح الحق', 'ترخيص CPA يصدر عن مجلس المحاسبة في الولاية (State Board of Accountancy)، وتتم مراجعة الشركات المقيدة من خلال مكاتب مسجلة لدى PCAOB.'),
+        ('حامل CPA', 'اجتياز اختبار CPA ليس ترخيصًا، ويجب استيفاء متطلبات التعليم والخبرة التي تحددها الولاية.'),
+        ('الجنسية', 'لا توجد قاعدة وطنية واحدة؛ فبعض الولايات تشترط رقم الضمان الاجتماعي أو شروط إقامة، لذا يُرجع إلى الولاية المختارة.'),
+        ('حملة مؤهلات ACCA أو الجمعية المصرية أو SOCPA', 'لا يوجد مسار مباشر، ويجب اجتياز اختبار CPA الموحد من خلال إحدى الولايات، بينما يحق لأعضاء CPA Australia وCA ANZ وCPA Canada وCAI وCPA Ireland وIMCP (المكسيك) وSAICA أداء اختبار IQEX الأقصر.'),
+        ('للأوراق والإجراءات', 'NASBA [10، 88] ومجلس الولاية المختارة.')])],
+      faq_title='أسئلة شائعة',
+      faq=[
+       ('هل يحق لحامل ACCA التوقيع على تقارير المراجعة في إنجلترا؟', 'نعم، بشرط الحصول على مؤهل المراجعة ومن خلال مكتب مسجل كمراجع.', 'sign-uk'),
+       ('هل يحق لحامل ACCA التوقيع على تقارير المراجعة في مصر؟', 'ليس بموجب ACCA وحدها؛ إذ يشترط الجنسية المصرية والقيد بوزارة المالية وعضوية النقابة.', 'sign-egypt'),
+       ('هل تتيح عضوية جمعية المحاسبين والمراجعين المصرية مراجعة شركات المساهمة مباشرة؟', 'نعم؛ يُقيد أعضاؤها مباشرة ويحق لهم اعتماد ميزانيات شركات المساهمة دون اشتراط مدة الخمس سنوات.', 'sign-egypt'),
+       ('هل يحق لغير المصري الحاصل على عضوية الجمعية التوقيع على المراجعة في مصر؟', 'لا؛ الجنسية المصرية شرط للقيد.', 'sign-egypt'),
+       ('هل يحق لغير السعودي الحصول على ترخيص مزاولة المهنة في السعودية؟', 'لا؛ الترخيص يشترط الجنسية السعودية.', 'sign-saudi'),
+       ('هل يشترط في حامل CPA الأمريكي أن يكون أمريكي الجنسية؟', 'ليس كقاعدة وطنية عامة؛ وبعض الولايات تشترط رقم الضمان الاجتماعي أو الإقامة.', 'sign-us')],
+      disclaimer='دليل عام مبني على المصادر الرسمية المذكورة، تمت مراجعتها في 19 أكتوبر 2026. الشروط قابلة للتغيير، لذا يُرجى التأكد من الجهة المختصة قبل التقديم. هذا المحتوى ليس استشارة قانونية.')),
     ('h3', 'مقارنة مختصرة بين أنظمة الترخيص'),
     ('table', dict(
       head=['الدولة', 'جهة القيد أو الترخيص الأساسية', 'متطلبات إضافية مهمة'],
@@ -576,7 +646,7 @@ GUIDE = dict(
    title='المراجع والمصادر الرسمية',
    toc=None,
    blocks=[])],
- refs_intro='المصادر المؤسسية والرسمية للمقال والتحقق التنظيمي حتى 18 أكتوبر 2026. الأرقام بين الأقواس في المتن تحيل إلى هذه القائمة. الروابط في عناوين المراجع قابلة للنقر.',
+ refs_intro='المصادر المؤسسية والرسمية للمقال والتحقق التنظيمي حتى 19 أكتوبر 2026. الأرقام بين الأقواس في المتن تحيل إلى هذه القائمة. الروابط في عناوين المراجع قابلة للنقر.',
  refs=[
   (1, 'IFAC — International Federation of Accountants. التعريف بالاتحاد وأهدافه وعضويته', 'https://www.ifac.org/who-we-are/our-purpose', 'www.ifac.org'),
   (2, 'IFAC — Revised Statements of Membership Obligations, 2026', 'https://www.ifac.org/news-events/2026-03/ifac-revises-statements-membership-obligations-strengthen-global-accountancy-profession', 'www.ifac.org'),
@@ -649,11 +719,21 @@ GUIDE = dict(
   (69, 'CAPA — Confederation of Asian and Pacific Accountants', 'https://www.capa-apac.org/', 'www.capa-apac.org'),
   (70, 'Accountancy Europe — Professional representation', 'https://accountancyeurope.eu/', 'accountancyeurope.eu'),
   (71, 'World Bank — Accounting and Auditing ROSC', 'https://www.worldbank.org/en/programs/rosc', 'www.worldbank.org'),
-  (72, 'Egyptian Society of Accountants and Auditors', 'https://esaa.org.eg/', 'esaa.org.eg'),
+  (72, 'Egyptian Society of Accountants and Auditors', 'https://web.esaa.org.eg/', 'web.esaa.org.eg'),
   (73, 'Central Bank of Egypt — Banking regulation', 'https://www.cbe.org.eg/', 'www.cbe.org.eg'),
   (74, 'Saudi Central Bank — Banking regulation', 'https://www.sama.gov.sa/', 'www.sama.gov.sa'),
   (75, 'Egypt Accountability State Authority', 'https://asa.gov.eg/', 'asa.gov.eg'),
   (76, 'Saudi General Court of Audit', 'https://www.gca.gov.sa/', 'www.gca.gov.sa'),
   (77, 'SOCPA — Documents endorsing international standards', 'https://socpa.org.sa/Socpa/Pages/Knowledge-Center/101.aspx?lang=en-us', 'socpa.org.sa'),
   (78, 'The IIA — Current Global Internal Audit Standards and effective date', 'https://www.theiia.org/en/standards/', 'www.theiia.org'),
-  (79, 'COSO — Enterprise Risk Management', 'https://www.coso.org/guidance-erm', 'www.coso.org')])
+  (79, 'COSO — Enterprise Risk Management', 'https://www.coso.org/guidance-erm', 'www.coso.org'),
+  (80, 'ICAS — How to correctly use ‘CA’ and ‘Chartered Accountants’', 'https://icas.com/regulation/guidance-and-helpsheets/how-to-correctly-use-ca-and-chartered-accountants', 'icas.com'),
+  (81, 'ICAEW — ACA training in the Middle East', 'https://www.icaew.com/For-current-ACA-students/training-agreement/aca-training-in-other-countries/middle-east', 'www.icaew.com'),
+  (82, 'IFAC — Egyptian Society of Accountants & Auditors (member profile)', 'https://www.ifac.org/about-ifac/membership/members/egyptian-society-accountants-auditors', 'www.ifac.org'),
+  (83, 'ESAA — Articles of association and bylaws (Arabic)', 'https://res.cloudinary.com/dfym0acue/image/upload/esaa-publications/articles-of-association-bylaws.pdf', 'res.cloudinary.com'),
+  (84, 'Law No. 133 of 1951 on Practising Accounting and Auditing (Egypt) — text, unofficial copy', 'https://egylawsite.wordpress.com/2014/12/16/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%B1%D9%82%D9%85-133-%D9%84%D8%B3%D9%86%D8%A9-1951%D8%A8%D9%85%D8%B2%D8%A7%D9%88%D9%84%D8%A9-%D9%85%D9%87%D9%86%D8%A9-%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9/', 'egylawsite.wordpress.com'),
+  (85, 'SOCPA — Law of the Accounting and Auditing Profession (Royal Decree M/59, 1442H)', 'https://socpa.org.sa/SOCPA/files/06/066109b0-5a63-47b6-8fd5-10546e7ca91b.pdf', 'socpa.org.sa'),
+  (86, 'UK Government — Regulated professions: Statutory audit', 'https://www.regulated-professions.service.gov.uk/professions/statutory-audit', 'www.regulated-professions.service.gov.uk'),
+  (87, 'ACCA — Our certificates explained (audit qualification and firms registered as auditors)', 'https://www.accaglobal.com/gb/en/member/find-an-accountant/certificates.html', 'www.accaglobal.com'),
+  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org'),
+  (89, 'ESAA — Official website', 'https://web.esaa.org.eg/', 'web.esaa.org.eg')])

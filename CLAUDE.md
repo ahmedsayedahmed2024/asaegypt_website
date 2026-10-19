@@ -10,7 +10,7 @@ Owner: Ahmed Sayed, Managing Partner.
   - `extras.py`: `sitemap.xml`, `robots.txt`, and `CNAME`.
   - `check_links.py`: fails the build on broken internal links (including image `srcset`) and on any image in `public/` over 300 KB.
   - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images").
-  - `search.py`: the search pages and the search index. See "Site search" below.
+  - `search.py`: the search pages and the passage index (it also writes the passage ids into the built pages). See "Site search" below.
   - `signature_banner.py`: the email signature banner and the `/latest/` pages. See "Email signature banner" below.
   - `hexagon.py`: the ASA Hexagon page (diagram, icons, Open Graph images). See "ASA Hexagon" below.
   - `guide.py`: reference guides (long, structured Insights articles). See "Reference guides" below.
@@ -116,10 +116,10 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 
 ## Reference guides
 - A reference guide is an Insights article with a long, structured body: "The Institutions Behind the Global Accounting and Auditing Profession" (`/insights/global-accounting-auditing-institutions/`). Its entry in `ART` has `guide=True`; its approved text is in `src/guide_en.py` / `guide_ar.py` (never rewrite it); `src/guide.py` builds the page (`templates/guide.html`, `public/assets/js/guide.js`).
-- Page: sticky contents with scroll-spy and reading progress (sheet on tablet and phone), "Find an institution" / «ابحث عن جهة», section links, institution cards, tables that become stacked cards under 768px, "ASA note" / «ملاحظة ASA» callouts, reference chips and a collapsible references list, three figures (inline SVG, mirrored in Arabic).
+- Page: sticky contents with scroll-spy and reading progress (sheet on tablet and phone; `sub=[(id, label)]` on a section adds entries under it), "Find an institution" / «ابحث عن جهة» (the site search engine on this page: an "Institutions" group, then every other match "In this article", and a find bar to step through them), section links, `[text](#id)` links inside the text, a quick guide block (`'quick'`: country cards, a "Common questions" accordion with FAQPage structured data, a disclaimer), institution cards, tables that become stacked cards under 768px, "ASA note" / «ملاحظة ASA» callouts, reference chips and a collapsible references list, three figures (inline SVG, mirrored in Arabic).
 - `INST` in `guide.py` is the institution registry: main category (one of the five colours in `CATS`), English and Arabic names, and the reference number used for the card's "Official site" link. Add any new institution there. No organisation logos anywhere.
 - Cover: original, drawn by `python src/guide_cover.py --png` (`<slug>.svg` for the image band, `<slug>-card.webp`, `<slug>-og.png` share image); `image=dict(kind="cover", ...)`.
-- The site search indexes the guide text and the institution acronyms and names (`k` field, `guide.keywords()`).
+- Each institution's own card or row carries `data-k` (acronym, category, names) so that the site search and the finder put it first for its acronym or name. The reading time is computed from the English text (`guide.minutes()`).
 - ASA NEXT links to it from `/next/` through `REFS` in `src/next.py`.
 
 ## Email signature banner
@@ -143,9 +143,13 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 
 ## Site search
 - Header search button on every page (EN "Search" / AR «بحث»), shortcuts "/" and Ctrl+K, and the search pages `/search/` and `/ar/search/` (`?q=`). The 404 page has a search box.
-- The index is built automatically at build time by `src/search.py` from the site data (articles, Briefing, ASA NEXT, services and main pages): `dist/assets/search/en.json` and `ar.json`. Nothing to update by hand when content is added.
-- Matching and ranking run in the browser (`public/assets/js/search.js`): Arabic normalisation, «ال» ignored, prefix matching, light typo tolerance for English. No external services, no tracking, no CDN.
-- If a new section or main page is added, add it to `build_index()` in `src/search.py` (and its group label in `content_en.py` / `content_ar.py` → `T['search']['groups']`).
+- **One engine** (`public/assets/js/search.js`) serves the header search, the search pages and the in-article finder of the reference guide (`guide.js` uses it through `window.ASASearch`).
+- **Passages, not pages.** After every page is built, `index_site()` in `src/search.py` reads each public page in `dist/` (not `/search/`, `/latest/` or any noindex page) and splits it into passages: paragraphs, list items, table rows, institution cards, callouts, quick-guide lines, FAQ items and references. Each passage keeps its own id or gets a stable one (`<section id>-p<n>`), written into the HTML with `data-p`. Index files: `dist/assets/search/en.json` and `ar.json` (page URL, title, type, date; passage id, text and breadcrumb). Nothing to update by hand when content is added.
+- What is left out: navigation, forms, cards that repeat other pages, page furniture. Mark any other block with `data-noindex`; mark a block that must be one passage with `data-passage`, and give a card or block a breadcrumb label with `data-h`.
+- A result opens `<page>?hl=<query>#<passage id>`: the page opens anything that hides the passage (references list, FAQ answer), scrolls it below the header, outlines it and lights up the matching words for about 3 seconds, then removes `?hl=` from the address bar. An old id falls back to the first match on the page.
+- **Aliases: `data/search_aliases.yml`** (the only file to edit): designations (CA → ICAS, CA ANZ…; CMA → IMA and the Saudi CMA, labelled) and synonyms in both languages (ESAA ↔ «جمعية المحاسبين والمراجعين المصرية», VAT ↔ «ضريبة القيمة المضافة»…). Every institution in `INST` (`guide.py`) is added automatically with its English and Arabic names.
+- Matching: case and accents ignored; Arabic diacritics, tatweel and letter forms unified; «ال» and a leading «و» optional; one wrong letter allowed in words of 5+ letters; words typed in capitals (acronyms) match whole words in the text. Ranking: an institution's own card or row for its acronym or alias, then page title, then section heading, then passage text; ties newest first.
+- The index is loaded only when a search box first gets focus. No external services, no tracking, no CDN. Keep each index under 300 KB gzipped (the build prints its size).
 
 ## Briefing (news)
 - Items live in `src/news.py` → `NEWS` (list page `/briefing/`, item pages `/briefing/<slug>/`, same under `/ar/`). Recently added items also rotate in the homepage hexagon (see above).
@@ -173,7 +177,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
   - On dark (#23262B): "ASA" #C5C9CF, "NEXT" #C3D648.
   - On light: "ASA" #5F646C, "NEXT" #8FA21A.
 - Humour (Junior Desk only): tasteful. No jokes about people, clients or other firms. No slang, no politics, no religion.
-- Professional qualifications: link the official body (ACCA, AICPA, SOCPA, ESAA: https://esaa.org.eg/); never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
+- Professional qualifications: link the official body (ACCA, AICPA, SOCPA, ESAA: https://web.esaa.org.eg/); never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
 
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.

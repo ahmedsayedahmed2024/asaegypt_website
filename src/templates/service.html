@@ -42,7 +42,7 @@
     <div class="rv">
       <p class="kicker">{{ X.faq_k }}</p>
       <div class="faq" style="border-color:var(--graphite-3)">
-        {% for q in D.faq %}<div class="faq-item" style="border-color:var(--graphite-3)"><button aria-expanded="false" style="color:#fff">{{ q[0] }} {{ I('FaPlus') }}</button><div class="ans" hidden style="color:var(--soft)">{{ q[1] }}</div></div>{% endfor %}
+        {% for q in D.faq %}<div class="faq-item" data-passage style="border-color:var(--graphite-3)"><button aria-expanded="false" style="color:#fff">{{ q[0] }} {{ I('FaPlus') }}</button><div class="ans" hidden style="color:var(--soft)">{{ q[1] }}</div></div>{% endfor %}
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
   </div>
 </section>
 {% endif %}
-<section class="sec tint">
+<section class="sec tint" data-noindex>
   <div class="wrap">
     <div class="sec-head rv"><div><p class="kicker">{{ X.other_k }}</p><h2>{{ X.other_h }}</h2></div></div>
     <div class="grid-3">

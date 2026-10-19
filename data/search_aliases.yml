@@ -1,0 +1,54 @@
+# Search aliases: one file for the site search (header search and /search/) and the in-article finder
+# ("Find an institution" in the reference guide). Read at build time by src/search.py and copied into
+# dist/assets/search/en.json and ar.json. Matching ignores case, accents, Arabic diacritics and letter forms.
+#
+# designations: a word that names a qualification or a designation, not an institution. Each target is an
+#   institution acronym from INST in src/guide.py; its own card or table row is shown first. Optional fields:
+#     also: true   a second-rank target (shown after the main ones)
+#     en / ar      a label shown on the result, to tell apart targets that share a word (e.g. CMA)
+#
+# synonyms: groups of words or phrases that mean the same thing, in either language. Typing any member also
+#   finds the others. Every institution acronym with its English and Arabic names (INST in src/guide.py) is
+#   added automatically, so there is no need to list them here.
+
+designations:
+  CA:
+    - {to: ICAS, en: "CA designation: ICAS", ar: "لقب CA: معهد ICAS"}
+    - {to: CA ANZ, en: "CA designation: CA ANZ", ar: "لقب CA: CA ANZ"}
+    - {to: CAI, also: true, en: "ACA / FCA designation: Chartered Accountants Ireland", ar: "لقب ACA أو FCA: CAI"}
+    - {to: ICAEW, also: true, en: "ACA / FCA designation: ICAEW", ar: "لقب ACA أو FCA: ICAEW"}
+  ACA:
+    - {to: ICAEW, en: "ACA designation: ICAEW", ar: "لقب ACA: معهد ICAEW"}
+    - {to: CAI, en: "ACA designation: Chartered Accountants Ireland", ar: "لقب ACA: CAI"}
+  FCA:
+    - {to: ICAEW, en: "FCA designation: ICAEW", ar: "لقب FCA: معهد ICAEW"}
+    - {to: CAI, en: "FCA designation: Chartered Accountants Ireland", ar: "لقب FCA: CAI"}
+  CPA:
+    - {to: AICPA, en: "CPA qualification: AICPA", ar: "مؤهل CPA: AICPA"}
+    - {to: NASBA, en: "CPA licensing: NASBA", ar: "ترخيص CPA: NASBA"}
+    - {to: CPA Australia, en: "CPA qualification: CPA Australia", ar: "مؤهل CPA: CPA Australia"}
+  CMA:
+    - {to: IMA, en: "CMA qualification (IMA)", ar: "شهادة CMA (معهد IMA)"}
+    - {to: CMA, en: "Capital Market Authority (Saudi Arabia)", ar: "هيئة السوق المالية (السعودية)"}
+  CIA:
+    - {to: IIA, en: "CIA certification: The IIA", ar: "شهادة CIA: معهد المراجعين الداخليين"}
+  CISA:
+    - {to: ISACA, en: "CISA certification: ISACA", ar: "شهادة CISA: ISACA"}
+
+synonyms:
+  - [ESAA, Egyptian Society of Accountants and Auditors, جمعية المحاسبين والمراجعين المصرية, الجمعية المصرية]
+  - [FRA, Financial Regulatory Authority, الهيئة العامة للرقابة المالية, الرقابة المالية]
+  - [MoF, Ministry of Finance, وزارة المالية]
+  - [ECL, expected credit loss, expected credit losses, الخسائر الائتمانية المتوقعة, الخسارة الائتمانية المتوقعة]
+  - [VAT, value added tax, ضريبة القيمة المضافة]
+  - [transfer pricing, تسعير المعاملات, أسعار التحويل]
+  - [IAASB, auditing standards, audit standards, معايير المراجعة]
+  - [IASB, accounting standards, معايير المحاسبة]
+  - [joint stock company, joint stock companies, شركات المساهمة, شركة مساهمة]
+  - [nationality, الجنسية]
+  - [Egypt, مصر]
+  - [Saudi Arabia, السعودية, المملكة العربية السعودية]
+  - [United Kingdom, UK, England, المملكة المتحدة, إنجلترا]
+  - [United States, USA, الولايات المتحدة]
+  - [Scotland, اسكتلندا]
+  - [licence, license, ترخيص]

@@ -104,7 +104,7 @@ def featured(L, slugs, from_path='/'):
                             summary=a['summary'][i], author=author, role=role,
                             byline=(f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else ""),
                             date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
-                            read=read_time(a['minutes'], L)))
+                            read=read_time(guide.minutes(a['slug']) if a['slug'] in guide.GUIDES else a['minutes'], L)))
     return out
 
 def read_time(n, L):
@@ -215,7 +215,7 @@ def search_cfg(L, R, from_path):
     nav = C[L].T['nav']
     P = lambda k: link(k, L, from_path)
     return dict(lang=L, other=other, v=V, idx=f"{R}assets/search/{L}.json", idx2=f"{R}assets/search/{other}.json",
-                page=P('search'), months=MONTHS[L], s={k: v for k, v in S.items() if k not in ('title', 'desc', 'kicker', 'h1', 'lead', 'nojs', 'notfound')},
+                page=P('search'), page2=link('search', other, from_path), months=MONTHS[L], s={k: v for k, v in S.items() if k not in ('title', 'desc', 'kicker', 'h1', 'lead', 'nojs', 'notfound')},
                 links=[[nav['insights'], P('insights')], [nav['briefing'], P('briefing')], [nav['contact'], P('contact')]])
 
 def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx):
@@ -263,10 +263,13 @@ def build(pages=None):
         built += hexagon.build(L, render, path_for)
         import search
         importlib.reload(search)
-        built += search.build(L, render, featured, news_items, next_items, path_for, C, DIST)
+        built += search.build(L, render, C)
         import signature_banner
         importlib.reload(signature_banner)
         built += signature_banner.build_page(L, render, sys.modules[__name__])
+    import search
+    for L, (n_pages, n_passages, size) in search.index_site(sys.modules[__name__]).items():  # after every page is written
+        print(f"search index {L}: {n_pages} pages, {n_passages} passages, {size // 1024} KB")
     return built
 
 def build_404():

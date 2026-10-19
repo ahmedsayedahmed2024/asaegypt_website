@@ -9,7 +9,13 @@ def article_schema(a, A, L, path, og):
          "author": {"@type": "Person", "name": a['author_' + L], "jobTitle": a['role_' + L]},
          "publisher": {"@type": "Organization", "name": "ASA Chartered Accountants and Consultants",
                        "logo": {"@type": "ImageObject", "url": "https://asaegypt.com/assets/img/logo_color@3x.png"}}}
-    return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False).replace('</', '<\\/') + '</script>'
+    out = '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False).replace('</', '<\\/') + '</script>'
+    qa = guide.faq(a['slug'], L) if a['slug'] in guide.GUIDES else []
+    if qa:  # the questions of the guide's quick guides (e.g. 11.5)
+        f = {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": L, "url": "https://asaegypt.com" + path,
+             "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": ans}} for q, ans in qa]}
+        out += '\n<script type="application/ld+json">' + json.dumps(f, ensure_ascii=False).replace('</', '<\\/') + '</script>'
+    return out
 
 def build(L, render, featured, path_for):
     importlib.reload(articles_en); importlib.reload(articles_ar); importlib.reload(guide)

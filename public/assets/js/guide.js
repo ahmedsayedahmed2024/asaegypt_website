@@ -1,6 +1,7 @@
 /* Reference guide pages (templates/guide.html): contents with scroll-spy and reading progress (sticky column on
-   desktop, sheet on tablet and phone), "Find an institution", section links, reference chips and back links,
-   back to top, and the figure 3 path that lights up once. Everything works without it except the finder. */
+   desktop, sheet on tablet and phone), "Find an institution" (the site search engine on this page, with a find bar),
+   section links, reference chips and back links, back to top, and the figure 3 path that lights up once.
+   Everything works without it except the finder. */
 (function(){
   var root=document.getElementById('guide');
   if(!root)return;
@@ -109,67 +110,119 @@
   }
   window.addEventListener('hashchange',fromHash);fromHash();
 
-  // ---------- find an institution ----------
-  var box=root.querySelector('.g-find'),input=document.getElementById('g-find-in'),list=document.getElementById('g-find-list'),
-      st=root.querySelector('.g-find-st'),data=JSON.parse(document.getElementById('g-find-data').textContent);
-  var AR={'أ':'ا','إ':'ا','آ':'ا','ٱ':'ا','ى':'ي','ة':'ه','ؤ':'و','ئ':'ي'};
-  function norm(s){  // as in site search: lower case, no tashkeel/tatweel, one alef/yaa/haa form, Latin accents off
-    return s.toLowerCase().replace(/[ً-ٰٟۖ-ۭـ]/g,'')
-      .replace(/[أإآٱىةؤئ]/g,function(c){return AR[c]}).normalize('NFKD').replace(/[̀-ͯ]/g,'')
-      .replace(/[&().,:;'’\-–—]/g,' ');
+  // ---------- find in this article: the site search engine (search.js, window.ASASearch) on this page only ----------
+  // Two groups: "Institutions" (an institution's own card or table row, for its acronym, name or alias) and
+  // "In this article" (every other passage that matches, in page order). Choosing one opens the find bar
+  // ("2 of 5 ↑ ↓ ✕") to step through all matches.
+  var fbox=root.querySelector('.g-find'),input=document.getElementById('g-find-in'),list=document.getElementById('g-find-list'),
+      st=root.querySelector('.g-find-st'),T=JSON.parse(document.getElementById('g-find-data').textContent);
+  var here=location.pathname,X=null,shown=[],sel=-1,all=[],fcur=-1,lastQ='',bar=null;
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function engine(){
+    if(!window.ASASearch)return Promise.reject(new Error('search'));
+    return window.ASASearch.load().then(function(x){X=x;return x});
   }
-  function words(s){return norm(s).split(/\s+/).filter(Boolean).map(function(w){var m=w.match(/^(?:[وفبك]?ال|لل)(..+)$/);return m?m[1]:w})}
-  data.items.forEach(function(d){d.k=norm(d.a).replace(/\s+/g,'');d.w=words(d.a+' '+d.n+' '+d.m)});
-  var shown=[],sel=-1;
-  function score(d,q,qw){
-    var qk=q.replace(/\s+/g,'');
-    if(d.k===qk)return 1000;
-    if(qk.length>=1&&d.k.indexOf(qk)===0)return 600-d.k.length;
-    var s=0;
-    for(var i=0;i<qw.length;i++){
-      var best=0;
-      for(var j=0;j<d.w.length;j++){var w=d.w[j];if(w===qw[i]){best=3;break}if(w.indexOf(qw[i])===0)best=Math.max(best,2);else if(qw[i].length>=3&&w.indexOf(qw[i])>0)best=Math.max(best,1)}
-      if(!best)return 0;s+=best;
+  function entOf(h){  // the institution of a card or row that the query names (a card can hold several)
+    var A=window.ASASearch,vs=h.v.ts.join(' '),pre=null;
+    for(var n=0;n<h.P.ents.length;n++){
+      var e=h.P.ents[n],keys=[e.a,e.n,e.m].filter(Boolean).map(function(x){return A.terms(x).join(' ')});
+      if(keys.indexOf(vs)>=0)return e;
+      if(!pre&&keys.some(function(k){return h.v.ts.every(function(t){return k.split(' ').some(function(w){return w.lastIndexOf(t,0)===0})})}))pre=e;
     }
-    return 100+s*10;
+    return pre||h.P.ents[0];
   }
-  function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function render(){
-    var q=norm(input.value).trim();
-    if(!q){close();return}
-    var qw=words(q);
-    shown=data.items.map(function(d){return {d:d,s:score(d,q,qw)}}).filter(function(x){return x.s>0})
-      .sort(function(a,b){return b.s-a.s||a.d.a.localeCompare(b.d.a)}).slice(0,8).map(function(x){return x.d});
+    var q=input.value.trim();
+    if(!q){closeList();return}
+    if(!X){list.innerHTML='<p class="g-fl-none">'+esc(T.loading)+'</p>';open();engine().then(render,function(){});return}
+    var A=window.ASASearch,res=A.run(q,X,{page:here,finder:true}),hits=res.pages[0]?res.pages[0].hits:[];
+    var inst=hits.filter(function(h){return h.score>=10000&&h.P.ents.length});
+    var rest=hits.filter(function(h){return inst.indexOf(h)<0}).sort(function(a,b){return a.P.i-b.P.i});
+    shown=inst.concat(rest);lastQ=q;
+    all=shown.slice().sort(function(a,b){return a.P.i-b.P.i});
     sel=shown.length?0:-1;
-    list.innerHTML=shown.length?shown.map(function(d,i){
-      var name=rtl?(d.m||d.n):d.n;
-      return '<li role="option" id="g-opt-'+i+'" data-i="'+i+'" aria-selected="'+(i===sel)+'"><span class="hxs cat-'+d.c+'" aria-hidden="true"></span><b dir="ltr">'+esc(d.a)+'</b><span>'+esc(name)+'</span></li>'
-    }).join(''):'<li class="none" role="option" aria-disabled="true">'+esc(data.none)+'</li>';
-    list.hidden=false;input.setAttribute('aria-expanded','true');
-    input.setAttribute('aria-activedescendant',sel>=0?'g-opt-0':'');
-    st.textContent=shown.length?shown.length+'':data.none;
+    var html='',k=0;
+    function item(h,body){return '<div class="g-fl-o" role="option" id="g-opt-'+k+'" data-i="'+(k++)+'" aria-selected="false">'+body+'</div>'}
+    if(inst.length){
+      html+='<div class="g-fl-g" role="group" aria-labelledby="g-fl-h1"><p class="g-fl-h" id="g-fl-h1" role="presentation">'+esc(T.inst)+'</p>';
+      inst.forEach(function(h){
+        var e=entOf(h),name=rtl?(e.m||e.n):e.n;
+        html+=item(h,'<span class="hxs cat-'+esc(e.c)+'" aria-hidden="true"></span><b dir="ltr">'+esc(e.a)+'</b><span class="g-fl-n">'+esc(name)+'</span>'+
+          (h.label&&h.label!==name?'<i class="g-fl-alias">'+esc(h.label)+'</i>':''));
+      });
+      html+='</div>';
+    }
+    if(rest.length){
+      html+='<div class="g-fl-g" role="group" aria-labelledby="g-fl-h2"><p class="g-fl-h" id="g-fl-h2" role="presentation">'+esc(T.here)+' <span>'+rest.length+'</span></p>';
+      rest.forEach(function(h){
+        var parts=X.crumbs[h.P.ci].s.split(' › '),crumb=(parts.length>1?parts.slice(1):parts).join(' · ');
+        html+=item(h,'<span class="g-fl-sec">'+esc(crumb)+'</span><span class="g-fl-s">'+A.snippet(h.P.t,h.v.words,110)+'</span>');
+      });
+      html+='</div>';
+    }
+    list.innerHTML=html||'<p class="g-fl-none">'+esc(T.none)+'</p>';
+    open();mark();
+    st.textContent=shown.length?shown.length+' '+T.count:T.none;
   }
-  function close(){list.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');shown=[];sel=-1}
+  function open(){list.hidden=false;input.setAttribute('aria-expanded','true')}
+  function closeList(){list.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');sel=-1}
+  function opts(){return list.querySelectorAll('[role="option"]')}
   function mark(){
-    [].forEach.call(list.children,function(li,i){li.setAttribute('aria-selected',i===sel)});
-    if(sel>=0){input.setAttribute('aria-activedescendant','g-opt-'+sel);var li=list.children[sel];li&&li.scrollIntoView({block:'nearest'})}
+    var os=opts();
+    [].forEach.call(os,function(o,i){o.setAttribute('aria-selected',i===sel)});
+    if(sel>=0&&os[sel]){input.setAttribute('aria-activedescendant','g-opt-'+sel);os[sel].scrollIntoView({block:'nearest'})}
+    else input.removeAttribute('aria-activedescendant');
+  }
+  function show(i){
+    var h=all[i];if(!h)return;fcur=i;
+    window.ASASearch.go(lastQ,h.P.id,{extra:h.v.ts,hold:1,quiet:1});
+    history.replaceState(null,'','#'+h.P.id);
+    findbar();
   }
   function choose(i){
-    var d=shown[i];if(!d)return;
-    var t=document.getElementById(d.t);close();input.value=d.a;
-    if(t){history.pushState(null,'','#'+d.t);go(t,true)}
+    var h=shown[i];if(!h)return;
+    closeList();
+    show(all.indexOf(h));
   }
+  function findbar(){
+    if(!bar){
+      bar=document.createElement('div');bar.className='g-fbar';bar.setAttribute('role','region');bar.setAttribute('aria-label',T.bar);bar.tabIndex=-1;
+      bar.innerHTML='<span class="g-fbar-q"></span><span class="g-fbar-n" aria-live="polite"></span>'+
+        '<button type="button" class="g-fbar-b" data-d="-1" aria-label="'+esc(T.prev)+'" title="'+esc(T.prev)+'">↑</button>'+
+        '<button type="button" class="g-fbar-b" data-d="1" aria-label="'+esc(T.next)+'" title="'+esc(T.next)+'">↓</button>'+
+        '<button type="button" class="g-fbar-x" aria-label="'+esc(T.close)+'" title="'+esc(T.close)+'">✕</button>';
+      document.body.appendChild(bar);
+      bar.addEventListener('click',function(e){
+        var b=e.target.closest('button');if(!b)return;
+        if(b.classList.contains('g-fbar-x')){hideBar();return}
+        step(+b.getAttribute('data-d'));
+      });
+    }
+    bar.querySelector('.g-fbar-q').textContent=lastQ;
+    bar.querySelector('.g-fbar-n').textContent=(fcur+1)+' '+T.of+' '+all.length;
+    bar.hidden=false;document.body.classList.add('g-fbar-on');
+  }
+  function step(d){if(all.length)show((fcur+d+all.length)%all.length)}
+  function hideBar(){if(bar){bar.hidden=true;document.body.classList.remove('g-fbar-on');window.ASASearch&&window.ASASearch.clear()}fcur=-1}
+  document.addEventListener('keydown',function(e){
+    if(!bar||bar.hidden)return;
+    var t=e.target,inBar=bar.contains(t);
+    if(e.key==='Escape'&&(inBar||!/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))){hideBar();return}
+    if(e.key!=='Enter'||(t.tagName==='BUTTON'&&inBar))return;
+    if(t===document.body||inBar||t.hasAttribute('data-p')||t.id===(all[fcur]&&all[fcur].P.id)){e.preventDefault();step(e.shiftKey?-1:1)}
+  });
   input.addEventListener('input',render);
-  input.addEventListener('focus',function(){if(input.value)render()});
+  input.addEventListener('focus',function(){engine().then(function(){if(input.value)render()},function(){})});
   input.addEventListener('keydown',function(e){
-    if(e.key==='ArrowDown'){if(list.hidden)render();else if(shown.length){sel=(sel+1)%shown.length;mark()}e.preventDefault()}
-    else if(e.key==='ArrowUp'){if(shown.length){sel=(sel-1+shown.length)%shown.length;mark()}e.preventDefault()}
-    else if(e.key==='Enter'){if(sel>=0){e.preventDefault();choose(sel)}}
-    else if(e.key==='Escape'){if(!list.hidden){e.stopPropagation();close()}}
+    var n=opts().length;
+    if(e.key==='ArrowDown'){if(list.hidden)render();else if(n){sel=(sel+1)%n;mark()}e.preventDefault()}
+    else if(e.key==='ArrowUp'){if(n){sel=(sel-1+n)%n;mark()}e.preventDefault()}
+    else if(e.key==='Enter'){if(sel>=0&&!list.hidden){e.preventDefault();choose(sel)}else if(all.length&&input.value.trim()===lastQ){e.preventDefault();step(e.shiftKey?-1:1)}}
+    else if(e.key==='Escape'){if(!list.hidden){e.stopPropagation();closeList()}}
   });
   list.addEventListener('mousedown',function(e){e.preventDefault()}); // keep focus in the input
-  list.addEventListener('click',function(e){var li=e.target.closest('li[data-i]');if(li)choose(+li.getAttribute('data-i'))});
-  document.addEventListener('click',function(e){if(!box.contains(e.target))close()});
+  list.addEventListener('click',function(e){var o=e.target.closest('[data-i]');if(o)choose(+o.getAttribute('data-i'))});
+  document.addEventListener('click',function(e){if(!fbox.contains(e.target))closeList()});
 
   // ---------- figure 3: the four cells light up one after another, once ----------
   var path=root.querySelector('.g-path-wrap');
