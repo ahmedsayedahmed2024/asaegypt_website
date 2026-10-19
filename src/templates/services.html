@@ -5,7 +5,7 @@
   <div class="wrap">
     <div class="grid-3">
       {% for s in SERVICES %}
-      <a class="card rv" href="{{ P(s.key) }}"><span class="num">0{{ loop.index }}</span><span class="hx {{ 'lime' if loop.index0 in [1,3,5] else '' }}">{{ I(s.icon) }}</span><h3>{{ s.name }}</h3><p>{{ s.desc }}</p><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
+      <a class="card rv" href="{{ P(s.key) }}"><span class="num">0{{ loop.index }}</span><span class="hx {{ 'lime' if loop.index0 in [1,3,5] else '' }}">{{ I(s.icon) }}</span><h3>{{ s.name }}</h3><p>{{ s.desc }}</p><p class="more">{{ T.more }}</p><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
       {% endfor %}
     </div>
   </div>

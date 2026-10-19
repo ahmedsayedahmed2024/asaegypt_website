@@ -6,7 +6,7 @@
     <div class="prose rv"><p class="kicker">{{ D.intro_k }}</p><h2>{{ D.intro_h }}</h2>{% for p in D.intro %}<p>{{ p }}</p>{% endfor %}</div>
     <aside class="side-card rv">{{ MARK_BG|safe }}<h3>{{ D.glance_h }}</h3><ul>{% for g in D.glance %}<li>{{ I('FaCheck') }}<span>{{ g }}</span></li>{% endfor %}</ul><a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a></aside>
   </div>
-  <div class="wrap" style="margin-top:80px"><div class="numbers rv">{% for n in D.nums %}<div><b dir="ltr">{{ n[0]|safe }}</b><span>{{ n[1] }}</span></div>{% endfor %}</div></div>
+  <div class="wrap" style="margin-top:80px"><div class="numbers rv">{% for n in D.nums %}<div><b dir="auto"{% if n[0]|length > 12 %} class="sm"{% endif %}>{{ n[0]|safe }}</b><span>{{ n[1] }}</span></div>{% endfor %}</div></div>
 </section>
 <section class="sec tint">
   <div class="wrap">

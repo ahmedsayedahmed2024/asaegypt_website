@@ -49,7 +49,7 @@
   </div>
   <div class="stats">
     <div class="wrap">
-      {% for s in H.stats %}<div class="stat"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1] }}</span></div>{% endfor %}
+      {% for s in H.stats %}{% if s|length > 2 %}<a class="stat stat-link" href="{{ P(s[2]) }}"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1]|bidi(L) }}</span></a>{% else %}<div class="stat"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1] }}</span></div>{% endif %}{% endfor %}
     </div>
   </div>
 </section>
@@ -84,25 +84,9 @@
         <span class="hx {{ 'lime' if loop.index0 in [1,3,5] else '' }}">{{ I(s.icon) }}</span>
         <h3>{{ s.name }}</h3>
         <p>{{ s.desc }}</p>
+        <p class="more">{{ T.more }}</p>
         <span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span>
       </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="sec dark">
-  <div class="wrap spot">
-    <div class="rv">
-      <p class="kicker">{{ H.ecl_k }}</p>
-      <h2>{{ H.ecl_h }}</h2>
-      <p style="margin-top:20px">{{ H.ecl_p }}</p>
-      <div class="badge-note"><b>{{ H.ecl_note_t }}</b>{{ H.ecl_note }}</div>
-      <p style="margin-top:28px"><a class="btn btn-primary" href="{{ P('svc-ecl') }}">{{ H.ecl_cta }} {{ I('FaArrowRight','arrow') }}</a></p>
-    </div>
-    <div class="spot-list">
-      {% for it in H.ecl_items %}
-      <div class="spot-item rv" style="transition-delay:{{ loop.index0*80 }}ms"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(it[0]) }}</span><div><h4>{{ it[1] }}</h4><p>{{ it[2] }}</p></div></div>
       {% endfor %}
     </div>
   </div>
@@ -117,7 +101,6 @@
     <div class="grid-3" style="grid-auto-rows:minmax(200px,auto)">
       <div class="seg feature rv">
         {{ MARK_BG|safe }}
-        <div class="big" dir="ltr">50+</div>
         <h3>{{ H.who_feature_t }}</h3>
         <p>{{ H.who_feature_p }}</p>
       </div>

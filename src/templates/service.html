@@ -19,9 +19,10 @@
 <section class="sec tint">
   <div class="wrap">
     <div class="sec-head rv"><div><p class="kicker">{{ X.offer_k }}</p><h2>{{ D.offer_h }}</h2></div><p class="lead">{{ D.offer_p }}</p></div>
-    <div class="grid-2">
-      {% for o in D.offer %}<div class="offer rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(o[0]) }}</span><div><h3>{{ o[1] }}</h3><p>{{ o[2] }}</p></div></div>{% endfor %}
-    </div>
+    <ul class="scope rv">
+      {% for o in D.scope %}<li><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}" aria-hidden="true"></span><span>{{ o|bidi(L) }}</span></li>{% endfor %}
+      <li class="more" data-noindex>{{ T.more }}</li>
+    </ul>
   </div>
 </section>
 <section class="sec">
@@ -60,7 +61,7 @@
     <div class="sec-head rv"><div><p class="kicker">{{ X.other_k }}</p><h2>{{ X.other_h }}</h2></div></div>
     <div class="grid-3">
       {% for s in SERVICES if s.key != S.key %}{% if loop.index <= 3 %}
-      <a class="card rv" href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><h3>{{ s.name }}</h3><p>{{ s.desc }}</p><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
+      <a class="card rv" href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><h3>{{ s.name }}</h3><p>{{ s.desc }}</p><p class="more">{{ T.more }}</p><span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span></a>
       {% endif %}{% endfor %}
     </div>
   </div>

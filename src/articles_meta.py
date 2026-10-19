@@ -12,7 +12,8 @@
 #     Files: public/assets/img/content/articles/<slug>-lg.webp and <slug>-card.webp.
 #     A reference guide may use an original cover instead: dict(kind="cover", focus, alt_en, alt_ar) with
 #     <slug>.svg (image band) + <slug>-card.webp (cards) + <slug>-og.png (share image), drawn by src/guide_cover.py.
-# The byline (author + role) is the only place a person's name may appear on the site (CLAUDE.md rule 1).
+# The byline (author + role) is the only place a person's name may appear on the site, besides the founder's
+# name in the About page story (CLAUDE.md rules 1 and 8).
 
 # The one place for Insights categories (EN, AR). The tabs on /insights/ are built from the categories
 # that at least one article uses, so a new category's tab appears automatically.

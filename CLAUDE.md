@@ -43,7 +43,7 @@ Owner: Ahmed Sayed, Managing Partner.
 - PR description: a short plain-language summary of what changed, in English.
 
 ## Non-negotiable content rules
-1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article.** The team page stays collective.
+1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article, and the founder's name in the About page story (rule 8).** The team page stays collective.
 2. **No client names.**
 3. **No team headcount.** Use "a highly qualified professional team" / «فريق مهني على مستوى عالٍ من الكفاءة».
 4. The firm's Arabic name is exactly «أحمد سيد أحمد محاسبون قانونيون ومستشارون».
@@ -53,11 +53,19 @@ Owner: Ahmed Sayed, Managing Partner.
    - Members of the Arab Federation of Accountants & Auditors
    - ACCA, CPA and SOCPA holders
 7. ASA operates from Egypt only (no Saudi branch). It serves clients in Egypt, KSA and internationally.
-8. **Legal, tax and standards citations** (article, section, paragraph, decree numbers):
+8. **The founder's name** "Ahmed Sayed Ahmed" / «أحمد سيد أحمد» appears only in the story text of the About page (and in Insights article bylines). Everywhere else the site speaks as "we" / «نحن». Never add his name to any other page, card, meta description or schema. (The firm's Arabic name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» is the firm's name and is not affected.)
+9. **No client count anywhere** (no "50+", "fifty clients", «خمسين عميلًا», etc.). Use "a diverse client portfolio in Egypt and abroad" / «محفظة متنوعة من العملاء داخل مصر وخارجها».
+10. **IFRS 9 / ECL is not the firm's headline specialty.** It appears once only, as one service line under Accounting & IFRS on the Services pages ("Expected credit loss (ECL) models under IFRS 9 / EAS 47"). It may also be the topic of Insights articles, Briefing items, ASA NEXT items and guides. Engagement oversight is described as "professional oversight" / «إشراف مهني», never as partners leading every engagement.
+11. **Legal, tax and standards citations** (article, section, paragraph, decree numbers):
    - Never state a specific citation unless it was verified against the original source text.
    - If unverified, describe the rule as established practice and flag the citation for Ahmed's review in the PR.
-9. Professional and tax news must come from official or primary sources (Egyptian Tax Authority, FRA, IFRS Foundation, IAASB, ESAA, official gazette, etc.). Link the source.
-10. Do not use Netlify (blocked in Egypt). Do not touch DNS email records (MX/TXT).
+12. Professional and tax news must come from official or primary sources (Egyptian Tax Authority, FRA, IFRS Foundation, IAASB, ESAA, official gazette, etc.). Link the source.
+13. Do not use Netlify (blocked in Egypt). Do not touch DNS email records (MX/TXT).
+
+## Services
+- Service groups live in `SERVICES` (`content_en.py` / `content_ar.py`); each page's text is in `SVC` (`pages_en.py` / `pages_ar.py`). Groups: Audit & Assurance, Tax & Transfer Pricing, Accounting & IFRS, Advisory, International & Market Entry.
+- Each page lists its services in `scope`: one line per item. The lists are not exhaustive: every service group (service pages, service cards, the services menu, the mobile menu and the footer) ends with the lighter line "… and other related services." / «… وغيرها من الخدمات ذات العلاقة.» (`T.more`). Do not list services that only global networks typically provide.
+- Retired pages are forwarded by `REDIRECTS` in `build.py` (a small noindex page at the old URL). The former IFRS 9 / ECL page (`/services/ifrs-9-ecl/`) forwards to Accounting & IFRS.
 
 ## The "added" date (articles, Briefing, ASA NEXT)
 - **Every new Insights article, Briefing item and ASA NEXT item MUST have `added` = the day it is published on asaegypt.com (YYYY-MM-DD).**
@@ -165,7 +173,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
   - `source_name`, `source_url`: official source (required)
   - `note` (optional): `{type: "impact" | "tech", who_en, who_ar, accounting_en, accounting_ar, auditor_en, auditor_ar}`
   - `related` (optional): slug of a related Insights article
-- **Every item needs an official source link** (see rule 9 above).
+- **Every item needs an official source link** (see rule 12 above).
 - **Facts and numbers must match the source exactly.** Do not add facts, dates or figures that are not in the source.
 - **Items with a `note` (impact or tech) always go through a pull request for Ahmed's approval.**
 

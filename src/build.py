@@ -272,6 +272,22 @@ def build(pages=None):
         print(f"search index {L}: {n_pages} pages, {n_passages} passages, {size // 1024} KB")
     return built
 
+# Retired pages: old URL (en) -> route key of the page that now covers it. Each old URL (and its /ar/ twin)
+# gets a small noindex page that forwards visitors, so links already shared keep working. Not in the sitemap.
+REDIRECTS = {'/services/ifrs-9-ecl/': 'svc-acc'}  # ECL is now one line under Accounting & IFRS
+
+def build_redirects():
+    for old, key in REDIRECTS.items():
+        for L in ('en', 'ar'):
+            to = path_for(key, L)
+            html = (f'<!doctype html><html lang="{L}"><head><meta charset="utf-8"><title>ASA</title>'
+                    f'<meta name="robots" content="noindex"><link rel="canonical" href="{SITE}{to}">'
+                    f'<meta http-equiv="refresh" content="0; url={to}"></head>'
+                    f'<body><p><a href="{to}">{SITE}{to}</a></p></body></html>')
+            out = os.path.join(DIST, (old if L == 'en' else '/ar' + old).lstrip('/'), 'index.html')
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            open(out, 'w', encoding='utf-8').write(html)
+
 def build_404():
     html = env.get_template('404.html').render(L='en', SITE=SITE, V=V, T=content_en.T, C=content_en, SERVICES=content_en.SERVICES, I=icon,
         P=lambda k: path_for(k, 'en'), R='/', MARK=MARK, MARK_BG=MARK_BG, title='Page not found | ASA', desc='', path='/404.html',
@@ -282,6 +298,7 @@ def build_404():
 if __name__ == '__main__':
     b = build()
     build_404()
+    build_redirects()
     print(len(b), 'pages')
     import signature_banner
     signature_banner.build_banners(DIST, sys.modules[__name__])  # email signature banner; never fails the build
