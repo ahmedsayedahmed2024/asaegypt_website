@@ -22,6 +22,31 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="imf-world-economic-outlook-october-2026", date="2026-10-13", added="2026-10-19", added_at="04:17", category="economy", region="global",
+      title_en="IMF October 2026 World Economic Outlook projects global growth of 3.1% in 2026",
+      title_ar="صندوق النقد الدولي يتوقع في تقرير «آفاق الاقتصاد العالمي» لأكتوبر 2026 نمو الاقتصاد العالمي بنسبة 3.1% في 2026",
+      short_en="IMF projects 3.1% global growth in 2026",
+      short_ar="صندوق النقد يتوقع نمو الاقتصاد العالمي 3.1% في 2026",
+      summary_en="The IMF's October 2026 World Economic Outlook, \"Resilience Under Strain, Urgent Choices\", projects global growth of 3.1% in 2026 and 3.4% in 2027, with global headline inflation of 4.7% in 2026 easing to 4.1% in 2027.",
+      summary_ar="يتوقع تقرير «آفاق الاقتصاد العالمي» الصادر عن صندوق النقد الدولي في أكتوبر 2026، بعنوان «صمود تحت الضغط وخيارات عاجلة»، أن يبلغ النمو العالمي 3.1% في 2026 و3.4% في 2027، وأن يسجل التضخم الكلي العالمي 4.7% في 2026 قبل أن يتراجع إلى 4.1% في 2027.",
+      image=dict(focus="40% 35%", source="https://unsplash.com/photos/skyscrapers-with-reflective-glass-against-a-blue-sky-VR5dx0VJ9PM",
+                 photographer="Tom Caillarec", site="Unsplash", licence="Unsplash License",
+                 alt_en="Curved glass office towers reflecting a blue sky with scattered clouds",
+                 alt_ar="أبراج مكتبية زجاجية منحنية تعكس سماءً زرقاء تتناثر فيها السحب"),
+      body_en=[
+          "The International Monetary Fund published its October 2026 World Economic Outlook, titled \"Resilience Under Strain, Urgent Choices\", on 13 October 2026. The projections are based on statistical information available through 1 October 2026.",
+          "The IMF projects global growth of 3.1% in 2026, rising to 3.4% in 2027. Global headline inflation is projected at 4.7% in 2026, easing to 4.1% in 2027. The report describes the global economy as resilient, but says that this resilience is increasingly uneven and costly, with energy-importing economies outside the technology value chain facing the most difficult outlook.",
+          "The IMF sees risks tilted to the downside: escalating conflicts, a reassessment of expectations around artificial intelligence, renewed trade tensions and fiscal vulnerabilities. Upside possibilities include stronger AI investment and productivity gains, and a lasting easing of geopolitical and trade tensions.",
+          "On policy, the report calls for rebuilding fiscal space, preserving monetary and financial stability, raising potential growth and deepening international cooperation. A chapter on cost-of-living crises finds that temporary, targeted income support is the most cost-effective protection, and that price-suppressing measures can cost 3 to 22 times more than targeted transfers. A further chapter examines corporate income taxation, including the cross-border effects of debt-financed tax cuts and the role of stronger anti-avoidance rules.",
+      ],
+      body_ar=[
+          "أصدر صندوق النقد الدولي في 13 أكتوبر 2026 تقرير «آفاق الاقتصاد العالمي» لشهر أكتوبر 2026، بعنوان «صمود تحت الضغط وخيارات عاجلة». وتستند توقعات التقرير إلى البيانات الإحصائية المتاحة حتى 1 أكتوبر 2026.",
+          "ويتوقع الصندوق أن يبلغ النمو العالمي 3.1% في 2026، ثم يرتفع إلى 3.4% في 2027، وأن يسجل التضخم الكلي العالمي 4.7% في 2026، ثم يتراجع إلى 4.1% في 2027. ويصف التقرير الاقتصاد العالمي بأنه لا يزال صامدًا، غير أن هذا الصمود بات متفاوتًا على نحو متزايد ومرتفع التكلفة، إذ تواجه الاقتصادات المستوردة للطاقة غير المندمجة في سلاسل القيمة التكنولوجية أصعب الآفاق.",
+          "ويرى الصندوق أن المخاطر تميل إلى الجانب السلبي، ومنها تصاعد النزاعات، وإعادة تقييم التوقعات المعقودة على الذكاء الاصطناعي، وتجدد التوترات التجارية، ومواطن الضعف في المالية العامة. أما عوامل التحسن المحتملة فتشمل تنامي الاستثمار في الذكاء الاصطناعي وما قد يحققه من مكاسب في الإنتاجية، إلى جانب انحسار دائم للتوترات الجيوسياسية والتجارية.",
+          "وعلى صعيد السياسات، يدعو التقرير إلى إعادة بناء الحيز المالي، والحفاظ على الاستقرار النقدي والمالي، ورفع معدلات النمو الممكنة، وتعميق التعاون الدولي. ويخلص فصل مخصص لأزمات غلاء المعيشة إلى أن الدعم المؤقت للدخل الموجّه إلى الفئات الأكثر احتياجًا هو أكثر وسائل الحماية فاعلية من حيث التكلفة، وأن تدابير كبح الأسعار قد تتكلف ما بين 3 و22 ضعف تكلفة التحويلات الموجهة. ويتناول فصل آخر ضريبة دخل الشركات، بما في ذلك الآثار العابرة للحدود للتخفيضات الضريبية الممولة بالدين، ودور قواعد مكافحة التجنب الضريبي الأكثر صرامة.",
+      ],
+      source_name="International Monetary Fund",
+      source_url="https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"),
  dict(slug="egypt-moodys-upgrade-b3", date="2026-10-17", added="2026-10-18", added_at="04:17", category="economy", region="egypt",
       title_en="Ministry of Finance responds to Moody's upgrade of Egypt's rating to B3 with a positive outlook",
       title_ar="وزارة المالية تعلّق على رفع «موديز» تصنيف مصر إلى B3 مع نظرة مستقبلية إيجابية",
