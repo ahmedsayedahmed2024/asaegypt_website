@@ -98,7 +98,7 @@ INST = {
     'RQBs': ('pao', "Recognised Qualifying Bodies", None, None),
     'FRA': ('reg', "Financial Regulatory Authority (Egypt)", "الهيئة العامة للرقابة المالية", 22),
     'CBE': ('reg', "Central Bank of Egypt", "البنك المركزي المصري", 73),
-    'ESAA': ('pao', "Egyptian Society of Accountants and Auditors", "جمعية المحاسبين والمراجعين المصرية", 72),
+    'ESAA': ('pao', "Egyptian Society of Accountants and Auditors", "جمعية المحاسبين والمراجعين المصرية", 82),
     'Syndicate of Commerce': ('pao', "Syndicate of Commerce", "النقابة العامة للتجاريين", None),
     'CMA': ('reg', "Capital Market Authority (Saudi Arabia)", "هيئة السوق المالية", None),
     'SAMA': ('reg', "Saudi Central Bank", "البنك المركزي السعودي", 74),
@@ -112,23 +112,27 @@ SOURCE_NOT_SITE = {'SAC', 'GASB', 'FAF', 'State Boards', 'NASBA', 'RSBs'}
 BADGE_LINES = {'IFRS Foundation': ('IFRS', 'Foundation'), 'IFRS IC': ('IFRS', 'IC'), 'State Boards': ('State', 'Boards')}
 
 # Finder entries that point to a card or row of another institution (no card or row of their own)
-FIND_ALSO = [('FRA', 'MoF'), ('CBE', 'MoF'), ('ESAA', 'MoF'), ('Syndicate of Commerce', 'MoF'),
+FIND_ALSO = [('FRA', 'MoF'), ('CBE', 'MoF'), ('Syndicate of Commerce', 'MoF'),
              ('CMA', 'SOCPA'), ('SAMA', 'SOCPA'), ('NASBA', 'State Boards'), ('RQBs', 'RSBs'),
              ('IIASB', 'IIA'), ('AICPA & CIMA', 'AICPA'), ('MG', 'MG'),
              ('GCA', 'r-supreme-audit'), ('Accountability State Authority', 'r-supreme-audit'), ('IAESB', 'p-iaesb'),
              ('FASB', 'FASB'), ('GASB', 'GASB'), ('FAF', 'FAF'), ('CEAOB', 'CEAOB'), ('CPAB', 'CPAB'), ('ASIC', 'ASIC')]
 
 UI = {
-    'en': dict(contents="Contents", find="Find an institution", find_ph="Acronym or name", find_eg="For example: IFAC, PCAOB, SOCPA, the Financial Regulatory Authority",
-               find_none="No institution found", find_hint="Use ↑ ↓ and Enter", legend="Category colours",
+    'en': dict(contents="Contents", find="Find an institution", find_ph="Acronym, name or any word", find_eg="For example: IFAC, PCAOB, SOCPA, the Financial Regulatory Authority",
+               find_none="No match in this article", find_hint="Use ↑ ↓ and Enter", find_inst="Institutions",
+               find_here="In this article", find_loading="Loading…", find_of="of", find_prev="Previous match",
+               find_next="Next match", find_bar="Matches in this article", find_count="matches", legend="Category colours",
                official="Official site", source="Official source", note="ASA note", sources="Related sources",
                refs_show="Show the {n} references", refs_hide="Hide the references", back="Back to the text",
                top="Back to top", copy="Copy the link to this section", copied="Link copied",
                ref_label="Reference {n}", cite_label="References {a} to {b}", reading="Reference guide",
                reviewed="Last reviewed", progress="Reading progress", close="Close", now="You are reading",
                fig_text="In text"),
-    'ar': dict(contents="المحتويات", find="ابحث عن جهة", find_ph="اختصار أو اسم", find_eg="مثل IFAC أو PCAOB أو SOCPA أو الهيئة العامة للرقابة المالية",
-               find_none="لم نعثر على جهة بهذا الاسم", find_hint="استخدم ↑ ↓ ثم Enter", legend="ألوان التصنيفات",
+    'ar': dict(contents="المحتويات", find="ابحث عن جهة", find_ph="اختصار أو اسم أو أي كلمة", find_eg="مثل IFAC أو PCAOB أو SOCPA أو الهيئة العامة للرقابة المالية",
+               find_none="لا توجد نتائج في هذا المقال", find_hint="استخدم ↑ ↓ ثم Enter", find_inst="الجهات",
+               find_here="في هذا المقال", find_loading="جارٍ التحميل…", find_of="من", find_prev="النتيجة السابقة",
+               find_next="النتيجة التالية", find_bar="النتائج في المقال", find_count="نتيجة", legend="ألوان التصنيفات",
                official="الموقع الرسمي", source="المصدر الرسمي", note="ملاحظة ASA", sources="المراجع ذات الصلة",
                refs_show="عرض المراجع ({n})", refs_hide="إخفاء المراجع", back="العودة إلى النص",
                top="العودة إلى أعلى الصفحة", copy="نسخ رابط هذا القسم", copied="تم نسخ الرابط",
@@ -170,17 +174,30 @@ def _bidi(s, L):
     out.append(escape(s[last:]))
     return Markup('').join(out)
 
+XREF = re.compile(r'\[([^\]]+)\]\(#([\w-]+)\)')  # [text](#id): a link to another part of the guide
+
+def _inline(p, L):
+    out, last = Markup(''), 0
+    for m in list(XREF.finditer(p)) + [None]:
+        seg = p[last:m.start() if m else len(p)]
+        out += Markup(WWW.sub(lambda w: f'<a href="https://{w.group(1)}/" target="_blank" rel="noopener">{w.group(1)}</a>',
+                              str(_bidi(seg, L))))
+        if m:
+            out += Markup(f'<a class="g-xref" href="#{m.group(2)}">') + _bidi(m.group(1), L) + Markup('</a>')
+            last = m.end()
+    return out
+
 def rich(s, L):
     parts = s.split('**')
     html = Markup('')
     for i, p in enumerate(parts):
         if not p:
             continue
-        frag = _bidi(p, L)
-        frag = Markup(WWW.sub(lambda m: f'<a href="https://{m.group(1)}/" target="_blank" rel="noopener">{m.group(1)}</a>',
-                              str(frag)))
+        frag = _inline(p, L)
         html += Markup('<strong>') + frag + Markup('</strong>') if i % 2 else frag
     return html
+
+REFS_IN = re.compile(r'\[(\d+(?:[,،]\s*\d+)*)\]')  # [21, 37] in the quick guide: links to the references
 
 def cell(s, L):
     """A table cell. Arabic cells of the form "ACR — name" keep the dash on wide screens; on phones (stacked cards)
@@ -267,9 +284,33 @@ def model(slug_, L, ref_urls=None):
             return dict(kind='cites', chips=chips)
         if k == 'fig':
             return dict(kind='fig', n=b[1], caption=b[2], text=b[3])
+        if k == 'quick':
+            q = b[1]
+            cards = [dict(id=c['id'], name=c['name'], rows=[dict(label=lab, html=with_refs(t)) for lab, t in c['rows']])
+                     for c in q['cards']]
+            names = {c['id']: c['name'] for c in q['cards']}
+            faq = [dict(id=f"{q['id']}-q{n}", q=f[0], a=f[1], card=f[2], card_name=names[f[2]]) for n, f in enumerate(q['faq'], 1)]
+            return dict(kind='quick', id=q['id'], n=q['n'], title=q['title'], intro=q['intro'], cards=cards,
+                        faq_title=q['faq_title'], faq=faq, disclaimer=q['disclaimer'])
         if k == 'p' and '**IAESB' in b[1]:
             return dict(kind='p', text=b[1], id='p-iaesb')
         return dict(kind=k, text=b[1] if isinstance(b[1], str) else None, list=b[1] if not isinstance(b[1], str) else None)
+
+    def with_refs(t):
+        """Text with bracketed reference numbers ("[21, 37]") turned into reference chips."""
+        out, last = Markup(''), 0
+        for m in REFS_IN.finditer(t):
+            out += rich(t[last:m.start()].rstrip(), L) + Markup(' <span class="g-cites-in">')
+            for n in [int(x) for x in re.split(r'[,،]\s*', m.group(1))]:
+                chip_no[0] += 1
+                cid = f'cite-{chip_no[0]}'
+                if refs[n]['back'] is None:
+                    refs[n]['back'] = cid
+                out += Markup(f'<a class="g-chip" id="{cid}" href="#ref-{n}" data-a="{n}" data-z="{n}" '
+                              f'aria-label="{escape(U["ref_label"].format(n=n))}">{n}</a>')
+            out += Markup('</span>')
+            last = m.end()
+        return out + rich(t[last:], L)
 
     cur_sid = [None]
     sections = []
@@ -310,9 +351,19 @@ def model(slug_, L, ref_urls=None):
         target = to if to in all_ids else ids.get(to)
         add(acr, target)
     num = iter(range(1, 100))
-    toc = [dict(id=s['id'], num=next(num) if s['n'] else None, label=s['toc']) for s in sections]
+    toc = []
+    for s, src in zip(sections, G['sections']):
+        toc.append(dict(id=s['id'], num=next(num) if s['n'] else None, label=s['toc']))
+        toc += [dict(id=i_, num=None, label=lab, sub=True) for i_, lab in src.get('sub', ())]
+    # search keys of each finder target (card, table row or paragraph): "acronym|category|English name|Arabic name"
+    # entries, written as data-k on the element; src/search.py reads them so that an institution's own card or row
+    # comes first for its acronym or name (site search and the in-article finder)
+    keys = {}
+    for f in find:
+        keys.setdefault(f['t'], []).append('|'.join((f['a'], f['c'], f['n'], f['m'])))
+    keys = {t: ';'.join(v) for t, v in keys.items()}
     legend = [dict(key=k, label=v[i]) for k, v in CATS.items()]
-    return dict(G=G, U=U, sections=sections, refs=[refs[n] for n in sorted(refs)], find=find, toc=toc,
+    return dict(G=G, U=U, sections=sections, refs=[refs[n] for n in sorted(refs)], find=find, toc=toc, skeys=keys,
                 legend=legend, nrefs=len(refs), cats={k: v[i] for k, v in CATS.items()})
 
 def walk(blocks):
@@ -321,19 +372,33 @@ def walk(blocks):
         if b.get('kind') == 'inst':
             yield from walk(b['blocks'])
 
-# ---------- search ----------
-def keywords(slug_, L):
-    """Institution acronyms and names for the site search (so searching "PCAOB" or «هيئة السوق المالية» finds the guide)."""
-    G = GUIDES[slug_][L].GUIDE
-    text = str(G)
+# ---------- reading time and FAQ ----------
+def _strings(x):
+    if isinstance(x, str):
+        yield x
+    elif isinstance(x, dict):
+        for k, v in x.items():
+            if k not in ('id', 'acr', 'n', 'sub', 'toc'):
+                yield from _strings(v)
+    elif isinstance(x, (list, tuple)):
+        for v in x:
+            yield from _strings(v)
+
+def minutes(slug_):
+    """Reading time of a guide in minutes, from the number of words in its English text (245 words a minute,
+    which gave the 20 minutes set by hand for the first version)."""
+    G = GUIDES[slug_]['en'].GUIDE
+    words = sum(len(re.findall(r"[A-Za-z0-9’']+", t)) for t in _strings([G['lead'], G['sections']]))
+    return max(1, round(words / 245))
+
+def faq(slug_, L):
+    """Question-and-answer pairs of the guide's quick guides (FAQPage structured data)."""
     out = []
-    for k, e in INST.items():
-        if k == 'AICPA & CIMA':
-            continue
-        if re.search(r'(?<![A-Za-z])' + re.escape(k) + r'(?![A-Za-z])', text) or (e[2] and e[2] in text):
-            out.append(k)
-            out.append(e[1] if L == 'en' else (e[2] or e[1]))
-    return ' '.join(out)
+    for s in GUIDES[slug_][L].GUIDE['sections']:
+        for b in s['blocks']:
+            if b[0] == 'quick':
+                out += [(q, a) for q, a, _ in b[1]['faq']]
+    return out
 
 # ---------- figures ----------
 # Figure 1 and 2: inline SVG drawn from boxes, lines and labels laid out in a left-to-right coordinate system;

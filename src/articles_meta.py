@@ -1,5 +1,5 @@
 # Insights articles. One dict per article:
-#   slug, minutes, date (YYYY-MM-DD, the publication date shown on the article),
+#   slug, minutes (reading time; a reference guide's is computed from its text by guide.minutes()), date (YYYY-MM-DD, the publication date shown on the article),
 #   added (YYYY-MM-DD, the day the article went live on asaegypt.com; REQUIRED, see CLAUDE.md),
 #   added_at (optional "HH:MM" UTC; only orders items added on the same day; missing = end of that day),
 #   author_en, author_ar, role_en, role_ar: a named author with their job title, or for team articles
@@ -32,7 +32,7 @@ CATEGORIES = {
 ARTICLES = [
  dict(slug="global-accounting-auditing-institutions", minutes=20,
       added="2026-10-18", added_at="19:18",
-      date="2026-10-18", reviewed="2026-10-18", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
+      date="2026-10-18", reviewed="2026-10-19", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
       role_en="Managing Partner", role_ar="الشريك المدير",
       category="guides",
       image=dict(focus="50% 50%", kind="cover",

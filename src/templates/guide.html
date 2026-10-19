@@ -8,12 +8,12 @@
 <div class="g-table{{ ' g-table-wide' if t.wide }}"><table>
   <thead><tr>{% for h in t.head %}<th scope="col">{{ h|rich(L) }}</th>{% endfor %}</tr></thead>
   <tbody>{% for r in t.rows %}
-    <tr{% if r.id %} id="{{ r.id }}" tabindex="-1"{% endif %}{% if r.cat %} class="cat-{{ r.cat }}"{% endif %}>{% for c in r.cells %}{% set lab = t.short[loop.index0] %}{% if loop.first %}<th scope="row">{% else %}<td data-l="{{ lab }}"><span class="gv">{% endif %}{% if loop.index0 == t.badge_col and r.acr %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% elif loop.first and r.cat and t.badge_col is none %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% endif %}{{ c|gcell(L) }}{% if loop.first %}</th>{% else %}</span></td>{% endif %}{% endfor %}</tr>{% endfor %}
+    <tr{% if r.id %} id="{{ r.id }}" tabindex="-1"{% if GM.skeys[r.id] %} data-k="{{ GM.skeys[r.id] }}"{% endif %}{% endif %}{% if r.cat %} class="cat-{{ r.cat }}"{% endif %}>{% for c in r.cells %}{% set lab = t.short[loop.index0] %}{% if loop.first %}<th scope="row">{% else %}<td data-l="{{ lab }}"><span class="gv">{% endif %}{% if loop.index0 == t.badge_col and r.acr %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% elif loop.first and r.cat and t.badge_col is none %}<span class="hxs cat-{{ r.cat }}" aria-hidden="true"></span>{% endif %}{{ c|gcell(L) }}{% if loop.first %}</th>{% else %}</span></td>{% endif %}{% endfor %}</tr>{% endfor %}
   </tbody>
 </table></div>
 {% endmacro %}
 {% macro blocks(bs) %}{% for b in bs %}
-  {% if b.kind == 'p' %}<p{% if b.id %} id="{{ b.id }}" tabindex="-1"{% endif %}>{{ b.text|rich(L) }}</p>
+  {% if b.kind == 'p' %}<p{% if b.id %} id="{{ b.id }}" tabindex="-1"{% if GM.skeys[b.id] %} data-k="{{ GM.skeys[b.id] }}"{% endif %}{% endif %}>{{ b.text|rich(L) }}</p>
   {% elif b.kind == 'note' %}<aside class="g-note"><b class="g-note-k">{{ U.note|rich(L) }}</b><p>{{ b.text|rich(L) }}</p></aside>
   {% elif b.kind == 'ul' %}<ul>{% for x in b.list %}<li>{{ x|rich(L) }}</li>{% endfor %}</ul>
   {% elif b.kind == 'ol' %}<ol class="g-ol">{% for x in b.list %}<li>{{ x|rich(L) }}</li>{% endfor %}</ol>
@@ -30,15 +30,33 @@
     </div>{% endif %}
     <figcaption><b>{{ b.caption|rich(L) }}</b>{% if b.text %}<span>{{ b.text|rich(L) }}</span>{% endif %}</figcaption>
   </figure>
-  {% elif b.kind == 'inst' %}<article class="g-inst cat-{{ b.cat }}" id="{{ b.id }}" tabindex="-1" aria-labelledby="{{ b.id }}-h">
-    <header class="g-inst-head">{{ badge(b) }}
+  {% elif b.kind == 'inst' %}<article class="g-inst cat-{{ b.cat }}" id="{{ b.id }}" tabindex="-1" aria-labelledby="{{ b.id }}-h" data-h="{{ b.n }} {{ b.name|replace('**', '') }}">
+    <header class="g-inst-head" data-passage="{{ b.id }}"{% if GM.skeys[b.id] %} data-k="{{ GM.skeys[b.id] }}"{% endif %}>{{ badge(b) }}
       <div><span class="g-inst-n">{{ b.n }}</span><h3 id="{{ b.id }}-h">{{ b.name|rich(L) }}</h3>
         <p class="g-inst-other" lang="{{ 'ar' if L == 'en' else 'en' }}" dir="{{ 'rtl' if L == 'en' else 'ltr' }}">{{ b.other }}</p></div>
       {{ anchor(b.id) }}
     </header>
     {{ blocks(b.blocks) }}
-    {% if b.link %}<p class="g-off"><a href="{{ b.link.url }}" target="_blank" rel="noopener">{{ b.link.label }} <span aria-hidden="true">↗</span></a></p>{% endif %}
+    {% if b.link %}<p class="g-off" data-noindex><a href="{{ b.link.url }}" target="_blank" rel="noopener">{{ b.link.label }} <span aria-hidden="true">↗</span></a></p>{% endif %}
   </article>
+  {% elif b.kind == 'quick' %}<section class="g-quick" id="{{ b.id }}" tabindex="-1" aria-labelledby="{{ b.id }}-h" data-h="{{ b.n }} {{ b.title }}">
+    <header class="g-quick-head"><div><span class="g-inst-n">{{ b.n }}</span><h3 id="{{ b.id }}-h">{{ b.title|rich(L) }}</h3></div>{{ anchor(b.id) }}</header>
+    <p class="g-quick-intro">{{ b.intro|rich(L) }}</p>
+    <div class="g-qgrid">{% for c in b.cards %}
+      <article class="g-qcard" id="{{ c.id }}" tabindex="-1" aria-labelledby="{{ c.id }}-h" data-h="{{ c.name }}">
+        <h4 id="{{ c.id }}-h"><span class="hxs" aria-hidden="true"></span>{{ c.name }}</h4>
+        <dl>{% for r in c.rows %}<div class="g-qrow" data-passage><dt>{{ r.label|rich(L) }}</dt><dd>{{ r.html }}</dd></div>{% endfor %}</dl>
+      </article>{% endfor %}
+    </div>
+    <div class="g-faq" data-h="{{ b.faq_title }}">
+      <h4 class="g-faq-h">{{ b.faq_title }}</h4>
+      {% for f in b.faq %}<details class="g-faq-i" id="{{ f.id }}" data-passage>
+        <summary><span>{{ f.q|rich(L) }}</span>{{ I('FaChevronDown') }}</summary>
+        <p>{{ f.a|rich(L) }} <a class="g-xref" href="#{{ f.card }}">{{ f.card_name }}<span aria-hidden="true"> ↑</span></a></p>
+      </details>{% endfor %}
+    </div>
+    <p class="g-quick-disc">{{ b.disclaimer }}</p>
+  </section>
   {% endif %}
 {% endfor %}{% endmacro %}
 {% block main %}
@@ -68,18 +86,18 @@
       <p class="g-toc-note">{{ G.toc_note }}</p>
       <div class="g-toc-list">
         <span class="g-prog" role="progressbar" aria-label="{{ U.progress }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></span>
-        <div class="g-toc-scroll"><ol>{% for t in GM.toc %}<li><a href="#{{ t.id }}" data-s="{{ t.id }}">{% if t.num %}<span class="g-tn">{{ t.num }}</span>{% endif %}<span class="g-tl">{{ t.label|rich(L) }}</span></a></li>{% endfor %}</ol></div>
+        <div class="g-toc-scroll"><ol>{% for t in GM.toc %}<li{% if t.sub %} class="g-sub"{% endif %}><a href="#{{ t.id }}" data-s="{{ t.id }}">{% if t.num %}<span class="g-tn">{{ t.num }}</span>{% endif %}<span class="g-tl">{{ t.label|rich(L) }}</span></a></li>{% endfor %}</ol></div>
       </div>
     </nav>
     <article class="article prose g-body">
-      <div class="g-find">
+      <div class="g-find" data-noindex>
         <label for="g-find-in">{{ U.find }}</label>
         <div class="g-find-box">{{ I('Search') }}<input id="g-find-in" type="search" placeholder="{{ U.find_ph }}" autocomplete="off" spellcheck="false" enterkeyhint="go"
              role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="g-find-list" aria-describedby="g-find-eg"></div>
         <p class="g-find-eg" id="g-find-eg">{{ U.find_eg|rich(L) }}</p>
-        <ul class="g-find-list" id="g-find-list" role="listbox" aria-label="{{ U.find }}" hidden></ul>
+        <div class="g-find-list" id="g-find-list" role="listbox" aria-label="{{ U.find }}" hidden></div>
         <p class="g-find-st sr" role="status" aria-live="polite"></p>
-        <script type="application/json" id="g-find-data">{{ {'items': GM.find, 'none': U.find_none, 'cats': GM.cats}|tojson }}</script>
+        <script type="application/json" id="g-find-data">{{ {'none': U.find_none, 'inst': U.find_inst, 'here': U.find_here, 'loading': U.find_loading, 'of': U.find_of, 'prev': U.find_prev, 'next': U.find_next, 'close': U.close, 'bar': U.find_bar, 'count': U.find_count}|tojson }}</script>
       </div>
       {% for s in GM.sections %}
       <section class="g-sec" id="{{ s.id }}" aria-labelledby="{{ s.id }}-h">
@@ -93,7 +111,7 @@
           </details>
         {% else %}{{ blocks(s.blocks) }}{% endif %}
         {% if s.id == 'institution-types' %}
-        <div class="g-legend" role="note" aria-label="{{ U.legend }}"><b>{{ U.legend }}</b><ul>{% for c in GM.legend %}<li><span class="hxs cat-{{ c.key }}" aria-hidden="true"></span>{{ c.label }}</li>{% endfor %}</ul></div>
+        <div class="g-legend" role="note" data-noindex aria-label="{{ U.legend }}"><b>{{ U.legend }}</b><ul>{% for c in GM.legend %}<li><span class="hxs cat-{{ c.key }}" aria-hidden="true"></span>{{ c.label }}</li>{% endfor %}</ul></div>
         {% endif %}
       </section>
       {% endfor %}
