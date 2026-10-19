@@ -61,7 +61,7 @@ GUIDE = dict(
    blocks=[
     ('inst', dict(
       acr='IFAC',
-      n='1',
+      n='2.1',
       name='الاتحاد الدولي للمحاسبين',
       other='International Federation of Accountants',
       blocks=[
@@ -74,7 +74,7 @@ GUIDE = dict(
        ('p', 'ومن المهم توضيح أن عضوية IFAC تكون أساسًا للمنظمات المهنية، وليست ترخيصًا شخصيًا يمنح أي محاسب حق ممارسة المراجعة في جميع الدول.')])),
     ('inst', dict(
       acr='IAASB',
-      n='2',
+      n='2.2',
       name='المجلس الدولي لمعايير المراجعة والتأكيد',
       other='International Auditing and Assurance Standards Board',
       blocks=[
@@ -95,7 +95,7 @@ GUIDE = dict(
        ('p', 'والجدير بالذكر أن بعض المعايير المنشورة في دليل 2026 تصبح نافذة دوليًا في ديسمبر 2026؛ ومن ثم يجب التفرقة بين تاريخ إصدار المعيار وتاريخ بدء تطبيقه.')])),
     ('inst', dict(
       acr='IESBA',
-      n='3',
+      n='2.3',
       name='المجلس الدولي لمعايير أخلاقيات المهنة للمحاسبين',
       other='International Ethics Standards Board for Accountants',
       blocks=[
@@ -109,7 +109,7 @@ GUIDE = dict(
        ('p', 'وهنا تظهر قاعدة أساسية: قد تُنفذ إجراءات المراجعة من الناحية الفنية بصورة سليمة، ومع ذلك يكون الارتباط غير مقبول مهنيًا بسبب الإخلال بمتطلبات الاستقلالية أو الأخلاقيات.')])),
     ('inst', dict(
       acr='IFEA',
-      n='4',
+      n='2.4',
       name='المؤسسة الدولية للأخلاقيات والمراجعة',
       other='International Foundation for Ethics and Audit',
       blocks=[
@@ -118,7 +118,7 @@ GUIDE = dict(
        ('p', 'ويتمثل الفرق هنا بين المؤسسة الحاضنة، والمجلس الذي يضع المعيار، والجهة التي تراقب سلامة عملية وضعه.')])),
     ('inst', dict(
       acr='PIOB',
-      n='5',
+      n='2.5',
       name='مجلس الإشراف على المصلحة العامة',
       other='Public Interest Oversight Board',
       blocks=[
@@ -127,14 +127,14 @@ GUIDE = dict(
        ('p', 'لكن اختصاصه لا يعني أنه جهة تفتيش مباشرة على كل مكتب مراجعة في العالم.')])),
     ('inst', dict(
       acr='MG',
-      n='6',
+      n='2.6',
       name='مجموعة المراقبة',
       other='Monitoring Group',
       blocks=[
        ('p', 'تضم مجموعة المراقبة جهات رقابية ومؤسسات مالية دولية، وتركز على تقييم فعالية منظومة وضع المعايير ومدى استقلالها واستجابتها للمصلحة العامة.')])),
     ('inst', dict(
       acr='SAC',
-      n='7',
+      n='2.7',
       name='المجلس الاستشاري لأصحاب المصلحة',
       other='Stakeholder Advisory Council',
       blocks=[
@@ -159,7 +159,7 @@ GUIDE = dict(
     ('p', 'لا تنفصل مهنة المراجعة عن المعايير المحاسبية. فالمراجع لا يختبر الأرقام والإفصاحات بمعزل عن إطار إعداد التقارير المالية المطبق على المنشأة.'),
     ('inst', dict(
       acr='IFRS Foundation',
-      n='8',
+      n='3.1',
       name='مؤسسة المعايير الدولية للتقرير المالي',
       other='International Financial Reporting Standards Foundation',
       blocks=[
@@ -167,7 +167,7 @@ GUIDE = dict(
        ('p', 'وتتكون منظومتها الحاكمة من مجلس مراقبة، وأمناء مسؤولين عن الحوكمة والتوجه الاستراتيجي، ومجلسين مستقلين لوضع المعايير.')])),
     ('inst', dict(
       acr='IASB',
-      n='9',
+      n='3.2',
       name='مجلس معايير المحاسبة الدولية',
       other='International Accounting Standards Board',
       blocks=[
@@ -176,7 +176,7 @@ GUIDE = dict(
        ('p', 'ويشمل الإطار أيضًا معايير IAS التي ما زالت سارية، رغم اختلاف التسمية التاريخية.')])),
     ('inst', dict(
       acr='ISSB',
-      n='10',
+      n='3.3',
       name='مجلس معايير الاستدامة الدولية',
       other='International Sustainability Standards Board',
       blocks=[
@@ -184,7 +184,7 @@ GUIDE = dict(
        ('ul', ['IFRS S1: المتطلبات العامة للإفصاح عن المعلومات المالية المتعلقة بالاستدامة.', 'IFRS S2: الإفصاحات المتعلقة بالمناخ.'])])),
     ('inst', dict(
       acr='IFRS IC',
-      n='11',
+      n='3.4',
       name='لجنة تفسيرات المعايير الدولية',
       other='IFRS Interpretations Committee',
       blocks=[
@@ -195,21 +195,21 @@ GUIDE = dict(
     ('p', 'هذه المنظومة مستقلة عن منظومة IAASB وIESBA، رغم الارتباط الوثيق بين المعايير المحاسبية ومعايير المراجعة في التطبيق العملي.'),
     ('inst', dict(
       acr='FASB',
-      n='12',
+      n='3.5',
       name='مجلس معايير المحاسبة المالية الأمريكي',
       other='Financial Accounting Standards Board',
       blocks=[
        ('p', 'يتولى وضع معايير المحاسبة المالية الأمريكية US GAAP لمنشآت القطاع الخاص والجهات الأخرى الخاضعة لاختصاصه.')])),
     ('inst', dict(
       acr='GASB',
-      n='13',
+      n='3.6',
       name='مجلس معايير المحاسبة الحكومية الأمريكي',
       other='Governmental Accounting Standards Board',
       blocks=[
        ('p', 'مسؤول عن وضع معايير المحاسبة والتقارير المالية لحكومات الولايات والحكومات المحلية الأمريكية.')])),
     ('inst', dict(
       acr='FAF',
-      n='14',
+      n='3.7',
       name='مؤسسة المحاسبة المالية الأمريكية',
       other='Financial Accounting Foundation',
       blocks=[
@@ -226,7 +226,7 @@ GUIDE = dict(
     ('p', 'ومن هنا تأتي أهمية هيئات الرقابة المستقلة.'),
     ('inst', dict(
       acr='PCAOB',
-      n='15',
+      n='4.1',
       name='مجلس الرقابة على محاسبة الشركات العامة',
       other='Public Company Accounting Oversight Board — الولايات المتحدة',
       blocks=[
@@ -237,7 +237,7 @@ GUIDE = dict(
        ('p', 'ومن المهم التفرقة بين معايير PCAOB Auditing Standards ومعايير ISA الدولية، إذ تختلف متطلبات كل إطار بحسب نوع المنشأة والاختصاص القانوني.')])),
     ('inst', dict(
       acr='SEC',
-      n='16',
+      n='4.2',
       name='هيئة الأوراق المالية والبورصات الأمريكية',
       other='Securities and Exchange Commission',
       blocks=[
@@ -245,7 +245,7 @@ GUIDE = dict(
        ('p', 'وتشرف SEC على PCAOB وفقًا للإطار التشريعي المنظم، كما تتولى تنظيم الإفصاحات والالتزامات المتعلقة بالجهات الخاضعة لقوانين الأوراق المالية.')])),
     ('inst', dict(
       acr='IFIAR',
-      n='17',
+      n='4.3',
       name='المنتدى الدولي لهيئات الرقابة المستقلة على المراجعة',
       other='International Forum of Independent Audit Regulators',
       blocks=[
@@ -254,7 +254,7 @@ GUIDE = dict(
        ('p', 'ولا يمثل IFIAR سلطة ترخيص عالمية تمنح المراجعين الحق في العمل بجميع الدول.')])),
     ('inst', dict(
       acr='FRC',
-      n='18',
+      n='4.4',
       name='مجلس التقارير المالية البريطاني',
       other='Financial Reporting Council — المملكة المتحدة',
       blocks=[
@@ -262,21 +262,21 @@ GUIDE = dict(
        ('p', 'ويتولى وضع معايير مراجعة بريطانية، والإشراف على الجهات المهنية المعترف بها لأغراض التسجيل والتأهيل، والرقابة المباشرة على بعض المراجعات، فضلًا عن التحقيق والإنفاذ في حدود اختصاصاته.')])),
     ('inst', dict(
       acr='CEAOB',
-      n='19',
+      n='4.5',
       name='لجنة الهيئات الأوروبية للرقابة على المراجعة',
       other='Committee of European Auditing Oversight Bodies',
       blocks=[
        ('p', 'تدعم التعاون والتنسيق بين سلطات الرقابة على المراجعة في الاتحاد الأوروبي.')])),
     ('inst', dict(
       acr='CPAB',
-      n='20',
+      n='4.6',
       name='مجلس المساءلة العامة الكندي',
       other='Canadian Public Accountability Board',
       blocks=[
        ('p', 'يشرف على جودة مراجعة الجهات المُصدرة التي تقع ضمن اختصاصه في كندا، مع وجود متطلبات ترخيص وتسجيل أخرى على مستوى المقاطعات.')])),
     ('inst', dict(
       acr='ASIC',
-      n='21',
+      n='4.7',
       name='هيئة الأوراق المالية والاستثمارات الأسترالية',
       other='Australian Securities and Investments Commission',
       blocks=[
@@ -340,7 +340,7 @@ GUIDE = dict(
    blocks=[
     ('inst', dict(
       acr='IIA',
-      n='22',
+      n='6.1',
       name='معهد المراجعين الداخليين',
       other='The Institute of Internal Auditors',
       blocks=[
@@ -354,7 +354,7 @@ GUIDE = dict(
        ('p', 'ويجب التفرقة هنا بين نطاق عمل المراجع الداخلي ووظيفته داخل منظومة الحوكمة، وبين مسؤولية المراجع الخارجي عن إبداء الرأي في القوائم المالية.')])),
     ('inst', dict(
       acr='COSO',
-      n='23',
+      n='6.2',
       name='لجنة المنظمات الراعية للجنة تريدواي',
       other='Committee of Sponsoring Organizations of the Treadway Commission',
       blocks=[
@@ -469,7 +469,7 @@ GUIDE = dict(
     ('p', 'وقد تتطلب المرحلة الأخيرة تسجيلات أو موافقات إضافية بحسب طبيعة المنشأة.'),
     ('inst', dict(
       acr='MoF',
-      n='1',
+      n='11.1',
       name='مصر: السجل العام للمحاسبين والمراجعين والجهات القطاعية',
       other='Ministry of Finance — General Register of Accountants and Auditors',
       blocks=[
@@ -484,7 +484,7 @@ GUIDE = dict(
        ('p', 'ويجب كذلك عدم الخلط بين السجل العام لمزاولة المهنة وأي سجلات أو آليات اعتماد خاصة بالتعاملات الضريبية.')])),
     ('inst', dict(
       acr='SOCPA',
-      n='2',
+      n='11.2',
       name='المملكة العربية السعودية: الهيئة السعودية للمراجعين والمحاسبين',
       other='SOCPA — Saudi Organization for Chartered and Professional Accountants',
       blocks=[
@@ -495,7 +495,7 @@ GUIDE = dict(
        ('p', 'كما تخضع مراجعة المنشآت المدرجة وغيرها من الجهات المنظمة لمتطلبات إضافية تصدرها السلطات القطاعية المختصة، ومنها هيئة السوق المالية CMA والبنك المركزي السعودي SAMA بحسب الحالة.')])),
     ('inst', dict(
       acr='State Boards',
-      n='3',
+      n='11.3',
       name='الولايات المتحدة: مجالس المحاسبة في الولايات',
       other='State Boards of Accountancy',
       blocks=[
@@ -509,7 +509,7 @@ GUIDE = dict(
        ('p', 'وبالنسبة لمراجعة الشركات المُصدرة الخاضعة لقواعد PCAOB، يتعين مراعاة متطلبات تسجيل مكتب المراجعة لدى PCAOB بالإضافة إلى متطلبات التراخيص والممارسة المحلية المنطبقة.')])),
     ('inst', dict(
       acr='RSBs',
-      n='4',
+      n='11.4',
       name='المملكة المتحدة: جهات الإشراف المعترف بها',
       other='Recognised Supervisory Bodies — RSBs',
       blocks=[
@@ -644,7 +644,7 @@ GUIDE = dict(
    title='المراجع والمصادر الرسمية',
    toc=None,
    blocks=[])],
- refs_intro='المصادر المؤسسية والرسمية للمقال والتحقق التنظيمي حتى 18 أكتوبر 2026. الأرقام بين الأقواس في المتن تحيل إلى هذه القائمة. الروابط في عناوين المراجع قابلة للنقر.',
+ refs_intro='المصادر المؤسسية والرسمية للمقال والتحقق التنظيمي حتى 19 أكتوبر 2026. الأرقام بين الأقواس في المتن تحيل إلى هذه القائمة. الروابط في عناوين المراجع قابلة للنقر.',
  refs=[
   (1, 'IFAC — International Federation of Accountants. التعريف بالاتحاد وأهدافه وعضويته', 'https://www.ifac.org/who-we-are/our-purpose', 'www.ifac.org'),
   (2, 'IFAC — Revised Statements of Membership Obligations, 2026', 'https://www.ifac.org/news-events/2026-03/ifac-revises-statements-membership-obligations-strengthen-global-accountancy-profession', 'www.ifac.org'),
@@ -733,4 +733,5 @@ GUIDE = dict(
   (85, 'SOCPA — Law of the Accounting and Auditing Profession (Royal Decree M/59, 1442H)', 'https://socpa.org.sa/SOCPA/files/06/066109b0-5a63-47b6-8fd5-10546e7ca91b.pdf', 'socpa.org.sa'),
   (86, 'UK Government — Regulated professions: Statutory audit', 'https://www.regulated-professions.service.gov.uk/professions/statutory-audit', 'www.regulated-professions.service.gov.uk'),
   (87, 'ACCA — Our certificates explained (audit qualification and firms registered as auditors)', 'https://www.accaglobal.com/gb/en/member/find-an-accountant/certificates.html', 'www.accaglobal.com'),
-  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org')])
+  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org'),
+  (89, 'ESAA — Official website', 'https://web.esaa.org.eg/', 'web.esaa.org.eg')])

@@ -98,7 +98,7 @@ INST = {
     'RQBs': ('pao', "Recognised Qualifying Bodies", None, None),
     'FRA': ('reg', "Financial Regulatory Authority (Egypt)", "الهيئة العامة للرقابة المالية", 22),
     'CBE': ('reg', "Central Bank of Egypt", "البنك المركزي المصري", 73),
-    'ESAA': ('pao', "Egyptian Society of Accountants and Auditors", "جمعية المحاسبين والمراجعين المصرية", 82),
+    'ESAA': ('pao', "Egyptian Society of Accountants and Auditors", "جمعية المحاسبين والمراجعين المصرية", 89),
     'Syndicate of Commerce': ('pao', "Syndicate of Commerce", "النقابة العامة للتجاريين", None),
     'CMA': ('reg', "Capital Market Authority (Saudi Arabia)", "هيئة السوق المالية", None),
     'SAMA': ('reg', "Saudi Central Bank", "البنك المركزي السعودي", 74),

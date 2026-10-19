@@ -177,7 +177,7 @@ Every new Insights article and every new Briefing item MUST get a matching photo
   - On dark (#23262B): "ASA" #C5C9CF, "NEXT" #C3D648.
   - On light: "ASA" #5F646C, "NEXT" #8FA21A.
 - Humour (Junior Desk only): tasteful. No jokes about people, clients or other firms. No slang, no politics, no religion.
-- Professional qualifications: link the official body (ACCA, AICPA, SOCPA, ESAA: https://esaa.org.eg/); never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
+- Professional qualifications: link the official body (ACCA, AICPA, SOCPA, ESAA: https://web.esaa.org.eg/); never state exam dates, fees, pass rates or entry requirements. Say "check the official website for current requirements".
 
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.

@@ -605,7 +605,7 @@ GUIDE = dict(
    title='References and official sources',
    toc=None,
    blocks=[])],
- refs_intro='Official and institutional sources for the article and regulatory verification as at 18 October 2026. Bracketed references in the text refer to this list. Reference titles contain clickable source links.',
+ refs_intro='Official and institutional sources for the article and regulatory verification as at 19 October 2026. Bracketed references in the text refer to this list. Reference titles contain clickable source links.',
  refs=[
   (1, 'IFAC — International Federation of Accountants', 'https://www.ifac.org/who-we-are/our-purpose', 'www.ifac.org'),
   (2, 'IFAC — Revised Statements of Membership Obligations, 2026', 'https://www.ifac.org/news-events/2026-03/ifac-revises-statements-membership-obligations-strengthen-global-accountancy-profession', 'www.ifac.org'),
@@ -694,4 +694,5 @@ GUIDE = dict(
   (85, 'SOCPA — Law of the Accounting and Auditing Profession (Royal Decree M/59, 1442H)', 'https://socpa.org.sa/SOCPA/files/06/066109b0-5a63-47b6-8fd5-10546e7ca91b.pdf', 'socpa.org.sa'),
   (86, 'UK Government — Regulated professions: Statutory audit', 'https://www.regulated-professions.service.gov.uk/professions/statutory-audit', 'www.regulated-professions.service.gov.uk'),
   (87, 'ACCA — Our certificates explained (audit qualification and firms registered as auditors)', 'https://www.accaglobal.com/gb/en/member/find-an-accountant/certificates.html', 'www.accaglobal.com'),
-  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org')])
+  (88, 'NASBA — International Qualification Examination (IQEX)', 'https://nasba.org/exams/iqex/', 'nasba.org'),
+  (89, 'ESAA — Official website', 'https://web.esaa.org.eg/', 'web.esaa.org.eg')])
