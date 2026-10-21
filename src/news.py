@@ -22,6 +22,27 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="uae-einvoicing-amendments-decision-197-2026", date="2026-10-19", added="2026-10-21", added_at="04:18", category="economy", region="gcc",
+      title_en="UAE Ministry of Finance amends the Electronic Invoicing System rules through Ministerial Decision No. 197 of 2026",
+      title_ar="وزارة المالية الإماراتية تعدّل أحكام نظام الفوترة الإلكترونية بموجب القرار الوزاري رقم 197 لسنة 2026",
+      short_en="UAE amends e-invoicing rules: tax group transactions excluded",
+      short_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية وتستثني معاملات المجموعة الضريبية",
+      summary_en="The UAE Ministry of Finance has amended its Electronic Invoicing System rules: transactions within the same Tax Group are temporarily excluded for 24 months from 1 January 2027, the requirement to store e-invoice data within the UAE is removed, and the \"System Failure\" provisions are repealed.",
+      summary_ar="عدّلت وزارة المالية في دولة الإمارات قواعد نظام الفوترة الإلكترونية، فاستثنت مؤقتًا المعاملات بين أعضاء المجموعة الضريبية الواحدة لمدة 24 شهرًا تبدأ في 1 يناير 2027، وألغت اشتراط حفظ بيانات الفواتير الإلكترونية داخل الدولة، وأحكام «تعطل النظام».",
+      body_en=[
+          "The UAE Ministry of Finance has issued Ministerial Decision No. 197 of 2026, amending certain provisions of Ministerial Decision No. 243 of 2025 on the Electronic Invoicing System. The ministry says the changes are intended to clarify certain requirements, support implementation of the system and reduce operational burdens on businesses. The Decision has been effective since 1 October 2026.",
+          "Business transactions between persons that are members of the same Tax Group are temporarily excluded from the system. For 24 months starting on 1 January 2027, these transactions are treated as Excluded Transactions.",
+          "Article 11, on the storage of electronic invoice and electronic credit note data, has been amended. Persons subject to the system must keep all electronic invoices, electronic credit notes and associated data for the period set by the Tax Procedures Law, and be able to provide them to the Federal Tax Authority on request. The previous requirement to store this data within the UAE has been removed.",
+          "The \"System Failure\" provisions have also been removed, including the requirement to notify the Federal Tax Authority of a system failure within two business days. This was done by repealing Article 12 and deleting the related definition from Article 1.",
+      ],
+      body_ar=[
+          "أصدرت وزارة المالية في دولة الإمارات القرار الوزاري رقم 197 لسنة 2026 بتعديل بعض أحكام القرار الوزاري رقم 243 لسنة 2025 بشأن نظام الفوترة الإلكترونية. وتوضح الوزارة أن هذه التعديلات تستهدف إيضاح بعض المتطلبات، ودعم تطبيق النظام، وتخفيف الأعباء التشغيلية عن الشركات. ويسري القرار اعتبارًا من 1 أكتوبر 2026.",
+          "واستثنى القرار مؤقتًا المعاملات التجارية التي تجري بين أشخاص أعضاء في المجموعة الضريبية ذاتها، إذ تُعامل هذه المعاملات بوصفها معاملات مستثناة طوال 24 شهرًا تبدأ في 1 يناير 2027.",
+          "وعدّل القرار المادة 11 الخاصة بحفظ بيانات الفواتير الإلكترونية والإشعارات الدائنة الإلكترونية، فبات على الخاضعين للنظام الاحتفاظ بجميع الفواتير الإلكترونية والإشعارات الدائنة الإلكترونية وما يرتبط بها من بيانات طوال المدة المحددة في قانون الإجراءات الضريبية، مع ضمان إتاحتها للهيئة الاتحادية للضرائب عند الطلب. وأُلغي الاشتراط السابق بحفظ هذه البيانات داخل الدولة.",
+          "كما ألغى القرار الأحكام المتعلقة بـ«تعطل النظام»، ومنها وجوب إخطار الهيئة الاتحادية للضرائب بأي تعطل خلال يومي عمل من وقوعه، وذلك بإلغاء المادة 12 وحذف التعريف المرتبط بها من المادة 1.",
+      ],
+      source_name="UAE Ministry of Finance",
+      source_url="https://mof.gov.ae/en/news/ministry-of-finance-amends-electronic-invoicing-regulations-to-ease-the-burden-on-businesses/"),
  dict(slug="imf-world-economic-outlook-october-2026", date="2026-10-13", added="2026-10-19", added_at="04:17", category="economy", region="global",
       title_en="IMF October 2026 World Economic Outlook projects global growth of 3.1% in 2026",
       title_ar="صندوق النقد الدولي يتوقع في تقرير «آفاق الاقتصاد العالمي» لأكتوبر 2026 نمو الاقتصاد العالمي بنسبة 3.1% في 2026",
