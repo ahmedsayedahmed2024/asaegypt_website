@@ -22,6 +22,29 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="issb-nature-related-disclosures-exposure-draft", date="2026-10-22", added="2026-10-23", added_at="04:15", category="standards", region="global",
+      title_en="ISSB consults on proposed Practice Statement for nature-related disclosures",
+      title_ar="مجلس معايير الاستدامة الدولية (ISSB) يطرح للتشاور مقترحًا لبيان ممارسة بشأن الإفصاحات المتعلقة بالطبيعة",
+      short_en="ISSB proposes nature-related disclosures Practice Statement for consultation",
+      short_ar="ISSB يطرح مقترح بيان ممارسة للإفصاحات المتعلقة بالطبيعة",
+      summary_en="The International Sustainability Standards Board has published proposals for a Practice Statement on nature-related disclosures, adding detail on how companies applying IFRS S1 report material nature-related risks and opportunities. Comments are open until 19 February 2027.",
+      summary_ar="نشر مجلس معايير الاستدامة الدولية (ISSB) مقترحات لبيان ممارسة بشأن الإفصاحات المتعلقة بالطبيعة، يفصّل كيفية إفصاح الشركات التي تطبق معيار IFRS S1 عن المخاطر والفرص الجوهرية المتعلقة بالطبيعة. ويستقبل المجلس التعليقات حتى 19 فبراير 2027.",
+      body_en=[
+          "On 22 October 2026, the International Sustainability Standards Board (ISSB) opened a consultation on proposals for nature-related disclosures. The proposals take the form of a Practice Statement and are intended to help companies give investors material information about nature-related risks and opportunities, including those that arise from a company's dependencies and impacts on nature.",
+          "Companies applying IFRS S1 General Requirements for Disclosure of Sustainability-related Financial Information are already required to disclose material sustainability-related risks and opportunities, including nature-related ones. The proposed Practice Statement adds detail on how to provide this information. The ISSB says the approach is designed to avoid siloed reporting, so that investors can see the connections between nature, climate, other sustainability matters and the financial statements.",
+          "A company is not required to comply with a Practice Statement in order to state compliance with ISSB Standards. The ISSB says this approach supports high-quality disclosures while avoiding disruption for companies and jurisdictions implementing its Standards. The consultation also asks whether the content should be finalised as a Practice Statement or issued in another form, such as a Standard.",
+          "The ISSB drew extensively on the work of the Taskforce on Nature-related Financial Disclosures (TNFD). The proposals place particular emphasis on location and on engagement with Indigenous Peoples, Local Communities and affected stakeholders, and are designed so that companies can use GRI or ESRS efficiently alongside the Practice Statement.",
+          "The comment period is 120 days and closes on 19 February 2027. The consultation package includes the Exposure Draft, a Basis for Conclusions, accompanying guidance and a snapshot summary.",
+      ],
+      body_ar=[
+          "طرح مجلس معايير الاستدامة الدولية (ISSB) في 22 أكتوبر 2026 مقترحاته بشأن الإفصاحات المتعلقة بالطبيعة للتشاور العام. وتأتي هذه المقترحات في صورة بيان ممارسة (Practice Statement)، وتهدف إلى مساعدة الشركات على تزويد المستثمرين بالمعلومات الجوهرية عن المخاطر والفرص المتعلقة بالطبيعة، ومنها ما ينشأ عن اعتماد الشركة على الطبيعة وآثارها فيها.",
+          "والشركات التي تطبق معيار IFRS S1 «المتطلبات العامة للإفصاح عن المعلومات المالية المتعلقة بالاستدامة» ملزمة أصلًا بالإفصاح عن المخاطر والفرص الجوهرية المتعلقة بالاستدامة، بما فيها تلك المتعلقة بالطبيعة، ويأتي بيان الممارسة المقترح ليفصّل كيفية تقديم هذه المعلومات. ويوضح المجلس أن هذا النهج يتجنب الإفصاح المجزّأ، بحيث يتمكن المستثمرون من تبيّن الصلات بين الطبيعة والمناخ وسائر مسائل الاستدامة والقوائم المالية.",
+          "ولا يُشترط على الشركة الالتزام ببيان الممارسة كي تعلن التزامها بمعايير المجلس. ويرى المجلس أن هذا النهج يدعم جودة الإفصاحات ويجنّب الشركات والجهات التنظيمية التي تطبق معاييره أي اضطراب. كما يستطلع المجلس الآراء بشأن إصدار هذا المحتوى في صيغته النهائية بيانَ ممارسة أو في صورة أخرى، كأن يكون معيارًا.",
+          "واستند المجلس على نحو واسع إلى أعمال فريق العمل المعني بالإفصاحات المالية المتعلقة بالطبيعة (TNFD). وتولي المقترحات اهتمامًا خاصًا بالموقع الجغرافي، وبالتواصل مع الشعوب الأصلية والمجتمعات المحلية والأطراف المتأثرة، وقد صُممت بحيث تستطيع الشركات استخدام معايير GRI أو ESRS بكفاءة إلى جانب بيان الممارسة.",
+          "وتمتد فترة التعليقات 120 يومًا، وتنتهي في 19 فبراير 2027. وتضم وثائق التشاور مسودة العرض، وأساس الاستنتاجات، وإرشادات مصاحبة، وملخصًا موجزًا.",
+      ],
+      source_name="IFRS Foundation (ISSB)",
+      source_url="https://www.ifrs.org/news-and-events/news/2026/10/issb-consults-on-proposals-nature-related-disclosures/"),
  dict(slug="uae-einvoicing-amendments-decision-197-2026", date="2026-10-19", added="2026-10-21", added_at="04:18", category="economy", region="gcc",
       title_en="UAE Ministry of Finance amends the Electronic Invoicing System rules through Ministerial Decision No. 197 of 2026",
       title_ar="وزارة المالية الإماراتية تعدّل أحكام نظام الفوترة الإلكترونية بموجب القرار الوزاري رقم 197 لسنة 2026",
