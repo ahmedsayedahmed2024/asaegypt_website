@@ -3,4 +3,88 @@
 # item uses. Files: photo_library/<id>-lg.webp (1600px) and <id>-card.webp (800px), id = <category>/<name>.
 # Add photos with `python src/photos.py add ...`; take one with `python src/photos.py use ...` (fills used_by).
 # Fields: id, category, file, alt_en, alt_ar, photographer, site, source, licence, focus, dhash, used_by.
-photos: []
+photos:
+- id: tax/cairo-tower-nile
+  category: tax
+  file: photo_library/tax/cairo-tower-nile-lg.webp
+  alt_en: The Nile in Cairo under a bright sky, with Cairo Tower on the far bank
+  alt_ar: نهر النيل في القاهرة تحت سماء صافية، ويظهر برج القاهرة على الضفة المقابلة
+  photographer: Hesham Mokhtar Ali
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:The_Best_View_Of_Cairo_Tower_Nile_(200005243).jpeg
+  licence: CC0
+  focus: 50% 30%
+  dhash: 171f033381e1c020
+  used_by: news:fra-model-short-selling-contract
+- id: tax/cairo-tower-corniche
+  category: tax
+  file: photo_library/tax/cairo-tower-corniche-lg.webp
+  alt_en: Cairo Tower seen across the Nile from the Corniche on a hazy morning
+  alt_ar: برج القاهرة كما يبدو عبر النيل من الكورنيش في صباح يكسوه الضباب الخفيف
+  photographer: Warren LeMay
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Cairo_Tower_from_Corniche_El_Nile_Street,_al-Q%C4%81hirah,_CG,_EGY_(47856870472).jpg
+  licence: CC0
+  focus: 55% 45%
+  dhash: 3f0f471f73999a07
+  used_by: ''
+- id: tax/giza-pyramids-desert
+  category: tax
+  file: photo_library/tax/giza-pyramids-desert-lg.webp
+  alt_en: The Pyramids of Giza rising above the desert under a pale sky
+  alt_ar: أهرامات الجيزة تعلو رمال الصحراء تحت سماء شاحبة
+  photographer: Warren LeMay
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Pyramids_of_Giza,_Giza,_GG,_EGY_(46986597135).jpg
+  licence: CC0
+  focus: 30% 60%
+  dhash: 00000003cc9ce316
+  used_by: ''
+- id: tax/alexandria-seafront-morning
+  category: tax
+  file: photo_library/tax/alexandria-seafront-morning-lg.webp
+  alt_en: The Alexandria seafront in the morning, with waves and buildings along the coast
+  alt_ar: واجهة الإسكندرية البحرية في الصباح، حيث الأمواج والمباني الممتدة على الساحل
+  photographer: Medo55X
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Alexandria_egypt_morning.jpg
+  licence: CC0
+  focus: 60% 50%
+  dhash: 8400030fef653ab4
+  used_by: ''
+- id: economy/dubai-skyline-night
+  category: economy
+  file: photo_library/economy/dubai-skyline-night-lg.webp
+  alt_en: The Dubai skyline at night reflected in calm water
+  alt_ar: أفق دبي ليلًا وقد انعكست أضواؤه على صفحة الماء الهادئة
+  photographer: Robert Bock
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Dubai_skyline_unsplash.jpg
+  licence: CC0
+  focus: 55% 40%
+  dhash: 07070792b2660d04
+  used_by: news:uae-einvoicing-amendments-decision-197-2026
+- id: economy/dubai-coast-skyline
+  category: economy
+  file: photo_library/economy/dubai-coast-skyline-lg.webp
+  alt_en: The Dubai coastline and skyline seen across the sea on a clear day
+  alt_ar: ساحل دبي وأفقها العمراني عبر البحر في يوم صحو
+  photographer: Ronald Sagarino
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Dubai_skylines_(Pixabay_1536496).jpg
+  licence: CC0
+  focus: 60% 60%
+  dhash: 674488092404eaf4
+  used_by: ''
+- id: economy/doha-skyline-night
+  category: economy
+  file: photo_library/economy/doha-skyline-night-lg.webp
+  alt_en: The Doha skyline lit up at night across the water
+  alt_ar: أفق الدوحة مضاءً ليلًا عبر صفحة الماء
+  photographer: Ahmed A. Ghaffar
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Night_skylines_of_Doha_by_Ahmed_A._Ghaffar.jpg
+  licence: CC0
+  focus: 55% 45%
+  dhash: 4058272b2b214a00
+  used_by: ''

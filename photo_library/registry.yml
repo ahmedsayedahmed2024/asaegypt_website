@@ -136,3 +136,19 @@ photos:
   licence: Unsplash License
   dhash: 03040c0c0c4c2030
   sha256: efe65c640c87ee0d459f5da8402992e2a48a28755f9c25204f2067a8b4a2426e
+- used_by: news:fra-model-short-selling-contract
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:The_Best_View_Of_Cairo_Tower_Nile_(200005243).jpeg
+  photographer: Hesham Mokhtar Ali
+  licence: CC0
+  library: tax/cairo-tower-nile
+  dhash: 171f033381c1c020
+  sha256: 5020575051a518bb6220ffffc63d9c415fd5ac6a300775bc015cd0732b23b248
+- used_by: news:uae-einvoicing-amendments-decision-197-2026
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Dubai_skyline_unsplash.jpg
+  photographer: Robert Bock
+  licence: CC0
+  library: economy/dubai-skyline-night
+  dhash: 03070792b2660d06
+  sha256: 7102276503f8e8aed8d6e499393b595896459b748fae4f0d3ce3762dcdd0451b

@@ -30,6 +30,11 @@ NEWS = [
       short_ar="الرقابة المالية تعتمد عقدًا نموذجيًا للبيع على المكشوف",
       summary_en="Egypt's Financial Regulatory Authority has approved a model contract governing the relationship between licensed brokerage firms and investors who borrow securities to sell short. The FRA describes it as a step toward the official launch of short selling in the Egyptian capital market.",
       summary_ar="اعتمدت الهيئة العامة للرقابة المالية في مصر عقدًا نموذجيًا ينظم العلاقة بين شركات السمسرة المرخص لها والمستثمرين الذين يقترضون الأوراق المالية لبيعها على المكشوف، وتصفه الهيئة بأنه خطوة نحو التفعيل الرسمي لآلية البيع على المكشوف في سوق المال المصرية.",
+      image=dict(library="tax/cairo-tower-nile", focus="50% 30%",
+                 source="https://commons.wikimedia.org/wiki/File:The_Best_View_Of_Cairo_Tower_Nile_(200005243).jpeg",
+                 photographer="Hesham Mokhtar Ali", site="Wikimedia Commons", licence="CC0",
+                 alt_en="The Nile in Cairo under a bright sky, with Cairo Tower on the far bank",
+                 alt_ar="نهر النيل في القاهرة تحت سماء صافية، ويظهر برج القاهرة على الضفة المقابلة"),
       body_en=[
           "On 21 October 2026, the Financial Regulatory Authority (FRA) announced that its Chairman has issued a decision approving a model short selling contract for brokerage firms and securities borrowers. The decision is issued under the regulatory framework set by FRA Board Decree No. 155 of 2026. It governs the relationship between a borrower of securities available on the central lending platform at Misr for Central Clearing, Depository and Registry (MCDR) and the licensed brokerage firm that executes transactions on the borrower's behalf.",
           "The FRA says the contract was finalised after consultation with market participants. It sets out the roles, rights and obligations of both parties, including fees and commissions and the distribution of returns earned on invested cash collateral.",
@@ -76,6 +81,11 @@ NEWS = [
       short_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية وتستثني معاملات المجموعة الضريبية",
       summary_en="The UAE Ministry of Finance has amended its Electronic Invoicing System rules: transactions within the same Tax Group are temporarily excluded for 24 months from 1 January 2027, the requirement to store e-invoice data within the UAE is removed, and the \"System Failure\" provisions are repealed.",
       summary_ar="عدّلت وزارة المالية في دولة الإمارات قواعد نظام الفوترة الإلكترونية، فاستثنت مؤقتًا المعاملات بين أعضاء المجموعة الضريبية الواحدة لمدة 24 شهرًا تبدأ في 1 يناير 2027، وألغت اشتراط حفظ بيانات الفواتير الإلكترونية داخل الدولة، وأحكام «تعطل النظام».",
+      image=dict(library="economy/dubai-skyline-night", focus="55% 40%",
+                 source="https://commons.wikimedia.org/wiki/File:Dubai_skyline_unsplash.jpg",
+                 photographer="Robert Bock", site="Wikimedia Commons", licence="CC0",
+                 alt_en="The Dubai skyline at night reflected in calm water",
+                 alt_ar="أفق دبي ليلًا وقد انعكست أضواؤه على صفحة الماء الهادئة"),
       body_en=[
           "The UAE Ministry of Finance has issued Ministerial Decision No. 197 of 2026, amending certain provisions of Ministerial Decision No. 243 of 2025 on the Electronic Invoicing System. The ministry says the changes are intended to clarify certain requirements, support implementation of the system and reduce operational burdens on businesses. The Decision has been effective since 1 October 2026.",
           "Business transactions between persons that are members of the same Tax Group are temporarily excluded from the system. For 24 months starting on 1 January 2027, these transactions are treated as Excluded Transactions.",

@@ -56,6 +56,7 @@ SOURCES = {
     'Burst': "Burst License",                  # Burst by Shopify
     'Kaboompics': "Kaboompics License",
     'Wikimedia Commons': ("CC0", "Public Domain"),  # never CC BY / CC BY-SA
+    'Openverse': ("CC0", "Public Domain Mark"),     # api.openverse.org, licence filter cc0,pdm; image on an allowed host
 }
 SIZES = {'lg': (1600, 180), 'card': (800, 70)}  # width (px), target size (KB): the sizes the site already uses
 LIB_MAX_KB = 150                                # library target for each file
