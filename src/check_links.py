@@ -1,6 +1,7 @@
 """Fail the build if any internal link or asset in dist/ points to a missing file,
 or if any image is over the size limit (CLAUDE.md, "Images"): every image in public/, and every image the
-build generates into dist/ (e.g. the email signature banners in dist/assets/img/signature/)."""
+build generates into dist/ (e.g. the email signature banners in dist/assets/img/signature/),
+or if the same photo is used twice on the site, or comes from a source or licence that is not allowed (photos.py)."""
 import os, re, sys
 from urllib.parse import urlparse, unquote
 
@@ -46,6 +47,11 @@ for path, kb in big:
 if missing:
     for page, url in sorted(missing):
         print(f'BROKEN: {page} -> {url}')
-if missing or big:
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import photos
+twice = photos.verify()
+for e in twice:
+    print('PHOTO: ' + e)
+if missing or big or twice:
     sys.exit(1)
-print(f'All internal links OK; all images in public/ and generated images in dist/ are under {IMG_MAX_KB} KB')
+print(f'All internal links OK; all images in public/ and generated images in dist/ are under {IMG_MAX_KB} KB; no photo is used twice')

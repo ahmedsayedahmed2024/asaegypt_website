@@ -5,7 +5,7 @@
   <div class="wrap">
     <div class="grid-3">{% for x in ITEMS %}
       <a class="post latest-card rv" href="{{ x.url }}">
-        <div class="thumb">{% if x.image %}{{ m.card_img(x.image) }}{% else %}{{ MARK|safe }}{% endif %}<span class="tag">{{ x.kicker|bidi(L) }}</span></div>
+        <div class="thumb">{% if x.image %}{{ m.card_img(x.image) }}{% else %}{{ m.ph(x.tag) }}{% endif %}<span class="tag">{{ x.kicker|bidi(L) }}</span></div>
         <div class="body">
           <p class="lt-kick"><span>{{ x.tag }}</span>{% if x.new %}<span class="lt-new">{{ D.new }}</span>{% endif %}</p>
           <h3>{{ x.title|bidi(L) }}</h3>

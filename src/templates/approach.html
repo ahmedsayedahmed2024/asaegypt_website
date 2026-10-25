@@ -12,10 +12,10 @@
 </section>
 <section class="sec tint">
   <div class="wrap">
-    <div class="sec-head rv"><div><p class="kicker">{{ D.q_k }}</p><h2>{{ D.q_h }}</h2></div><p class="lead">{{ D.q_p[0] }}<a class="hex-link" href="{{ P('hexagon') }}"><bdi lang="en">ASA Hexagon</bdi></a>{{ D.q_p[1] }}</p></div>
-    <div class="grid-4">{% for x in D.pillars %}<div class="pillar rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(x[0]) }}</span><h3>{{ x[1] }}</h3><p>{{ x[2] }}</p><span class="hex-tag"><svg viewBox="0 0 12 11" aria-hidden="true"><polygon points="3,0.5 9,0.5 11.5,5.5 9,10.5 3,10.5 0.5,5.5"/></svg>{{ D.pillar_k }}: {{ x[3] }}</span></div>{% endfor %}</div>
-    <p class="rv" style="margin-top:34px"><a class="link-arrow" href="{{ P('hexagon') }}">{{ D.hex_cta|bidi(L) }} {{ I('FaArrowRight') }}</a></p>
-  </div>
+    <div class="sec-head rv"><div><p class="kicker">{{ D.q_k }}</p><h2>{{ D.q_h }}</h2></div><p class="lead">{% if HEXAGON %}{{ D.q_p[0] }}<a class="hex-link" href="{{ P('hexagon') }}"><bdi lang="en">ASA Hexagon</bdi></a>{{ D.q_p[1] }}{% else %}{{ D.q_p_plain }}{% endif %}</p></div>
+    <div class="grid-4">{% for x in D.pillars %}<div class="pillar rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(x[0]) }}</span><h3>{{ x[1] }}</h3><p>{{ x[2] }}</p><span class="hex-tag"><svg viewBox="0 0 12 11" aria-hidden="true"><polygon points="3,0.5 9,0.5 11.5,5.5 9,10.5 3,10.5 0.5,5.5"/></svg>{{ D.pillar_k if HEXAGON else D.principle_k }}: {{ x[3] }}</span></div>{% endfor %}</div>
+{% if HEXAGON %}    <p class="rv" style="margin-top:34px"><a class="link-arrow" href="{{ P('hexagon') }}">{{ D.hex_cta|bidi(L) }} {{ I('FaArrowRight') }}</a></p>
+{% endif %}  </div>
 </section>
 <section class="sec">
   <div class="wrap two-col" style="align-items:center">

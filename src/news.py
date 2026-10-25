@@ -5,8 +5,9 @@
 # REQUIRED on every item; the homepage hexagon is ordered by it. "added_at" (optional "HH:MM" UTC) only orders
 # items added on the same day (missing = end of that day).
 # "image": the item's photo (REQUIRED for new items when a suitable photo exists; see CLAUDE.md, "Images"):
-#   dict(source=photo page URL, photographer, site="Unsplash"|"Pexels", licence, alt_en, alt_ar).
-#   Files: public/assets/img/content/briefing/<slug>-lg.webp and <slug>-card.webp.
+#   dict(focus, source=photo page URL, photographer, site, licence, alt_en, alt_ar); sites and licences allowed:
+#   SOURCES in src/photos.py. Files: public/assets/img/content/briefing/<slug>-lg.webp and <slug>-card.webp,
+#   or library=<id> for a photo from the private library (photo_library/; the build copies it). Never a photo used before.
 
 CATEGORIES = {
     'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),

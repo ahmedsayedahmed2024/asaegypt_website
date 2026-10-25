@@ -1,0 +1,6 @@
+# ASA photo library (private): backup photos for Insights articles and Briefing items, used when no live source
+# works (CLAUDE.md, "Images"). Never published as a page or folder: the build copies into dist/ only the photos an
+# item uses. Files: photo_library/<id>-lg.webp (1600px) and <id>-card.webp (800px), id = <category>/<name>.
+# Add photos with `python src/photos.py add ...`; take one with `python src/photos.py use ...` (fills used_by).
+# Fields: id, category, file, alt_en, alt_ar, photographer, site, source, licence, focus, dhash, used_by.
+photos: []

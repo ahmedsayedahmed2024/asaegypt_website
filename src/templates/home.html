@@ -49,7 +49,7 @@
   </div>
   <div class="stats">
     <div class="wrap">
-      {% for s in H.stats %}{% if s|length > 2 %}<a class="stat stat-link" href="{{ P(s[2]) }}"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1]|bidi(L) }}</span></a>{% else %}<div class="stat"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1] }}</span></div>{% endif %}{% endfor %}
+      {% for s in H.stats %}{% if s|length > 2 %}<a class="stat stat-link" href="{{ P(s[2]) }}"><b dir="auto">{{ s[0]|safe }}</b><span>{{ s[1]|bidi(L) }}</span></a>{% else %}<div class="stat"><b dir="auto"{% if s[0]|striptags|length > 16 %} class="sm"{% endif %}>{{ s[0]|safe }}</b><span>{{ s[1] }}</span></div>{% endif %}{% endfor %}
     </div>
   </div>
 </section>

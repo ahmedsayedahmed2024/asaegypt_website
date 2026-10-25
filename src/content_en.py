@@ -1,3 +1,4 @@
+import config
 T = dict(
     skip="Skip to content", home="Home", mainnav="Main navigation", menu="Open menu", close="Close menu",
     nav=dict(hexagon="ASA Hexagon", about="About", services="Services", who="Who We Serve", approach="Our Approach", people="Our Team",
@@ -47,12 +48,12 @@ HOME = dict(
     desc="Audit, accounting, tax, transfer pricing and advisory services for corporates, growing businesses, startups and international clients in Egypt and the region.",
     kicker="Chartered Accountants & Consultants",
     h1="Audit, tax and advisory, built on <em>technical depth</em>.",
-    lead="ASA is a firm of chartered accountants and consultants with professional oversight on every engagement. Our independent audits give shareholders, investors and regulators confidence in financial information — and our tax and advisory work helps management make informed decisions.",
+    lead="ASA Chartered Accountants and Consultants. Every engagement we undertake is subject to professional oversight. We provide independent audits that strengthen the confidence of shareholders, investors and regulators in financial statements, alongside tax and advisory services that help management make informed decisions.",
     cta2="Explore our services",
     # (value, label[, route key]): a third item makes the box a link
-    stats=[("20<i>+</i>", "Years of experience in audit and professional services"),
-           ("Big <i>4</i>", "and international network backgrounds across our senior team"),
-           ("6", "ASA Hexagon pillars of quality and independence", "hexagon"),
+    stats=[(f"{config.experience_years()}<i>+</i>", "Years of experience in audit and professional services"),
+           ("International networks", "Experience gained in leading international networks"),
+           ("2022", "Year founded"),
            ("EG <i>·</i> KSA", "Clients served across Egypt, Saudi Arabia and internationally")],
     trust_title="Memberships & qualifications",
     trust=[("FaAward", "Fellows of the Egyptian Society of Accountants & Auditors"),
@@ -70,7 +71,7 @@ HOME = dict(
               ("FaEarthAfrica", "International & Gulf clients", "Cross-border reporting, KSA finance support and Egypt market entry.")],
     who_cta="See how we support each client group",
     why_k="Why ASA", why_h="Boutique attention. Large-firm discipline.",
-    why_p="Our team brings experience from Big Four and leading international network firms — applied with the focus and accessibility of an independent firm.",
+    why_p="Our team brings experience gained in leading international networks — applied with the focus and accessibility of an independent firm.",
     why_cta="About the firm",
     reasons=[("Professional oversight", "Every engagement is overseen by experienced professionals. You speak with the people doing the work."),
              ("Large-firm methodology", "Quality control, inspection and training disciplines developed over two decades inside international networks."),

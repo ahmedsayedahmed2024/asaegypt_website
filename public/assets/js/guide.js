@@ -138,7 +138,7 @@
     var A=window.ASASearch,res=A.run(q,X,{page:here,finder:true}),hits=res.pages[0]?res.pages[0].hits:[];
     var inst=hits.filter(function(h){return h.score>=10000&&h.P.ents.length});
     var rest=hits.filter(function(h){return inst.indexOf(h)<0}).sort(function(a,b){return a.P.i-b.P.i});
-    shown=inst.concat(rest);lastQ=q;
+    shown=inst.concat(rest);lastQ=q;A.texts(shown,X);
     all=shown.slice().sort(function(a,b){return a.P.i-b.P.i});
     sel=shown.length?0:-1;
     var html='',k=0;
@@ -156,7 +156,7 @@
       html+='<div class="g-fl-g" role="group" aria-labelledby="g-fl-h2"><p class="g-fl-h" id="g-fl-h2" role="presentation">'+esc(T.here)+' <span>'+rest.length+'</span></p>';
       rest.forEach(function(h){
         var parts=X.crumbs[h.P.ci].s.split(' › '),crumb=(parts.length>1?parts.slice(1):parts).join(' · ');
-        html+=item(h,'<span class="g-fl-sec">'+esc(crumb)+'</span><span class="g-fl-s">'+A.snippet(h.P.t,h.v.words,110)+'</span>');
+        html+=item(h,'<span class="g-fl-sec">'+esc(crumb)+'</span><span class="g-fl-s">'+A.snippet(h.show,h.v.words,110)+'</span>');
       });
       html+='</div>';
     }

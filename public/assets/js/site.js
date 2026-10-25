@@ -111,4 +111,50 @@
   window.addEventListener('scroll',fab,{passive:true});
 
   var y=document.querySelectorAll('[data-year]');y.forEach(function(e){e.textContent=new Date().getFullYear()});
+
+  // language switch (English / العربية): the other language opens at the same place. On click, the element at the
+  // reading line (just under the header) that has an id is noted with its ancestors that have one, how far into it the
+  // line is, and how far down the page we are. The other page goes to the first of these ids it also has (passage ids
+  // "<section>-p<n>" only when that section has as many passages in both languages), else to the same percentage.
+  // Near the top of the page, or with a modifier key, the link works as a normal link. No highlight, no address change.
+  // Positions come from the layout (offsetTop), not the screen, so the reveal animation (.rv) does not shift them.
+  var LKEY='asaLangPos';
+  function topOf(el){var t=0;for(;el;el=el.offsetParent)t+=el.offsetTop;return t}
+  function shown(el){return el.offsetParent!==null&&el.offsetHeight>0&&!el.closest('nav,aside,.g-toc,[hidden]')}
+  function pcount(id){var m=/^(.+)-p\d+$/.exec(id);if(!m)return 0;var n=0,re=new RegExp('^'+m[1].replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'-p\\d+$');
+    document.querySelectorAll('main [id]').forEach(function(e){if(re.test(e.id))n++});return n}
+  document.querySelectorAll('a.lang').forEach(function(a){a.addEventListener('click',function(e){
+    if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||window.scrollY<120)return;
+    var hd=document.querySelector('.site-header'),line=window.scrollY+(hd?hd.offsetHeight:0)+12,best=null,below=null;
+    document.querySelectorAll('main [id]').forEach(function(el){
+      if(!(el instanceof HTMLElement)||!shown(el))return;                          // hidden (closed answers, other tabs)
+      var t=topOf(el),h=el.offsetHeight;
+      if(t<=line&&t+h>line){if(!best||h<=best.h)best={el:el,h:h}}                   // the smallest one at the line
+      else if(t>line&&(!below||t<below.t))below={el:el,t:t};                         // else the first one below it
+    });
+    var at=best||below,chain=[];
+    for(var el=at&&at.el;el&&el.tagName!=='MAIN';el=el.parentElement){
+      if(!el.id||!shown(el))continue;var t=topOf(el);
+      chain.push({id:el.id,n:pcount(el.id),f:t<line?(line-t)/el.offsetHeight:0,o:t-window.scrollY});
+    }
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    try{sessionStorage.setItem(LKEY,JSON.stringify({to:a.pathname,t:Date.now(),c:chain,l:line-window.scrollY,pct:max>0?window.scrollY/max:0}))}catch(x){}
+  })});
+  (function(){
+    var s=null;try{s=JSON.parse(sessionStorage.getItem(LKEY));sessionStorage.removeItem(LKEY)}catch(x){}
+    if(!s||s.to!==location.pathname||Date.now()-s.t>15000||location.hash||/[?&]hl=/.test(location.search))return;
+    var place=function(){
+      for(var i=0;i<s.c.length;i++){
+        var c=s.c[i],el=document.getElementById(c.id);
+        if(!el||!el.closest('main')||!shown(el)||(c.n&&pcount(c.id)!==c.n))continue;
+        var t=topOf(el);
+        return window.scrollTo({top:c.f>0?t+c.f*el.offsetHeight-s.l:t-Math.max(c.o,s.l),behavior:'instant'});
+      }
+      var max=document.documentElement.scrollHeight-window.innerHeight;
+      window.scrollTo({top:s.pct*max,behavior:'instant'});
+    };
+    place();
+    var y0=window.scrollY;   // images and fonts can move things: place again on load unless the reader has scrolled
+    window.addEventListener('load',function(){if(Math.abs(window.scrollY-y0)<4)place()},{once:true});
+  })();
 })();

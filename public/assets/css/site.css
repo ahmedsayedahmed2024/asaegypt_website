@@ -141,6 +141,7 @@ a.stat-link:hover b,a.stat-link:focus-visible b{color:var(--lime)}
 a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:3px}
 .stat b{display:block;font-size:1.9rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em}
 .stat b i{font-style:normal;color:var(--lime)}
+.stat b.sm{font-size:1.45rem;line-height:1.25;letter-spacing:-.01em}  /* a value in words ("International networks") */
 .stat span{display:block;font-size:.86rem;color:var(--soft);margin-top:6px;line-height:1.4}
 
 /* page hero (inner) */
@@ -309,6 +310,7 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .hero .stats .wrap{grid-template-columns:1fr 1fr}
   .stat{padding:20px 14px 20px 0}
   .stat b{font-size:1.5rem}
+  .stat b.sm{font-size:1.1rem}
   .site-footer .top{grid-template-columns:1fr}
   .trust .wrap{flex-direction:column;align-items:flex-start}
   .seg.feature{grid-row:auto}
@@ -817,6 +819,10 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 .brief.quick .brief-media{animation:bShow .4s ease .4s both}
 @media (prefers-reduced-motion:reduce){.brief-pic{transition:opacity .8s ease!important}.brief-pic img,.brief-pic.on img{transform:scale(1.04)!important}}
 /* card frames: Insights (.post) already has one; Briefing and ASA NEXT cards get the same frame */
+/* card frame without a photo (macros.ph): dark, a faint honeycomb grid, the category name; no logo */
+.thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 24px;background:radial-gradient(ellipse 70% 90% at 50% 50%,rgba(35,38,43,0) 0%,#23262B 100%),url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='34.641' viewBox='0 0 60 34.641'><path d='M-20 0L-10 -17.3205L10 -17.3205L20 0L10 17.3205L-10 17.3205ZM40 0L50 -17.3205L70 -17.3205L80 0L70 17.3205L50 17.3205ZM-20 34.641L-10 17.3205L10 17.3205L20 34.641L10 51.9615L-10 51.9615ZM40 34.641L50 17.3205L70 17.3205L80 34.641L70 51.9615L50 51.9615ZM10 17.3205L20 0L40 0L50 17.3205L40 34.641L20 34.641Z' fill='none' stroke='%23ffffff' stroke-opacity='.07' stroke-width='1'/></svg>") center/60px 34.641px,#23262B}
+.thumb .ph-l{color:rgba(255,255,255,.6);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.5}
+html[dir="rtl"] .thumb .ph-l{letter-spacing:0;font-size:.86rem}
 .thumb .thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
 .post:hover .thumb-img,.news-card:hover .thumb-img,.nx-card:hover .thumb-img{transform:scale(1.03)}
 .news-card.has-thumb,.nx-card.has-thumb{padding-top:0;overflow:hidden}
