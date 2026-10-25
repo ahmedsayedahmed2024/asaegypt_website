@@ -1,8 +1,8 @@
-import datetime, json, os, re, sys, time, importlib
+import datetime, json, os, re, shutil, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, config, content_en, content_ar, articles_meta, news
+import mark, config, content_en, content_ar, articles_meta, news, photos
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +26,8 @@ ROUTES = {'home': '/', 'about': '/about/', 'hexagon': '/hexagon/', 'services': '
           'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/',
           'search': '/search/', 'latest': '/latest/'}
 NO_SITEMAP = {'search', 'latest'}  # utility pages left out of sitemap.xml
+if not config.HEXAGON_PUBLIC:  # ASA Hexagon hidden (config.py): no page, no links, not in the sitemap or the search index
+    del ROUTES['hexagon']
 for s in content_en.SERVICES:
     ROUTES[s['key']] = f"/services/{s['slug']}/"
 for a in articles_meta.ARTICLES:
@@ -50,6 +52,7 @@ MARK_BG = mark.svg('mark-bg')
 BRIEF_MARK = Markup(mark.svg('brief-mark'))
 
 env = Environment(loader=FileSystemLoader(os.path.join(ROOT, 'src/templates')), autoescape=True)
+env.globals['HEXAGON'] = config.HEXAGON_PUBLIC  # menu items and links to the ASA Hexagon page (config.py)
 
 # Arabic text with English words (Excel 2021, IFRS 9, XLOOKUP...): wrap each Latin run in <bdi class="lt">
 # so it keeps its own direction and is never split across lines. English pages are returned unchanged.
@@ -115,6 +118,8 @@ def read_time(n, L):
 
 # Images (see CLAUDE.md, "Images"). Files live in public/assets/img/content/<section>/:
 # photos as <slug>-lg.webp (1600px) + <slug>-card.webp (800px), ASA NEXT illustrations as <slug>.svg.
+# A photo from the private library (image=dict(library=<id>, ...)) stays in photo_library/; the build copies it to the
+# same two paths in dist/, so only the library photos that items use are published.
 IMG_DIR = 'assets/img/content'
 IMG_SECTION = {'article': 'articles', 'news': 'briefing', 'next': 'next'}
 
@@ -130,9 +135,18 @@ def image_for(item, kind, L):
         lg, card = base + '.svg', base + '-card.webp'
     else:
         lg, card = (base + '.svg', base + '.svg') if illustration else (base + '-lg.webp', base + '-card.webp')
-    for f in (lg, card):
-        if not os.path.exists(os.path.join(ROOT, 'public', f)):
-            sys.exit(f"ERROR: {kind} '{item['slug']}' has an image but public/{f} is missing")
+    if im.get('library'):
+        for f, src in zip((lg, card), photos.library_files(im['library'])):
+            if not os.path.exists(src):
+                sys.exit(f"ERROR: {kind} '{item['slug']}' uses library photo {im['library']!r} but {os.path.relpath(src, ROOT)} is missing")
+            out = os.path.join(DIST, f)
+            if not os.path.exists(out):
+                os.makedirs(os.path.dirname(out), exist_ok=True)
+                shutil.copyfile(src, out)
+    else:
+        for f in (lg, card):
+            if not os.path.exists(os.path.join(ROOT, 'public', f)):
+                sys.exit(f"ERROR: {kind} '{item['slug']}' has an image but public/{f} is missing")
     # focus: the image's focal point as CSS object-position ("x% y%"), so the subject stays in view when the
     # image is cropped (image band, cards, homepage hexagon). Optional; the centre is used when it is missing.
     focus = im.get('focus', '50% 50%')
@@ -258,9 +272,10 @@ def build(pages=None):
         import asanext
         importlib.reload(asanext)
         built += asanext.build(L, render, next_items, path_for, featured)
-        import hexagon
-        importlib.reload(hexagon)
-        built += hexagon.build(L, render, path_for)
+        if config.HEXAGON_PUBLIC:
+            import hexagon
+            importlib.reload(hexagon)
+            built += hexagon.build(L, render, path_for)
         import search
         importlib.reload(search)
         built += search.build(L, render, C)
@@ -275,6 +290,10 @@ def build(pages=None):
 # Retired pages: old URL (en) -> route key of the page that now covers it. Each old URL (and its /ar/ twin)
 # gets a small noindex page that forwards visitors, so links already shared keep working. Not in the sitemap.
 REDIRECTS = {'/services/ifrs-9-ecl/': 'svc-acc'}  # ECL is now one line under Accounting & IFRS
+if not config.HEXAGON_PUBLIC:
+    REDIRECTS['/hexagon/'] = 'about'  # ASA Hexagon hidden until the trademark is registered (config.py)
+# files used only by the ASA Hexagon page: left out of dist/ while the page is hidden (they stay in public/)
+HEXAGON_FILES = ['assets/js/hexagon.js', 'assets/img/og-hexagon-en.png', 'assets/img/og-hexagon-ar.png']
 
 def build_redirects():
     for old, key in REDIRECTS.items():
@@ -287,6 +306,10 @@ def build_redirects():
             out = os.path.join(DIST, (old if L == 'en' else '/ar' + old).lstrip('/'), 'index.html')
             os.makedirs(os.path.dirname(out), exist_ok=True)
             open(out, 'w', encoding='utf-8').write(html)
+    if not config.HEXAGON_PUBLIC:
+        for f in HEXAGON_FILES:
+            if os.path.exists(os.path.join(DIST, f)):
+                os.remove(os.path.join(DIST, f))
 
 def build_404():
     html = env.get_template('404.html').render(L='en', SITE=SITE, V=V, T=content_en.T, C=content_en, SERVICES=content_en.SERVICES, I=icon,

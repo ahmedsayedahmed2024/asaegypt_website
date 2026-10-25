@@ -1,3 +1,4 @@
+import config
 X = dict(overview="Overview", why_title="Why clients choose ASA", talk="Talk to us",
          offer_k="What we offer", approach_k="How we deliver", for_k="Who it's for", faq_k="Frequently asked questions",
          related_h="Related insights", other_k="Explore more", other_h="Other services")
@@ -17,7 +18,7 @@ SERVICES_HUB = dict(
 
 SVC = {
  'svc-audit': dict(
-    title="Audit & Assurance | ASA Chartered Accountants",
+    title="Audit & Assurance | ASA Chartered Accountants and Consultants",
     desc="Independent statutory audits, reviews and agreed-upon procedures under ISA, IFRS and Egyptian Accounting Standards.",
     kicker="Audit & Assurance", h1="Independent assurance you and your stakeholders can rely on.",
     lead="Risk-based audits that do more than meet a deadline — they give boards, lenders, investors and regulators real confidence in your financial statements.",
@@ -25,7 +26,7 @@ SVC = {
     ov=["We conduct statutory and voluntary audits in accordance with International Standards on Auditing, with financial statements prepared under IFRS or Egyptian Accounting Standards.",
         "Our approach is risk-based: we invest time upfront to understand your business, focus our work where the real risks are, and communicate findings early — so there are no surprises at year-end.",
         "Beyond the opinion, you receive practical observations on internal controls, reporting quality and process efficiency, written for management to act on."],
-    why=["Professional oversight at planning, fieldwork and completion", "Methodology shaped by Big Four and international network experience",
+    why=["Professional oversight at planning, fieldwork and completion", "Methodology shaped by experience in leading international networks",
          "Clear timetable and a single point of contact", "Practical management letter, not boilerplate", "Deep IFRS and EAS technical support"],
     offer_h="Assurance services tailored to your needs.", offer_p="From statutory audits of groups to targeted procedures for a single transaction.",
     scope=["Statutory audit of financial statements",
@@ -47,7 +48,7 @@ SVC = {
          ("Can you audit a subsidiary reporting to an overseas group auditor?", "Yes. We perform component audits and group reporting packages in line with group auditor instructions.")],
     related=['consolidation-common-errors', 'revenue-recognition-five-steps', 'startups-first-audit']),
  'svc-tax': dict(
-    title="Tax & Transfer Pricing | ASA Chartered Accountants",
+    title="Tax & Transfer Pricing | ASA Chartered Accountants and Consultants",
     desc="Corporate tax, VAT, tax inspections, double tax treaties and transfer pricing documentation in Egypt.",
     kicker="Tax & Transfer Pricing", h1="Tax positions that are compliant, documented and defensible.",
     lead="We combine technical tax knowledge with hands-on experience of the Egyptian Tax Authority — so your position is prepared before the questions are asked.",
@@ -170,18 +171,18 @@ SVC = {
 
 ABOUT = dict(
     title="About ASA | Chartered Accountants and Consultants in Egypt",
-    desc="ASA is a firm of chartered accountants and consultants founded in 2022 in Egypt, combining Big Four and international network experience with boutique attention.",
+    desc="ASA is a firm of chartered accountants and consultants founded in 2022 in Egypt, combining experience gained in leading international networks with boutique attention.",
     kicker="About ASA", h1="Boutique attention. Large-firm discipline.",
     lead="Founded in 2022 to give clients what they need most from their advisers: technically sound, defensible conclusions — delivered by the people they actually talk to.",
     story_k="Our story", story_h="Built on two decades inside international networks.",
     story=["ASA Chartered Accountants and Consultants was founded in 2022 by Ahmed Sayed Ahmed, after nearly two decades within leading international accounting networks, where he rose to Director level and served on the internal inspection, quality control and training committees. The name ASA comes from his initials.",
            "That experience shaped the firm we set out to build: the methodology, quality discipline and technical depth of the large firms, delivered by an independent firm with focus, closeness and practical flexibility.",
-           "Today our team, with experience from Big 4 firms, international networks and the Egyptian Tax Authority, serves a diverse client base in Egypt and abroad, from large groups and family businesses to venture-backed start-ups and international investors."],
+           "Today our team, with experience from leading international networks and the Egyptian Tax Authority, serves a diverse client base in Egypt and abroad, from large groups and family businesses to venture-backed start-ups and international investors."],
     glance_h="ASA at a glance",
     glance=["Founded in 2022 · Egypt", "More than two decades of experience in audit and professional services",
             "A highly qualified, experienced professional team", "A diverse client portfolio in Egypt and abroad", "Tax registration no. 577-152-629"],
     meet="Meet our team",
-    numbers=[("2022", "Year founded"), ("20<i>+</i>", "Years of professional experience"),
+    numbers=[("2022", "Year founded"), (f"{config.experience_years()}<i>+</i>", "Years of professional experience"),
              ("Egypt <i>·</i> Saudi Arabia", "Serving clients in Egypt, Saudi Arabia and internationally"),
              ("ESAA <i>·</i> ACCA<br>CPA <i>·</i> SOCPA", "Professional qualifications in our team")],
     vm_k="Purpose", vm_h="What drives us.",
@@ -215,7 +216,7 @@ WHO = dict(
        ["Quality management (ISQM 1/2) set-up", "Back-office accounting support", "Reporting quality control", "Technical consultations"]),
     ],
     port_k="Our portfolio", port_h="A diverse client portfolio in Egypt and abroad.",
-    port_p="Our client portfolio spans corporate groups, growing businesses, venture-backed startups and international clients — supported by a team with Big Four and international network experience.",
+    port_p="Our client portfolio spans corporate groups, growing businesses, venture-backed startups and international clients — supported by a team with experience in leading international networks.",
     port_nums=[("2", "Core markets: Egypt & KSA"), ("9", "Sectors served")],
     sec_k="Sector experience", sec_h="Experience across the economy.", sec_p="Our team has served clients across a broad range of industries.",
     sectors=[("FaIndustry", "Industrial & manufacturing"), ("FaLaptopCode", "Technology & digital"), ("FaCity", "Real estate & contracting"),
@@ -226,7 +227,9 @@ WHO = dict(
 
 APPROACH = dict(
     title="Our Approach | Quality and Independence | ASA",
-    desc="How ASA delivers: a disciplined engagement lifecycle, professional oversight, documented quality control and independence, guided by ASA Hexagon.",
+    desc="How ASA delivers: a disciplined engagement lifecycle, professional oversight, documented quality control and independence, guided by ASA Hexagon."
+         if config.HEXAGON_PUBLIC else  # without the ASA Hexagon name while the page is hidden (config.py)
+         "How ASA delivers: a disciplined engagement lifecycle, professional oversight, documented quality control and independence.",
     kicker="Our approach", h1="Every step documented. Every opinion evidenced.",
     lead="Quality is not a slogan but a path: clear stages, documented review and professional oversight from the first conversation to the final report.",
     life_k="Engagement lifecycle", life_h="Five stages, every engagement.",
@@ -247,6 +250,9 @@ APPROACH = dict(
              ("FaUsers", "Consultation", "Escalation of complex IFRS, tax and reporting matters to senior specialists.", "Objectivity"),
              ("FaBookOpen", "Training", "Continuous technical training on standards, tax and methodology.", "Competence & due care")],
     pillar_k="Pillar", hex_cta="Discover ASA Hexagon",
+    # while the ASA Hexagon page is hidden (config.HEXAGON_PUBLIC = False): the same text without the name
+    q_p_plain="Our quality management system reflects international standards and our team's internal inspection experience within international networks.",
+    principle_k="Principle",
     tech_k="Technology", tech_h="Modern tools, sharper insight.",
     tech=["We use data analytics and automation to test full populations rather than small samples where possible, and to deliver insight faster.",
           "Secure file-sharing and structured request lists make working with us simple — and keep your information protected."],
@@ -257,20 +263,20 @@ APPROACH = dict(
 
 PEOPLE = dict(
     title="Our Team | ASA Chartered Accountants and Consultants",
-    desc="A senior team of chartered accountants and consultants with Big Four, international network and Egyptian Tax Authority experience.",
+    desc="A senior team of chartered accountants and consultants with experience in leading international networks and the Egyptian Tax Authority.",
     kicker="Our team", h1="Experienced people, directly involved in your work.",
-    lead="A senior team with more than two decades of experience across Big Four firms, leading international networks and the Egyptian Tax Authority.",
+    lead="A senior team with more than two decades of experience across leading international networks and the Egyptian Tax Authority.",
     intro_k="Who we are", intro_h="A strong team built on large-firm experience.",
-    intro=["Our senior team built their careers inside Big Four firms and leading international accounting networks in Egypt and Saudi Arabia — auditing listed groups, financial institutions, multinational subsidiaries and fast-growing businesses.",
+    intro=["Our senior team built their careers inside leading international accounting networks in Egypt and Saudi Arabia — auditing listed groups, financial institutions, multinational subsidiaries and fast-growing businesses.",
            "Alongside them, team members with direct experience inside the Egyptian Tax Authority bring practical insight into how inspections are conducted and how positions are assessed.",
            "The result is a team that combines the methodology and quality discipline of large firms with the accessibility and pace of an independent practice — and senior people who stay involved from planning to sign-off."],
     glance_h="Our team at a glance",
-    glance=["More than two decades of experience in audit and professional services", "Backgrounds across Big Four and international networks", "Former Egyptian Tax Authority experience",
+    glance=["More than two decades of experience in audit and professional services", "Backgrounds across leading international networks", "Former Egyptian Tax Authority experience",
             "Director-level quality control and inspection experience", "IFRS and ACCA qualifications and continuous technical training", "A highly qualified professional team"],
-    nums=[("20<i>+</i>", "Years of professional experience"), ("Big <i>4</i>", "and international network backgrounds"), ("ACCA", "CPA · SOCPA qualified team"),
+    nums=[(f"{config.experience_years()}<i>+</i>", "Years of professional experience"), ("International networks", "Experience gained in leading international networks"), ("ACCA", "CPA · SOCPA qualified team"),
           ("Egypt <i>·</i> Saudi Arabia", "Serving clients in Egypt, Saudi Arabia and internationally")],
     exp_k="Where our experience comes from", exp_h="Experience that clients can rely on.", exp_p="Our people bring perspectives from every side of the table.",
-    exp=[("FaAward", "Big Four firms", "Audit and advisory experience gained at Big Four firms in Egypt and Saudi Arabia."),
+    exp=[("FaAward", "Audit & advisory practice", "Audit and advisory experience gained within leading international networks in Egypt and Saudi Arabia."),
          ("FaGlobe", "International networks", "Close to two decades inside leading international accounting networks, up to director level."),
          ("FaGavel", "Egyptian Tax Authority", "First-hand experience of tax inspection, particularly VAT, from inside the authority."),
          ("FaShieldHalved", "Quality & inspection", "Experience on internal inspection, quality control and training committees.")],

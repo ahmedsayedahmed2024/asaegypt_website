@@ -8,8 +8,9 @@ Owner: Ahmed Sayed, Managing Partner.
 - `src/` is the source: Python + Jinja2.
   - `build.py`: routes, rendering, and the 404 page.
   - `extras.py`: `sitemap.xml`, `robots.txt`, and `CNAME`.
-  - `check_links.py`: fails the build on broken internal links (including image `srcset`) and on any image in `public/` over 300 KB.
-  - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images").
+  - `check_links.py`: fails the build on broken internal links (including image `srcset`), on any image in `public/` over 300 KB, and on a photo used twice or from a source/licence that is not allowed (`photos.py`).
+  - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images"). `HEXAGON_PUBLIC` shows or hides the ASA Hexagon page (see "ASA Hexagon"). `experience_years()`: the years of experience shown on Home, About and Our Team.
+  - `photos.py`: the private photo library and the registry of every photo used on the site (see "Images").
   - `search.py`: the search pages and the passage index (it also writes the passage ids into the built pages). See "Site search" below.
   - `signature_banner.py`: the email signature banner and the `/latest/` pages. See "Email signature banner" below.
   - `hexagon.py`: the ASA Hexagon page (diagram, icons, Open Graph images). See "ASA Hexagon" below.
@@ -46,8 +47,8 @@ Owner: Ahmed Sayed, Managing Partner.
 1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article, and the founder's name in the About page story (rule 8).** The team page stays collective.
 2. **No client names.**
 3. **No team headcount.** Use "a highly qualified professional team" / «فريق مهني على مستوى عالٍ من الكفاءة».
-4. The firm's Arabic name is exactly «أحمد سيد أحمد محاسبون قانونيون ومستشارون».
-5. Prior experience is described as Big 4 / international networks. Never name RSM or any specific former firm.
+4. **The firm's name** is «ASA محاسبون قانونيون ومستشارون» in Arabic and "ASA Chartered Accountants and Consultants" in English, everywhere (templates, data, meta titles and descriptions, Schema.org, Open Graph, footer, privacy page, email-signature pages). Never «ASA للمحاسبة والاستشارات», "ASA Accounting & Consulting", "ASA for Accounting and Consulting" or any other form. The full legal name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» stays wherever it already appears (Arabic page titles, footer, schema `alternateName`), always complete.
+5. **Never describe ASA or its team as Big 4. Use "international networks"** (e.g. "Experience gained in leading international networks" / «خبرات في كبرى الشبكات الدولية»). Guide or article text that talks about the profession in general may keep the term. Never name RSM or any specific former firm.
 6. Memberships to list:
    - Fellows of the Egyptian Society of Accountants & Auditors
    - Members of the Arab Federation of Accountants & Auditors
@@ -81,12 +82,28 @@ Owner: Ahmed Sayed, Managing Partner.
 - Controls: previous / next arrows (mirrored in Arabic), progress bars, swipe on touch screens, left/right keys when the hexagon has focus. It pauses on hover and keyboard focus. The intro animation plays once per browser session. With reduced motion it does not rotate.
 
 ## Images
-Every new Insights article and every new Briefing item MUST get a matching photo under these rules **on the day it is published** (the daily routine follows this). Every new ASA NEXT item MUST get a new original illustration (see "ASA NEXT illustrations" below). If no suitable photo is found, publish without `image` (the logo background and striped placeholder are used) and say so in the PR or final message.
+Every new Insights article and every new Briefing item MUST get a matching photo under these rules **on the day it is published** (the daily routine follows this). Every new ASA NEXT item MUST get a new original illustration (see "ASA NEXT illustrations" below). If no suitable photo is found, publish without `image` (the neutral placeholder is used) and say so in the PR or final message.
 
-### Source
-- Real photos only, from **Unsplash** (unsplash.com) or **Pexels** (pexels.com), under their free licences that allow commercial use. Never Unsplash+ (premium) photos. Never any other website.
-- If a site needs an API key or blocks the download, do not use another website: stop and report exactly what is needed.
-- Store in the item's data: `image=dict(focus="x% y%", source=<photo page URL>, photographer=<name as shown on the photo page>, site="Unsplash"|"Pexels", licence="Unsplash License"|"Pexels License", alt_en=..., alt_ar=...)`.
+**Rule above all: NO photo is ever used twice on the site.**
+
+### Photo rule for routine runs (two layers)
+**Licence (both layers).** Only photos free for commercial use with no payment: Unsplash License (never Unsplash+), Pexels License, Pixabay Content License, StockSnap.io (CC0), Burst by Shopify, Kaboompics, or CC0 / Public Domain on Wikimedia Commons. Never CC BY-SA, never "editorial use only", never anything watermarked or paid. Avoid identifiable faces, logos, brand names, company signage and national flags. The allowed site/licence pairs are `SOURCES` in `src/photos.py`; the build fails on any other.
+
+**(A) Live sources first.** For each new item, try the sources in this order: Unsplash, Pexels, Pixabay, StockSnap, Burst, Kaboompics, Wikimedia Commons (CC0/PD only). Stop at the first site that works and has a suitable photo. If a site shows a bot check, a 403, a timeout, or is blocked by the network, skip it at once (no workarounds, no browser tricks) and try the next one. Save the download outside the repo, then:
+```
+python src/photos.py live <file> --section briefing|articles --slug <slug> --source <photo page URL> --photographer "<name>" --site <site> --licence "<licence>" --alt-en "..." --alt-ar "..." --focus "x% y%"
+```
+It refuses a photo already used (same source URL or the same image, even resized), writes the two WebP files into `public/assets/img/content/<section>/`, adds the photo to the registry and prints the `image=dict(...)` to put in the item.
+
+**(B) Backup library, when no live source works.** `photo_library/` at the repo root (outside `public/`, never published as a page or folder): `photo_library/<category>/<name>-lg.webp` and `-card.webp`, listed in `photo_library/index.yml` (file, category, alt text EN/AR, photographer, source site, source URL, licence, focus point, image hash, `used_by`). Categories: `reporting` (financial reporting & standards), `tax` (Egypt), `economy` (& region), `tech` (technology & AI), `audit` (& assurance), `careers` (careers / ASA NEXT), `guides`.
+- `python src/photos.py pick <category>` lists the unused photos; `python src/photos.py use <id> --section briefing|articles --slug <slug>` fills its `used_by` (it is never offered again), registers it and prints `image=dict(library=<id>, ...)` for the item. The build copies into `dist/` only the library photos that items use (same paths as live photos).
+- Adding to the library: `python src/photos.py add <file> --category <c> --source ... --photographer ... --site ... --licence ... --alt-en ... --alt-ar ... [--focus ...]` (landscape, calm, professional, matching the site's colours where possible; resized to 1600px and 800px WebP, under 150 KB each).
+- `python src/photos.py check` shows the unused photos per category. **If any category has fewer than 20 unused photos, say so in the run report.**
+
+**No repeats.** `photo_library/registry.yml` lists every photo used on the site (library and live, by source URL and image hash). `photos.py` checks it before any photo is used; `check_links.py` fails the build when two items use the same photo. The chosen photo is stored in the item's data, so it never changes after publishing. Never edit the registry by hand (`python src/photos.py sync` adds any photo used on the site but missing from it).
+
+### Source details
+- Store in the item's data: `image=dict(focus="x% y%", source=<photo page URL>, photographer=<name as shown on the photo page>, site=<site>, licence=<licence>, alt_en=..., alt_ar=...)` (plus `library=<id>` for a library photo). The page shows the credit "Photo: <name> / <site>" / «تصوير: <name> / <site>».
 - **Every new image (photo or illustration) gets a focus point**: `focus` is the main subject's position as CSS `object-position` ("x% y%", e.g. `"70% 50%"`; 0% 0% is the top-left corner). It keeps the subject in view where the image is cropped: the wide image band on item pages (crops top and bottom), the cards, and the near-square homepage hexagon (crops the sides). Pick the sharp, recognisable part (e.g. the sharp edge of a paper stack, not its blurred middle) and check the band, a card and the hexagon in the browser. Without `focus` the centre is used; an invalid value stops the build.
 - Alt text: describe what the photo shows, in both languages (Arabic in فصحى, not a literal translation).
 
@@ -95,11 +112,11 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 - Prefer NO identifiable people. If people appear: business attire, modest, seen from behind, from a distance or hands only. Never close-up faces.
 - NEVER: anything suggestive or revealing, alcohol, smoking, gambling, weapons, violence, religious symbols, political symbols, flags, politicians, protests, maps with disputed borders, logos or brands of any company (including other audit firms), visible text or numbers that could be read as real data, AI-art style images, money piles or "get rich" clichés.
 - Check every photo at full size before using it (small logos, signs, names on papers, readable numbers). A small crop or a soft blur of a minor detail is fine; mention it in the PR.
-- Each image must be different from the images already used on the site.
+- Each image must be different from the images already used on the site (see "No repeats").
 
 ### Size and format
 - WebP, two versions per photo: `<slug>-lg.webp` (1600px wide, target under 180 KB) and `<slug>-card.webp` (800px wide, target under 70 KB).
-- Path: `public/assets/img/content/<section>/` with section `articles`, `briefing` or `next`.
+- Path: `public/assets/img/content/<section>/` with section `articles`, `briefing` or `next` (library photos: `photo_library/<category>/`, copied by the build).
 - Never commit the original full-size download. Never commit an image over 300 KB (the build fails).
 
 ### ASA NEXT illustrations (no photos)
@@ -108,11 +125,11 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 
 ### Where images appear (built automatically from the data)
 - Homepage hexagon: the item's image clipped to the hexagon under dark glass and the logo stripes (fades in, slow zoom; only the current and next image are loaded). Items without an image show the logo background.
-- Insights, Briefing and ASA NEXT cards: the card image (800px); striped placeholder when there is no image.
-- Article, Briefing and ASA NEXT item pages: a wide image band under the dark header, with the credit "Photo: <name> / Unsplash" / «تصوير: <name> / Unsplash» (no credit for illustrations).
+- Insights, Briefing and ASA NEXT cards: the card image (800px). Without an image: a neutral placeholder (`ph()` in `macros.html`): dark background, a faint honeycomb grid and the category name. Never a logo in it.
+- Article, Briefing and ASA NEXT item pages: a wide image band under the dark header, with the credit "Photo: <name> / <site>" / «تصوير: <name> / <site>» (no credit for illustrations).
 
 ### Switch
-- `SHOW_IMAGES` in `src/config.py`. `False` makes the site look exactly as it did before images (logo background in the hexagon, striped card placeholders, no image band). Files and data stay in place.
+- `SHOW_IMAGES` in `src/config.py`. `False` hides all content images (logo background in the hexagon, the neutral placeholder on cards, no image band). Files and data stay in place.
 
 ## Insights (articles)
 - Metadata in `src/articles_meta.py` → `ARTICLES`; text in `articles_en.py` / `articles_ar.py` → `ART[slug]`.
@@ -141,6 +158,9 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 - `public/assets/img/signature/logo-sig.png` (the signature logo, 450x134, from `logo-asa-dark.svg`) is written by `python src/logo.py --png`.
 
 ## ASA Hexagon
+- **The page is hidden for now (until the trademark is registered): `HEXAGON_PUBLIC = False` in `src/config.py`.** HEXAGON_PUBLIC stays False until Ahmed says so. When it is switched on, the page will be redrawn with the new registered logo in a separate PR.
+  - While False: `/hexagon/` and `/ar/hexagon/` are small noindex pages that forward to `/about/` and `/ar/about/`; no menu item, footer link or other link to it; not in `sitemap.xml` or the search index; `hexagon.js` and the `og-hexagon-*.png` images are left out of `dist/`; the words "ASA Hexagon" appear on no page (Our Approach uses `q_p_plain` and "Principle" / «مبدأ» on its tags). The email signature banner is not affected.
+  - True: everything comes back exactly as before (page, opening animation, honeycomb, menu position, links). Never delete or edit the page's templates, scripts, styles or text to hide it; only the switch.
 - Page `/hexagon/` and `/ar/hexagon/`: text in `pages_en.py` / `pages_ar.py` → `HEXAGON` (approved by Ahmed: never add to it or "improve" it); diagram, icons and Open Graph images in `src/hexagon.py`; animation in `public/assets/js/hexagon.js`.
 - **Fixed, never change:** the six pillars (1 Independence / الاستقلالية, 2 Quality & professional behaviour / الجودة والسلوك المهني, 3 Integrity / النزاهة, 4 Objectivity / الموضوعية, 5 Confidentiality / السرية, 6 Competence & due care / الكفاءة والعناية المهنية); the three balances (top line 1–2 Balance of credibility / ميزان المصداقية, middle dashed line 3–4 Balance of judgement / ميزان الحكم, bottom line 5–6 Balance of responsibility / ميزان المسؤولية); and the corner order: Arabic 1 top-right, 2 top-left, 3 right, 4 left, 5 bottom-right, 6 bottom-left; English mirrored (1 top-left, 2 top-right, 3 left, 4 right, 5 bottom-left, 6 bottom-right).
 - The diagram's hexagon outline and stripes come from the traced logo geometry (`logo.py`); never redraw them.
@@ -154,10 +174,18 @@ Every new Insights article and every new Briefing item MUST get a matching photo
 - **One engine** (`public/assets/js/search.js`) serves the header search, the search pages and the in-article finder of the reference guide (`guide.js` uses it through `window.ASASearch`).
 - **Passages, not pages.** After every page is built, `index_site()` in `src/search.py` reads each public page in `dist/` (not `/search/`, `/latest/` or any noindex page) and splits it into passages: paragraphs, list items, table rows, institution cards, callouts, quick-guide lines, FAQ items and references. Each passage keeps its own id or gets a stable one (`<section id>-p<n>`), written into the HTML with `data-p`. Index files: `dist/assets/search/en.json` and `ar.json` (page URL, title, type, date; passage id, text and breadcrumb). Nothing to update by hand when content is added.
 - What is left out: navigation, forms, cards that repeat other pages, page furniture. Mark any other block with `data-noindex`; mark a block that must be one passage with `data-passage`, and give a card or block a breadcrumb label with `data-h`.
+- What a result shows: the passage text without the hexagon badge of an institution card; for a passage that is only a heading (an institution card's head), the first sentence of the passage under it, so a result never repeats its own heading (the breadcrumb shows it). The matched text in the index is unchanged (`shown` in the index, `P.d` in `search.js`). A match through an alias phrase (ESAA → «جمعية المحاسبين والمراجعين المصرية» / "Egyptian Society of Accountants and Auditors") lights up the whole phrase as one, never its common words alone.
 - A result opens `<page>?hl=<query>#<passage id>`: the page opens anything that hides the passage (references list, FAQ answer), scrolls it below the header, outlines it and lights up the matching words for about 3 seconds, then removes `?hl=` from the address bar. An old id falls back to the first match on the page.
 - **Aliases: `data/search_aliases.yml`** (the only file to edit): designations (CA → ICAS, CA ANZ…; CMA → IMA and the Saudi CMA, labelled) and synonyms in both languages (ESAA ↔ «جمعية المحاسبين والمراجعين المصرية», VAT ↔ «ضريبة القيمة المضافة»…). Every institution in `INST` (`guide.py`) is added automatically with its English and Arabic names.
 - Matching: case and accents ignored; Arabic diacritics, tatweel and letter forms unified; «ال» and a leading «و» optional; one wrong letter allowed in words of 5+ letters; words typed in capitals (acronyms) match whole words in the text. Ranking: an institution's own card or row for its acronym or alias, then page title, then section heading, then passage text; ties newest first.
 - The index is loaded only when a search box first gets focus. No external services, no tracking, no CDN. Keep each index under 300 KB gzipped (the build prints its size).
+
+## Language switch
+- English / العربية keeps the reading position (`site.js`): the other page opens at the same passage or section (the element at the reading line with an id that both pages have; `<section>-p<n>` passage ids only when that section has as many passages in both languages), else at the same percentage of the page. No highlight, no change to the address. Clicked near the top of a page, or with a modifier key, it is a normal link. Keep the ids of sections and passages the same in both languages.
+
+## Home, About and Our Team figures
+- Years of experience: full years since 2005-08-15, computed at build time (`config.experience_years()`; 21 in October 2026). English "21+"; Arabic "+21" (`<i>+</i>21`, the same on Home, About and Our Team). Body text that says "more than two decades" / «أكثر من عقدين» stays as it is.
+- Home stats: years of experience; "International networks" / «شبكات دولية» (label "Experience gained in leading international networks" / «خبرات في كبرى الشبكات الدولية»); "2022" (label "Year founded" / «سنة تأسيس المكتب»); Egypt · KSA.
 
 ## Briefing (news)
 - Items live in `src/news.py` → `NEWS` (list page `/briefing/`, item pages `/briefing/<slug>/`, same under `/ar/`). Recently added items also rotate in the homepage hexagon (see above).

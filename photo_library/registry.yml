@@ -1,0 +1,138 @@
+# Every photo used on asaegypt.com, from the library or from a live source (CLAUDE.md, "Images").
+# A photo is never used twice: before using one, `python src/photos.py` checks its source URL and its image hash
+# (dhash) against this list. Written by `python src/photos.py live|use|sync`; do not remove entries.
+# Fields: used_by (kind:slug), site, source, photographer, licence, library (id, when from the library), dhash, sha256.
+photos:
+- used_by: article:ai-in-audit-what-has-changed
+  site: Unsplash
+  source: https://unsplash.com/photos/blue-fiber-optic-cables-are-radiating-outwards-WN0alo23Yhg
+  photographer: S A
+  licence: Unsplash License
+  dhash: 292b290103030307
+  sha256: 414e75b813a9b897637bfa7107d836a5396a61c1cc3cc60350182e058fd93eeb
+- used_by: article:ai-deepfakes-financial-fraud
+  site: Unsplash
+  source: https://unsplash.com/photos/an-unlocked-padlock-rests-on-a-computer-keyboard-KdCJ1nIkgOU
+  photographer: Sasun Bughdaryan
+  licence: Unsplash License
+  dhash: '0303030303131321'
+  sha256: 55c8ad998d85659625ce60de09876f693afe3e4bbc21c71e6b821ac26f59e21b
+- used_by: article:ai-and-jobs-accounting
+  site: Unsplash
+  source: https://unsplash.com/photos/macbook-pro-near-cup-on-desk-DoGVHBMlbSw
+  photographer: Unsplash
+  licence: Unsplash License
+  dhash: 98b13373f3c7676f
+  sha256: 06fde370388ffa92edb418c051d4ab2bc5e25b2157547cc373187aa723bed044
+- used_by: article:egypt-economy-2026-financial-statements
+  site: Unsplash
+  source: https://unsplash.com/photos/city-skyline-across-body-of-water-during-daytime-ftbdZkVQTkY
+  photographer: Mohamed sabry
+  licence: Unsplash License
+  dhash: 070b165441210507
+  sha256: cfd521dc89d66eb344f92183494dbe029aa6db696cdd0da32e349055e24c4db4
+- used_by: article:ifrs-18-egypt-what-changes
+  site: Unsplash
+  source: https://unsplash.com/photos/stack-of-papers-V29UWcALNko
+  photographer: ron dyar
+  licence: Unsplash License
+  dhash: 0106888981f13905
+  sha256: 5289f757a4f2dfc4bef68d845fc8c94624311cf519aa5d1902eac083b87cef30
+- used_by: article:transfer-pricing-egypt-guide
+  site: Unsplash
+  source: https://unsplash.com/photos/aerial-view-of-boat-on-water-1cqIcrWFQBI
+  photographer: Venti Views
+  licence: Unsplash License
+  dhash: 0140e45958e47123
+  sha256: 30b64bf281efa450cd14f3d3d66b38ad8fc83e531c932566cca8f29538e8d493
+- used_by: article:ecl-model-ifrs-9
+  site: Unsplash
+  source: https://unsplash.com/photos/a-model-of-a-city-with-buildings-and-streets-pOlwrv3yxWI
+  photographer: Filipp Romanovski
+  licence: Unsplash License
+  dhash: 8c0c2e4b4db3737a
+  sha256: 370dfa624df6d32ccb369ff9adffa3f9a76e20d897eb541a686f34c6bff31304
+- used_by: article:financial-due-diligence
+  site: Unsplash
+  source: https://unsplash.com/photos/magnifying-glass-sits-near-a-laptop-on-a-table-P_5mirRrg0k
+  photographer: MJ Duford
+  licence: Unsplash License
+  dhash: 181848e8e4701004
+  sha256: 6a704ababe88e52eb09470dd34b43e46d76216793bde8479e7d5cd48e6de2bb2
+- used_by: article:ecl-trade-receivables-provision-matrix
+  site: Unsplash
+  source: https://unsplash.com/photos/a-blue-pencil-sitting-on-top-of-a-piece-of-paper-hrvxtlrtptg
+  photographer: Sincerely Media
+  licence: Unsplash License
+  dhash: e4c09626260a12b6
+  sha256: dc3962b3e4778e137e2ae589598314ff39d685dbe7e98ae8b14e833f95965192
+- used_by: article:revenue-recognition-five-steps
+  site: Unsplash
+  source: https://unsplash.com/photos/white-concrete-stairs-with-black-metal-railings-Z61MuLuFQDQ
+  photographer: Ricardo Gomez Angel
+  licence: Unsplash License
+  dhash: 30984c30194c2613
+  sha256: 057e291b18591f13d5723b2769aa40fc889324bee2dd8ff8fcac99a0592df15d
+- used_by: article:leases-implementation-lessons
+  site: Unsplash
+  source: https://unsplash.com/photos/oval-brown-wooden-conference-table-and-chairs-inside-conference-room-GWe0dlVD9e0
+  photographer: Benjamin Child
+  licence: Unsplash License
+  dhash: 2720e36c6c717139
+  sha256: d0a4f4328d3073a80f8e93ce438022932399d9c75d09981bc1cbeee492600913
+- used_by: article:double-tax-treaty-benefits
+  site: Unsplash
+  source: https://unsplash.com/photos/gray-concrete-bridge-on-body-of-water-in-aerial-photography--gS54SWrHMg
+  photographer: CHUTTERSNAP
+  licence: Unsplash License
+  dhash: 0d0c90e7ccb0e090
+  sha256: 787367c07edaba33d642924a7b8d6f729e56f16a2920c58282f02e401deac898
+- used_by: article:tax-inspection-readiness
+  site: Unsplash
+  source: https://unsplash.com/photos/a-stack-of-thick-folders-on-a-white-surface-XN4T2PVUUgk
+  photographer: Beatriz Pérez Moya
+  licence: Unsplash License
+  dhash: 070f2d0d0d1f1f1f
+  sha256: 7529ebd07ca351ede581097b0fdbcb754c3d314915ad9a4f52854b68aa1037f4
+- used_by: article:consolidation-common-errors
+  site: Unsplash
+  source: https://unsplash.com/photos/low-angle-photography-of-high-rise-building-qCOCA2iwpdA
+  photographer: Kurt Von
+  licence: Unsplash License
+  dhash: 94b4e1e0a6336371
+  sha256: d0bd674add619d8728d2375f7b11eb5077acb387fee092bb431a3bf041a268e2
+- used_by: article:startups-first-audit
+  site: Unsplash
+  source: https://unsplash.com/photos/modern-dining-area-with-long-tables-and-chairs-BrlIqTYR190
+  photographer: Tim Schmidbauer
+  licence: Unsplash License
+  dhash: c1535652961a1f3d
+  sha256: 92096834616e8ef84b0718c881795a415959c95bb5ac1f942093f56143f66f4f
+- used_by: news:imf-world-economic-outlook-october-2026
+  site: Unsplash
+  source: https://unsplash.com/photos/skyscrapers-with-reflective-glass-against-a-blue-sky-VR5dx0VJ9PM
+  photographer: Tom Caillarec
+  licence: Unsplash License
+  dhash: 968fcf5f1b1f9b99
+  sha256: 3e9f613471cbcea563ef3050f8057412526bbe7d4ba2e446cd15e9cfb5161465
+- used_by: news:egypt-moodys-upgrade-b3
+  site: Unsplash
+  source: https://unsplash.com/photos/the-sun-is-setting-over-a-city-with-tall-buildings-Oh6ZTXzPKe0
+  photographer: Jens Aber
+  licence: Unsplash License
+  dhash: ffffffff7f6db169
+  sha256: 4f5f698c30b8e30b08ef4eb3e26f970484f8d2909b3f0300133131045cf9e649
+- used_by: news:uae-top-up-tax-scope-registration-guide
+  site: Unsplash
+  source: https://unsplash.com/photos/modern-skyscrapers-rise-above-a-blue-ocean-with-boat-YwGd8qGY5BA
+  photographer: raghul ayyasamy
+  licence: Unsplash License
+  dhash: 87073b1334343433
+  sha256: 8007c773ed57dbf22adcdae25d5f03f15113afba65cf7df69fa9cdefeb34e943
+- used_by: news:ifrs-18-effective-2027
+  site: Unsplash
+  source: https://unsplash.com/photos/white-notebook-with-pen-on-top-1ixT36dfuSQ
+  photographer: Diana Polekhina
+  licence: Unsplash License
+  dhash: 03040c0c0c4c2030
+  sha256: efe65c640c87ee0d459f5da8402992e2a48a28755f9c25204f2067a8b4a2426e

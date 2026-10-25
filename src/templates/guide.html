@@ -3,7 +3,7 @@
 {% set U = GM.U %}{% set G = GM.G %}
 {% macro hex() %}<svg viewBox="0 0 100 87" aria-hidden="true" focusable="false"><polygon points="25,2 75,2 98,43.5 75,85 25,85 2,43.5"/></svg>{% endmacro %}
 {% macro badge(b) %}<span class="hxb cat-{{ b.cat }}">{{ hex() }}<b{% if b.badge|length > 1 %} class="two"{% elif b.acr|length > 4 %} class="long"{% endif %} dir="ltr" lang="en">{% for l in b.badge %}<span>{{ l }}</span>{% endfor %}</b></span>{% endmacro %}
-{% macro anchor(id) %}<a class="g-anchor" href="#{{ id }}" aria-label="{{ U.copy }}" title="{{ U.copy }}" data-copied="{{ U.copied }}">#</a>{% endmacro %}
+{% macro anchor(id) %}<a class="g-anchor" href="#{{ id }}" aria-label="{{ U['copy'] }}" title="{{ U['copy'] }}" data-copied="{{ U.copied }}">#</a>{% endmacro %}
 {% macro table(t) %}
 <div class="g-table{{ ' g-table-wide' if t.wide }}"><table>
   <thead><tr>{% for h in t.head %}<th scope="col">{{ h|rich(L) }}</th>{% endfor %}</tr></thead>

@@ -6,9 +6,12 @@ paragraph, list item, table row, institution card, callout, quick-guide line, FA
 stable id (its own id, or "<section id>-p<n>") that is written into the page's HTML with a data-p attribute, so a
 result can take the reader to the exact place (page URL + ?hl=<query> + #<id>).
 
-Index file: {"v", "pages": [[url, title, type, date]], "h": [breadcrumb], "p": [[page, id, text, breadcrumb, keys?]],
+Index file: {"v", "pages": [[url, title, type, date]], "h": [breadcrumb], "p": [[page, id, text, breadcrumb, keys?, shown?]],
 "al": aliases}. keys = "acronym|category|English name|Arabic name;..." of the institutions whose own card or row the
-passage is (data-k, see guide.py). Aliases come from data/search_aliases.yml plus the institution registry (guide.INST).
+passage is (data-k, see guide.py). text is what the search matches; shown (only when it differs) is what a result shows:
+the text without the hexagon badge of an institution card (.hxb), and, for a passage that is only a heading (an
+institution card's head: number, title, name in the other language), the first sentence of the passage under it,
+so a result never repeats the heading that its breadcrumb already shows. Aliases come from data/search_aliases.yml plus the institution registry (guide.INST).
 Matching and ranking run in the browser (public/assets/js/search.js). No external service, no tracking.
 """
 import html, json, os, re
@@ -31,6 +34,8 @@ SKIP_CLASSES = {'post', 'news-card', 'nx-card', 'toc', 'g-toc', 'author', 'disc'
                 'link-arrow', 'btn', 'cta-band', 'g-cites', 'g-back', 'nx-quiz-btn'}
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
 CELL_END = {'td', 'th', 'dt', 'summary'}   # parts of a passage joined with " · "
+BADGE_CLASSES = {'hxb'}                                  # matched, but not shown in a result
+HEAD_TAGS, HEAD_CLASSES = {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}, {'g-inst-n', 'g-inst-other'}  # parts of a heading
 INLINE = {'a', 'b', 'strong', 'em', 'i', 'bdi', 'mark', 'small', 'abbr', 'code', 'sup', 'sub', 'time', 'q', 'u', 's', 'cite'}
 
 
@@ -71,7 +76,7 @@ class Passages(HTMLParser):
             self.in_main = True
         if tag in VOID:
             if self.cur is not None and tag == 'br':
-                self.cur['parts'].append(' ')
+                self.add(' ')
             return
         cls = set((a.get('class') or '').split())
         e = dict(tag=tag)
@@ -92,11 +97,17 @@ class Passages(HTMLParser):
         if a.get('id') and tag != 'main':
             e['scope'] = a['id']
         if self.cur is not None:
+            if cls & BADGE_CLASSES:
+                e['badge'] = True
+                self.cur['badge'] += 1
+            if tag in HEAD_TAGS or cls & HEAD_CLASSES:
+                e['headish'] = True
+                self.cur['headish'] += 1
             if 'g-chip' in cls:  # a reference number inside a passage: "[21]"
                 e['chip'] = True
-                self.cur['parts'].append(' [')
+                self.add(' [')
             elif tag not in INLINE:
-                self.cur['parts'].append(' ')
+                self.add(' ')
             return
         if tag in ('h1', 'h2', 'h3') and not any(x.get('h') for x in self.stack[:-1]):
             self.head = [tag, []]
@@ -124,7 +135,8 @@ class Passages(HTMLParser):
             off = self._pos()
             assert self.src.startswith(raw, off), (tag, off)
             self.inserts.append((off + 1 + len(tag), ins))
-            self.cur = dict(id=own, parts=[], keys=a.get('data-k', ''), crumbs=self.crumbs())
+            self.cur = dict(id=own, parts=[], shown=[], body=False, badge=0, headish=0, keys=a.get('data-k', ''),
+                            crumbs=self.crumbs())
             e['passage'] = True
 
     def scope_entry_for_heading(self):
@@ -133,9 +145,19 @@ class Passages(HTMLParser):
                 return e
         return self.root
 
+    def add(self, s, text=False):
+        """Text of the passage being read: all of it is matched; the badge is not shown; heading parts do not count
+        as body text."""
+        c = self.cur
+        c['parts'].append(s)
+        if not c['badge']:
+            c['shown'].append(s)
+            if text and not c['headish'] and s.strip():
+                c['body'] = True
+
     def handle_startendtag(self, tag, attrs):
         if self.cur is not None and tag == 'br':
-            self.cur['parts'].append(' ')
+            self.add(' ')
 
     def handle_endtag(self, tag):
         if tag in VOID:
@@ -170,14 +192,20 @@ class Passages(HTMLParser):
                 text = clean(''.join(self.cur['parts']))
                 if len(text) > 1:
                     self.out.append(dict(id=self.cur['id'], text=text, crumb=' › '.join(self.cur['crumbs']),
-                                         keys=self.cur['keys']))
+                                         keys=self.cur['keys'], shown=clean(''.join(self.cur['shown'])),
+                                         head_only=not self.cur['body']))
                 self.cur = None
-            elif e.get('chip'):
-                self.cur['parts'].append(']')
+                return
+            if e.get('badge'):
+                self.cur['badge'] -= 1
+            if e.get('headish'):
+                self.cur['headish'] -= 1
+            if e.get('chip'):
+                self.add(']')
             elif e['tag'] in CELL_END:
-                self.cur['parts'].append(' · ')
+                self.add(' · ')
             elif e['tag'] not in INLINE:
-                self.cur['parts'].append(' ')
+                self.add(' ')
 
     def handle_data(self, data):
         if self.skip or not self.in_main:
@@ -185,13 +213,37 @@ class Passages(HTMLParser):
         if self.head is not None:
             self.head[1].append(data)
         elif self.cur is not None:
-            self.cur['parts'].append(data)
+            self.add(data, text=True)
 
     def result(self):
         s = self.src
         for off, ins in sorted(self.inserts, reverse=True):
             s = s[:off] + ins + s[off:]
         return s
+
+
+# a sentence ends at . ! ? or «؟» followed by a capital, an Arabic letter or an opening quote or bracket,
+# except after a common abbreviation ("No. 2280" has no capital; "e.g. The" and "U.S. Securities" are guarded)
+SENTENCE_END = re.compile(r'.+?(?<!\bNo)(?<!\bNos)(?<!\bArt)(?<!\be\.g)(?<!\bi\.e)(?<!\bU\.S)(?<!\bU\.K)(?<!\bSt)(?<!\bDr)(?<!\bvs)'
+                          r'[.!?؟](?=\s+[A-Z"“«(\u0600-\u06FF])')
+
+
+def first_sentence(s):
+    m = SENTENCE_END.match(s)
+    return m.group() if m else s
+
+
+def shown_texts(rows):
+    """What each result shows (see the module docstring); None where it is the matched text itself."""
+    out = []
+    for i, r in enumerate(rows):
+        shown = r['shown']
+        if r['head_only']:  # a heading alone: the first sentence of the next passage of the same card or section
+            nxt = next((x for x in rows[i + 1:] if not x['head_only']), None)
+            if nxt and nxt['crumb'] == r['crumb']:
+                shown = first_sentence(nxt['shown'])
+        out.append(shown if shown != r['text'] else None)
+    return out
 
 
 def clean(s):
@@ -262,11 +314,11 @@ def index_site(B):
             title, kind, date = page_meta(key, L, B, p.h1)
             pi = len(pages)
             pages.append([path, title, kind, date])
-            for r in p.out:
+            for r, shown in zip(p.out, shown_texts(p.out)):
                 ci = crumb_ix.setdefault(r['crumb'], len(crumbs))
                 if ci == len(crumbs):
                     crumbs.append(r['crumb'])
-                rows.append([pi, r['id'], r['text'], ci] + ([r['keys']] if r['keys'] else []))
+                rows.append([pi, r['id'], r['text'], ci] + ([r['keys'], shown] if shown else [r['keys']] if r['keys'] else []))
         os.makedirs(os.path.join(B.DIST, 'assets', 'search'), exist_ok=True)
         out = os.path.join(B.DIST, 'assets', 'search', f'{L}.json')
         with open(out, 'w', encoding='utf-8') as fh:

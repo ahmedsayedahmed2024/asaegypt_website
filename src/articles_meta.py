@@ -8,8 +8,9 @@
 #   short (optional): (en, ar) shorter title for the homepage hexagon, cards and the email banner,
 #   reviewed (optional, YYYY-MM-DD): "Last reviewed" date of a reference guide (src/guide.py),
 #   image: the article's photo (REQUIRED for new articles when a suitable photo exists; see CLAUDE.md, "Images"):
-#     dict(source=photo page URL, photographer, site="Unsplash"|"Pexels", licence, alt_en, alt_ar).
-#     Files: public/assets/img/content/articles/<slug>-lg.webp and <slug>-card.webp.
+#     dict(focus, source=photo page URL, photographer, site, licence, alt_en, alt_ar); sites and licences allowed:
+#     SOURCES in src/photos.py. Files: public/assets/img/content/articles/<slug>-lg.webp and <slug>-card.webp,
+#     or library=<id> for a photo from the private library (photo_library/; the build copies it). Never a photo used before.
 #     A reference guide may use an original cover instead: dict(kind="cover", focus, alt_en, alt_ar) with
 #     <slug>.svg (image band) + <slug>-card.webp (cards) + <slug>-og.png (share image), drawn by src/guide_cover.py.
 # The byline (author + role) is the only place a person's name may appear on the site, besides the founder's

@@ -37,8 +37,8 @@
     <nav aria-label="{{ T.mainnav }}">
       <ul class="nav">
         <li><a href="{{ P('about') }}"{% if section=='about' %} aria-current="page"{% endif %}>{{ T.nav.about }}</a></li>
-        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
-        <li class="has-dd">
+{% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
+{% endif %}        <li class="has-dd">
           <button aria-expanded="false" aria-haspopup="true"{% if section=='services' %} style="color:var(--lime);opacity:1"{% endif %}>{{ T.nav.services }} {{ I('FaChevronDown') }}</button>
           <div class="dropdown">
             {% for s in SERVICES %}<a href="{{ P(s.key) }}"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s.icon) }}</span><span><b>{{ s.name }}</b><small>{{ s.short }}</small></span></a>{% endfor %}<p class="more">{{ T.more }}</p>
@@ -79,8 +79,8 @@
   <div class="top"><img src="{{ R }}assets/img/logo-asa.svg" alt="ASA" width="101" height="30"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
   <a href="{{ P('about') }}">{{ T.nav.about }}</a>
-  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
-  <a href="{{ P('services') }}">{{ T.nav.services }}</a>
+{% if HEXAGON %}  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
+{% endif %}  <a href="{{ P('services') }}">{{ T.nav.services }}</a>
   {% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}<p class="sub more">{{ T.more }}</p>
   <a href="{{ P('who') }}">{{ T.nav.who }}</a>
   <a href="{{ P('approach') }}">{{ T.nav.approach }}</a>
@@ -111,8 +111,8 @@
       <h4>{{ T.firm }}</h4>
       <ul>
         <li><a href="{{ P('about') }}">{{ T.nav.about }}</a></li>
-        <li><a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
-        <li><a href="{{ P('approach') }}">{{ T.nav.approach }}</a></li>
+{% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
+{% endif %}        <li><a href="{{ P('approach') }}">{{ T.nav.approach }}</a></li>
         <li><a href="{{ P('who') }}">{{ T.nav.who }}</a></li>
         <li><a href="{{ P('people') }}">{{ T.nav.people }}</a></li>
         <li><a href="{{ P('insights') }}">{{ T.nav.insights }}</a></li>

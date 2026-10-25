@@ -122,7 +122,7 @@
     j.pages.forEach(function(p,i){X.pages.push({i:i,u:p[0],t:p[1],g:p[2],d:p[3],first:-1});post(X.tw,X.vocab,p[1],i)});
     j.h.forEach(function(h,i){X.crumbs.push({s:h,ps:[]});post(X.cw,X.vocab,h,i)});
     j.p.forEach(function(r,i){
-      var P={i:i,pi:r[0],id:r[1],t:r[2],ci:r[3],acr:[],names:[],ents:[]};
+      var P={i:i,pi:r[0],id:r[1],t:r[2],ci:r[3],d:r[5]||'',acr:[],names:[],ents:[]};   // d: the text a result shows, when it differs
       if(r[4])r[4].split(';').forEach(function(e){
         var f=e.split('|');P.ents.push({a:f[0],c:f[1],n:f[2],m:f[3]});P.acr.push(phrase(f[0]));post(X.kw,X.vocab,f[0],i);
         [f[2],f[3]].forEach(function(n){if(n){P.names.push(phrase(n));post(X.kw,X.vocab,n,i)}});
@@ -148,7 +148,8 @@
     return X;
   }
 
-  // the query and its alternatives: the designations of the whole query, and each phrase replaced by its synonyms
+  // the query and its alternatives: the designations of the whole query, and each phrase replaced by its synonyms.
+  // ph: the terms [from, to) that come from a phrase of several words in the aliases (lit up as one, see spans())
   function alternatives(q,al){
     var ts=terms(q);if(!ts.length)return [];
     var cp=caps(q),out=[{ts:ts,w:1,also:false,order:0,exact:cp}],seen={};seen[ts.join(' ')]=1;
@@ -156,12 +157,14 @@
     var d=al.des.get(ts.join(' '));
     if(d)d.forEach(function(t){
       if(t.to===ts[0]&&ts.length===1)out[0].label=t[cfg.lang];   // "CMA" is also an acronym: label its own card too
-      add({ts:t.to.split(' '),w:.95,also:t.also,label:t[cfg.lang],order:t.n+1,alias:1,exact:new Set(t.to.split(' '))});
+      var tt=t.to.split(' ');
+      add({ts:tt,w:.95,also:t.also,label:t[cfg.lang],order:t.n+1,alias:1,exact:new Set(tt),ph:tt.length>1?[[0,tt.length]]:[]});
     });
     for(var len=ts.length;len>=1;len--)for(var st=0;st+len<=ts.length;st++){
       var span=ts.slice(st,st+len).join(' '),gs=al.syn.get(span);if(!gs)continue;
       gs.forEach(function(gi){al.groups[gi].forEach(function(m){
-        if(m!==span)add({ts:ts.slice(0,st).concat(m.split(' '),ts.slice(st+len)),w:.9,also:false,order:0,syn:1,exact:cp});
+        var ms=m.split(' ');
+        if(m!==span)add({ts:ts.slice(0,st).concat(ms,ts.slice(st+len)),w:.9,also:false,order:0,syn:1,exact:cp,ph:ms.length>1?[[st,st+ms.length]]:[]});
       })});
     }
     return out;
@@ -182,12 +185,16 @@
     opt=opt||{};
     var vs=alternatives(q,X.al),best=new Map(),titleOnly=new Map();
     vs.forEach(function(v){
-      v.words=new Set();
-      var tm=v.ts.map(function(t){
-        var m=matchTerm(t,X),min=v.exact.has(t)?1:v.syn?.8:.5;   // synonyms: whole words or their beginning, no typos
-        m.forEach(function(qq,w){if(qq>=min)v.words.add(w)});
-        return {m:m,min:min,p:collect(X.pw,m,min),k:collect(X.kw,m,opt.finder?0:.5),c:collect(X.cw,m,min),t:collect(X.tw,m,min)};
+      // the words to light up in a result: v.words, with .solo (words of the query's own terms) and .phr (for each
+      // alias phrase, the words of each of its terms: lit up only where the whole phrase is in the text)
+      v.words=new Set();v.words.solo=new Set();v.words.phr=[];
+      var inPh={};(v.ph||[]).forEach(function(r){for(var k=r[0];k<r[1];k++)inPh[k]=1});
+      var tm=v.ts.map(function(t,k){
+        var m=matchTerm(t,X),min=v.exact.has(t)?1:v.syn?.8:.5,ws=new Set();   // synonyms: whole words or their beginning, no typos
+        m.forEach(function(qq,w){if(qq>=min){v.words.add(w);ws.add(w);if(!inPh[k])v.words.solo.add(w)}});
+        return {m:m,min:min,ws:ws,p:collect(X.pw,m,min),k:collect(X.kw,m,opt.finder?0:.5),c:collect(X.cw,m,min),t:collect(X.tw,m,min)};
       });
+      (v.ph||[]).forEach(function(r){v.words.phr.push(tm.slice(r[0],r[1]).map(function(a){return a.ws}))});
       var cand=new Set();
       tm[0].p.forEach(function(_,i){cand.add(i)});tm[0].k.forEach(function(_,i){cand.add(i)});
       tm[0].c.forEach(function(_,ci){X.crumbs[ci].ps.forEach(function(i){cand.add(i)})});
@@ -249,20 +256,51 @@
   // ---------- text helpers ----------
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function isHit(word,set){var ws=words(word);for(var n=0;n<ws.length;n++){var vs=variants(ws[n]);for(var k=0;k<vs.length;k++)if(set.has(vs[k]))return true}return false}
+  // a word that an alias phrase may hold between its terms ("of", "and"): dropped by phrase()
+  function filler(w){var ws=words(w);return ws.length>0&&ws.every(function(x){return STOP.has(x)||(x.length<2&&!isNum(x))})}
+  // [start, end) of what to light up in a text: each word of the query's own terms, and each alias phrase as a whole
+  // (all its terms in order, filler words between them allowed); a common word of a phrase alone is not lit up.
+  // set: a run's v.words, or a plain Set of words (every word in it lit up)
+  function spans(text,set){
+    var toks=[],out=[];if(!set)return out;
+    text.replace(OWORD,function(w,i){toks.push([w,i,i+w.length])});
+    var solo=set.phr?set.solo:set;
+    toks.forEach(function(t){if(isHit(t[0],solo))out.push([t[1],t[2]])});
+    (set.phr||[]).forEach(function(ph){
+      for(var s=0;s<toks.length;s++){
+        var k=0,j=s;
+        while(j<toks.length&&k<ph.length){if(isHit(toks[j][0],ph[k])){k++;j++}else if(k&&filler(toks[j][0]))j++;else break}
+        if(k===ph.length){out.push([toks[s][1],toks[j-1][2]]);s=j-1}
+      }
+    });
+    out.sort(function(a,b){return a[0]-b[0]||b[1]-a[1]});
+    return out.filter(function(r,n){for(var p=0;p<n;p++)if(out[p][1]>r[0])return false;return true});  // no overlaps
+  }
   function hl(text,set){
     var out='',last=0;
-    text.replace(OWORD,function(w,i){out+=esc(text.slice(last,i))+(set&&isHit(w,set)?'<mark>'+esc(w)+'</mark>':esc(w));last=i+w.length});
+    spans(text,set).forEach(function(r){out+=esc(text.slice(last,r[0]))+'<mark>'+esc(text.slice(r[0],r[1]))+'</mark>';last=r[1]});
     return out+esc(text.slice(last));
   }
   function snippet(text,set,len){
     len=len||SNIP;
-    var at=-1;text.replace(OWORD,function(w,i){if(at<0&&set&&isHit(w,set))at=i});
+    var sp=spans(text,set),at=sp.length?sp[0][0]:-1;
     if(text.length<=len)return hl(text,set);
     var start=at<0?0:Math.max(0,at-Math.round(len*.35));
     if(start>0){var sp=text.indexOf(' ',start);start=sp<0||sp>at?start:sp+1}
     var piece=text.slice(start,start+len);
     if(start+len<text.length)piece=piece.replace(/\s+\S*$/,'');
     return (start>0?'…':'')+hl(piece,set)+(start+piece.length<text.length?'…':'');
+  }
+  // the text each hit shows (h.show): a passage that is only a heading shows the first sentence of the passage under it
+  // (P.d, from the index); when that passage is listed too, it shows what follows that sentence, so no sentence is
+  // shown twice. Display only: the hits and their order do not change.
+  function texts(hits,X){
+    var on={};hits.forEach(function(h){on[h.P.i]=h;h.show=h.P.d||h.P.t});
+    hits.forEach(function(h){
+      var n=X.ps[h.P.i+1],nh=n&&on[n.i];if(!h.P.d||!nh||n.pi!==h.P.pi)return;
+      var nt=n.d||n.t;if(nt.lastIndexOf(h.P.d,0)!==0)return;
+      var more=nt.slice(h.P.d.length).trim();if(more)nh.show=more;
+    });
   }
   function date(iso){if(!iso)return '';var p=iso.split('-');return (+p[2])+' '+cfg.months[+p[1]-1]+' '+p[0]}
   function href(u,q,id){return u+'?hl='+encodeURIComponent(q)+(id?'#'+encodeURIComponent(id):'')}
@@ -283,7 +321,7 @@
     var crumb=h.top?S.top:X.crumbs[h.P.ci].s;
     return '<a class="sp-item" href="'+esc(href(g.p.u,q,h.top?'':h.P.id))+'"'+(opt?' id="sp-o'+(oid++)+'" role="option" aria-selected="false"':'')+'>'+
       (crumb?'<span class="sp-crumb"'+la+'>'+esc(crumb)+'</span>':'')+
-      '<span class="sp-s"'+la+'>'+snippet(h.P.t,h.v.words)+'</span>'+
+      '<span class="sp-s"'+la+'>'+snippet(h.show||h.P.d||h.P.t,h.v.words)+'</span>'+
       (h.label?'<span class="sp-alias">'+esc(h.label)+'</span>':'')+'</a>';
   }
   function pagesHtml(res,q,maxPages,opt){
@@ -291,6 +329,7 @@
     res.pages.slice(0,maxPages||res.pages.length).forEach(function(g,k){
       var X=g.X,other=X.lang!==cfg.lang,la=other?' lang="'+X.lang+'" dir="'+(X.lang==='ar'?'rtl':'ltr')+'"':'';
       var meta=[date(g.p.d)].filter(Boolean);if(other)meta.push('<span class="sp-lang">'+esc(S.other)+'</span>');
+      texts(g.hits,X);
       html+='<div class="sp-page" role="group" aria-label="'+esc(g.p.t)+'">'+
         '<p class="sp-ph"><span class="sp-badge sp-b-'+g.p.g+'"'+(g.p.g==='next'?' dir="ltr" lang="en"':'')+'>'+esc(S.types[g.p.g]||g.p.g)+'</span>'+
         '<a class="sp-pt" tabindex="-1" href="'+esc(href(g.p.u,q,''))+'"'+la+'>'+hl(g.p.t,g.hits[0].v.words)+'</a>'+
@@ -521,6 +560,6 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arrive);else arrive();
 
   // for the in-article finder (guide.js)
-  window.ASASearch={load:function(){return load(cfg.lang)},run:run,go:go,terms:terms,snippet:snippet,esc:esc,hl:hl,
+  window.ASASearch={load:function(){return load(cfg.lang)},run:run,go:go,terms:terms,snippet:snippet,texts:texts,esc:esc,hl:hl,
     words:words,variants:variants,clear:unmark,lang:cfg.lang};
 })();
