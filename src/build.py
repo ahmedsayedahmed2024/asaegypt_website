@@ -2,7 +2,7 @@ import datetime, json, os, re, shutil, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, config, content_en, content_ar, articles_meta, news, photos
+import mark, config, content_en, content_ar, articles_meta, news, photos, seo
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -238,25 +238,23 @@ def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx
     other = 'ar' if L == 'en' else 'en'
     depth = len([x for x in path.split('/') if x])
     R = ('../' * depth) if REL else '/'
-    if REL and 'FEATURED' in ctx:
-        pass
+    # sharing card, structured data and the other search / sharing tags of <head> (seo.py)
+    HEAD = seo.head(sys.modules[__name__], key, L, title, desc, dict(ctx, schema=schema))
     html = env.get_template(tpl).render(
         L=L, SITE=SITE, V=V, T=mod.T, C=mod, SERVICES=mod.SERVICES, I=icon, P=lambda k: link(k, L, path), R=R,
         MARK=MARK, MARK_BG=MARK_BG, IMAGES=config.SHOW_IMAGES, title=title, desc=desc, path=path, SEARCH=search_cfg(L, R, path),
         alt_en=path_for(key, 'en'), alt_ar=path_for(key, 'ar'), alt_other=link(key, other, path),
-        section=section, solid=solid, schema=Markup(schema), **ctx)
+        section=section, solid=solid, HEAD=HEAD, schema=Markup(HEAD['ld']), **ctx)
     out = os.path.join(DIST, path.lstrip('/'), 'index.html')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w', encoding='utf-8').write(html)
     return path
 
-ORG_SCHEMA = '''<script type="application/ld+json">{"@context":"https://schema.org","@type":"AccountingService","name":"ASA Chartered Accountants and Consultants","alternateName":"أحمد سيد أحمد محاسبون قانونيون ومستشارون","url":"https://asaegypt.com","logo":"https://asaegypt.com/assets/img/logo_color@3x.png","telephone":"+201115652365","email":"ahmed.sayed@asaegypt.com","foundingDate":"2022","address":{"@type":"PostalAddress","streetAddress":"58A Teraat El Zomor St., Al Haram","addressLocality":"Giza","addressCountry":"EG"},"areaServed":["EG","SA"]}</script>'''
-
 def build(pages=None):
     built = []
     for L in ('en', 'ar'):
         H = C[L].HOME
-        built.append(render('home.html', 'home', L, H['title'], H['desc'], schema=ORG_SCHEMA,
+        built.append(render('home.html', 'home', L, H['title'], H['desc'],
                             FEATURED=featured(L, latest(3), path_for('home', L)),
                             BRIEF=brief_slots(L, path_for('home', L)), BRIEF_MARK=BRIEF_MARK))
         # further pages are registered in pages.py when available
@@ -315,7 +313,9 @@ def build_404():
     html = env.get_template('404.html').render(L='en', SITE=SITE, V=V, T=content_en.T, C=content_en, SERVICES=content_en.SERVICES, I=icon,
         P=lambda k: path_for(k, 'en'), R='/', MARK=MARK, MARK_BG=MARK_BG, title='Page not found | ASA', desc='', path='/404.html',
         SEARCH=search_cfg('en', '/', '/404.html'), S_AR=content_ar.T['search'], noindex=True,
-        alt_en='/', alt_ar='/ar/', alt_other='/ar/', section=None, solid=False, schema='')
+        alt_en='/', alt_ar='/ar/', alt_other='/ar/', section=None, solid=False, schema='',
+        HEAD=dict(og_title='Page not found | ASA', og_image=SITE + seo.og_image(sys.modules[__name__], 'home', 'en', {}),
+                  og_type='website', og_image_type='image/png', locale='en_US', locale_alt='ar_EG', site_name=seo.FIRM['en']))
     open(os.path.join(DIST, '404.html'), 'w', encoding='utf-8').write(html)
 
 if __name__ == '__main__':

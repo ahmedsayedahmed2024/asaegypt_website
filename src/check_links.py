@@ -1,7 +1,8 @@
 """Fail the build if any internal link or asset in dist/ points to a missing file,
 or if any image is over the size limit (CLAUDE.md, "Images"): every image in public/, and every image the
 build generates into dist/ (e.g. the email signature banners in dist/assets/img/signature/),
-or if the same photo is used twice on the site, or comes from a source or licence that is not allowed (photos.py)."""
+or if the same photo is used twice on the site, or comes from a source or licence that is not allowed (photos.py),
+or if a public page lacks a title, description, canonical or hreflang, or shares its title with another page (seo.py)."""
 import os, re, sys
 from urllib.parse import urlparse, unquote
 
@@ -52,6 +53,15 @@ import photos
 twice = photos.verify()
 for e in twice:
     print('PHOTO: ' + e)
-if missing or big or twice:
+# search engines (seo.py): title, description, canonical and hreflang on every public page; no two pages with
+# the same title; sitemap.xml lists exactly the public pages
+import seo
+seo_errors, seo_warnings, n_public = seo.check(DIST)
+for w in seo_warnings:
+    print('SEO (warning): ' + w)
+for e in seo_errors:
+    print('SEO: ' + e)
+if missing or big or twice or seo_errors:
     sys.exit(1)
+print(f'SEO OK: {n_public} public pages, each with a unique title, a description, a canonical and hreflang links')
 print(f'All internal links OK; all images in public/ and generated images in dist/ are under {IMG_MAX_KB} KB; no photo is used twice')

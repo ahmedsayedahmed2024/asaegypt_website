@@ -8,6 +8,8 @@
 #   dict(focus, source=photo page URL, photographer, site, licence, alt_en, alt_ar); sites and licences allowed:
 #   SOURCES in src/photos.py. Files: public/assets/img/content/briefing/<slug>-lg.webp and <slug>-card.webp,
 #   or library=<id> for a photo from the private library (photo_library/; the build copies it). Never a photo used before.
+# "seo_title_en" / "seo_title_ar" (optional): the title used in the page's <title> when title and short are too long
+# for search results (over 65 characters); the page itself keeps the full title (src/seo.py).
 
 CATEGORIES = {
     'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),
@@ -54,6 +56,7 @@ NEWS = [
  dict(slug="issb-nature-related-disclosures-exposure-draft", date="2026-10-22", added="2026-10-23", added_at="04:15", category="standards", region="global",
       title_en="ISSB consults on proposed Practice Statement for nature-related disclosures",
       title_ar="مجلس معايير الاستدامة الدولية (ISSB) يطرح للتشاور مقترحًا لبيان ممارسة بشأن الإفصاحات المتعلقة بالطبيعة",
+      seo_title_en="ISSB consults on nature-related disclosures Practice Statement",
       short_en="ISSB proposes nature-related disclosures Practice Statement for consultation",
       short_ar="ISSB يطرح مقترح بيان ممارسة للإفصاحات المتعلقة بالطبيعة",
       summary_en="The International Sustainability Standards Board has published proposals for a Practice Statement on nature-related disclosures, adding detail on how companies applying IFRS S1 report material nature-related risks and opportunities. Comments are open until 19 February 2027.",
@@ -77,6 +80,7 @@ NEWS = [
  dict(slug="uae-einvoicing-amendments-decision-197-2026", date="2026-10-19", added="2026-10-21", added_at="04:18", category="economy", region="gcc",
       title_en="UAE Ministry of Finance amends the Electronic Invoicing System rules through Ministerial Decision No. 197 of 2026",
       title_ar="وزارة المالية الإماراتية تعدّل أحكام نظام الفوترة الإلكترونية بموجب القرار الوزاري رقم 197 لسنة 2026",
+      seo_title_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية بالقرار 197 لسنة 2026",
       short_en="UAE amends e-invoicing rules: tax group transactions excluded",
       short_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية وتستثني معاملات المجموعة الضريبية",
       summary_en="The UAE Ministry of Finance has amended its Electronic Invoicing System rules: transactions within the same Tax Group are temporarily excluded for 24 months from 1 January 2027, the requirement to store e-invoice data within the UAE is removed, and the \"System Failure\" provisions are repealed.",

@@ -44,8 +44,8 @@ SERVICES = [
 ]
 
 HOME = dict(
-    title="ASA Chartered Accountants and Consultants | Audit, Tax & Advisory — Egypt",
-    desc="Audit, accounting, tax, transfer pricing and advisory services for corporates, growing businesses, startups and international clients in Egypt and the region.",
+    title="ASA Chartered Accountants and Consultants | Audit Firm Egypt",
+    desc="Audit, accounting, tax, transfer pricing and advisory services in Egypt, from Giza, for corporate groups, family businesses, startups and international clients.",
     kicker="Chartered Accountants & Consultants",
     h1="Audit, tax and advisory, built on <em>technical depth</em>.",
     lead="ASA Chartered Accountants and Consultants. Every engagement we undertake is subject to professional oversight. We provide independent audits that strengthen the confidence of shareholders, investors and regulators in financial statements, alongside tax and advisory services that help management make informed decisions.",

@@ -1,4 +1,4 @@
-AX = dict(toc="In this article", key="Key takeaways", published="Published",
+AX = dict(toc="In this article", key="Key takeaways", published="Published", updated="Last updated",
           disc="This article is for general information only and does not constitute professional advice. Thresholds, rates and procedures change — please contact us or refer to the latest official sources before acting.",
           more="More insights")
 

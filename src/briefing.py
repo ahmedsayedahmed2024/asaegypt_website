@@ -1,4 +1,4 @@
-import importlib, news, pages_en, pages_ar
+import importlib, news, pages_en, pages_ar, seo
 PC = {'en': pages_en, 'ar': pages_ar}
 def build(L, render, featured, news_items, path_for):
     importlib.reload(pages_en); importlib.reload(pages_ar)
@@ -12,7 +12,6 @@ def build(L, render, featured, news_items, path_for):
         key = 'news-' + slug
         n = next(x for x in news_items(L, path_for(key, L)) if x['slug'] == slug)
         rel = featured(L, [n['related']], path_for(key, L)) if n['related'] else []
-        title = n['title'] + (' | ASA Briefing' if L == 'en' else ' | إحاطة ASA')
-        out.append(render('news.html', key, L, title, n['summary'], section='briefing', D=D, N=n,
+        out.append(render('news.html', key, L, seo.item_title(key, L), seo.item_desc(key, L), section='briefing', D=D, N=n,
                           RELATED=rel[0] if rel else None))
     return out

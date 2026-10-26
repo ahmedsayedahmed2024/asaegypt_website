@@ -4,3 +4,5 @@ shapely>=2.0
 pillow>=10.0
 playwright==1.56.0
 pyyaml>=6.0
+fonttools>=4.40
+brotli>=1.0

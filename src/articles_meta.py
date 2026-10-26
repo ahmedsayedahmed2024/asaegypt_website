@@ -6,6 +6,8 @@
 #     author "ASA Insights Team" / "فريق ASA" with empty roles (byline "By ASA Insights Team" / «بقلم فريق ASA»),
 #   category (a key of CATEGORIES below), title(en, ar), summary(en, ar),
 #   short (optional): (en, ar) shorter title for the homepage hexagon, cards and the email banner,
+#   seo_title (optional): (en, ar), either may be None: the title used in the page's <title> when the title is too long
+#     for search results (over 65 characters with " | ASA Insights"); the page itself keeps the full title (src/seo.py),
 #   reviewed (optional, YYYY-MM-DD): "Last reviewed" date of a reference guide (src/guide.py),
 #   image: the article's photo (REQUIRED for new articles when a suitable photo exists; see CLAUDE.md, "Images"):
 #     dict(focus, source=photo page URL, photographer, site, licence, alt_en, alt_ar); sites and licences allowed:
@@ -50,6 +52,7 @@ ARTICLES = [
       added="2026-10-16", added_at="21:30",
       date="2026-10-16", author_en="ASA Insights Team", author_ar="فريق ASA",
       role_en="", role_ar="",
+      seo_title=(None, "الذكاء الاصطناعي في المراجعة: ما الذي تغيّر وما الذي لم يتغيّر؟"),
       category="ai-tech",
       image=dict(focus="50% 72%", source="https://unsplash.com/photos/blue-fiber-optic-cables-are-radiating-outwards-WN0alo23Yhg",
                  photographer="S A", site="Unsplash", licence="Unsplash License",
@@ -62,6 +65,7 @@ ARTICLES = [
       added="2026-10-16", added_at="21:30",
       date="2026-10-16", author_en="ASA Insights Team", author_ar="فريق ASA",
       role_en="", role_ar="",
+      seo_title=("Deepfakes and financial fraud: management's and auditors' role", "التزييف العميق والاحتيال المالي: دور الإدارة والمراجع"),
       category="ai-tech",
       image=dict(focus="52% 64%", source="https://unsplash.com/photos/an-unlocked-padlock-rests-on-a-computer-keyboard-KdCJ1nIkgOU",
                  photographer="Sasun Bughdaryan", site="Unsplash", licence="Unsplash License",
@@ -86,6 +90,7 @@ ARTICLES = [
       added="2026-10-16", added_at="21:30",
       date="2026-10-16", author_en="ASA Insights Team", author_ar="فريق ASA",
       role_en="", role_ar="",
+      seo_title=("Egypt's economy in 2026: what it means for financial statements", None),
       category="economy",
       image=dict(focus="62% 40%", source="https://unsplash.com/photos/city-skyline-across-body-of-water-during-daytime-ftbdZkVQTkY",
                  photographer="Mohamed sabry", site="Unsplash", licence="Unsplash License",
@@ -206,6 +211,7 @@ ARTICLES = [
       added="2026-09-20", added_at="13:11",
       date="2026-09-20", author_en="ASA Insights Team", author_ar="فريق ASA",
       role_en="", role_ar="",
+      seo_title=("Consolidation: common errors in group reporting", None),
       category="reporting",
       image=dict(focus="50% 55%", source="https://unsplash.com/photos/low-angle-photography-of-high-rise-building-qCOCA2iwpdA",
                  photographer="Kurt Von", site="Unsplash", licence="Unsplash License",
