@@ -304,7 +304,7 @@ def _pieces(text, font):
     """[(x, piece)] for one line of English and its width. The brand font (Plus Jakarta Sans) leaves a wide gap
     before , . : ; and the like at title sizes ("depth ."). Each such mark that touches the character before it is
     drawn on its own, a hair after the ink of that character; what follows it (if not a space) is pulled in too."""
-    out, x, cur, start = [], 0.0, '', 0.0
+    out, x, cur = [], 0.0, ''
     keep = font.size * 0.03  # the space left between the ink of the word and the mark
     for i, ch in enumerate(text):
         if ch in TIGHT and i and text[i - 1] != ' ':
