@@ -4,8 +4,8 @@ X = dict(overview="Overview", why_title="Why clients choose ASA", talk="Talk to 
          related_h="Related insights", other_k="Explore more", other_h="Other services")
 
 SERVICES_HUB = dict(
-    title="Services | ASA Chartered Accountants and Consultants",
-    desc="We provide a wide range of professional services in audit, accounting, tax and advisory: audit and assurance, accounting and IFRS, tax and transfer pricing, advisory and international services.",
+    title="Audit, Tax, Accounting & Advisory Services in Egypt | ASA",
+    desc="Audit and assurance, tax and transfer pricing, accounting and IFRS, advisory and market-entry services in Egypt and Saudi Arabia, from one senior team.",
     kicker="Our services", h1="Integrated services, one senior team.",
     lead="We provide a wide range of professional services in audit, accounting, tax and advisory, and shape the scope of each engagement around the client's needs.",
     int_k="One team", int_h="Joined-up support before, during and after the audit.",
@@ -18,8 +18,8 @@ SERVICES_HUB = dict(
 
 SVC = {
  'svc-audit': dict(
-    title="Audit & Assurance | ASA Chartered Accountants and Consultants",
-    desc="Independent statutory audits, reviews and agreed-upon procedures under ISA, IFRS and Egyptian Accounting Standards.",
+    title="Audit & Assurance Services in Egypt | Statutory Audit | ASA",
+    desc="Independent statutory audits, reviews and agreed-upon procedures in Egypt under ISA, for financial statements under IFRS or Egyptian Accounting Standards.",
     kicker="Audit & Assurance", h1="Independent assurance you and your stakeholders can rely on.",
     lead="Risk-based audits that do more than meet a deadline — they give boards, lenders, investors and regulators real confidence in your financial statements.",
     ov_h="Audit that adds value beyond the opinion.",
@@ -48,8 +48,8 @@ SVC = {
          ("Can you audit a subsidiary reporting to an overseas group auditor?", "Yes. We perform component audits and group reporting packages in line with group auditor instructions.")],
     related=['consolidation-common-errors', 'revenue-recognition-five-steps', 'startups-first-audit']),
  'svc-tax': dict(
-    title="Tax & Transfer Pricing | ASA Chartered Accountants and Consultants",
-    desc="Corporate tax, VAT, tax inspections, double tax treaties and transfer pricing documentation in Egypt.",
+    title="Tax, VAT & Transfer Pricing Advisory in Egypt | ASA",
+    desc="Corporate tax, VAT, tax inspections, double tax treaty relief and transfer pricing documentation in Egypt, from a team with Egyptian Tax Authority experience.",
     kicker="Tax & Transfer Pricing", h1="Tax positions that are compliant, documented and defensible.",
     lead="We combine technical tax knowledge with hands-on experience of the Egyptian Tax Authority — so your position is prepared before the questions are asked.",
     ov_h="From compliance to controversy — one team.",
@@ -76,8 +76,8 @@ SVC = {
          ("How do we apply reduced treaty withholding rates?", "Reduced rates generally depend on proving tax residency and beneficial ownership with the right documents. We prepare the full pack and guide both the payer and the recipient.")],
     related=['transfer-pricing-egypt-guide', 'double-tax-treaty-benefits', 'tax-inspection-readiness']),
  'svc-acc': dict(
-    title="Accounting & IFRS: Advisory, Consolidation & Outsourcing | ASA",
-    desc="IFRS and Egyptian Accounting Standards advisory, consolidated financial statements, fair value measurement, accounting policies and outsourced accounting and financial reporting.",
+    title="IFRS Advisory & Accounting Services in Egypt | ASA",
+    desc="IFRS and Egyptian Accounting Standards advisory, consolidated financial statements, fair value measurement, accounting policies and outsourced accounting.",
     kicker="Accounting & IFRS", h1="Reliable numbers, on time — from the ledger to the group.",
     lead="Accurate records and timely reporting are the foundation of good decisions — and of a smooth audit. We deliver both.",
     ov_h="Your finance function, strengthened.",
@@ -106,7 +106,7 @@ SVC = {
          ("Is outsourced accounting compatible with ASA being our auditor?", "Independence rules restrict providing certain accounting services to audit clients. We assess every engagement against these rules and will advise on the right structure.")],
     related=['consolidation-common-errors', 'leases-implementation-lessons', 'revenue-recognition-five-steps']),
  'svc-adv': dict(
-    title="Advisory & Due Diligence | ASA",
+    title="Financial Due Diligence & Advisory Services in Egypt | ASA",
     desc="Financial due diligence, internal audit and internal control reviews, quality management (ISQM 1/2) set-up, feasibility studies and IPO readiness support.",
     kicker="Advisory", h1="Clear financial insight for confident decisions.",
     lead="Before you invest, lend, restructure or grow, you need numbers you can trust and risks you understand. We provide both.",
@@ -139,8 +139,8 @@ SVC = {
          ("Do you perform valuations?", "Where formal valuations are required, we coordinate with licensed valuers and can issue agreed-upon procedures reports on specific inputs.")],
     related=['financial-due-diligence', 'startups-first-audit', 'egypt-economy-2026-financial-statements']),
  'svc-intl': dict(
-    title="International Services & Market Entry | ASA",
-    desc="Cross-border reporting and tax support for multinational groups, KSA finance support and guidance for investors entering Egypt.",
+    title="Market Entry & Cross-Border Services, Egypt and KSA | ASA",
+    desc="Cross-border tax and reporting for multinational groups, accounting and consolidation for clients in Saudi Arabia, and guidance for investors entering Egypt.",
     kicker="International & Market Entry", h1="Cross-border support, with local insight.",
     lead="We help multinational groups report and comply in Egypt, support clients in Saudi Arabia and beyond, and guide investors entering the Egyptian market.",
     ov_h="International standards, local execution.",
@@ -171,7 +171,7 @@ SVC = {
 
 ABOUT = dict(
     title="About ASA | Chartered Accountants and Consultants in Egypt",
-    desc="ASA is a firm of chartered accountants and consultants founded in 2022 in Egypt, combining experience gained in leading international networks with boutique attention.",
+    desc="ASA Chartered Accountants and Consultants: an independent audit, tax and advisory firm founded in Egypt in 2022, with experience from international networks.",
     kicker="About ASA", h1="Boutique attention. Large-firm discipline.",
     lead="Founded in 2022 to give clients what they need most from their advisers: technically sound, defensible conclusions — delivered by the people they actually talk to.",
     story_k="Our story", story_h="Built on two decades inside international networks.",
@@ -200,7 +200,7 @@ ABOUT = dict(
 
 WHO = dict(
     title="Who We Serve | ASA Chartered Accountants and Consultants",
-    desc="ASA serves corporate groups, mid-sized and family businesses, startups and venture-backed companies, international clients and professional firms.",
+    desc="Audit, tax and advisory for corporate groups, mid-sized and family businesses, startups, international and Gulf clients, and accounting and advisory firms.",
     kicker="Who we serve", h1="Built for organisations at every stage.",
     lead="Different organisations need different things from their advisers. We tailor our approach to your size, sector and ambitions.",
     segments=[
@@ -226,10 +226,10 @@ WHO = dict(
 )
 
 APPROACH = dict(
-    title="Our Approach | Quality and Independence | ASA",
+    title="Our Approach: Audit Quality and Independence | ASA",
     desc="How ASA delivers: a disciplined engagement lifecycle, professional oversight, documented quality control and independence, guided by ASA Hexagon."
          if config.HEXAGON_PUBLIC else  # without the ASA Hexagon name while the page is hidden (config.py)
-         "How ASA delivers: a disciplined engagement lifecycle, professional oversight, documented quality control and independence.",
+         "How we work: a five-stage engagement lifecycle, professional oversight, documented quality control, independence checks and data analytics.",
     kicker="Our approach", h1="Every step documented. Every opinion evidenced.",
     lead="Quality is not a slogan but a path: clear stages, documented review and professional oversight from the first conversation to the final report.",
     life_k="Engagement lifecycle", life_h="Five stages, every engagement.",
@@ -263,7 +263,7 @@ APPROACH = dict(
 
 PEOPLE = dict(
     title="Our Team | ASA Chartered Accountants and Consultants",
-    desc="A senior team of chartered accountants and consultants with experience in leading international networks and the Egyptian Tax Authority.",
+    desc="A highly qualified professional team with experience from leading international networks and the Egyptian Tax Authority, and ACCA, CPA and SOCPA qualifications.",
     kicker="Our team", h1="Experienced people, directly involved in your work.",
     lead="A senior team with more than two decades of experience across leading international networks and the Egyptian Tax Authority.",
     intro_k="Who we are", intro_h="A strong team built on large-firm experience.",
@@ -292,8 +292,8 @@ PEOPLE = dict(
 )
 
 INSIGHTS = dict(
-    title="Insights | Audit, Tax and IFRS Articles | ASA",
-    desc="Practical articles from ASA on IFRS, transfer pricing, due diligence, revenue, leases, tax inspections, consolidation and technology in audit.",
+    title="Insights: Audit, Tax and IFRS Articles for Egypt | ASA",
+    desc="Practical articles on IFRS and Egyptian Accounting Standards, tax and transfer pricing, audit, due diligence, the economy and AI in accounting, by our team.",
     kicker="Insights", h1="Technical thinking you can use.",
     lead="Practical guidance on standards, tax and reporting — written by our team for finance leaders and boards.",
     filter="Filter by topic", all="All",
@@ -301,8 +301,8 @@ INSIGHTS = dict(
 )
 
 BRIEFING = dict(
-    title="ASA Briefing | Professional updates | ASA",
-    desc="Professional updates on financial reporting standards, Egyptian tax, the regional economy and technology — each linked to its official source, with ASA impact notes.",
+    title="ASA Briefing | Tax, IFRS and Economy Updates, Egypt and Gulf",
+    desc="Short professional updates on financial reporting standards, tax in Egypt and the Gulf, the economy and technology, each linked to its official source.",
     kicker="Professional updates", h1="ASA Briefing",
     lead="Short, sourced updates on standards, tax, the economy and technology — with ASA notes on what they mean for your financial statements and your audit.",
     topics="Filter by topic", regions="Filter by region", all="All", impact_only="Impact notes only",
@@ -324,8 +324,8 @@ LATEST = dict(
 )
 
 NEXT_PAGE = dict(
-    title="ASA NEXT | Career growth and practical tips for juniors | ASA",
-    desc="ASA NEXT: career guidance and practical tips for juniors in their first five years in audit, tax and advisory.",
+    title="ASA NEXT | Career Guide for Junior Auditors and Accountants",
+    desc="ASA NEXT: a clear career path, practical tips for daily work and quick quizzes for juniors in their first five years in audit, tax and advisory.",
     intro="For juniors in their first five years in audit, tax and advisory: a clear path to grow, and practical help for the work in front of you.",
     blocks=dict(first5="A clear view of the road ahead: what each stage asks of you, the skills that move you forward and the qualifications worth planning for.",
                 desk="Practical tips for the daily work, one common mistake to avoid and a quick quiz — with a light touch."),
@@ -337,8 +337,8 @@ NEXT_PAGE = dict(
 )
 
 CONTACT = dict(
-    title="Contact ASA | Book a Consultation",
-    desc="Contact ASA Chartered Accountants and Consultants in Giza, Egypt. Book a consultation on audit, accounting, tax or advisory.",
+    title="Contact Us | Accountants and Auditors in Giza, Egypt | ASA",
+    desc="Contact ASA Chartered Accountants and Consultants in Giza, Egypt. Call +20 111 565 2365 or book a consultation on audit, accounting, tax or advisory.",
     kicker="Contact", h1="Let's talk about what you need.",
     lead="Tell us about your reporting, tax or advisory needs. We aim to respond within one business day.",
     form_h="Send us a message", f_name="Full name", f_company="Company", f_email="Email", f_phone="Phone",
@@ -351,7 +351,7 @@ CONTACT = dict(
 
 PRIVACY = dict(
     title="Privacy Policy | ASA Chartered Accountants and Consultants",
-    desc="How ASA Chartered Accountants and Consultants collects and uses personal information submitted through this website.",
+    desc="How ASA Chartered Accountants and Consultants collects, uses, shares and protects the personal information you submit through asaegypt.com, and your choices.",
     kicker="Legal", h1="Privacy policy", lead="How we handle information you share with us through this website.",
     body="""<p>ASA Chartered Accountants and Consultants ("ASA", "we") respects your privacy. This policy explains how we handle personal information submitted through asaegypt.com.</p>
 <h2>Information we collect</h2><p>When you contact us through the website, we collect the information you provide — such as your name, company, email address, phone number and message.</p>

@@ -7,14 +7,16 @@ Owner: Ahmed Sayed, Managing Partner.
 ## How the site is built
 - `src/` is the source: Python + Jinja2.
   - `build.py`: routes, rendering, and the 404 page.
-  - `extras.py`: `sitemap.xml`, `robots.txt`, and `CNAME`.
-  - `check_links.py`: fails the build on broken internal links (including image `srcset`), on any image in `public/` over 300 KB, and on a photo used twice or from a source/licence that is not allowed (`photos.py`).
+  - `extras.py`: `sitemap.xml`, `robots.txt`, `llms.txt` (all three from `seo.py`) and `CNAME`.
+  - `check_links.py`: fails the build on broken internal links (including image `srcset`), on any image in `public/` over 300 KB, on a photo used twice or from a source/licence that is not allowed (`photos.py`), and on any public page missing a title, description, canonical or hreflang, or sharing its title with another page (`seo.py`).
   - `config.py`: site switches. `SHOW_IMAGES` turns all content images on or off (see "Images"). `HEXAGON_PUBLIC` shows or hides the ASA Hexagon page (see "ASA Hexagon"). `experience_years()`: the years of experience shown on Home, About and Our Team.
   - `photos.py`: the private photo library and the registry of every photo used on the site (see "Images").
   - `search.py`: the search pages and the passage index (it also writes the passage ids into the built pages). See "Site search" below.
   - `signature_banner.py`: the email signature banner and the `/latest/` pages. See "Email signature banner" below.
   - `hexagon.py`: the ASA Hexagon page (diagram, icons, Open Graph images). See "ASA Hexagon" below.
   - `guide.py`: reference guides (long, structured Insights articles). See "Reference guides" below.
+  - `seo.py`: titles and descriptions of item pages, sharing cards (Open Graph / X), structured data (JSON-LD), `sitemap.xml`, `robots.txt`, `llms.txt` and the SEO build check. See "SEO, AI search and sharing" below.
+  - `indexnow.py`: tells Bing and the other IndexNow search engines which pages changed, after each deploy.
   - `logo.py`: writes the vector logo files (`logo-asa.svg`, `logo-asa-dark.svg`, `favicon.svg`; with `--png` also `favicon-32.png`, `apple-touch-icon.png`, `logo_color@3x.png`). Run by hand only when the logo changes; not part of the build.
 - `public/` holds static files (`assets/` CSS/JS/fonts/images, `CNAME`). They are copied into `dist/` before the build.
 - Content lives in:
@@ -30,9 +32,10 @@ Owner: Ahmed Sayed, Managing Partner.
   rm -rf dist && mkdir dist && cp -r public/. dist/ && pip install -q -r requirements.txt && python src/build.py && python src/extras.py && python src/check_links.py
   ```
   The signature banner also needs Chromium for Playwright (`python -m playwright install chromium`, once) and, ideally, `gifsicle`. Without them the build still passes and prints a warning (see "Email signature banner").
-- Deploy: GitHub Actions (`.github/workflows/deploy.yml`) builds and publishes to GitHub Pages on every push to `main`, and once a day at 05:30 UTC (8:30 AM Cairo) so the email signature banner refreshes even when nothing is pushed. Never commit `dist/`.
+- Deploy: GitHub Actions (`.github/workflows/deploy.yml`) builds and publishes to GitHub Pages on every push to `main`, and once a day at 05:30 UTC (8:30 AM Cairo) so the email signature banner refreshes even when nothing is pushed. After a successful deploy it sends the changed pages to IndexNow (see "SEO, AI search and sharing"). Never commit `dist/`.
 - **The site logo is the vector file**: `public/assets/img/logo-asa.svg` (white wordmark, dark backgrounds) and `logo-asa-dark.svg` (grey wordmark, light header). Never replace it with a raster image. The logo is final (to be registered as a trademark): its hexagon and wordmark are traced exactly from the original artwork, so never redraw them or swap in the homepage hexagon from `mark.py` (a slightly different drawing). Keep `logo_color.png` and `email-qr.png` unchanged: the email signature uses them.
 - `public/assets/img/signature/logo-sig.png`, `logo_color.png` and `email-qr.png` are used by email signatures: **never delete or rename them**.
+- `public/0a195d396e647247bae669ec9295b3bb.txt` is the IndexNow key file (its name and content are the key in `src/indexnow.py`). **Never delete, rename or edit it.**
 - `public/google2c63994b9b91f271.html` is required by Google Search Console to verify the site. It is published as-is at https://asaegypt.com/google2c63994b9b91f271.html. **Never delete, rename or edit it**, and never add it to the sitemap.
 
 ## Workflow
@@ -47,14 +50,14 @@ Owner: Ahmed Sayed, Managing Partner.
 1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article, and the founder's name in the About page story (rule 8).** The team page stays collective.
 2. **No client names.**
 3. **No team headcount.** Use "a highly qualified professional team" / «فريق مهني على مستوى عالٍ من الكفاءة».
-4. **The firm's name** is «ASA محاسبون قانونيون ومستشارون» in Arabic and "ASA Chartered Accountants and Consultants" in English, everywhere (templates, data, meta titles and descriptions, Schema.org, Open Graph, footer, privacy page, email-signature pages). Never «ASA للمحاسبة والاستشارات», "ASA Accounting & Consulting", "ASA for Accounting and Consulting" or any other form. The full legal name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» stays wherever it already appears (Arabic page titles, footer, schema `alternateName`), always complete.
+4. **The firm's name** is «ASA محاسبون قانونيون ومستشارون» in Arabic and "ASA Chartered Accountants and Consultants" in English, everywhere (templates, data, meta titles and descriptions, Schema.org, Open Graph, footer, privacy page, email-signature pages). Never «ASA للمحاسبة والاستشارات», "ASA Accounting & Consulting", "ASA for Accounting and Consulting" or any other form. The full legal name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» appears, always complete, only in: the Arabic page titles of About, Who We Serve, Our Team and Privacy (plus the noindex search page and the hidden ASA Hexagon page, left as they are); the Arabic home page description; the Arabic privacy policy text; the footer; and the schema `legalName`. Other Arabic titles use «ASA محاسبون قانونيون ومستشارون» or " | ASA".
 5. **Never describe ASA or its team as Big 4. Use "international networks"** (e.g. "Experience gained in leading international networks" / «خبرات في كبرى الشبكات الدولية»). Guide or article text that talks about the profession in general may keep the term. Never name RSM or any specific former firm.
 6. Memberships to list:
    - Fellows of the Egyptian Society of Accountants & Auditors
    - Members of the Arab Federation of Accountants & Auditors
    - ACCA, CPA and SOCPA holders
 7. ASA operates from Egypt only (no Saudi branch). It serves clients in Egypt, KSA and internationally.
-8. **The founder's name** "Ahmed Sayed Ahmed" / «أحمد سيد أحمد» appears only in the story text of the About page (and in Insights article bylines). Everywhere else the site speaks as "we" / «نحن». Never add his name to any other page, card, meta description or schema. (The firm's Arabic name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» is the firm's name and is not affected.)
+8. **The founder's name** "Ahmed Sayed Ahmed" / «أحمد سيد أحمد» appears only in the story text of the About page (and in Insights article bylines). Everywhere else the site speaks as "we" / «نحن». Never add his name to any other page, card or meta description. In schema it may appear only as the `author` of an article where it is already the visible byline (name and "Managing Partner", as in the byline); nowhere else in schema. (The firm's Arabic name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» is the firm's name and is not affected.)
 9. **No client count anywhere** (no "50+", "fifty clients", «خمسين عميلًا», etc.). Use "a diverse client portfolio in Egypt and abroad" / «محفظة متنوعة من العملاء داخل مصر وخارجها».
 10. **IFRS 9 / ECL is not the firm's headline specialty.** It appears once only, as one service line under Accounting & IFRS on the Services pages ("Expected credit loss (ECL) models under IFRS 9 / EAS 47"). It may also be the topic of Insights articles, Briefing items, ASA NEXT items and guides. Engagement oversight is described as "professional oversight" / «إشراف مهني», never as partners leading every engagement.
 11. **Legal, tax and standards citations** (article, section, paragraph, decree numbers):
@@ -62,6 +65,26 @@ Owner: Ahmed Sayed, Managing Partner.
    - If unverified, describe the rule as established practice and flag the citation for Ahmed's review in the PR.
 12. Professional and tax news must come from official or primary sources (Egyptian Tax Authority, FRA, IFRS Foundation, IAASB, ESAA, official gazette, etc.). Link the source.
 13. Do not use Netlify (blocked in Egypt). Do not touch DNS email records (MX/TXT).
+
+## SEO, AI search and sharing
+Built automatically by `src/seo.py` for every page; nothing to do by hand for a new article, Briefing item or ASA NEXT item beyond what is below. `check_links.py` fails the build if a public page (any page without `noindex`) has no `<title>`, meta description, self canonical or hreflang links (en, ar, x-default), if two pages share a title, or if `sitemap.xml` and the public pages disagree. It also fails if a description ends with "…", and prints warnings (not errors) for titles over 65 characters and descriptions outside 100–160.
+- **Titles and descriptions.**
+  - Fixed pages: `title` and `desc` in `pages_en.py` / `pages_ar.py` (and `HOME` in `content_*.py`). About 50–60 characters for the title and 140–160 for the description, written for what clients search for, natural wording, no keyword stuffing, the firm's name as in rule 4. Every page's title is unique.
+  - Insights, Briefing and ASA NEXT items: built from the item's own title and summary: `<title>` = title + " | ASA Insights" / « | مقالات ASA» (" | ASA Briefing" / « | إحاطة ASA», " | ASA NEXT"); when that is over 65 characters the `short` title is tried, then the title alone. **When a new item's title is still over 65 characters, add an `seo_title`** (articles: `seo_title=(en, ar)`, either may be `None`; Briefing / ASA NEXT: `seo_title_en`, `seo_title_ar`): a shorter title with the same facts, used only in `<title>`; the page keeps its full title. **Descriptions never end mid-sentence or with "…"** (the build fails if one does): description = the summary up to its last complete sentence within 160 characters, even if shorter (at least about 100). If that is under 100 characters, an article adds the first key takeaway that still fits as a whole sentence. **When the summary's first sentence is itself over 160 characters, add an `seo_desc`** (articles: `seo_desc=(en, ar)`, either may be `None`; Briefing / ASA NEXT: `seo_desc_en`, `seo_desc_ar`): whole sentences of 100–160 characters using only facts already in the summary (for Briefing, facts and numbers exactly as in the source). The page itself keeps the full summary.
+- **Canonical and hreflang**: every page links to itself (canonical) and to its two language versions (`hreflang` en, ar, x-default = English). Keep the URL of a page the same in both languages (`/ar` + the English path).
+- **Sharing cards (Open Graph / LinkedIn / X)**: every page has og:title, og:description, og:url, og:image (1200×630), og:locale (+ alternate), og:type and `twitter:card` = `summary_large_image`. og:image is generated at build time into `dist/assets/img/og/` (never committed): the item's own photo cropped around its `focus` point; without a photo (ASA NEXT illustrations, items without `image`) a dark card with a faint honeycomb, the title and the firm's name «ASA محاسبون قانونيون ومستشارون» / "ASA Chartered Accountants and Consultants". **No logo mark on these cards.** Other pages share one default card per language. A reference guide uses its own `-og.png` cover. Arabic is drawn with the site's Arabic font merged with its Latin subset (needs Pillow with raqm/FriBiDi and fontTools; without them the Arabic pages fall back to the English card and the build prints a warning).
+- **Structured data (JSON-LD)**, all from the site data (never add facts that are not on the site):
+  - Every page: `AccountingService` + `Organization` (name EN/AR, legal name, the current logo file `logo_color@3x.png`, address, telephone, email, office hours, areaServed Egypt and Saudi Arabia, knowsLanguage ar/en; `sameAs` = `SAME_AS` in `seo.py`: only the firm's own profiles that the site links to, now the LinkedIn company page, which is also the LinkedIn icon in the footer, «ASA على LinkedIn» / "ASA on LinkedIn"; add Facebook there and in the footer when it comes), `WebSite` with a `SearchAction` to `/search/?q=`, and a `WebPage` (`AboutPage`, `ContactPage`, `CollectionPage`…).
+  - Inner pages: `BreadcrumbList` following the URL (Home › Insights › title).
+  - Insights articles, guides and ASA NEXT items: `Article` (headline, author as in the byline: a `Person` with name and job title for an article signed by a person, the team as an `Organization` for "ASA Insights Team" / "ASA Team"; datePublished = `date`, dateModified = `reviewed` or `date`; publisher = the firm).
+  - Briefing items: `NewsArticle` (datePublished = `added`, the day it went live here; `isBasedOn` = the official source with its link and date).
+  - `FAQPage` only where the page already shows questions and answers: the service pages' "Frequently asked questions" and the reference guide's quick-guide questions. Never add questions only for the markup.
+- **sitemap.xml**: every public page in both languages, with its language alternates and a real `lastmod`: an item's latest date (`date`, `added`, `reviewed`); a list page's newest item; a fixed page's last commit to its text or template (the deploy checks out the full git history for this). Left out: `noindex` pages (`/search/`, `/latest/`), forwarding pages (`REDIRECTS`, including the hidden ASA Hexagon page) and the Google verification file.
+- **robots.txt**: everything allowed for every crawler, and explicitly for the AI and search crawlers in `AI_BOTS` (`seo.py`): GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, Claude-SearchBot, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, Bingbot. Keeps the `Sitemap:` line.
+- **llms.txt** (`/llms.txt`, English only): a plain map of the firm for AI assistants, generated at build time from the site data: short description, office, languages, contact, memberships, services (ending "and other related services"), main pages, reference guides, the latest Insights, Briefing and ASA NEXT items. Rules 1–10 apply to it like any page (no person's name, no client names or counts).
+- **"Last updated"**: article pages show "Published" and "Last updated" / «نُشر في» and «آخر تحديث» (`reviewed`, else `date`); a guide shows "Last reviewed". When an article's content is revised, set `reviewed` to that day. Each article opens with "Key takeaways", the direct answer to its title.
+- **IndexNow**: after a successful deploy, the workflow sends the pages that changed (new pages, a changed `lastmod`, pages that left the sitemap, compared with the sitemap that was live before the deploy) to api.indexnow.org. It is skipped quietly when nothing changed, and never fails the deploy.
+- No analytics or tracking of any kind.
 
 ## Services
 - Service groups live in `SERVICES` (`content_en.py` / `content_ar.py`); each page's text is in `SVC` (`pages_en.py` / `pages_ar.py`). Groups: Audit & Assurance, Tax & Transfer Pricing, Accounting & IFRS, Advisory, International & Market Entry.
@@ -138,6 +161,8 @@ It refuses a photo already used (same source URL or the same image, even resized
 - `CATEGORIES` is the one place for Insights categories (EN + AR names). The tabs on `/insights/` are built from it automatically: a tab appears only when at least one article uses that category; order is All, then categories by number of articles (most first).
 - **When a new article needs a category that does not exist yet, add it to `CATEGORIES` in both languages.** Its tab then appears automatically. Never hard-code tabs in the template.
 - `short` (optional, `(en, ar)`): a shorter title used in the homepage hexagon, the cards and the email banner; the article page keeps the full title.
+- `seo_title` (optional, `(en, ar)`): a shorter title for `<title>` only, when the article's title is too long for search results (see "SEO, AI search and sharing").
+- `seo_desc` (optional, `(en, ar)`): a meta description in whole sentences, only when the summary's first sentence is over 160 characters (see "SEO, AI search and sharing").
 
 ## Reference guides
 - A reference guide is an Insights article with a long, structured body: "The Institutions Behind the Global Accounting and Auditing Profession" (`/insights/global-accounting-auditing-institutions/`). Its entry in `ART` has `guide=True`; its approved text is in `src/guide_en.py` / `guide_ar.py` (never rewrite it); `src/guide.py` builds the page (`templates/guide.html`, `public/assets/js/guide.js`).
@@ -196,6 +221,8 @@ It refuses a photo already used (same source URL or the same image, even resized
   - `region`: `"egypt"` | `"gcc"` | `"global"` (labels in `REGIONS`)
   - `title_en`, `title_ar`
   - `short_en`, `short_ar`: banner headline, max ~10 words
+  - `seo_title_en`, `seo_title_ar` (optional): only when title and short are both too long for search results (see "SEO, AI search and sharing")
+  - `seo_desc_en`, `seo_desc_ar` (optional): only when the summary's first sentence is over 160 characters (see "SEO, AI search and sharing")
   - `summary_en`, `summary_ar`: 1–2 sentences
   - `body_en`, `body_ar`: list of paragraphs
   - `source_name`, `source_url`: official source (required)

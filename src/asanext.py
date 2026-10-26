@@ -1,4 +1,4 @@
-import importlib, pages_en, pages_ar
+import importlib, pages_en, pages_ar, seo
 import next as nextdata
 PC = {'en': pages_en, 'ar': pages_ar}
 def build(L, render, next_items, path_for, featured):
@@ -15,6 +15,5 @@ def build(L, render, next_items, path_for, featured):
     for x in nextdata.NEXT:
         key = 'nx-' + x['slug']
         n = [y for y in next_items(L, path_for(key, L)) if y['slug'] == x['slug']][0]
-        title = n['title'] + ' | ASA NEXT'
-        out.append(render('next_item.html', key, L, title, n['summary'], section='next', D=D, N=n))
+        out.append(render('next_item.html', key, L, seo.item_title(key, L), seo.item_desc(key, L), section='next', D=D, N=n))
     return out

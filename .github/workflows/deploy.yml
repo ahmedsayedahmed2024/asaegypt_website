@@ -21,8 +21,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      indexnow_urls: ${{ steps.indexnow.outputs.urls }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history: sitemap.xml dates each fixed page by the last commit to its text (src/seo.py)
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -42,6 +46,9 @@ jobs:
         run: python -m playwright install --with-deps chromium || echo "::warning::Chromium install failed; the signature banner falls back"
       - name: Install gifsicle (signature banner)
         run: sudo apt-get install -y --no-install-recommends gifsicle || (sudo apt-get update && sudo apt-get install -y --no-install-recommends gifsicle) || echo "::warning::gifsicle not installed; the banner GIF is built without it"
+      # FriBiDi lets Pillow lay out Arabic on the sharing cards (src/seo.py); without it the Arabic pages use the English card
+      - name: Install FriBiDi (Arabic sharing cards)
+        run: sudo apt-get install -y --no-install-recommends libfribidi0 || echo "::warning::libfribidi0 not installed; Arabic sharing cards fall back to English"
       - name: Build site
         run: |
           rm -rf dist
@@ -51,6 +58,11 @@ jobs:
           python src/extras.py
       - name: Check internal links
         run: python src/check_links.py
+      # IndexNow (Bing and others): list the pages that changed against the sitemap now live; sent after the deploy
+      - name: List changed pages for IndexNow
+        id: indexnow
+        continue-on-error: true
+        run: python src/indexnow.py changed >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -64,3 +76,22 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # After a successful deploy, tell IndexNow search engines (Bing and others) which pages changed.
+  # Skipped quietly if there is nothing to send; a failed request never fails the deploy.
+  indexnow:
+    needs: [build, deploy]
+    if: needs.build.outputs.indexnow_urls != '' && needs.build.outputs.indexnow_urls != '[]'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: src/indexnow.py
+          sparse-checkout-cone-mode: false
+      - name: Send changed URLs to IndexNow
+        env:
+          INDEXNOW_URLS: ${{ needs.build.outputs.indexnow_urls }}
+        run: python3 src/indexnow.py submit
