@@ -4,6 +4,8 @@
 # "added_at" (optional "HH:MM" UTC) only orders items added on the same day.
 # "image": every item gets its own original SVG illustration in the ASA NEXT style (no photos; see CLAUDE.md, "Images"):
 #   dict(kind="illustration", alt_en, alt_ar). File: public/assets/img/content/next/<slug>.svg.
+# "seo_desc_en" / "seo_desc_ar" (optional): the meta description when the summary's first sentence is over 160
+# characters: whole sentences, 100–160 characters, only facts already in the summary (src/seo.py).
 # Humour (Junior Desk only): tasteful; no jokes about people, clients or other firms; no slang, politics or religion.
 #
 # Body blocks (list of tuples), rendered by templates/next_item.html:
@@ -31,6 +33,7 @@ NEXT = [
       image=dict(focus="95% 20%", kind="illustration",
                  alt_en="Illustration: four hexagon steps rising toward a lime spark",
                  alt_ar="رسم توضيحي: أربع درجات سداسية الشكل تصعد نحو نجمة خضراء ليمونية"),
+      seo_desc_en="Associate, senior, supervisor, manager: what you own at each stage, the skills to build and the professional qualifications worth planning for.",
       title_en="Your first five years: a simple roadmap",
       title_ar="سنواتك الخمس الأولى: خريطة بسيطة",
       summary_en="Associate, senior, supervisor, manager: what you own at each stage, the skills to build and one habit that helps — plus the professional qualifications worth planning for.",

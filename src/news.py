@@ -10,6 +10,8 @@
 #   or library=<id> for a photo from the private library (photo_library/; the build copies it). Never a photo used before.
 # "seo_title_en" / "seo_title_ar" (optional): the title used in the page's <title> when title and short are too long
 # for search results (over 65 characters); the page itself keeps the full title (src/seo.py).
+# "seo_desc_en" / "seo_desc_ar" (optional): the meta description when the summary's first sentence is over 160
+# characters: whole sentences, 100–160 characters, only facts already in the summary (src/seo.py).
 
 CATEGORIES = {
     'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),
@@ -28,6 +30,8 @@ NEWS = [
  dict(slug="fra-model-short-selling-contract", date="2026-10-21", added="2026-10-24", added_at="04:13", category="economy", region="egypt",
       title_en="FRA approves a model short selling contract between brokerage firms and securities borrowers",
       title_ar="الهيئة العامة للرقابة المالية تعتمد عقدًا نموذجيًا للبيع على المكشوف بين شركات السمسرة ومقترضي الأوراق المالية",
+      seo_desc_en="Egypt's Financial Regulatory Authority has approved a model contract between licensed brokerage firms and investors who borrow securities to sell short.",
+      seo_desc_ar="اعتمدت الهيئة العامة للرقابة المالية عقدًا نموذجيًا بين شركات السمسرة المرخص لها والمستثمرين الذين يقترضون الأوراق المالية لبيعها على المكشوف.",
       short_en="FRA approves model short selling contract for Egyptian brokers",
       short_ar="الرقابة المالية تعتمد عقدًا نموذجيًا للبيع على المكشوف",
       summary_en="Egypt's Financial Regulatory Authority has approved a model contract governing the relationship between licensed brokerage firms and investors who borrow securities to sell short. The FRA describes it as a step toward the official launch of short selling in the Egyptian capital market.",
@@ -57,6 +61,8 @@ NEWS = [
       title_en="ISSB consults on proposed Practice Statement for nature-related disclosures",
       title_ar="مجلس معايير الاستدامة الدولية (ISSB) يطرح للتشاور مقترحًا لبيان ممارسة بشأن الإفصاحات المتعلقة بالطبيعة",
       seo_title_en="ISSB consults on nature-related disclosures Practice Statement",
+      seo_desc_en="The ISSB has published proposals for a Practice Statement on nature-related disclosures under IFRS S1. Comments are open until 19 February 2027.",
+      seo_desc_ar="نشر مجلس معايير الاستدامة الدولية (ISSB) مقترحات لبيان ممارسة بشأن الإفصاحات المتعلقة بالطبيعة. ويستقبل المجلس التعليقات حتى 19 فبراير 2027.",
       short_en="ISSB proposes nature-related disclosures Practice Statement for consultation",
       short_ar="ISSB يطرح مقترح بيان ممارسة للإفصاحات المتعلقة بالطبيعة",
       summary_en="The International Sustainability Standards Board has published proposals for a Practice Statement on nature-related disclosures, adding detail on how companies applying IFRS S1 report material nature-related risks and opportunities. Comments are open until 19 February 2027.",
@@ -81,6 +87,8 @@ NEWS = [
       title_en="UAE Ministry of Finance amends the Electronic Invoicing System rules through Ministerial Decision No. 197 of 2026",
       title_ar="وزارة المالية الإماراتية تعدّل أحكام نظام الفوترة الإلكترونية بموجب القرار الوزاري رقم 197 لسنة 2026",
       seo_title_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية بالقرار 197 لسنة 2026",
+      seo_desc_en="The UAE has amended its e-invoicing rules: Tax Group transactions are excluded for 24 months from 1 January 2027, and the local data storage rule is removed.",
+      seo_desc_ar="عدّلت الإمارات قواعد الفوترة الإلكترونية، فاستثنت مؤقتًا معاملات المجموعة الضريبية الواحدة 24 شهرًا من 1 يناير 2027، وألغت اشتراط حفظ البيانات داخل الدولة.",
       short_en="UAE amends e-invoicing rules: tax group transactions excluded",
       short_ar="الإمارات تعدّل قواعد الفوترة الإلكترونية وتستثني معاملات المجموعة الضريبية",
       summary_en="The UAE Ministry of Finance has amended its Electronic Invoicing System rules: transactions within the same Tax Group are temporarily excluded for 24 months from 1 January 2027, the requirement to store e-invoice data within the UAE is removed, and the \"System Failure\" provisions are repealed.",
@@ -107,6 +115,8 @@ NEWS = [
  dict(slug="imf-world-economic-outlook-october-2026", date="2026-10-13", added="2026-10-19", added_at="04:17", category="economy", region="global",
       title_en="IMF October 2026 World Economic Outlook projects global growth of 3.1% in 2026",
       title_ar="صندوق النقد الدولي يتوقع في تقرير «آفاق الاقتصاد العالمي» لأكتوبر 2026 نمو الاقتصاد العالمي بنسبة 3.1% في 2026",
+      seo_desc_en="The IMF's October 2026 World Economic Outlook projects global growth of 3.1% in 2026 and 3.4% in 2027, with global headline inflation easing from 4.7% to 4.1%.",
+      seo_desc_ar="يتوقع تقرير «آفاق الاقتصاد العالمي» لأكتوبر 2026 نموًا عالميًا بنسبة 3.1% في 2026 و3.4% في 2027، وتراجع التضخم الكلي العالمي من 4.7% إلى 4.1%.",
       short_en="IMF projects 3.1% global growth in 2026",
       short_ar="صندوق النقد يتوقع نمو الاقتصاد العالمي 3.1% في 2026",
       summary_en="The IMF's October 2026 World Economic Outlook, \"Resilience Under Strain, Urgent Choices\", projects global growth of 3.1% in 2026 and 3.4% in 2027, with global headline inflation of 4.7% in 2026 easing to 4.1% in 2027.",
@@ -132,6 +142,8 @@ NEWS = [
  dict(slug="egypt-moodys-upgrade-b3", date="2026-10-17", added="2026-10-18", added_at="04:17", category="economy", region="egypt",
       title_en="Ministry of Finance responds to Moody's upgrade of Egypt's rating to B3 with a positive outlook",
       title_ar="وزارة المالية تعلّق على رفع «موديز» تصنيف مصر إلى B3 مع نظرة مستقبلية إيجابية",
+      seo_desc_en="After Moody's upgraded Egypt's credit rating to B3 with a positive outlook, the Ministry of Finance set out the fiscal and external indicators behind the move.",
+      seo_desc_ar="عقب رفع «موديز» تصنيف مصر إلى B3 بنظرة مستقبلية إيجابية، أصدرت وزارة المالية بيانًا بالمؤشرات المالية والخارجية المرتبطة بهذه الخطوة.",
       short_en="Moody's upgrades Egypt to B3, outlook positive",
       short_ar="«موديز» ترفع تصنيف مصر إلى B3 بنظرة إيجابية",
       summary_en="Following Moody's upgrade of Egypt's credit rating to B3 with a positive outlook, the Ministry of Finance issued a statement setting out the fiscal and external indicators behind the move.",
@@ -155,6 +167,8 @@ NEWS = [
  dict(slug="uae-top-up-tax-scope-registration-guide", date="2026-10-08", added="2026-10-15", added_at="04:15", category="economy", region="gcc",
       title_en="UAE Federal Tax Authority issues guide on scope and registration for the Top-up Tax on multinationals",
       title_ar="الهيئة الاتحادية للضرائب في الإمارات تصدر دليلًا بشأن نطاق الضريبة الإضافية على الشركات متعددة الجنسيات والتسجيل فيها",
+      seo_desc_en="The UAE FTA has published a guide on which multinational groups fall within the Qualified Domestic Minimum Top-up Tax (QDMTT) and how to register.",
+      seo_desc_ar="أصدرت الهيئة الاتحادية للضرائب في الإمارات دليلًا لنطاق ضريبة الحد الأدنى التكميلية المحلية المؤهلة (QDMTT) وإجراءات التسجيل فيها.",
       short_en="UAE issues Top-up Tax guide on scope and registration",
       short_ar="الإمارات تصدر دليل نطاق الضريبة الإضافية والتسجيل فيها",
       summary_en="The UAE Federal Tax Authority has published a guide explaining which multinational groups fall within the Qualified Domestic Minimum Top-up Tax (QDMTT) and how in-scope entities register.",

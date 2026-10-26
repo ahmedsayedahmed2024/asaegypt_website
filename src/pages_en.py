@@ -338,7 +338,7 @@ NEXT_PAGE = dict(
 
 CONTACT = dict(
     title="Contact Us | Accountants and Auditors in Giza, Egypt | ASA",
-    desc="Contact ASA Chartered Accountants and Consultants in Al Haram, Giza. Call +20 111 565 2365 or book a consultation on audit, accounting, tax or advisory.",
+    desc="Contact ASA Chartered Accountants and Consultants in Giza, Egypt. Call +20 111 565 2365 or book a consultation on audit, accounting, tax or advisory.",
     kicker="Contact", h1="Let's talk about what you need.",
     lead="Tell us about your reporting, tax or advisory needs. We aim to respond within one business day.",
     form_h="Send us a message", f_name="Full name", f_company="Company", f_email="Email", f_phone="Phone",

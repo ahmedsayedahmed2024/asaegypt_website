@@ -28,7 +28,7 @@ SITE_ID = SITE + '/#website'
 LOGO = SITE + '/assets/img/logo_color@3x.png'  # the current logo file (never a new one)
 LINKEDIN = 'https://www.linkedin.com/company/asa-chartered-accountants-and-consultants/'  # footer icon + schema sameAs
 SAME_AS = [LINKEDIN]  # the firm's own profiles linked from the site (add Facebook here when it is linked)
-TITLE_MAX, DESC_MIN, DESC_MAX = 65, 110, 160   # check() warns outside these; it fails only on missing or duplicate
+TITLE_MAX, DESC_MIN, DESC_MAX = 65, 100, 160   # check() warns outside these; it fails only on missing or duplicate
 OG_W, OG_H = 1200, 630
 OG_DIR = 'assets/img/og'
 # each item kind (route key prefix): (list page, title suffix en, title suffix ar, card kicker en, card kicker ar)
@@ -75,23 +75,45 @@ def item_title(key, L):
     return next((t for t in tries if len(t) <= TITLE_MAX), min(tries, key=len))
 
 
-def clip(s, n=DESC_MAX):
-    """s cut at the last word that fits in n characters, with an ellipsis."""
-    s = re.sub(r'\s+', ' ', s).strip()
-    if len(s) <= n:
-        return s
-    cut = s[:n - 1].rsplit(' ', 1)[0].rstrip(' ,;:،؛—–-')
-    return cut + '…'
+# a sentence ends at . ! ? or the Arabic ؟ followed by a space, but not after a short abbreviation ("No. 197")
+SENTENCE_END = re.compile(r'(?<!\bNo)(?<!\be\.g)(?<!\bi\.e)(?<!\bvs)(?<=[.!?؟])\s+')
+DESC_SHORT = 100  # a description shorter than this takes the next whole sentence from the key takeaways, if it fits
+
+
+def sentences(s):
+    return [x for x in SENTENCE_END.split(re.sub(r'\s+', ' ', s).strip()) if x]
+
+
+def whole(parts, n=DESC_MAX):
+    """The longest run of whole sentences from the start that fits in n characters (never cut mid-sentence).
+    When even the first sentence is longer than n, that sentence alone (complete) is returned."""
+    out = ''
+    for p in parts:
+        t = (out + ' ' + p).strip()
+        if len(t) > n:
+            break
+        out = t
+    return out or (parts[0] if parts else '')
 
 
 def item_desc(key, L, body_key=None):
-    """Meta description of an item page: its summary (cut to DESC_MAX at a word). A short summary of an Insights
-    article is followed by its first key takeaway, so the description says what the reader will learn."""
+    """Meta description of an item page, always ending at a complete sentence (never "…"):
+    - `seo_desc` when the item has one (articles: (en, ar), either may be None; Briefing / ASA NEXT: seo_desc_en /
+      seo_desc_ar): a shorter text with the summary's own facts, for a summary whose first sentence is over DESC_MAX;
+    - else the summary up to its last complete sentence within DESC_MAX characters;
+    - when that is shorter than DESC_SHORT, an Insights article adds the first of its key takeaways that still fits
+      as a whole sentence."""
     kind, x = item(key)
-    s = field(x, 'summary', L)
-    if len(s) < 130 and body_key:
-        s = s + ' ' + body_key[0]
-    return clip(s)
+    own = field(x, 'seo_desc', L)
+    if own:
+        return own
+    d = whole(sentences(field(x, 'summary', L)))
+    for k in (body_key or []):
+        if len(d) >= DESC_SHORT:
+            break
+        if len(d) + 1 + len(k) <= DESC_MAX and len(sentences(k)) == 1:
+            d = d + ' ' + k
+    return d
 
 
 # ---------------------------------------------------------------- structured data (JSON-LD)
@@ -644,6 +666,8 @@ def check(dist):
                 titles.setdefault(t, []).append(url)
                 if len(t) > TITLE_MAX:
                     warnings.append(f'{url}: title is {len(t)} characters (target {TITLE_MAX} or fewer)')
+            if d.endswith('…'):
+                errors.append(f'{url}: description ends with "…"; it must end at a complete sentence')
             if d and not DESC_MIN <= len(d) <= DESC_MAX:
                 warnings.append(f'{url}: description is {len(d)} characters (target {DESC_MIN}–{DESC_MAX})')
     for t, urls in titles.items():
