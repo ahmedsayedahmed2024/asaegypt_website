@@ -38,6 +38,7 @@ ARTICLES = [
       added="2026-10-18", added_at="19:18",
       date="2026-10-18", reviewed="2026-10-19", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
       role_en="Managing Partner", role_ar="الشريك المدير",
+      seo_title=("Global Accounting and Auditing Institutions: A Reference Guide", None),
       category="guides",
       image=dict(focus="50% 50%", kind="cover",
                  alt_en="Illustration: a loose honeycomb of hexagon badges carrying the acronyms of accounting and auditing institutions, in five colours on a dark background",
