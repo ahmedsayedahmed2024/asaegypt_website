@@ -26,6 +26,8 @@ PC = {'en': pages_en, 'ar': pages_ar}
 ORG_ID = SITE + '/#organization'
 SITE_ID = SITE + '/#website'
 LOGO = SITE + '/assets/img/logo_color@3x.png'  # the current logo file (never a new one)
+LINKEDIN = 'https://www.linkedin.com/company/asa-chartered-accountants-and-consultants/'  # footer icon + schema sameAs
+SAME_AS = [LINKEDIN]  # the firm's own profiles linked from the site (add Facebook here when it is linked)
 TITLE_MAX, DESC_MIN, DESC_MAX = 65, 110, 160   # check() warns outside these; it fails only on missing or duplicate
 OG_W, OG_H = 1200, 630
 OG_DIR = 'assets/img/og'
@@ -119,8 +121,7 @@ def organization(B, L):
                                       "opens": f"{int(m[1]):02d}:{m[2]}", "closes": f"{int(m[3]):02d}:{m[4]}"},
         "areaServed": [{"@type": "Country", "name": "Egypt"}, {"@type": "Country", "name": "Saudi Arabia"}],
         "knowsLanguage": ["ar", "en"], "foundingDate": "2022", "taxID": "577-152-629",
-        "knowsAbout": [s['name'] for s in B.C[L].SERVICES],
-        # sameAs: the site links to no social profiles yet; add their URLs here when it does
+        "knowsAbout": [s['name'] for s in B.C[L].SERVICES], "sameAs": SAME_AS,
     }
 
 
@@ -286,11 +287,53 @@ def _hexagon(cx, cy, r):
     return [(cx - r / 2, cy - h), (cx + r / 2, cy - h), (cx + r, cy), (cx + r / 2, cy + h), (cx - r / 2, cy + h), (cx - r, cy)]
 
 
+TIGHT = ',.:;!?%)'
+
+
+def _ink(font, text):
+    """(left, right) of the ink of text drawn at x = 0 (getbbox counts from the pen position, not the ink)."""
+    from PIL import Image, ImageDraw
+    pad = font.size
+    im = Image.new('L', (int(font.getlength(text)) + 2 * pad, int(font.size * 1.6)), 0)
+    ImageDraw.Draw(im).text((pad, 0), text, font=font, fill=255)
+    box = im.getbbox() or (pad, 0, pad, 0)
+    return box[0] - pad, box[2] - pad
+
+
+def _pieces(text, font):
+    """[(x, piece)] for one line of English and its width. The brand font (Plus Jakarta Sans) leaves a wide gap
+    before , . : ; and the like at title sizes ("depth ."). Each such mark that touches the character before it is
+    drawn on its own, a hair after the ink of that character; what follows it (if not a space) is pulled in too."""
+    out, x, cur, start = [], 0.0, '', 0.0
+    keep = font.size * 0.03  # the space left between the ink of the word and the mark
+    for i, ch in enumerate(text):
+        if ch in TIGHT and i and text[i - 1] != ' ':
+            prev_right = x + _ink(font, cur)[1] if cur else x
+            if cur:
+                out.append((x, cur))
+            l, r = _ink(font, ch)
+            px = prev_right + keep - l
+            out.append((px, ch))
+            nxt = text[i + 1] if i + 1 < len(text) else ' '
+            x = px + (font.getlength(ch) if nxt == ' ' else r + keep)
+            cur = ''
+        else:
+            cur += ch
+    if cur:
+        out.append((x, cur))
+        x += font.getlength(cur)
+    return out, x
+
+
+def _width(text, font, kw):
+    return font.getlength(text, **kw) if kw else _pieces(text, font)[1]
+
+
 def _wrap(text, font, width, kw):
     lines, cur = [], ''
     for w in text.split():
         t = (cur + ' ' + w).strip()
-        if cur and font.getlength(t, **kw) > width:
+        if cur and _width(t, font, kw) > width:
             lines.append(cur)
             cur = w
         else:
@@ -344,7 +387,11 @@ def card(title, kicker, L, out):
             break
     y = 160 * S
     for line in lines[:4]:
-        d.text((x0, y), line, font=f, fill=INK, anchor=anchor, **kw)
+        if rtl:
+            d.text((x0, y), line, font=f, fill=INK, anchor=anchor, **kw)
+        else:
+            for dx, piece in _pieces(line, f)[0]:
+                d.text((x0 + dx, y), piece, font=f, fill=INK, anchor=anchor)
         y += lh
     # foot: the firm's name and the address of the site
     d.line([M, H - 116 * S, W - M, H - 116 * S], fill=(58, 63, 70), width=2 * S)
@@ -519,6 +566,7 @@ def llms(B):
              f"- Languages: English and Arabic. The website is in both: English at {SITE}/ and Arabic at {SITE}/ar/",
              f"- Contact: {u('contact')} · +20 111 565 2365 · ahmed.sayed@asaegypt.com · {P.CONTACT['hours']}",
              f"- Memberships: {'; '.join(t for _, t in en.HOME['trust'])}",
+             f"- LinkedIn: {LINKEDIN}",
              '', '## Services', '']
     lines += [f"- [{s['name']}]({u(s['key'])}): {s['desc']}" for s in en.SERVICES] + [f"- {en.T['more'].lstrip('… ').capitalize()}"]
     lines += ['', '## Main pages', '']

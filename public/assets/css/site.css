@@ -260,6 +260,9 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 .site-footer .more{color:var(--soft);font-size:.86rem}
 .site-footer .contact li{display:flex;gap:12px;align-items:flex-start}
 .site-footer .contact svg{width:14px;height:14px;margin-top:6px;color:var(--blue);flex:none}
+.site-footer .social{display:inline-grid;place-items:center;width:36px;height:36px;margin-top:20px;border:1px solid rgba(255,255,255,.16);border-radius:50%;color:var(--blue)}
+.site-footer .social svg{width:15px;height:15px}
+.site-footer .social:hover,.site-footer .social:focus-visible{color:#fff;border-color:var(--blue)}
 .site-footer .ar-name{font-family:var(--f-ar);color:var(--blue);margin-top:14px;display:inline-block}
 .site-footer .bottom{border-top:1px solid rgba(255,255,255,.08);padding-block:24px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.82rem}
 .ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
