@@ -152,5 +152,7 @@
 <a class="wa" href="https://wa.me/201115652365" target="_blank" rel="noopener" aria-label="WhatsApp">{{ I('FaWhatsapp') }}</a>
 <script src="{{ R }}assets/js/site.js?v={{ V }}" defer></script>
 <script src="{{ R }}assets/js/search.js?v={{ V }}" defer></script>
-</body>
+{% if not path.endswith('/latest/') %}{# the only analytics allowed (CLAUDE.md); not on the email-signature pages #}
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71544f838c17421fa4b97561eb2d5d4e"}'></script><!-- End Cloudflare Web Analytics -->
+{% endif %}</body>
 </html>

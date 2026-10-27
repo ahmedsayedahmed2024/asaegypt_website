@@ -355,6 +355,7 @@ PRIVACY = dict(
     kicker="Legal", h1="Privacy policy", lead="How we handle information you share with us through this website.",
     body="""<p>ASA Chartered Accountants and Consultants ("ASA", "we") respects your privacy. This policy explains how we handle personal information submitted through asaegypt.com.</p>
 <h2>Information we collect</h2><p>When you contact us through the website, we collect the information you provide — such as your name, company, email address, phone number and message.</p>
+<p>Website statistics: we use Cloudflare Web Analytics to count visits and page views. It does not use cookies, does not track individual visitors and does not collect personal data.</p>
 <h2>How we use it</h2><ul><li>To respond to your enquiry and provide the information you request.</li><li>To assess and prepare proposals for professional services.</li><li>To comply with professional and legal obligations.</li></ul>
 <h2>Sharing</h2><p>We do not sell your personal information. We share it only with service providers who help us operate the website and handle enquiries, and where required by law or professional regulation.</p>
 <h2>Retention and security</h2><p>We keep enquiry information only as long as necessary for the purposes above, and apply appropriate safeguards to protect it.</p>
