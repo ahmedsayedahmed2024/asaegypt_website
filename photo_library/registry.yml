@@ -152,3 +152,11 @@ photos:
   library: economy/dubai-skyline-night
   dhash: 03070792b2660d06
   sha256: 7102276503f8e8aed8d6e499393b595896459b748fae4f0d3ce3762dcdd0451b
+- used_by: news:uae-einvoicing-deadlines-accredited-service-provider
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Dubai_skylines_(Pixabay_1536496).jpg
+  photographer: Ronald Sagarino
+  licence: CC0
+  library: economy/dubai-coast-skyline
+  dhash: 634488092404eaf4
+  sha256: 799ae00c029aa5029adaab7c006d553e9dfa5b47ec33baff5328812ffd19a775
