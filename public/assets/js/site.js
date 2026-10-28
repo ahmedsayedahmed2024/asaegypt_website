@@ -8,10 +8,25 @@
   document.querySelectorAll('[data-open-menu]').forEach(function(b){b.addEventListener('click',function(){mn.classList.add('open');document.body.style.overflow='hidden';b.setAttribute('aria-expanded','true')})});
   document.querySelectorAll('[data-close-menu]').forEach(function(b){b.addEventListener('click',function(){mn.classList.remove('open');document.body.style.overflow='';})});
 
-  document.querySelectorAll('.nav .has-dd>button').forEach(function(b){
-    b.addEventListener('click',function(){var li=b.parentNode;var o=li.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+  // "Services" menu: the label is a link to /services/; the chevron button toggles the dropdown (click, Enter/Space),
+  // the dropdown also opens on hover (desktop); Escape and a click elsewhere close it. aria-expanded follows what is shown.
+  // .shut keeps it closed under the pointer after the chevron or Escape closed it, until the pointer leaves.
+  // A click on the chevron while the dropdown is open by hover keeps it open; the next click closes it.
+  document.querySelectorAll('.nav .has-dd').forEach(function(li){
+    var t=li.querySelector('.dd-tgl');if(!t)return;
+    var set=function(o){li.classList.toggle('open',o);li.classList.toggle('shut',!o&&li.matches(':hover'));t.setAttribute('aria-expanded',o)};
+    var shown=function(){return li.classList.contains('open')||(li.matches(':hover')&&!li.classList.contains('shut'))};
+    t.addEventListener('click',function(){set(!li.classList.contains('open'))}); // opened by hover: the click keeps it open
+    li.addEventListener('mouseenter',function(){if(!li.classList.contains('shut'))t.setAttribute('aria-expanded','true')});
+    li.addEventListener('mouseleave',function(){li.classList.remove('shut');t.setAttribute('aria-expanded',li.classList.contains('open'))});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&shown()){var f=li.contains(document.activeElement);set(false);if(f)t.focus()}});
+    li.addEventListener('focusout',function(e){if(li.classList.contains('open')&&!li.contains(e.relatedTarget))set(false)});
   });
-  document.addEventListener('click',function(e){document.querySelectorAll('.nav .has-dd.open').forEach(function(li){if(!li.contains(e.target)){li.classList.remove('open');li.querySelector('button').setAttribute('aria-expanded','false')}})});
+  document.addEventListener('click',function(e){document.querySelectorAll('.nav .has-dd.open').forEach(function(li){if(!li.contains(e.target)){li.classList.remove('open');li.querySelector('.dd-tgl').setAttribute('aria-expanded','false')}})});
+  // mobile menu: the chevron next to "Services" shows / hides the list of services
+  document.querySelectorAll('.mn-tgl').forEach(function(t){
+    t.addEventListener('click',function(){var o=t.getAttribute('aria-expanded')!=='true';t.setAttribute('aria-expanded',o);document.getElementById(t.getAttribute('aria-controls')).hidden=!o});
+  });
 
   var els=document.querySelectorAll('.rv');
   if('IntersectionObserver' in window){

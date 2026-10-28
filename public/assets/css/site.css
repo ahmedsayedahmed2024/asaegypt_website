@@ -89,8 +89,15 @@ html[dir="rtl"] .link-arrow:hover svg{transform:scaleX(-1) translateX(4px)}
 .nav>li>a:hover,.nav>li>button:hover,.nav>li>a[aria-current="page"]{opacity:1}
 .nav>li>a[aria-current="page"]{color:var(--lime)}
 .nav svg{width:10px;height:10px}
+/* "Services": the label is a link, the chevron next to it a separate button that toggles the dropdown (site.js);
+   together they take the same width as the former single button */
+.nav>li.has-dd{display:flex;align-items:center}
+.nav>li>a.dd-link{padding-inline-end:2px}
+.nav>li>button.dd-tgl{padding-inline-start:4px}
+.dd-tgl svg{transition:transform .2s}
+.dd-tgl[aria-expanded="true"] svg{transform:rotate(180deg)}
 .dropdown{position:absolute;top:calc(100% + 8px);inset-inline-start:-12px;width:560px;background:#fff;border-radius:6px;box-shadow:0 24px 60px rgba(15,18,22,.18);padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:4px;opacity:0;visibility:hidden;transform:translateY(8px);transition:all .22s var(--ease)}
-.nav>li:hover .dropdown,.nav>li:focus-within .dropdown,.nav>li.open .dropdown{opacity:1;visibility:visible;transform:none}
+.nav>li:hover:not(.shut) .dropdown,.nav>li.open .dropdown{opacity:1;visibility:visible;transform:none}
 .dropdown a{display:flex;gap:14px;padding:12px;border-radius:4px;transition:background .2s}
 .dropdown a:hover{background:var(--tint)}
 .dropdown .hx{width:38px;height:34px;flex:none;font-size:15px}
@@ -126,6 +133,14 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 .mobile-nav a.sub{font-size:1rem;font-weight:500;color:var(--soft);padding-inline-start:18px}
 .mobile-nav .sub.more{color:var(--soft);font-size:.92rem;padding:11px 0 13px;padding-inline-start:18px;border-bottom:1px solid rgba(255,255,255,.08)}
 .mobile-nav .btn{margin-top:26px;justify-content:center;border-bottom:0}
+/* mobile menu: "Services" opens the Services page, the chevron beside it shows / hides the list of services */
+.mn-dd{display:flex;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.08)}
+.mn-dd a{flex:1;border-bottom:0}
+.mn-tgl{display:flex;align-items:center;justify-content:center;width:48px;color:#fff;flex:none}
+.mn-tgl svg{width:14px;height:14px;transition:transform .2s}
+.mn-tgl[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mn-sub{display:flex;flex-direction:column}
+.mn-sub[hidden]{display:none}
 
 /* hero */
 .hero{position:relative;background:var(--graphite);color:#fff;overflow:hidden;isolation:isolate}
@@ -155,14 +170,27 @@ a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,25
 .stat span{display:block;font-size:.86rem;color:var(--soft);margin-top:6px;line-height:1.4}
 
 /* page hero (inner) */
-.page-hero{background:var(--graphite);color:#fff;position:relative;overflow:hidden;padding:170px 0 90px}
+/* --ph-t: header (84px) + the space above the breadcrumb; --ph-b: the space under the last line. The big faint mark
+   (and the ASA NEXT spark) is centred on the content block (breadcrumb to lead), never higher than just below the
+   header, about 3/4 of the hero's height. Every hero but Briefing's (.has-ledger, its own stronger pattern) carries
+   a much fainter imprint of the ledger pattern, mainly along the bottom and the outer side, fading out under the text. */
+.page-hero{--ph-t:124px;--ph-b:64px;--ph-m:440px;background:var(--graphite);color:#fff;position:relative;overflow:hidden;padding:var(--ph-t) 0 var(--ph-b)}
+.page-hero:not(.has-ledger)::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url(../img/asa-ledger-pattern-dark.svg) 0 0/120px auto;opacity:.065;
+  -webkit-mask-image:linear-gradient(to left,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%);
+  mask-image:linear-gradient(to left,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%)}
+html[dir="rtl"] .page-hero:not(.has-ledger)::before{
+  -webkit-mask-image:linear-gradient(to right,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%);
+  mask-image:linear-gradient(to right,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%)}
 section.page-hero .hero-ledger{background-size:120px auto;background-position:0 0;opacity:.16;
   -webkit-mask-image:linear-gradient(to left,#000 15%,transparent 75%);mask-image:linear-gradient(to left,#000 15%,transparent 75%)}
 html[dir="rtl"] .page-hero .hero-ledger{-webkit-mask-image:linear-gradient(to right,#000 15%,transparent 75%);mask-image:linear-gradient(to right,#000 15%,transparent 75%)}
-.page-hero .mark-bg{position:absolute;inset-inline-end:-80px;top:40px;width:460px;opacity:.16}
-.page-hero h1{color:#fff;font-size:clamp(2.2rem,4.4vw,3.6rem);max-width:18ch;margin-bottom:22px}
+.page-hero .mark-bg,.nx-hero .nx-hero-bg{position:absolute;inset-inline-end:-80px;top:calc(50% + (var(--ph-t) - var(--ph-b)) / 2);transform:translateY(-50%);
+  height:min(74%,var(--ph-m),calc(100% + var(--ph-t) - var(--ph-b) - 2 * 92px));width:auto;max-width:none;opacity:.16;pointer-events:none}
+.page-hero .mark-bg{aspect-ratio:111/96.13}
+.page-hero h1{color:#fff;font-size:clamp(2.2rem,4.4vw,3.6rem);max-width:18ch;margin-bottom:18px}
 .page-hero .lead{color:var(--soft)}
-.crumbs{font-size:.85rem;color:var(--soft);margin-bottom:26px;display:flex;gap:8px;flex-wrap:wrap}
+.crumbs{font-size:.85rem;color:var(--soft);margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap}
 .crumbs a:hover{color:#fff}
 
 /* sections */
@@ -437,6 +465,17 @@ html[lang="ar"] .more{font-style:normal}
 .filters button{padding:10px 18px;border:1px solid var(--line);border-radius:40px;font-weight:600;font-size:.9rem;color:var(--ink);background:#fff;transition:all .2s}
 .filters button[aria-pressed="true"],.filters button:hover{background:var(--graphite);border-color:var(--graphite);color:#fff}
 .post[hidden]{display:none}
+/* Insights category chips: one line on desktop; where they must wrap, the rows are balanced (inline chips +
+   text-wrap:balance). Phones: one row that scrolls sideways, no scrollbar, the edges fading out */
+.filters-line{display:block;text-wrap:balance;margin-bottom:32px}
+.filters-line button{display:inline-block;padding:8px 13px;margin:0 6px 8px 0;font-size:.88rem;white-space:nowrap}
+html[dir="rtl"] .filters-line button{margin:0 0 8px 6px}
+@media (max-width:640px){
+  .filters-line{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:8px;margin-inline:calc(-1 * var(--gut));padding:2px var(--gut) 4px;margin-bottom:24px;
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 var(--gut),#000 calc(100% - var(--gut)),transparent);mask-image:linear-gradient(to right,transparent,#000 var(--gut),#000 calc(100% - var(--gut)),transparent)}
+  .filters-line::-webkit-scrollbar{display:none}
+  .filters-line button,html[dir="rtl"] .filters-line button{margin:0;flex:none}
+}
 /* contact */
 .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
 .form{display:grid;gap:18px;grid-template-columns:1fr 1fr}
@@ -475,12 +514,17 @@ html[lang="ar"] .more{font-style:normal}
 @media (max-width:640px){
   .team-card{grid-template-columns:1fr}
   .form{grid-template-columns:1fr}
-  .page-hero{padding:130px 0 60px}
-  .page-hero .mark-bg{width:280px;inset-inline-end:-120px}
   .numbers b{font-size:2rem}
   .numbers b.sm{font-size:1.08rem}
 }
-.page-hero .kicker{color:var(--lime)}
+.page-hero .kicker{color:var(--lime);margin-bottom:14px}
+@media (max-width:1080px){.page-hero{--ph-t:120px;--ph-b:56px;--ph-m:360px}}
+@media (max-width:640px){
+  .page-hero{--ph-t:112px;--ph-b:44px}
+  /* phones: the mark smaller and fainter, in the lower outer corner, clear of the header and the breadcrumb */
+  .page-hero .mark-bg,.page-hero.nx-hero .nx-hero-bg{top:auto;bottom:-30px;transform:none;height:150px;inset-inline-end:-58px;opacity:.09}
+  .page-hero.nx-hero .nx-hero-bg{opacity:.07}
+}
 svg.mark{width:100%;height:auto}
 /* article */
 .art-hero .meta{display:flex;gap:22px;flex-wrap:wrap;color:var(--soft);font-size:.9rem;margin-top:26px}
@@ -663,6 +707,10 @@ html[lang="ar"] .news-related small{letter-spacing:0;font-size:.88rem}
 @media (min-width:1081px){.site-header .bar{gap:16px}.nav>li>a,.nav>li>button{padding:10px 8px}.header-cta{gap:10px}}
 @media (max-width:1240px) and (min-width:1081px){.nav>li>a,.nav>li>button{padding:10px 6px;font-size:.84rem}.header-cta .btn{padding:10px 13px;font-size:.84rem}.lang{padding:6px 9px;font-size:.84rem}}
 .sec.sec-near{padding-top:clamp(40px,5vw,65px)}
+/* the first section after an inner-page hero starts closer to it (64px desktop, 40px phone), and a divider
+   that would be the first thing under the hero is dropped */
+.page-hero+.sec{padding-top:clamp(40px,4.5vw,64px)}
+.page-hero+.sec>.wrap>:first-child{border-top:0;padding-top:0}
 
 /* ASA NEXT — lockup (icon + "ASA NEXT" wordmark, always in English) */
 .nx-lock{display:inline-flex;align-items:center;gap:.55em;line-height:1}
@@ -685,7 +733,7 @@ html[lang="ar"] .nx-tag{letter-spacing:0;font-size:.5em;font-family:var(--f-ar)}
 .nx-band-in:hover .link-arrow svg{transform:translateX(4px)}
 html[dir="rtl"] .nx-band-in:hover .link-arrow svg{transform:scaleX(-1) translateX(4px)}
 /* landing + item pages */
-.nx-hero .nx-hero-bg{position:absolute;inset-inline-end:-40px;top:70px;width:420px;opacity:.12;pointer-events:none}
+.nx-hero .nx-hero-bg{inset-inline-end:-40px;opacity:.12}
 .nx-hero .lead{max-width:60ch}
 .nx-mini{display:inline-block;margin-bottom:26px}
 .nx-card{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:var(--radius);padding:24px 26px 26px;transition:transform .35s var(--ease),box-shadow .35s}
@@ -720,7 +768,7 @@ html[lang="ar"] .article .nx-close{font-style:normal}
 .nx-close span{color:var(--lime-dk);font-weight:800;font-style:normal}
 .article .nx-see{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-weight:600}
 .article .nx-see a{color:var(--blue-dk);text-decoration:underline;text-underline-offset:3px}
-@media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}.nx-hero .nx-hero-bg{width:260px;inset-inline-end:-90px}}
+@media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}}
 bdi.lt{white-space:nowrap}
 
 /* site search: header button (just before the language button; next to the menu button on mobile) */

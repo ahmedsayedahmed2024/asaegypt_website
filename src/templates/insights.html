@@ -3,7 +3,7 @@
 {{ m.hero([(T.nav.insights,None)], D.kicker, D.h1, D.lead) }}
 <section class="sec">
   <div class="wrap">
-    <div class="filters" role="group" aria-label="{{ D.filter }}"><button aria-pressed="true" data-f="*">{{ D.all }}</button>{% for k, label in TABS %}<button aria-pressed="false" data-f="{{ k }}">{{ label }}</button>{% endfor %}</div>
+    <div class="filters filters-line" role="group" aria-label="{{ D.filter }}"><button aria-pressed="true" data-f="*">{{ D.all }}</button>{% for k, label in TABS %}<button aria-pressed="false" data-f="{{ k }}">{{ label }}</button>{% endfor %}</div>
     <div class="grid-3">{% for a in ALL %}{{ m.post_card(a) }}{% endfor %}</div>
     <p style="margin-top:40px;color:var(--muted);font-size:.9rem">{{ D.disclaimer }}</p>
   </div>
