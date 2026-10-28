@@ -196,6 +196,8 @@ ABOUT = dict(
           ("FaGraduationCap", "ACCA · CPA · SOCPA", "", "Team members holding ACCA, CPA and SOCPA professional qualifications.")],
     appr_h="How we work matters as much as what we deliver.", appr_p="Professional oversight, documented quality control and clear communication — on every engagement.",
     appr_cta="Our approach",
+    # trademark notice at the bottom of the page (small muted text)
+    tm_note="ASA, its logo and ASA Hexagon are trademarks of Ahmed Sayed Ahmed Chartered Accountants and Consultants, with applications for registration filed with the competent authorities in the Arab Republic of Egypt. They may not be used or reproduced without prior written permission.",
 )
 
 WHO = dict(
@@ -378,7 +380,9 @@ HEXAGON = dict(
     why_h="Why a hexagon?",
     why=["\"Hexagon\" comes from two Greek words: <em>hex</em>, six, and <em>gōnía</em>, angle. In Arabic, the word <em>rukn</em> means both a corner and the support a structure stands on. So each of our pillars is a corner, and each corner is something we stand on.",
          "The hexagon holds a special place in geometry. It is one of only three regular shapes that cover a surface completely without gaps, with the triangle and the square, but it divides the surface into equal cells with the least total length of wall. The mathematicians of ancient Alexandria noticed this, and it was proved in 1999 as the \"honeycomb conjecture\". This is why aerospace and other demanding industries use honeycomb structures where maximum strength is needed for minimum weight.",
-         "That is what we look for in an audit: a structure with no gaps, and effort placed where it is needed, without waste."],
+         "That is what we look for in an audit: a structure with no gaps, and effort placed where it is needed, without waste.",
+         "In our mark, the hexagon carries the meaning of the profession itself. Accounting starts from its smallest building block, the journal entry, and widens until it reaches the financial statements. That is the upright A in the top piece: its apex is the entry, its broad base the statements. Audit starts where accounting ends: the auditor receives the financial statements, the broad base of the inverted A in the bottom piece, and works downwards until reaching its narrowest point: the entry and its evidence.",
+         "The two letters hand over to each other base to base, separated by a band that runs from one tip of the shape to the other: professional judgement, where the two directions meet at a small point of balance. The green quarter on the audit side is the auditor's green review pen: the mark of checking and sign-off."],
     hive_h="What we learn from the hive",
     hive_p="The hexagonal cell is the work of bees, and the hive offers lessons we try to follow:",
     hive=[dict(name="Guarding the entrance", text="Guard bees check every arrival before it enters. We begin every engagement by assessing acceptance and independence, before any work starts."),
@@ -386,7 +390,7 @@ HEXAGON = dict(
           dict(name="Economy of effort", text="Bees build with the least wax possible. We direct audit effort to where the real risks are."),
           dict(name="No cell is sealed before it is ready", text="Bees cap a cell only when its contents have matured. We sign an opinion only when the evidence is complete.")],
     pillars_h="The six pillars",
-    pillars_p="Our pillars are the five fundamental principles of the Code of Ethics issued by the International Ethics Standards Board for Accountants (IESBA), plus independence, which every audit engagement requires.",
+    pillars_p="Our pillars are the five fundamental principles of the Code of Ethics issued by the International Ethics Standards Board for Accountants (IESBA), plus independence, which every audit engagement requires. Independence is the foundation of them all in an auditor's work: without it the other five principles lose their value, because an opinion that does not come from an independent auditor cannot be relied on.",
     work="In our work:",
     pillars=[dict(name="Independence", define="An opinion that is free in fact and in appearance, unaffected by any interest or relationship.",
                   practice="we assess independence before accepting every engagement and reassess it in every cycle."),
@@ -409,9 +413,12 @@ HEXAGON = dict(
                    text="Integrity is honesty in what we say; objectivity is neutrality in how we weigh what we see. Together they form professional judgement. This balance governs execution and the gathering of evidence."),
               dict(name="Balance of responsibility", pair="Confidentiality & competence and due care",
                    text="Confidentiality is our responsibility to the client for what it entrusts to us; due care is our responsibility to everyone who relies on our work. This balance governs completion, reporting and what follows.")],
+    stages="Each balance also accompanies a stage of the engagement: credibility at client acceptance and planning, judgement while the work is performed and the evidence is evaluated, and responsibility at completion and when the report is issued.",
     close="The three balances rest on a single axis: <strong>trust</strong>. The client's trust in our work, and the trust of investors, regulators and every user of financial statements in our opinion.",
-    practice_h="From principle to practice",
-    practice="Principles mean little until they are tested. Our audit methodology is built so that every file passes through the six pillars, from client acceptance to the issued report. A periodic internal review, <strong>ASA Hexagon</strong>, measures each engagement against the same six sides, identifies where we can improve, and follows up on the actions taken.",
+    practice_h="ASA Hexagon: the firm's quality management framework",
+    practice=["ASA Hexagon is our firm's internal quality management framework. It is built on the International Standard on Quality Management ISQM 1, complemented by ISQM 2 for engagement quality reviews and by the International Standard on Auditing ISA 220 at the level of each engagement. Ultimate responsibility for the system rests with the Managing Partner.",
+              "The framework is being implemented in stages, at three levels: preventive, built into the working papers of every engagement from client acceptance to the issued report; detective, through periodic inspection of completed files; and corrective, addressing the causes of any deficiency found and following up on the remediation, with its operational responsibilities assigned to named people within the firm. The aim is for every working file to carry its control signature: a documented trail of every review and sign-off, traceable from the statements down to the entry and its evidence.",
+              "Because standards and laws evolve, we review the framework periodically and update it in line with the standards applicable in Egypt and with international standards."],
     began_h="Where it began",
     began="The hexagon was chosen when the firm was founded in May 2022, and its meaning has grown with us year after year.",
     refs="References: IESBA International Code of Ethics for Professional Accountants, including International Independence Standards; ISQM 1; Thomas C. Hales, \"The Honeycomb Conjecture\" (1999).",

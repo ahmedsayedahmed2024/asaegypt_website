@@ -1,6 +1,6 @@
 // ASA Hexagon (/hexagon/): the hero diagram's animation and its hover / tap highlights.
 // The SVG is drawn at build time in its finished state (src/hexagon.py); this script plays the intro once
-// (about 6.5 s, the approved timings) and then lets a corner or a balance line highlight its balance.
+// (about 6.5 s, the approved order: corners, outline, names, the mark assembling, balances, trust) and then lets a corner or a balance line highlight its balance.
 // With reduced motion the finished diagram is shown at once. Both layouts (wide, narrow) are driven together.
 (function(){
   var hero=document.getElementById('hxg');if(!hero)return;
@@ -31,7 +31,7 @@
         nm:[].slice.call(g.querySelectorAll('.hxd-nm')),x:num(dot,'cx'),y:num(dot,'cy'),k:+g.getAttribute('data-k'),focused:false}});
     return {svg:s,glow:glow,verts:verts,haze:q('.hxd-haze'),outline:q('.hxd-outline'),sidesG:q('.hxd-sides'),
       sides:qa('.hxd-side').map(function(g){var l=g.querySelectorAll('line');return {l:l,len:num(l[0],'stroke-dasharray'),spark:g.querySelector('circle')}}),
-      stripes:qa('.hxd-s'),stripesG:q('.hxd-stripes'),
+      pieces:qa('.hxd-s').map(function(el){var f=el.getAttribute('data-f').split(' ');return {el:el,fx:+f[0],fy:+f[1]}}),markG:q('.hxd-mark'),
       beams:[q('.hxd-btop'),q('.hxd-bmid'),q('.hxd-bbot')],
       clips:[rect('.hxd-rtop'),rect('.hxd-rmid'),rect('.hxd-rbot')],ax:rect('.hxd-rax',true),
       bals:qa('.hxd-bal'),halo:q('.hxd-halo'),cring:q('.hxd-cring'),trust:qa('.hxd-tr')};
@@ -61,9 +61,19 @@
       set(v.lbl,'opacity',p3);set(v.lbl,'transform','translate(0 '+(-16*(1-p3))+')');
       if(!v.focused)v.nm.forEach(function(el){el.style.fill=g<1?mix('#C3D648','#FFFFFF',g):'';
         if(g>0&&g<.6)set(el,'filter',d.glow);else el.removeAttribute('filter')})}
-    // 4. the 12 stripes connect one after another, then settle to a faint background (3.3–5.4 s)
-    d.stripes.forEach(function(s4,i){var p4=eo(prog(t,3300+i*80,420)),settle=prog(t,4500,900);
-      set(s4,'opacity',p4*(.95-(.95-.13)*settle))});
+    // 4. the mark assembles: the four quarters come in from their own corners, one after another, then the beam
+    //    grows from the centre and locks between the two notches (a short glow at the balance point); then the
+    //    pieces settle to a faint background (3.3–5.3 s)
+    var settle=eio(prog(t,4500,800));
+    d.pieces.forEach(function(pc,i){
+      if(pc.fx||pc.fy){var p4=eo(prog(t,3300+i*140,560));
+        set(pc.el,'transform','translate('+(24*pc.fx*(1-p4))+' '+(18*pc.fy*(1-p4))+')');
+        set(pc.el,'opacity',p4*(.95-(.95-.14)*settle))}
+      else{var pb=eio(prog(t,3950,500));
+        set(pc.el,'transform','scale('+Math.max(.001,pb)+' 1)');
+        set(pc.el,'opacity',(pb>0?1:0)*(.95-(.95-.14)*settle))}
+    });
+    var lock=prog(t,4380,520);set(d.halo,'opacity',lock>0&&lock<1?.7*Math.sin(lock*Math.PI):0);
     set(d.haze,'opacity',.03*prog(t,3300,1200));
     // 5. balances: the middle line from the centre outwards, then the top and bottom lines; their names fade in
     grow(d.clips[1],eio(prog(t,4500,650)));grow(d.clips[0],eio(prog(t,4800,600)));grow(d.clips[2],eio(prog(t,4950,600)));
@@ -74,7 +84,7 @@
     grow(d.ax,eio(prog(t,5400,700)));
     var pc=prog(t,5900,450),pw=eo(prog(t,6050,500));
     set(d.cring,'opacity',pc);set(d.cring,'r',Math.max(.01,12*(pc>0?back(pc):0)));
-    set(d.halo,'opacity',.35*pc);
+    if(t>=4900)set(d.halo,'opacity',.35*pc);
     d.trust.forEach(function(el){set(el,'opacity',pw)});
   }
 
@@ -98,7 +108,7 @@
         set(v.dot,'r',pair?11:8)}
       d.bals.forEach(function(el,i){el.style.opacity=op(i===bi,.25)});
       d.beams.forEach(function(el,i){el.style.opacity=n?(i===bi?.95:.15):''});
-      d.stripesG.style.opacity=n?.5:'';
+      d.markG.style.opacity=n?.5:'';
     });
     msgs.forEach(function(m){m.classList.toggle('on',+m.getAttribute('data-b')===bi)});
   }

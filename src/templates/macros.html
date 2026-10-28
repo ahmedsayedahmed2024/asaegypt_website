@@ -1,6 +1,6 @@
-{% macro hero(crumbs, kicker, h1, lead, icon=None, ctas=None) -%}
+{% macro hero(crumbs, kicker, h1, lead, icon=None, ctas=None, ledger=False) -%}
 <section class="page-hero">
-  {{ MARK_BG|safe }}
+  {% if ledger %}<span class="hero-ledger" aria-hidden="true"></span>{% else %}{{ MARK_BG|safe }}{% endif %}
   <div class="wrap">
     <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a>{% for c in crumbs %}<span aria-hidden="true">/</span>{% if c[1] %}<a href="{{ P(c[1]) }}">{{ c[0] }}</a>{% else %}<span>{{ c[0] }}</span>{% endif %}{% endfor %}</nav>
     {% if icon %}<span class="hx">{{ I(icon) }}</span>{% endif %}
@@ -52,7 +52,7 @@
 {%- endmacro %}
 
 {% macro ph(label='') -%}
-{# card frame without a photo: dark background, a faint honeycomb grid and the category name (no logo; see CLAUDE.md, "Images") #}
+{# card frame without a photo: dark background, the faint ledger pattern of the mark and the category name (no logo; see CLAUDE.md, "Images") #}
 <span class="ph" aria-hidden="true">{% if label %}<span class="ph-l">{{ label|bidi(L) }}</span>{% endif %}</span>
 {%- endmacro %}
 {% macro card_img(i) -%}

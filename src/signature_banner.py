@@ -14,9 +14,9 @@ simple static banner is written, and a warning is printed.
 
 Run on its own (after a build): python src/signature_banner.py
 """
-import base64, datetime, io, json, os, re, shutil, subprocess, sys, tempfile, urllib.request
+import base64, datetime, io, json, os, shutil, subprocess, sys, tempfile, urllib.request
 sys.path.insert(0, os.path.dirname(__file__))
-import articles_meta, news, pages_en, pages_ar, logo
+import articles_meta, news, pages_en, pages_ar, asa_mark, mark
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FONTS = os.path.join(ROOT, 'public/assets/fonts')
@@ -104,23 +104,21 @@ def fonts_css(L):
                    for w in (400, 700))
 
 
-def stripes():
-    """The 12 stripes of the logo hexagon (logo.py, traced from the original), in the order of the site intro
-    (mark.py: top-left, top-right, bottom-right, bottom-left; each group from its outer stripe inwards)."""
-    groups = []
-    for colour, d in logo.MARK:
-        groups.append([(colour, p + 'Z') for p in d.split('Z') if p])
-    tl, tr, br, bl = groups
-    return tl + tr[::-1] + br[::-1] + bl
+def pieces():
+    """The five colour pieces of the ASA mark (asa_mark.py), in the order of the site intro (mark.py: top-left,
+    top-right, bottom-right, bottom-left, then the beam): [(colour, polygon in mark units)]."""
+    return [(c, poly) for _, c, poly in mark.pieces(seam=0.6)]  # opaque: the left quarters run a hair under the right ones
+
+
+def _d(poly):
+    return 'M' + 'L'.join(f'{x:.2f} {y:.2f}' for x, y in poly) + 'Z'
 
 
 def mark_svg():
-    x0, y0 = -1.5, 7.5
-    w, h = 238.5, 252
-    paths = ''.join(f'<path fill="{c}" d="{d}"/>' for c, d in stripes())
-    glow = ''.join(f'<path class="w" fill="#fff" fill-opacity="0" d="{d}"/>' for _, d in stripes())
-    return (f'<svg class="mark" viewBox="{x0} {y0} {w} {h}" xmlns="http://www.w3.org/2000/svg">'
-            f'{paths}{glow}</svg>')
+    paths = ''.join(f'<path fill="{c}" d="{_d(p)}"/>' for c, p in pieces())
+    glow = ''.join(f'<path class="w" fill="#fff" fill-opacity="0" d="{_d(p)}"/>' for _, p in pieces())
+    return f'<svg class="mark" viewBox="{asa_mark.VIEWBOX}" xmlns="http://www.w3.org/2000/svg">{paths}{glow}</svg>'
+
 
 
 TEMPLATE = """<!doctype html><html lang="{L}" dir="{dir}"><head><meta charset="utf-8"><style>
@@ -129,7 +127,7 @@ TEMPLATE = """<!doctype html><html lang="{L}" dir="{dir}"><head><meta charset="u
 html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#23262B}}
 body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiased;position:relative}}
 .mk{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}}
-.mark{{display:block;width:70px;height:74px}}
+.mark{{display:block;width:76px;height:66px;margin-top:4px}}
 .mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:7.5px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
 .items{{position:absolute;top:0;bottom:12px;inset-inline-start:116px;inset-inline-end:18px}}
 .item{{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0}}
@@ -176,7 +174,7 @@ document.querySelectorAll('.item').forEach((el, i) => {{
 }});
 const items = [...document.querySelectorAll('.item')], dashes = [...document.querySelectorAll('.dashes i')];
 const glow = [...document.querySelectorAll('.mark .w')];
-// one frame: {{items: {{index: [opacity, dy]}}, dash: index, wave: [12 opacities]}}
+// one frame: {{items: {{index: [opacity, dy]}}, dash: index, wave: [5 opacities]}}
 window.setFrame = st => {{
   items.forEach((el, i) => {{
     const s = st.items[i];
@@ -223,7 +221,7 @@ def timeline(n_items, n_trans, text_steps=None):
     frames = []
     step = round(TRANSITION_MS / n_trans / 10) * 10  # GIF delays are in 1/100 s
     for i in range(n_items):
-        frames.append((dict(items={str(i): [1, 0]}, dash=i, wave=[0] * 12), HOLD_MS))
+        frames.append((dict(items={str(i): [1, 0]}, dash=i, wave=[0] * 5), HOLD_MS))
         nxt = (i + 1) % n_items
         if nxt == i:
             break
@@ -236,8 +234,8 @@ def timeline(n_items, n_trans, text_steps=None):
             else:         # new text fades in from slightly below
                 p = ease((tt - 0.5) / 0.5)
                 st = {str(nxt): [round(p, 3), round(5 * (1 - p), 2)]}
-            # a soft light wave over the 12 stripes, one after another (brightness up, then back)
-            wave = [round(0.5 * max(0.0, 1 - abs(t - (0.1 + k * 0.07)) / 0.16), 3) for k in range(12)]
+            # a soft light wave over the five pieces of the mark, one after another (brightness up, then back)
+            wave = [round(0.45 * max(0.0, 1 - abs(t - (0.12 + k * 0.17)) / 0.22), 3) for k in range(5)]
             frames.append((dict(items=st, dash=i if tt < 0.5 else nxt, wave=wave), step))
     return frames
 
@@ -346,11 +344,11 @@ def static_banner(out_dir):
     for L in ('en', 'ar'):
         im = Image.new('RGB', (W * s, H * s), '#23262B')
         dr = ImageDraw.Draw(im)
-        k = 74 * s / 252  # the mark (74px tall) and the "ASA HEXAGON" tag under it, in the 82x86 column
-        x_mark = (18 + 6) * s if L == 'en' else (W - 18 - 82 + 6) * s
-        for colour, d in stripes():
-            pts = [tuple(map(float, q.split())) for q in re.findall(r'[ML]\s*([-\d.]+ [-\d.]+)', d)]
-            dr.polygon([(x_mark + (x + 1.5) * k, (H - 86) / 2 * s + (y - 7.5) * k) for x, y in pts], fill=colour)
+        k = 66 * s / (2 * asa_mark.H)  # the mark (66px tall) and the "ASA HEXAGON" tag under it, in the 82x86 column
+        cx = (18 + 41) * s if L == 'en' else (W - 18 - 41) * s
+        cy = ((H - 86) / 2 + 4 + 33) * s
+        for colour, poly in pieces():
+            dr.polygon([(cx + x * k, cy + y * k) for x, y in poly], fill=colour)
         try:
             big = ImageFont.truetype(os.path.join(FONTS, 'pjs-700.woff2'), 15 * s)
             small = ImageFont.truetype(os.path.join(FONTS, 'pjs-400.woff2'), 11 * s)
