@@ -46,7 +46,10 @@ def svg(cls='mark', animate=False):
     """The mark: five <path class="s nm-<piece>"> (--i = order of appearance). The brief mark is see-through,
     so its quarters meet exactly at x = 0; the other ones are opaque and overlap by a hair."""
     seam = 0.0 if cls == 'brief-mark' else 0.6
-    parts = ''.join(f'<path class="s nm-{n}" style="--i:{i}" fill="{c}" d="{_d(p)}"/>' for i, (n, c, p) in enumerate(pieces(seam)))
+    # see-through: the right quarters get a hairline stroke in their own colour, which closes the seam while the pieces
+    # are opaque (intro) without a visible double layer at rest
+    hair = lambda n, c: f' stroke="{c}" stroke-width=".25"' if seam == 0 and n in ('tr', 'br') else ''
+    parts = ''.join(f'<path class="s nm-{n}" style="--i:{i}" fill="{c}"{hair(n, c)} d="{_d(p)}"/>' for i, (n, c, p) in enumerate(pieces(seam)))
     return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">{parts}</svg>'
 
 
