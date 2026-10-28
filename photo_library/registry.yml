@@ -160,3 +160,11 @@ photos:
   library: economy/dubai-coast-skyline
   dhash: 634488092404eaf4
   sha256: 799ae00c029aa5029adaab7c006d553e9dfa5b47ec33baff5328812ffd19a775
+- used_by: news:fra-investment-funds-q3-2026
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Cairo_Tower_from_Corniche_El_Nile_Street,_al-Q%C4%81hirah,_CG,_EGY_(47856870472).jpg
+  photographer: Warren LeMay
+  licence: CC0
+  library: tax/cairo-tower-corniche
+  dhash: 3f0f4f1773999a07
+  sha256: ef26480e3b66d2955a1d7c76d812f85b5765bb877d242fdf110d4c725130915d

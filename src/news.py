@@ -27,6 +27,32 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="fra-investment-funds-q3-2026", date="2026-10-25", added="2026-10-28", added_at="04:24", category="economy", region="egypt",
+      title_en="FRA: net assets of Egyptian mutual funds reach EGP 504.71 billion at the end of Q3 2026",
+      title_ar="الرقابة المالية: صافي أصول صناديق الاستثمار في مصر يبلغ 504.71 مليار جنيه بنهاية الربع الثالث من 2026",
+      short_en="FRA: fund net assets exceed EGP 500 billion",
+      short_ar="صافي أصول صناديق الاستثمار يتجاوز 500 مليار جنيه",
+      summary_en="Egypt's Financial Regulatory Authority has published its investment fund report for the third quarter of 2026. Net assets of mutual funds reached EGP 504.71 billion at the end of September 2026, up from EGP 470.97 billion at the end of June.",
+      summary_ar="نشرت الهيئة العامة للرقابة المالية في مصر تقرير أداء صناديق الاستثمار عن الربع الثالث من عام 2026، الذي يرصد تطورات السوق حتى نهاية سبتمبر. وبلغ صافي أصول صناديق الاستثمار 504.71 مليار جنيه بنهاية سبتمبر 2026، مقابل 470.97 مليار جنيه بنهاية يونيو.",
+      image=dict(library='tax/cairo-tower-corniche', focus='55% 58%',
+                 source='https://commons.wikimedia.org/wiki/File:Cairo_Tower_from_Corniche_El_Nile_Street,_al-Q%C4%81hirah,_CG,_EGY_(47856870472).jpg',
+                 photographer='Warren LeMay', site='Wikimedia Commons', licence='CC0',
+                 alt_en='Cairo Tower seen across the Nile from the Corniche on a hazy morning',
+                 alt_ar='برج القاهرة كما يبدو عبر النيل من الكورنيش في صباح يكسوه الضباب الخفيف'),
+      body_en=[
+          "On 25 October 2026, the Financial Regulatory Authority (FRA) published its investment fund report for the third quarter of 2026, covering developments in the non-banking financial market up to the end of September 2026.",
+          "Net assets under management in mutual funds reached EGP 504.71 billion at the end of September 2026, compared with EGP 470.97 billion at the end of June: an increase of EGP 33.74 billion, or about 7.16%, during the quarter. Of this total, EGP 470.10 billion was denominated in local currency and the equivalent of EGP 34.60 billion in foreign currencies. Total assets managed by the funds rose to about EGP 512.84 billion, from EGP 478.10 billion at the end of the second quarter, a quarterly increase of 7.27%.",
+          "The number of registered funds rose to 232 at the end of September 2026, from 224 at the end of the second quarter. Fund certificates in issue reached 52.50 billion, up from 44.04 billion at the end of June, an increase of 19.21%. Retail investors held 41.90 billion certificates (79.8% of the total), corporate and other legal entities 10.16 billion (19.4%), and founding institutions 441.7 million earmarked certificates (0.8%).",
+          "By category, private equity funds recorded the highest average return for the quarter, at 15.24%, followed by index funds at 13.03% and single-sector funds at 12.23%. Precious metals funds averaged 8.23% and Islamic equity funds 8.00%, while transferable securities funds returned 6.76%, thematic funds focused on information technology, fintech and innovation 5.68%, and equity funds 5.55%.",
+      ],
+      body_ar=[
+          "نشرت الهيئة العامة للرقابة المالية، في 25 أكتوبر 2026، تقرير أداء صناديق الاستثمار عن الربع الثالث من عام 2026، الذي يرصد تطورات سوق الخدمات المالية غير المصرفية حتى نهاية سبتمبر 2026.",
+          "وبلغ صافي الأصول المُدارة في صناديق الاستثمار 504.71 مليار جنيه بنهاية سبتمبر 2026، مقابل 470.97 مليار جنيه بنهاية يونيو، بزيادة قدرها 33.74 مليار جنيه، أي بنسبة نمو تقارب 7.16% خلال الربع. ومن هذا الإجمالي 470.10 مليار جنيه مقوّمة بالعملة المحلية، وما يعادل 34.60 مليار جنيه بالعملات الأجنبية. كما ارتفع إجمالي الأصول التي تديرها الصناديق إلى نحو 512.84 مليار جنيه، مقابل 478.10 مليار جنيه بنهاية الربع الثاني، بنسبة نمو فصلية بلغت 7.27%.",
+          "وارتفع عدد الصناديق المسجلة إلى 232 صندوقًا بنهاية سبتمبر 2026، مقابل 224 صندوقًا بنهاية الربع الثاني. وبلغ عدد الوثائق المُصدَرة 52.50 مليار وثيقة، مقابل 44.04 مليار وثيقة بنهاية يونيو، بزيادة نسبتها 19.21%. واستحوذ الأفراد على 41.90 مليار وثيقة تمثل 79.8% من الإجمالي، والشركات والأشخاص الاعتبارية على 10.16 مليار وثيقة (19.4%)، في حين احتفظت الجهات المؤسِّسة بـ441.7 مليون وثيقة مُجنَّبة (0.8%).",
+          "وعلى صعيد العائد خلال الربع، حققت صناديق الملكية الخاصة أعلى متوسط عائد بنسبة 15.24%، تلتها صناديق المؤشرات بنسبة 13.03%، ثم الصناديق القطاعية بنسبة 12.23%. وبلغ متوسط عائد صناديق المعادن النفيسة 8.23%، وصناديق الأسهم الإسلامية 8.00%، بينما سجلت صناديق الأوراق المالية القابلة للتداول 6.76%، والصناديق المتخصصة في تكنولوجيا المعلومات والتكنولوجيا المالية والابتكار 5.68%، وصناديق الأسهم 5.55%.",
+      ],
+      source_name="Financial Regulatory Authority (FRA), Egypt",
+      source_url="https://fra.gov.eg/en/fra_news/%d8%a7%d9%84%d8%b1%d9%82%d8%a7%d8%a8%d8%a9-%d8%a7%d9%84%d9%85%d8%a7%d9%84%d9%8a%d8%a9-%d8%aa%d8%b5%d8%af%d8%b1-%d8%aa%d9%82%d8%b1%d9%8a%d8%b1-%d8%a3%d8%af%d8%a7%d8%a1-%d8%b5%d9%86%d8%a7%d8%af-2/"),
  dict(slug="uae-einvoicing-deadlines-accredited-service-provider", date="2026-10-25", added="2026-10-27", added_at="04:14", category="economy", region="gcc",
       title_en="UAE Federal Tax Authority reminds persons subject to e-invoicing of the implementation deadlines and penalties",
       title_ar="الهيئة الاتحادية للضرائب في الإمارات تذكّر الخاضعين لنظام الفوترة الإلكترونية بالمواعيد الإلزامية للتطبيق والغرامات",
