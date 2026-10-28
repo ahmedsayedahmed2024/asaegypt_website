@@ -53,5 +53,16 @@ def svg(cls='mark', animate=False):
     return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">{parts}</svg>'
 
 
+def shine_svg(cls='hxg-mark'):
+    """The mark above the "ASA HEXAGON" kicker on the ASA Hexagon page: the five opaque colour pieces, then the same
+    five shapes in white on top (class "hxl hxl-<piece>", --k = order tl, tr, br, bl, beam), invisible at rest. The
+    CSS light wave (site.css, "ASA Hexagon: the mark and kicker shine") flashes them one after another, like the
+    light wave of the email signature banner."""
+    shapes = pieces(0.6)
+    parts = ''.join(f'<path fill="{c}" d="{_d(p)}"/>' for _, c, p in shapes)
+    glow = ''.join(f'<path class="hxl hxl-{n}" style="--k:{k}" fill="#fff" d="{_d(p)}"/>' for k, (n, _, p) in enumerate(shapes))
+    return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">{parts}{glow}</svg>'
+
+
 if __name__ == '__main__':
     print(svg())

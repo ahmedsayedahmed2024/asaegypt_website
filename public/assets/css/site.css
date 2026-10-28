@@ -554,19 +554,18 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
 .disc{font-size:.88rem;color:var(--muted);margin-top:26px}
 @media (max-width:1080px){.art-grid{grid-template-columns:1fr;gap:30px}.toc{position:static}}
 
-/* mobile menu button (top-left on all languages) */
+/* mobile header (up to 1080px): the same layout mirrored between the languages: the logo at the start, the buttons
+   grouped at the end (language, search, menu; the menu button at the outer edge). The mobile menu slides in from the
+   side of its button (English from the right, Arabic from the left: .mobile-nav above) */
 .menu-btn svg,.mobile-nav .close svg{width:24px;height:24px;display:block}
 .menu-btn{align-items:center;justify-content:center;width:44px;height:44px;border:1.5px solid rgba(255,255,255,.3);border-radius:var(--radius);padding:0}
 .site-header.solid .menu-btn{border-color:var(--line)}
 @media (max-width:1080px){
-  .menu-btn{display:flex;order:0}
+  .menu-btn{display:flex;order:4}
   .site-header .bar{justify-content:flex-start;gap:14px}
+  .site-header .bar>nav{display:none}  /* the desktop menu: hidden here, so it takes no gap before the logo */
   .logo{order:1}
   .header-cta{order:2;margin-inline-start:auto}
-  html[dir="rtl"] .menu-btn{order:3}
-  html[dir="rtl"] .logo{order:1}
-  html[dir="rtl"] .header-cta{order:2}
-  .mobile-nav,html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 }
 
 /* homepage: ASA Briefing hexagon = the ASA mark (regular hexagon, 2 : √3; see mark.py, home.html + site.js).
@@ -765,7 +764,7 @@ html[lang="ar"] .article .nx-close{font-style:normal}
 @media (max-width:640px){.nx-stage{padding:18px}.nx-stage dl>div{grid-template-columns:1fr;gap:2px}.nx-band-in{gap:12px 20px}}
 bdi.lt{white-space:nowrap}
 
-/* site search: header button (just before the language button; next to the menu button on mobile) */
+/* site search: header button (just before the language button; between the language and menu buttons on mobile) */
 .search-btn{display:flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:var(--radius);transition:border-color .2s,color .2s}
 .search-btn svg{width:18px;height:18px}
 .search-btn:hover,.search-btn[aria-expanded="true"]{border-color:#fff}
@@ -777,9 +776,7 @@ bdi.lt{white-space:nowrap}
 }
 @media (max-width:1240px) and (min-width:1081px){.search-btn{width:36px;height:36px}.search-btn svg{width:16px;height:16px}}
 @media (max-width:1080px){
-  .search-btn{order:0;width:44px;height:44px}
-  html[dir="rtl"] .search-btn{order:3}
-  html[dir="rtl"] .menu-btn{order:4}
+  .search-btn{order:3;width:44px;height:44px}
 }
 @media (max-width:400px){
   .site-header .bar{gap:10px!important}
@@ -939,6 +936,19 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 .hxg-head{padding-top:clamp(8px,2.6vh,30px)}
 .hxg-mark{display:block;height:clamp(40px,7.1vh,64px);width:auto;margin:0 auto clamp(6px,1.3vh,14px)}
 .hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(4px,1.1vh,12px)}
+/* ASA Hexagon: the mark and kicker shine. No hexagon bullet on this kicker (it stays an empty box, 0 wide and
+   unpainted, so the line keeps its baseline and the diagram does not move); the word is centred under the mark
+   (padding-left = the letter-spacing after the last letter). A 5 s loop from 1.2 s after load, for as long as the page
+   is open: a soft light wave over the mark's pieces (tl, tr, br, bl, then the beam: the balance of judgement), then
+   along the word, A to N. Colour and glow only: nothing moves. No animation with reduced motion (the rule at the top) */
+.hxg-hero .hxg-kick{gap:0;padding-left:.24em}
+.hxg-hero .hxg-kick::before{width:0;background:none}
+.hxg-mark .hxl{opacity:0;animation:hxl 5s cubic-bezier(.4,0,.2,1) calc(1.2s + var(--k) * .16s) infinite}
+.hxg-mark .hxl-beam{animation-name:hxlb}
+@keyframes hxl{0%{opacity:0}5%{opacity:.5}12%{opacity:0}100%{opacity:0}}
+@keyframes hxlb{0%{opacity:0}6%{opacity:.6}16%{opacity:0}100%{opacity:0}}
+.hxg-kl>span{animation:hxch 5s ease-in-out calc(2.05s + var(--j) * .075s) infinite}
+@keyframes hxch{0%{color:#C3D648;text-shadow:none}4%{color:#F4F8DC;text-shadow:0 0 10px rgba(195,214,72,.85),0 0 22px rgba(195,214,72,.35)}10%{color:#C3D648;text-shadow:none}100%{color:#C3D648;text-shadow:none}}
 .hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}
 html[lang="ar"] .hxg-title{font-weight:700;line-height:1.4}
 .hxg-title .dot{color:var(--lime)}
