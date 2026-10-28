@@ -17,7 +17,7 @@
   --graphite:#23262B; --graphite-2:#2C3036; --graphite-3:#383D44;
   --ink:#1D2024; --text:#33373D; --muted:#5F646C; --soft:#C5C9CF;
   --line:#E2E8EC; --tint:#F1F7FA; --tint-2:#E8F3F8; --white:#fff;
-  --blue:#80CAE3; --blue-2:#A6D8EE; --blue-3:#B2DCF2; --lime:#C3D648;
+  --blue:#80CAE3; --blue-2:#99D3EA; --blue-3:#B2DCF2; --lime:#C3D648;
   --blue-dk:#1C7AA6; --lime-dk:#66741A;
   --radius:4px; --max:1240px; --gut:clamp(20px,4vw,48px);
   --f-en:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
@@ -75,8 +75,14 @@ html[dir="rtl"] .link-arrow:hover svg{transform:scaleX(-1) translateX(4px)}
 /* header */
 .site-header{position:fixed;inset-inline:0;top:0;z-index:50;transition:background .3s,box-shadow .3s,transform .3s}
 .site-header .bar{display:flex;align-items:center;justify-content:space-between;height:84px;gap:24px}
-.logo img{height:34px;width:auto}
+/* logo: sized by height. Short lockup (mark + ASA + TM) 50px; on the homepage, before the header turns solid,
+   the full lockup (with the name line) at 58px, cross-fading into the short one; both sit in the same cell */
+.logo{display:grid;align-items:center;justify-items:start}
+.logo img{grid-area:1/1;height:50px;width:auto}
+.logo .l-full{height:58px}
 .logo .l-dark{display:none}
+.logo-home .l-dark{display:block;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s .35s}
+.logo-home .l-full{transition:opacity .35s ease,visibility 0s}
 .nav{display:flex;align-items:center;gap:6px}
 .nav>li{list-style:none;position:relative}
 .nav>li>a,.nav>li>button{display:flex;align-items:center;gap:6px;padding:10px 13px;font-weight:600;font-size:.94rem;color:#fff;opacity:.88;transition:opacity .2s,color .2s}
@@ -100,6 +106,8 @@ html[dir="rtl"] .link-arrow:hover svg{transform:scaleX(-1) translateX(4px)}
 .menu-btn{display:none;color:#fff;font-size:22px;padding:8px}
 .site-header.solid{background:rgba(255,255,255,.97);backdrop-filter:saturate(1.4) blur(10px);box-shadow:0 1px 0 var(--line)}
 .site-header.solid .l-light{display:none}.site-header.solid .l-dark{display:block}
+.site-header.solid .logo-home .l-dark{opacity:1;visibility:visible;transition:opacity .35s ease,visibility 0s}
+.site-header.solid .logo-home .l-full{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s .35s}
 .site-header.solid .nav>li>a,.site-header.solid .nav>li>button,.site-header.solid .menu-btn{color:var(--ink)}
 .site-header.solid .nav>li>a[aria-current="page"]{color:var(--blue-dk)}
 .site-header.solid .lang{color:var(--ink);border-color:var(--line)}
@@ -112,7 +120,7 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 .mobile-nav{visibility:hidden}
 .mobile-nav.open{transform:none!important;visibility:visible}
 .mobile-nav .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
-.mobile-nav .top img{height:30px;width:auto}
+.mobile-nav .top img{height:34px;width:auto}
 .mobile-nav .close{color:#fff;font-size:24px;padding:8px}
 .mobile-nav a{color:#fff;font-size:1.2rem;font-weight:600;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .mobile-nav a.sub{font-size:1rem;font-weight:500;color:var(--soft);padding-inline-start:18px}
@@ -129,8 +137,10 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 .hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
 .hero .art{position:relative;justify-self:end;width:min(520px,100%)}
 .hero .art .mark{width:100%;height:auto;filter:drop-shadow(0 30px 60px rgba(0,0,0,.25))}
-.mark .s{opacity:0;transform:translate(-14px,10px);animation:stripe .9s var(--ease) forwards;animation-delay:calc(var(--i) * 70ms + 200ms)}
-@keyframes stripe{to{opacity:1;transform:none}}
+/* the large mark (About, Our Team): the quarters come in from their own corners, then the beam locks in */
+.nm-tl{--dx:-3.9px;--dy:-3px}.nm-tr{--dx:3.9px;--dy:-3px}.nm-br{--dx:3.9px;--dy:3px}.nm-bl{--dx:-3.9px;--dy:3px}
+.mark .s{transform-box:fill-box;opacity:0;animation:bPiece .8s var(--ease) calc(var(--i) * 140ms + 200ms) forwards}
+.mark .nm-beam{transform-origin:center;animation:bBeam .6s cubic-bezier(.65,0,.35,1) .85s forwards}
 .hero .stats{position:absolute;inset-inline:0;bottom:0;border-top:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.14)}
 .hero .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);min-height:auto;padding:0 var(--gut);gap:0}
 .stat{padding:26px 24px 26px 0;border-inline-end:1px solid rgba(255,255,255,.08)}
@@ -146,6 +156,9 @@ a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,25
 
 /* page hero (inner) */
 .page-hero{background:var(--graphite);color:#fff;position:relative;overflow:hidden;padding:170px 0 90px}
+section.page-hero .hero-ledger{background-size:120px auto;background-position:0 0;opacity:.16;
+  -webkit-mask-image:linear-gradient(to left,#000 15%,transparent 75%);mask-image:linear-gradient(to left,#000 15%,transparent 75%)}
+html[dir="rtl"] .page-hero .hero-ledger{-webkit-mask-image:linear-gradient(to right,#000 15%,transparent 75%);mask-image:linear-gradient(to right,#000 15%,transparent 75%)}
 .page-hero .mark-bg{position:absolute;inset-inline-end:-80px;top:40px;width:460px;opacity:.16}
 .page-hero h1{color:#fff;font-size:clamp(2.2rem,4.4vw,3.6rem);max-width:18ch;margin-bottom:22px}
 .page-hero .lead{color:var(--soft)}
@@ -253,6 +266,7 @@ html[dir="rtl"] .step{padding:0 0 0 26px}
 .site-footer{background:#1B1D21;color:var(--soft);font-size:.93rem}
 .site-footer .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:44px;padding-block:80px 60px}
 .site-footer img{height:34px;width:auto;margin-bottom:22px}
+.site-footer .foot-logo{height:78px}
 .site-footer h4{color:#fff;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
 html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 .site-footer ul{list-style:none;display:grid;gap:10px}
@@ -283,7 +297,7 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 @media (min-width:1081px){
   .hero{--hg:clamp(14px,3.4vh,44px)}
   .hero .wrap{padding-top:calc(84px + var(--hg));padding-bottom:calc(131px + var(--hg))}
-  .hero .art{width:clamp(361px,calc((100vh - 84px - 2 * var(--hg)) * 112 / 118),100%)}
+  .hero .art{width:clamp(361px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129),100%)}
   .hero h1{font-size:clamp(2.3rem,min(5.2vw,8.6vh),4.3rem);margin-bottom:clamp(12px,2.8vh,26px)}
   .hero .kicker{margin-bottom:clamp(10px,2vh,18px)}
   .hero .lead{font-size:clamp(1.02rem,min(1.5vw,2.3vh),1.25rem);margin-bottom:clamp(18px,4.2vh,38px)}
@@ -318,6 +332,8 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .trust .wrap{flex-direction:column;align-items:flex-start}
   .seg.feature{grid-row:auto}
   .header-cta .lang{padding:6px 10px}
+  .logo img{height:40px}.logo .l-full{height:50px}
+  .site-footer .foot-logo{height:66px}
 }
 .why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px}
 .why-head{position:sticky;top:120px;align-self:start}
@@ -515,13 +531,16 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
   .mobile-nav,html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 }
 
-/* homepage: ASA Briefing hexagon (built from the mark; see home.html + site.js) */
-.brief{position:relative;width:100%;aspect-ratio:112/118;container-type:inline-size;color:#fff}
-.brief-mark,.brief-hex{position:absolute;inset:0;width:100%;height:100%}
-.brief-mark .s{opacity:.06}
+/* homepage: ASA Briefing hexagon = the ASA mark (regular hexagon, 2 : √3; see mark.py, home.html + site.js).
+   The five pieces fill the hexagon exactly; the lime outline sits on their outer edges at every width. */
+.brief{position:relative;width:100%;aspect-ratio:111/96.129;container-type:inline-size;color:#fff}
+.brief-mark,.brief-hex{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+/* resting state: the mark clearly visible, the item photo clearer than it */
+.brief-mark .s{--rest:.24;opacity:var(--rest)}
+.brief-mark .nm-beam{--rest:.5}
 .brief-hex polygon{fill:rgba(255,255,255,.025);stroke:var(--lime);stroke-width:1.5px;vector-effect:non-scaling-stroke}
-.brief-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12.5% 14% 10.5%;
-  clip-path:polygon(27.23% .85%,72.77% .85%,99.55% 50%,72.77% 99.15%,27.23% 99.15%,.45% 50%)}
+.brief-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:7.5% 15.5% 5.5%;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .brief-label{display:inline-flex;align-items:center;gap:9px;font-size:clamp(10px,2.4cqi,12.5px);font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin:0}
 html[lang="ar"] .brief-label{letter-spacing:0;font-size:clamp(12px,2.8cqi,14.5px)}
 .brief-label .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);flex:none;animation:bPulse 2s ease-out infinite}
@@ -559,16 +578,27 @@ html[dir="rtl"] .brief .bar i{transform-origin:right}
 .brief.run .bar.on i{animation:bFill 6s linear forwards}
 .brief.paused .bar.on i{animation-play-state:paused}
 @keyframes bFill{from{transform:scaleX(0)}to{transform:none}}
-/* intro: assemble (0–0.8s), rest, dim stripes (2.0–2.8s) + outline, then content */
-.brief.intro .brief-mark .s{animation:bDrop .5s var(--ease) calc(var(--i) * 25ms) both,bDim .3s ease calc(2s + var(--i) * 45ms) forwards}
-.brief.intro .brief-hex{animation:bShow .8s ease 2s both}
-.brief.intro .brief-in{animation:bShow .45s ease 2.45s both}
+/* intro (about 3.4s): the four quarters come in from their own corners (from 0.2s, 170ms apart), the Deep Blue
+   beam slides out from the centre and locks between the two notches (1.05s), a soft glow at the balance point
+   (1.6–2.7s); then the outline (2.6s), the pieces dim to their resting opacity (2.9s), the photo (2.95s), the text (3.4s).
+   Offsets (.nm-tl etc.) are in mark units: about 18px / 14px on a desktop */
+.brief-mark .s{transform-box:fill-box}
+.brief-mark .nm-beam{transform-origin:center}
+.brief.intro .brief-mark .s{animation:bPiece .65s var(--ease) calc(.2s + var(--i) * 170ms) both,bDim .45s ease 2.9s forwards}
+.brief.intro .brief-mark .nm-beam{animation:bBeam .6s cubic-bezier(.65,0,.35,1) 1.05s both,bDim .45s ease 2.9s forwards}
+.brief.intro .brief-glow{animation:bGlow 1.1s ease-in-out 1.6s both}
+.brief.intro .brief-hex{animation:bShow .7s ease 2.6s both}
+.brief.intro .brief-in{animation:bShow .45s ease 3.4s both}
 /* later visits in the same session: ~0.8s */
 .brief.quick .brief-mark .s{animation:bDim .3s ease calc(var(--i) * 25ms) both}
 .brief.quick .brief-hex{animation:bShow .4s ease .1s both}
 .brief.quick .brief-in{animation:bShow .35s ease .45s both}
-@keyframes bDrop{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
-@keyframes bDim{from{opacity:1}to{opacity:var(--mk,.06)}}
+.brief-glow{position:absolute;left:50%;top:50%;width:24%;aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,255,255,.45) 22%,rgba(255,255,255,.12) 45%,rgba(255,255,255,0) 70%)}
+@keyframes bPiece{from{opacity:0;transform:translate(var(--dx),var(--dy))}to{opacity:1;transform:none}}
+@keyframes bBeam{from{opacity:1;transform:scaleX(0)}to{opacity:1;transform:none}}
+@keyframes bGlow{0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}40%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes bDim{from{opacity:1}to{opacity:var(--rest)}}
 @keyframes bShow{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
 @media (max-width:1080px){
   .hero .art{order:0;justify-self:center;width:min(420px,100%);margin-top:16px}
@@ -577,7 +607,7 @@ html[dir="rtl"] .brief .bar i{transform-origin:right}
   .hero .art{width:min(340px,100%);margin-top:8px}
   .brief-sum{display:none}
   .brief-h{font-size:18px}
-  .brief-in{padding-inline:13%}
+  .brief-in{padding-inline:14%}
 }
 
 /* Briefing list + item pages */
@@ -802,28 +832,30 @@ html[dir="rtl"] .brief-arrow .chev{transform:scaleX(-1)}
 @media (max-width:640px){.brief-ctrl{width:64%}.brief-ctrl .brief-bars{gap:3px}}
 
 /* images (SHOW_IMAGES in src/config.py; see CLAUDE.md, "Images") */
-/* homepage hexagon: the current item's image, clipped to the hexagon under the logo stripes, behind dark glass */
-.brief-media{position:absolute;inset:0;clip-path:polygon(27.23% .85%,72.77% .85%,99.55% 50%,72.77% 99.15%,27.23% 99.15%,.45% 50%)}
+/* homepage hexagon: the current item's image, clipped to the hexagon under the faint mark, behind dark glass */
+.brief-media{position:absolute;inset:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .brief-pic{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
 .brief-pic.on,.brief:not(.js) .brief-pic[data-i="0"]{opacity:1}
-.brief-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(1px) brightness(.92);transform:scale(1.04);transition:transform 0s linear .8s}
+.brief-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.92);transform:scale(1.04);transition:transform 0s linear .8s}
 .brief-pic.on img{transform:scale(1.12);transition:transform 16s linear}
 /* light frosted glass: the photo stays recognisable; the dark gradient sits mainly behind the text (centre and lower part),
    so every line of text keeps WCAG AA contrast. The label at the top gets its own small dark backing. */
 .brief-pic::after{content:"";position:absolute;inset:0;background:
   radial-gradient(ellipse 50% 40% at 50% 58%,rgba(35,38,43,.55),rgba(35,38,43,0) 100%),
   linear-gradient(180deg,rgba(35,38,43,.18) 0%,rgba(35,38,43,.24) 20%,rgba(35,38,43,.5) 36%,rgba(35,38,43,.68) 60%,rgba(35,38,43,.76) 80%,rgba(35,38,43,.8) 100%)}
-.brief-media~.brief-mark{--mk:.035}
-.brief-media~.brief-mark .s{opacity:.035}
 .brief-media~.brief-in .brief-label{background:rgba(35,38,43,.78);padding:5px 11px;border-radius:2px}
 .brief-slide.has-img .brief-h,.brief-slide.has-img .brief-sum,.brief-slide.has-img .brief-meta,.brief-slide.has-img .brief-read{text-shadow:0 1px 2px rgba(20,22,26,.55),0 0 14px rgba(20,22,26,.45)}
 .brief-slide.has-img .brief-sum,.brief-slide.has-img .brief-meta{color:#E1E4E8}
-.brief.intro .brief-media{animation:bShow .8s ease 2.2s both}
+.brief.intro .brief-media{animation:bShow .8s ease 2.95s both}
 .brief.quick .brief-media{animation:bShow .4s ease .4s both}
 @media (prefers-reduced-motion:reduce){.brief-pic{transition:opacity .8s ease!important}.brief-pic img,.brief-pic.on img{transform:scale(1.04)!important}}
 /* card frames: Insights (.post) already has one; Briefing and ASA NEXT cards get the same frame */
-/* card frame without a photo (macros.ph): dark, a faint honeycomb grid, the category name; no logo */
-.thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 24px;background:radial-gradient(ellipse 70% 90% at 50% 50%,rgba(35,38,43,0) 0%,#23262B 100%),url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='34.641' viewBox='0 0 60 34.641'><path d='M-20 0L-10 -17.3205L10 -17.3205L20 0L10 17.3205L-10 17.3205ZM40 0L50 -17.3205L70 -17.3205L80 0L70 17.3205L50 17.3205ZM-20 34.641L-10 17.3205L10 17.3205L20 34.641L10 51.9615L-10 51.9615ZM40 34.641L50 17.3205L70 17.3205L80 34.641L70 51.9615L50 51.9615ZM10 17.3205L20 0L40 0L50 17.3205L40 34.641L20 34.641Z' fill='none' stroke='%23ffffff' stroke-opacity='.07' stroke-width='1'/></svg>") center/60px 34.641px,#23262B}
+/* card frame without a photo (macros.ph): dark, the faint ledger pattern of the ASA mark (asa_mark.pattern_tile_svg),
+   the category name; no logo */
+.thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 24px;background:#23262B;overflow:hidden}
+.thumb .ph::before,.page-hero .hero-ledger{content:"";position:absolute;inset:0;background:url(../img/asa-ledger-pattern-dark.svg) center/96px auto;opacity:.2;pointer-events:none}
+.thumb .ph::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 50% 50%,rgba(35,38,43,0) 0%,#23262B 100%)}
+.thumb .ph-l{position:relative;z-index:1}
 .thumb .ph-l{color:rgba(255,255,255,.6);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.5}
 html[dir="rtl"] .thumb .ph-l{letter-spacing:0;font-size:.86rem}
 .thumb .thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
@@ -863,7 +895,8 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 .hxg-hero{position:relative;background:radial-gradient(ellipse 60% 55% at 50% 64%,#2B2F35 0%,var(--graphite) 60%,#1B1D21 100%);color:#fff;text-align:center;overflow:hidden;isolation:isolate}
 .hxg-fold{display:flex;flex-direction:column;padding-top:84px}
 .hxg-head{padding-top:clamp(8px,2.6vh,30px)}
-.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(4px,1.1vh,12px)}
+.hxg-mark{display:block;height:clamp(40px,7.1vh,64px);width:auto;margin:0 auto clamp(6px,1.3vh,14px)}
+.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--blue);margin-bottom:clamp(4px,1.1vh,12px)}
 .hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}
 html[lang="ar"] .hxg-title{font-weight:700;line-height:1.4}
 .hxg-title .dot{color:var(--lime)}
@@ -887,7 +920,7 @@ html[lang="ar"] .hxd-wide .hxd-en{font-size:14.5px}
 html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 .hxd-narrow .hxd-num{font-size:18px}.hxd-narrow .hxd-nm,html[lang="ar"] .hxd-narrow .hxd-nm{font-size:25px}.hxd-narrow .hxd-en{font-size:15px}.hxd-narrow .hxd-tr{font-size:24px}
 .hxd-v,.hxd-hit{cursor:pointer}
-.hxd.alive .hxd-v,.hxd.alive .hxd-bal,.hxd.alive .hxd-beams line,.hxd.alive .hxd-stripes{transition:opacity .3s}
+.hxd.alive .hxd-v,.hxd.alive .hxd-bal,.hxd.alive .hxd-beams line,.hxd.alive .hxd-mark{transition:opacity .3s}
 .hxd.alive .hxd-outline{animation:hxBreathe 4.2s ease-in-out infinite}
 .hxd.alive .hxd-halo{animation:hxHalo 4.2s ease-in-out infinite}
 @keyframes hxBreathe{0%,100%{stroke-opacity:.8}50%{stroke-opacity:1}}
@@ -928,6 +961,7 @@ html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 }
 @media (max-width:699px){
   .hxg-fold{padding-top:76px}
+  .hxg-mark{height:48px}
   .hxg-title>span:not(.dot){display:block}
   .hxg-title .dot{display:none}
   .hxd-wide{display:none}
@@ -947,6 +981,10 @@ html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 .hxg-why{overflow:hidden}
 .hxg-why .prose{position:relative;max-width:760px}
 .hxg-why em{font-style:italic;color:var(--ink)}
+/* the meaning of the mark: the mark alone beside the last two paragraphs */
+.hxg-story{display:grid;grid-template-columns:120px 1fr;gap:10px 30px;align-items:start;margin-top:8px;padding-top:26px;border-top:1px solid var(--line)}
+.hxg-story-mark{width:120px;height:auto;margin-top:6px}
+@media (max-width:640px){.hxg-story{grid-template-columns:1fr}.hxg-story-mark{width:84px}}
 .hxg-comb{position:absolute;top:0;bottom:0;inset-inline-end:0;width:min(46%,620px);height:100%;pointer-events:none;
   -webkit-mask-image:linear-gradient(to left,#000 20%,transparent 95%);mask-image:linear-gradient(to left,#000 20%,transparent 95%)}
 html[dir="rtl"] .hxg-comb{-webkit-mask-image:linear-gradient(to right,#000 20%,transparent 95%);mask-image:linear-gradient(to right,#000 20%,transparent 95%)}
@@ -980,7 +1018,8 @@ html[dir="rtl"] .hxg-comb{-webkit-mask-image:linear-gradient(to right,#000 20%,t
 .hxg-bhead h3{font-size:1.2rem;margin-bottom:4px}
 .hxg-bpair{color:var(--lime);font-weight:600;font-size:.93rem}
 .hxg-btext{color:var(--soft);font-size:.96rem}
-.hxg-close{margin-top:34px;color:#fff;font-size:clamp(1.05rem,1.6vw,1.2rem);max-width:70ch}
+.hxg-stages{margin-top:30px;color:var(--soft);font-size:1rem;max-width:70ch}
+.hxg-close{margin-top:22px;color:#fff;font-size:clamp(1.05rem,1.6vw,1.2rem);max-width:70ch}
 .hxg-close strong{color:var(--lime)}
 .hxg-end .prose{max-width:760px}
 .hxg-end .prose h3{margin-top:30px}
@@ -1376,3 +1415,22 @@ html[lang="ar"] .g-qrow dt{letter-spacing:0;text-transform:none;font-size:.86rem
   .g-body [data-p].g-qrow,.g-body .g-faq-i,.g-body .g-qcard,.g-body .g-quick{scroll-margin-top:150px}
 }
 @media (prefers-reduced-motion:reduce){.g-faq-i summary svg{transition:none}}
+
+/* header with the new logo (October 2026): the short lockup is wider than the old logo, so from 1081px up the bar may
+   run a little wider than the page content (32px more on each side), the logo scales with the window (50px tall from about
+   1470px; 58px for the full lockup at the top of the homepage) and the menu tightens, so the whole header stays on
+   one line in English and Arabic */
+@media (min-width:1081px){
+  .site-header .bar{max-width:calc(var(--max) + 64px);gap:12px}
+  .logo img{height:clamp(38px,calc(2.8vw + 9px),50px)}
+  .logo .l-full{height:clamp(46px,calc(2.6vw + 21px),58px)}
+  .nav{gap:0}
+  .nav>li>a,.nav>li>button{padding:10px clamp(4px,calc(1.1vw - 8px),8px);font-size:clamp(.8rem,calc(.35vw + .6rem),.94rem)}
+  .header-cta{gap:8px}
+  .header-cta .btn{padding:9px clamp(9px,calc(1vw - 2px),14px);font-size:clamp(.78rem,calc(.2vw + .58rem),.84rem)}
+  .lang{padding:6px clamp(8px,calc(.6vw),12px);font-size:clamp(.8rem,calc(.2vw + .6rem),.9rem)}
+}
+/* About: trademark notice at the bottom of the page (a quiet legal note) */
+.tm-note{background:var(--tint);border-top:1px solid var(--line);padding:18px 0}
+.tm-note p{font-size:.78rem;line-height:1.6;color:var(--muted);max-width:none}
+html[lang="ar"] .tm-note p{font-size:.84rem}

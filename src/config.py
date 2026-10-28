@@ -1,15 +1,15 @@
 # Site-wide switches.
 
 # Images for Insights articles, Briefing items and ASA NEXT (homepage hexagon, cards, image band on item pages).
-# False = the site looks exactly as before images were added: logo background in the hexagon,
-# striped card placeholders, no image band. The image files and data stay in place.
+# False = the site looks exactly as before images were added: the faint mark in the homepage hexagon,
+# the ledger-pattern card placeholders, no image band. The image files and data stay in place.
 SHOW_IMAGES = True
 
-# ASA Hexagon page (/hexagon/, /ar/hexagon/). Hidden until the trademark is registered: HEXAGON_PUBLIC stays False
-# until Ahmed says so (CLAUDE.md, "ASA Hexagon"). False: the page is not built (its URLs forward to About, noindex),
-# the menu items and every link to it are gone, and the name "ASA Hexagon" appears on no other page.
-# True: everything comes back exactly as before (page, animation, menu position, links).
-HEXAGON_PUBLIC = False
+# ASA Hexagon page (/hexagon/, /ar/hexagon/). Public since the logo switch (October 2026, trademark applications filed;
+# CLAUDE.md, "ASA Hexagon"). False: the page is not built (its URLs forward to About, noindex), the menu items and
+# every link to it are gone, and the name "ASA Hexagon" appears on no other page.
+# True: the page, its animation, menu position and links.
+HEXAGON_PUBLIC = True
 
 import datetime
 

@@ -5,6 +5,7 @@
   <script>(function(){if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))document.getElementById('hxg').className+=' hxg-pre'})();</script>
   <div class="hxg-fold">
     <div class="wrap hxg-head">
+      <img class="hxg-mark" src="{{ R }}assets/img/mark.svg" alt="" width="74" height="64">
       <p class="kicker hxg-kick" dir="ltr" lang="en">{{ D.kicker }}</p>
       <h1 id="hxg-h1" class="hxg-title">{% for t in D.h1 %}{% if not loop.first %}<span class="dot"> · </span>{% endif %}<span>{{ t }}</span>{% endfor %}</h1>
       <p class="lead">{{ D.lead|bidi(L) }}</p>
@@ -35,7 +36,9 @@
   <div class="wrap">
     <div class="prose rv">
       <h2 id="hxg-why">{{ D.why_h }}</h2>
-      {% for p in D.why %}<p>{{ p|safe }}</p>{% endfor %}
+      {% for p in D.why[:3] %}<p>{{ p|safe }}</p>{% endfor %}
+      {#- the meaning of the mark: the mark alone beside these paragraphs #}
+      {% if D.why|length > 3 %}<div class="hxg-story"><img class="hxg-story-mark" src="{{ R }}assets/img/mark.svg" alt="" width="120" height="104" loading="lazy"><div>{% for p in D.why[3:] %}<p>{{ p|safe }}</p>{% endfor %}</div></div>{% endif %}
     </div>
   </div>
 </section>
@@ -77,6 +80,7 @@
       </div>
       {% endfor %}
     </div>
+    <p class="hxg-stages rv">{{ D.stages }}</p>
     <p class="hxg-close rv">{{ D.close|safe }}</p>
   </div>
 </section>
@@ -85,7 +89,7 @@
   <div class="wrap">
     <div class="prose rv">
       <h2 id="hxg-practice">{{ D.practice_h }}</h2>
-      <p>{{ D.practice|safe }}</p>
+      {% for p in D.practice %}<p>{{ p|bidi(L) }}</p>{% endfor %}
       <h3>{{ D.began_h }}</h3>
       <p>{{ D.began }}</p>
     </div>

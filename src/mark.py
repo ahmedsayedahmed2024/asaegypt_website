@@ -1,33 +1,54 @@
-from shapely.geometry import Polygon, box
-from shapely import affinity
-H, W, w = 58.0, 55.5, 25.5
-k = (W - w) / H
-hexa = Polygon([(-w,-H),(w,-H),(W,0),(w,H),(-w,H),(-W,0)])
-top = hexa.intersection(box(-100,-100,100,-1.5))
-def uband(a,b):  # a <= x + k y <= b
-    return Polygon([(a-k*-100,-100),(b-k*-100,-100),(b-k*100,100),(a-k*100,100)])
-def vband(a,b):  # a <= x - k y <= b
-    return Polygon([(a+k*-100,-100),(b+k*-100,-100),(b+k*100,100),(a+k*100,100)])
-TL=[top.intersection(uband(a,b)) for a,b in [(-55.5,-40.5),(-37.5,-22.5),(-19.5,-4.5)]]
-right = top.intersection(uband(-1.5, 200))
-TR=[right.intersection(vband(a,b)) for a,b in [(40,55.5),(22,37.5),(4,19.5)]]
-rot=lambda g: affinity.rotate(g,180,origin=(0,0))
-BR=[rot(g) for g in TL]; BL=[rot(g) for g in TR]
-def path(g):
-    polys = [g] if g.geom_type=='Polygon' else list(g.geoms)
-    out=''
-    for p in polys:
-        c=list(p.exterior.coords)[:-1]
-        out+='M'+' L'.join(f'{x:.2f} {y:.2f}' for x,y in c)+'Z'
+"""The ASA mark as inline SVG for the site's decorations: the homepage hexagon (class "brief-mark"), the faint
+mark behind page heroes and cards ("mark-bg") and the large mark on About / Our Team ("mark").
+
+The geometry comes only from asa_mark.py (never redrawn here): its five colour pieces (top-left Sky, top-right Mist,
+bottom-right Ice, bottom-left Lime and the Deep Blue beam), scaled by K so the hexagon is 111 x 96.13 units, in the
+tight viewBox below. The homepage outline (home.html) uses the same six corners, so it sits exactly on the
+pieces' outer edges at every width.
+"""
+import asa_mark as am
+
+K = 0.555                                   # mark units -> these units (R = 100 -> 55.5)
+W, H = am.R * K, am.H * K                   # half width 55.5, half height 48.0644
+VIEWBOX = f'{-W:g} {-H:.4f} {2 * W:g} {2 * H:.4f}'
+CORNERS = [(-W / 2, -H), (W / 2, -H), (W, 0), (W / 2, H), (-W / 2, H), (-W, 0)]   # TL TR R BR BL L
+OUTLINE = ' '.join(f'{x:.3f},{y:.3f}' for x, y in CORNERS)
+
+
+def _clip(poly, keep_left, at=0.0):
+    """The part of a polygon left (keep_left) or right of the vertical line x = at."""
+    inside = (lambda p: p[0] <= at + 1e-9) if keep_left else (lambda p: p[0] >= at - 1e-9)
+    out = []
+    for i, a in enumerate(poly):
+        b = poly[(i + 1) % len(poly)]
+        if inside(a):
+            out.append(a)
+        if inside(a) != inside(b):
+            t = (at - a[0]) / (b[0] - a[0])
+            out.append((at, a[1] + t * (b[1] - a[1])))
     return out
-def svg(cls='mark', animate=False, colors=('#80CAE3','#A6D8EE','#B2DCF2','#C3D648')):
-    parts=[]
-    i=0
-    for grp,col,name in [(TL,colors[0],'tl'),(TR,colors[1],'tr'),(BR,colors[2],'br'),(BL,colors[3],'bl')]:
-        for g in grp:
-            parts.append(f'<path class="s s-{name}" style="--i:{i}" fill="{col}" d="{path(g)}"/>'); i+=1
-    return f'<svg class="{cls}" viewBox="-56 -59 112 118" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+''.join(parts)+'</svg>'
-if __name__=='__main__':
-    s=svg()
-    open('dist/assets/img/mark.svg','w').write(s.replace('<svg class="mark" ','<svg '))
-    print(len(s))
+
+
+def _d(poly):
+    return 'M' + 'L'.join(f'{x * K:.2f} {y * K:.2f}' for x, y in poly) + 'Z'
+
+
+def pieces(seam=0.0):
+    """The five colour pieces in the order they appear: [(name, colour, polygon in mark units)].
+    seam > 0 lets each left quarter run that far under its right neighbour (opaque drawings: no hairline)."""
+    (_, top), (_, beam), (_, bot) = am.pieces(True)
+    tl, tr, bl, br = am.QUARTERS
+    return [('tl', tl, _clip(top, True, seam)), ('tr', tr, _clip(top, False)),
+            ('br', br, _clip(bot, False)), ('bl', bl, _clip(bot, True, seam)), ('beam', am.BEAM_FIRM, beam)]
+
+
+def svg(cls='mark', animate=False):
+    """The mark: five <path class="s nm-<piece>"> (--i = order of appearance). The brief mark is see-through,
+    so its quarters meet exactly at x = 0; the other ones are opaque and overlap by a hair."""
+    seam = 0.0 if cls == 'brief-mark' else 0.6
+    parts = ''.join(f'<path class="s nm-{n}" style="--i:{i}" fill="{c}" d="{_d(p)}"/>' for i, (n, c, p) in enumerate(pieces(seam)))
+    return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">{parts}</svg>'
+
+
+if __name__ == '__main__':
+    print(svg())

@@ -1,6 +1,6 @@
 {% extends "base.html" %}{% import "macros.html" as m with context %}
 {% block main %}
-{{ m.hero([(T.nav.briefing,None)], D.kicker, D.h1, D.lead) }}
+{{ m.hero([(T.nav.briefing,None)], D.kicker, D.h1, D.lead, ledger=True) }}
 <section class="sec sec-near">
   <div class="wrap">
     <div class="filters" role="group" aria-label="{{ D.topics }}" data-bf="cat"><button aria-pressed="true" data-v="*">{{ D.all }}</button>{% for k, label in CATS %}<button aria-pressed="false" data-v="{{ k }}">{{ label }}</button>{% endfor %}</div>

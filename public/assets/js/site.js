@@ -80,7 +80,7 @@
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
     if(auto){
       br.addEventListener('animationend',function(e){if(e.animationName==='bFill'&&br.classList.contains('run'))show(cur+1)});
-      setTimeout(function(){br.classList.add('run')},br.classList.contains('intro')?2900:800);
+      setTimeout(function(){br.classList.add('run')},br.classList.contains('intro')?3850:800);
       var hover=false,focus=false,upd=function(){br.classList.toggle('paused',hover||focus)};
       br.addEventListener('mouseenter',function(){hover=true;upd()});
       br.addEventListener('mouseleave',function(){hover=false;upd()});

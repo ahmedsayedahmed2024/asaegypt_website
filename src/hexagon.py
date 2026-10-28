@@ -6,77 +6,63 @@ Text: pages_en.HEXAGON / pages_ar.HEXAGON. This module draws, at build time:
     under the diagram). public/assets/js/hexagon.js animates it and adds the hover / tap highlights.
   - the small icons of the pillar cards (one corner lit) and of the balance rows (one line lit),
     the hive icons and the faint honeycomb behind "Why a hexagon?".
-The hexagon outline and its 12 stripes use the traced logo geometry from logo.py (flat top and bottom, pointed
-left and right, exactly as the logo); never redraw them.
+The hexagon outline and the faint colour pieces behind it come from the ASA mark (asa_mark.py: flat top and bottom,
+pointed left and right, exactly as the logo), scaled so the hexagon is 348 units tall; never redraw them.
 
 Open Graph images (1200x630, one per language): python src/hexagon.py --og (after a build; needs Playwright).
 They are written to public/assets/img/og-hexagon-en.png / og-hexagon-ar.png; run it again when the text changes.
 """
 import html, importlib, os, re, sys
 sys.path.insert(0, os.path.dirname(__file__))
-import logo, pages_en, pages_ar
+import asa_mark, mark, pages_en, pages_ar
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PC = {'en': pages_en, 'ar': pages_ar}
 OG = {L: f'/assets/img/og-hexagon-{L}.png' for L in ('en', 'ar')}
 
-# ---------------------------------------------------------------- geometry (from the traced logo)
+# ---------------------------------------------------------------- geometry (from the ASA mark)
 
-def _pts(d):
-    return [tuple(map(float, p.split())) for p in re.findall(r'[ML]\s*([-\d.]+ [-\d.]+)', d)]
-
-_STRIPES = [[p + 'Z' for p in d.split('Z') if p] for _, d in logo.MARK]   # 4 groups x 3 stripes
-_tl, _tr, _br = _pts(_STRIPES[0][0]), _pts(_STRIPES[1][2]), _pts(_STRIPES[2][2])   # the outer stripes
-# the traced hexagon is symmetric under a half turn: the outer top-left stripe turns into the outer bottom-right one
-CX, CY = (_tl[0][0] + _br[0][0]) / 2, (_tl[0][1] + _br[0][1]) / 2
-K = 174 / 125   # diagram units per logo unit: the hexagon is 348 units tall in the diagram
-
-
-def _x_at(a, b, y):
-    return a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1])
+K = 348 / (2 * asa_mark.H)   # diagram units per mark unit (2.009226): the hexagon is 348 units tall in the diagram
 
 
 def _geometry():
-    """Corners of the hexagon in diagram units (centre 0,0; y down). The sides are the outer edges of the
-    outer stripes: upper-left = left edge of the outer top-left stripe, upper-right = right edge of the outer
-    top-right stripe, the lower sides are those turned half a turn. The traced artwork is not perfectly mirror
-    symmetric, so each pointed tip is where two slightly offset sides meet (1.4 logo units apart)."""
-    rot = lambda p: (2 * CX - p[0], 2 * CY - p[1])
-    top = _tl[2][1]
-    tl, tr = _tl[2], (_x_at(_tr[0], _tr[3], top), top)
-    r_up, l_up = (_x_at(_tr[0], _tr[3], CY), CY), (_x_at(_tl[1], _tl[2], CY), CY)
-    raw = dict(TL=tl, TR=tr, Rup=r_up, Rlo=rot(l_up), BR=rot(tl), BL=rot(tr), Llo=rot(r_up), Lup=l_up)
-    g = {k: (round((x - CX) * K, 2), round((y - CY) * K, 2)) for k, (x, y) in raw.items()}
-    g['R'] = (round((g['Rup'][0] + g['Rlo'][0]) / 2, 2), 0.0)
-    g['L'] = (round((g['Lup'][0] + g['Llo'][0]) / 2, 2), 0.0)
+    """Corners of the hexagon in diagram units (centre 0,0; y down): TL(-100.46,-174) TR(100.46,-174) R(200.92,0)
+    BR(100.46,174) BL(-100.46,174) L(-200.92,0). The mark is a regular hexagon, so each pointed tip is a single
+    point (Rup = Rlo = R, Lup = Llo = L)."""
+    R, H = asa_mark.R, asa_mark.H
+    c = lambda x, y: (round(x * K, 2), round(y * K, 2))
+    g = dict(TL=c(-R / 2, -H), TR=c(R / 2, -H), R=c(R, 0), BR=c(R / 2, H), BL=c(-R / 2, H), L=c(-R, 0))
+    g.update(Rup=g['R'], Rlo=g['R'], Lup=g['L'], Llo=g['L'])
     return g
 
 G = _geometry()
-OUTLINE = ['TL', 'TR', 'Rup', 'Rlo', 'BR', 'BL', 'Llo', 'Lup']
 PERIM = ['TL', 'TR', 'R', 'BR', 'BL', 'L']                     # corner order around the outline
-SIDES = [('TL', 'TR'), ('TR', 'Rup'), ('Rlo', 'BR'), ('BR', 'BL'), ('BL', 'Llo'), ('Lup', 'TL')]
+OUTLINE = PERIM
+SIDES = [('TL', 'TR'), ('TR', 'R'), ('R', 'BR'), ('BR', 'BL'), ('BL', 'L'), ('L', 'TL')]
 # pillar n (1-6) -> corner. Fixed (CLAUDE.md): Arabic 1 top-right ... 6 bottom-left; English mirrored.
 CORNER = {'ar': {1: 'TR', 2: 'TL', 3: 'R', 4: 'L', 5: 'BR', 6: 'BL'},
           'en': {1: 'TL', 2: 'TR', 3: 'L', 4: 'R', 5: 'BL', 6: 'BR'}}
-# balance i (0-2): its line and its two pillars
+# balance i (0-2): its line and its two pillars (top: side TL-TR; middle: the beam's centre, tip to tip; bottom: BL-BR)
 BALANCES = [('TL', 'TR', (1, 2)), ('L', 'R', (3, 4)), ('BL', 'BR', (5, 6))]
 LIME, WHITE = '#C3D648', '#FFFFFF'
+# where each piece comes from when the mark assembles (hexagon.js): its own corner; the beam grows from the centre
+PIECE_FROM = {'tl': (-1, -1), 'tr': (1, -1), 'br': (1, 1), 'bl': (-1, 1), 'beam': (0, 0)}
 
 
-def stripes_order():
-    """The 12 stripes in the order they appear (as the homepage intro: top-left, top-right, bottom-right,
-    bottom-left; each group from its outer stripe inwards): [(colour, d)]."""
-    tl, tr, br, bl = [[(c, p) for p in grp] for (c, _), grp in zip(logo.MARK, _STRIPES)]
-    return tl + tr[::-1] + br[::-1] + bl
+def pieces_order(s=1):
+    """The five colour pieces of the mark in the order they appear (top-left, top-right, bottom-right, bottom-left,
+    then the beam), in diagram units at scale s: [(name, colour, d)]."""
+    f = K * s
+    return [(n, c, 'M' + 'L'.join(f'{x * f:.2f} {y * f:.2f}' for x, y in poly) + 'Z') for n, c, poly in mark.pieces()]
 
 # ---------------------------------------------------------------- the hero diagram
 
 # layout per variant: viewBox, size of the hexagon (s: 1 = 348 units tall), font sizes (diagram units), line steps,
 # balance label column. Names too long for their place wrap onto two lines (WRAP); the viewBoxes hold every label.
 LAYOUT = {
-    'wide': dict(box={'en': '-590 -277 1180 538', 'ar': '-525 -280 1050 556'}, s=1,
-                 step_nm=27, step_nm2=25, step_en=21, bal_x={'en': 350, 'ar': 320}),
-    'narrow': dict(box={'en': '-365 -258 730 523', 'ar': '-365 -252 730 506'}, s=.85,
+    'wide': dict(box={'en': '-620 -277 1240 538', 'ar': '-585 -280 1170 556'}, s=1,
+                 step_nm=27, step_nm2=25, step_en=21, bal_x={'en': 380, 'ar': 385}),
+    'narrow': dict(box={'en': '-385 -258 770 523', 'ar': '-365 -252 730 506'}, s=.85,
                    step_nm=30, step_nm2=28, step_en=23, bal_x=None),
 }
 WRAP = {'wide': {'Quality & professional behaviour': ['Quality &', 'professional behaviour'],
@@ -136,7 +122,7 @@ def diagram(L, variant):
     vb = lay['box'][L]
     bx, by, bw, bh = map(float, vb.split())
     # the glow of the balance lines and of the centre word(s) is drawn only around the hexagon (less work per frame)
-    gx, gy = -round(G['Rup'][0] + 40), -round(G['BL'][1] + 40)
+    gx, gy = -round(G['R'][0] + 40), -round(G['BL'][1] + 40)
     o = []
     o.append(f'<svg class="hxd hxd-{variant}" viewBox="{vb}" width="{bw:g}" height="{bh:g}" aria-hidden="true" focusable="false" '
              f'xmlns="http://www.w3.org/2000/svg">')
@@ -154,8 +140,10 @@ def diagram(L, variant):
 
     outline = ' '.join(f'{G[k][0]:g},{G[k][1]:g}' for k in OUTLINE)
     o.append(f'<polygon class="hxd-haze" points="{outline}" fill="{LIME}" opacity=".03" filter="url(#{p}-soft)"/>')
-    o.append(f'<g class="hxd-stripes"><g transform="scale({K * lay["s"]:.6f}) translate({-CX:g} {-CY:g})">'
-             + ''.join(f'<path class="hxd-s" fill="{c}" opacity=".13" d="{d}"/>' for c, d in stripes_order()) + '</g></g>')
+    # the faint mark: its five colour pieces (hexagon.js assembles them; data-f = the corner each one comes from)
+    o.append('<g class="hxd-mark">' + ''.join(
+        f'<path class="hxd-s hxd-s-{n}" data-f="{PIECE_FROM[n][0]} {PIECE_FROM[n][1]}" fill="{c}" opacity=".14" d="{d}"/>'
+        for n, c, d in pieces_order(lay['s'])) + '</g>')
     # the sides, drawn from their middle towards both corners (hidden once the outline is in place)
     o.append('<g class="hxd-sides" opacity="0">')
     for a, b in SIDES:
@@ -225,7 +213,7 @@ def diagram(L, variant):
 
 # ---------------------------------------------------------------- small icons
 
-_ICON_BOX = '-150 -150 300 300'   # logo units around the centre
+_ICON_BOX = '-126 -126 252 252'   # mark units around the centre
 
 
 def _icon_pts(keys):

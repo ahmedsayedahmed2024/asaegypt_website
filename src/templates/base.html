@@ -43,9 +43,13 @@
 <header class="site-header"{% if solid %} data-solid{% endif %}>
   <div class="wrap bar">
     <button class="menu-btn" data-open-menu aria-label="{{ T.menu }}" aria-expanded="false">{{ I('FaBars') }}</button>
-    <a class="logo" href="{{ P('home') }}" aria-label="ASA — {{ T.home }}">
-      <img class="l-light" src="{{ R }}assets/img/logo-asa.svg" alt="ASA Chartered Accountants and Consultants" width="181" height="54">
-      <img class="l-dark" src="{{ R }}assets/img/logo-asa-dark.svg" alt="ASA Chartered Accountants and Consultants" width="181" height="54">
+    {#- logo (CLAUDE.md, "The site logo"): the full lockup (mark + ASA + name line + TM) only at the top of the homepage;
+        everywhere else, and on the homepage once the header turns solid, the short lockup (mark + ASA + TM) #}
+    {%- set home_top = path in ('/', '/ar/') %}
+    <a class="logo{% if home_top %} logo-home{% endif %}" href="{{ P('home') }}" aria-label="ASA — {{ T.home }}">
+      {% if home_top %}<img class="l-full" src="{{ R }}assets/img/logo-asa.svg" alt="ASA Chartered Accountants and Consultants" width="172" height="58">
+      {% else %}<img class="l-light" src="{{ R }}assets/img/logo-asa-short.svg" alt="ASA Chartered Accountants and Consultants" width="195" height="50">
+      {% endif %}<img class="l-dark" src="{{ R }}assets/img/logo-asa-short-dark.svg" alt="{{ '' if home_top else 'ASA Chartered Accountants and Consultants' }}" width="195" height="50">
     </a>
     <nav aria-label="{{ T.mainnav }}">
       <ul class="nav">
@@ -89,7 +93,7 @@
 </header>
 <div class="search-scrim" data-close-search hidden></div>
 <div class="mobile-nav" aria-label="{{ T.mainnav }}">
-  <div class="top"><img src="{{ R }}assets/img/logo-asa.svg" alt="ASA" width="101" height="30"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
+  <div class="top"><img src="{{ R }}assets/img/logo-asa-short-plain.svg" alt="ASA" width="133" height="34"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
   <a href="{{ P('about') }}">{{ T.nav.about }}</a>
 {% if HEXAGON %}  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
@@ -112,7 +116,7 @@
 <footer class="site-footer">
   <div class="wrap top">
     <div>
-      <img src="{{ R }}assets/img/logo-asa.svg" alt="ASA Chartered Accountants and Consultants" width="181" height="54">
+      <img class="foot-logo" src="{{ R }}assets/img/logo-asa.svg" alt="ASA Chartered Accountants and Consultants" width="231" height="78">
       <p>{{ T.foot_about }}</p>
       <p class="ar-name" lang="ar" dir="rtl">أحمد سيد أحمد محاسبون قانونيون ومستشارون</p>
     </div>
