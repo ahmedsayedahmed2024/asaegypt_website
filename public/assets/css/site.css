@@ -172,16 +172,9 @@ a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,25
 /* page hero (inner) */
 /* --ph-t: header (84px) + the space above the breadcrumb; --ph-b: the space under the last line. The big faint mark
    (and the ASA NEXT spark) is centred on the content block (breadcrumb to lead), never higher than just below the
-   header, about 3/4 of the hero's height. Every hero but Briefing's (.has-ledger, its own stronger pattern) carries
-   a much fainter imprint of the ledger pattern, mainly along the bottom and the outer side, fading out under the text. */
+   header, about 3/4 of the hero's height. The background is plain Charcoal; only Briefing's hero (.has-ledger) carries
+   the ledger pattern. Phones: no mark, plain dark behind the text. */
 .page-hero{--ph-t:124px;--ph-b:64px;--ph-m:440px;background:var(--graphite);color:#fff;position:relative;overflow:hidden;padding:var(--ph-t) 0 var(--ph-b)}
-.page-hero:not(.has-ledger)::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:url(../img/asa-ledger-pattern-dark.svg) 0 0/120px auto;opacity:.065;
-  -webkit-mask-image:linear-gradient(to left,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%);
-  mask-image:linear-gradient(to left,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%)}
-html[dir="rtl"] .page-hero:not(.has-ledger)::before{
-  -webkit-mask-image:linear-gradient(to right,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%);
-  mask-image:linear-gradient(to right,#000,transparent 42%),linear-gradient(to top,#000,transparent 45%)}
 section.page-hero .hero-ledger{background-size:120px auto;background-position:0 0;opacity:.16;
   -webkit-mask-image:linear-gradient(to left,#000 15%,transparent 75%);mask-image:linear-gradient(to left,#000 15%,transparent 75%)}
 html[dir="rtl"] .page-hero .hero-ledger{-webkit-mask-image:linear-gradient(to right,#000 15%,transparent 75%);mask-image:linear-gradient(to right,#000 15%,transparent 75%)}
@@ -521,9 +514,10 @@ html[dir="rtl"] .filters-line button{margin:0 0 8px 6px}
 @media (max-width:1080px){.page-hero{--ph-t:120px;--ph-b:56px;--ph-m:360px}}
 @media (max-width:640px){
   .page-hero{--ph-t:112px;--ph-b:44px}
-  /* phones: the mark smaller and fainter, in the lower outer corner, clear of the header and the breadcrumb */
-  .page-hero .mark-bg,.page-hero.nx-hero .nx-hero-bg{top:auto;bottom:-30px;transform:none;height:150px;inset-inline-end:-58px;opacity:.09}
-  .page-hero.nx-hero .nx-hero-bg{opacity:.07}
+  /* phones: no big faint mark, the hero is plain dark behind the text; the ASA NEXT spark stays, small and faint,
+     in the lower outer corner, clear of the header and the breadcrumb */
+  .page-hero .mark-bg{display:none}
+  .page-hero.nx-hero .nx-hero-bg{top:auto;bottom:-30px;transform:none;height:150px;inset-inline-end:-58px;opacity:.07}
 }
 svg.mark{width:100%;height:auto}
 /* article */

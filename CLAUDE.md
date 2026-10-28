@@ -156,6 +156,7 @@ It refuses a photo already used (same source URL or the same image, even resized
 ### Where images appear (built automatically from the data)
 - Homepage hexagon: the item's image clipped to the hexagon under dark glass and the faint mark (fades in, slow zoom; only the current and next image are loaded). Items without an image show the mark alone.
 - Insights, Briefing and ASA NEXT cards: the card image (800px). Without an image: a neutral placeholder (`ph()` in `macros.html`): dark background, the faint ledger pattern of the mark (`asa-ledger-pattern-dark.svg`, from `asa_mark.pattern_tile_svg`) and the category name. Never a logo in it.
+- Inner-page heroes (the dark band at the top of every page but Home and /briefing/, whose hero has the ledger pattern instead of the mark): plain Charcoal with the big faint mark, centred on the text, on desktop and tablet only; on phones (below 640px) no mark, plain dark behind the text. The ledger pattern (`asa-ledger-pattern-dark.svg`) is used only in the /briefing/ hero and in the photo placeholders above; never add it to other heroes.
 - Article, Briefing and ASA NEXT item pages: a wide image band under the dark header, with the credit "Photo: <name> / <site>" / «تصوير: <name> / <site>» (no credit for illustrations).
 
 ### Switch
