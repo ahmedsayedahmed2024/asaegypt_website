@@ -1,5 +1,5 @@
 {% macro hero(crumbs, kicker, h1, lead, icon=None, ctas=None, ledger=False) -%}
-<section class="page-hero">
+<section class="page-hero{{ ' has-ledger' if ledger }}">
   {% if ledger %}<span class="hero-ledger" aria-hidden="true"></span>{% else %}{{ MARK_BG|safe }}{% endif %}
   <div class="wrap">
     <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a>{% for c in crumbs %}<span aria-hidden="true">/</span>{% if c[1] %}<a href="{{ P(c[1]) }}">{{ c[0] }}</a>{% else %}<span>{{ c[0] }}</span>{% endif %}{% endfor %}</nav>
