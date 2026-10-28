@@ -5,8 +5,11 @@
   <script>(function(){if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))document.getElementById('hxg').className+=' hxg-pre'})();</script>
   <div class="hxg-fold">
     <div class="wrap hxg-head">
-      <img class="hxg-mark" src="{{ R }}assets/img/mark.svg" alt="" width="74" height="64">
-      <p class="kicker hxg-kick" dir="ltr" lang="en">{{ D.kicker }}</p>
+      {#- the mark and the kicker shine in turn (site.css, "ASA Hexagon: the mark and kicker shine"): the mark's pieces
+          (mark.shine_svg), then the letters (--j = 0..9, the space not counted); screen readers get the word once #}
+      {{ SHINE_MARK }}
+      {%- set j = namespace(n=0) %}
+      <p class="kicker hxg-kick" dir="ltr" lang="en"><span class="sr">{{ D.kicker }}</span><span class="hxg-kl" aria-hidden="true">{% for ch in D.kicker %}{% if ch == ' ' %} {% else %}<span style="--j:{{ j.n }}">{{ ch }}</span>{% set j.n = j.n + 1 %}{% endif %}{% endfor %}</span></p>
       <h1 id="hxg-h1" class="hxg-title">{% for t in D.h1 %}{% if not loop.first %}<span class="dot"> · </span>{% endif %}<span>{{ t }}</span>{% endfor %}</h1>
       <p class="lead">{{ D.lead|bidi(L) }}</p>
     </div>
