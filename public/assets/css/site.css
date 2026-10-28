@@ -896,7 +896,7 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 .hxg-fold{display:flex;flex-direction:column;padding-top:84px}
 .hxg-head{padding-top:clamp(8px,2.6vh,30px)}
 .hxg-mark{display:block;height:clamp(40px,7.1vh,64px);width:auto;margin:0 auto clamp(6px,1.3vh,14px)}
-.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--blue);margin-bottom:clamp(4px,1.1vh,12px)}
+.hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(4px,1.1vh,12px)}
 .hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}
 html[lang="ar"] .hxg-title{font-weight:700;line-height:1.4}
 .hxg-title .dot{color:var(--lime)}
@@ -1416,17 +1416,26 @@ html[lang="ar"] .g-qrow dt{letter-spacing:0;text-transform:none;font-size:.86rem
 }
 @media (prefers-reduced-motion:reduce){.g-faq-i summary svg{transition:none}}
 
-/* header with the new logo (October 2026): the short lockup is wider than the old logo, so from 1081px up the bar may
-   run a little wider than the page content (32px more on each side), the logo scales with the window (50px tall from about
-   1470px; 58px for the full lockup at the top of the homepage) and the menu tightens, so the whole header stays on
-   one line in English and Arabic */
+/* header with the new logo (October 2026): the header lines up exactly with the page content at every width (logo edge =
+   text edge, buttons edge = content edge). From 1280px up: logo 50px tall (58px for the full lockup at the top of the
+   homepage) and a slightly tighter menu. Between 1081 and 1279px the logo scales down with the window and the menu
+   tightens further, so the whole header stays on one line in English and Arabic */
 @media (min-width:1081px){
-  .site-header .bar{max-width:calc(var(--max) + 64px);gap:12px}
+  .site-header .bar{gap:10px}
+  .nav{gap:0}
+  .header-cta{gap:8px}
+}
+@media (min-width:1280px){
+  .logo img{height:50px}
+  .logo .l-full{height:58px}
+  .nav>li>a,.nav>li>button{padding:10px 6px;font-size:.9rem}
+  .header-cta .btn{padding:9px 12px;font-size:.84rem}
+  .lang{padding:6px 10px;font-size:.88rem}
+}
+@media (min-width:1081px) and (max-width:1279px){
   .logo img{height:clamp(38px,calc(2.8vw + 9px),50px)}
   .logo .l-full{height:clamp(46px,calc(2.6vw + 21px),58px)}
-  .nav{gap:0}
   .nav>li>a,.nav>li>button{padding:10px clamp(4px,calc(1.1vw - 8px),8px);font-size:clamp(.8rem,calc(.35vw + .6rem),.94rem)}
-  .header-cta{gap:8px}
   .header-cta .btn{padding:9px clamp(9px,calc(1vw - 2px),14px);font-size:clamp(.78rem,calc(.2vw + .58rem),.84rem)}
   .lang{padding:6px clamp(8px,calc(.6vw),12px);font-size:clamp(.8rem,calc(.2vw + .6rem),.9rem)}
 }
