@@ -169,9 +169,9 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 a.stat-link{display:block;transition:background .2s}
 a.stat-link:hover b,a.stat-link:focus-visible b{color:var(--lime)}
 a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:3px}
-.stat b{display:block;font-size:1.9rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em}
+.stat b{display:block;font-size:1.9rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;white-space:nowrap}  /* never breaks around the separator dot */
 .stat b i{font-style:normal;color:var(--lime)}
-.stat b.sm{font-size:1.45rem;line-height:1.25;letter-spacing:-.01em}  /* a value in words ("International networks") */
+.stat b.sm{font-size:1.45rem;line-height:1.25;letter-spacing:-.01em;white-space:normal}  /* a value in words ("International networks"): may wrap */
 .stat span{display:block;font-size:.86rem;color:var(--soft);margin-top:6px;line-height:1.4}
 
 /* page hero (inner) */
@@ -353,7 +353,7 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .step .top .line{display:none}
   .hero .stats .wrap{grid-template-columns:1fr 1fr}
   .stat{padding:20px 14px}
-  .stat b{font-size:1.5rem}
+  .stat b{font-size:min(1.5rem,5.6vw)}  /* a touch smaller on the narrowest phones, so «مصر · السعودية» stays on one line */
   .stat b.sm{font-size:1.1rem}
   .site-footer .top{grid-template-columns:1fr}
   .trust .wrap{flex-direction:column;align-items:flex-start}
