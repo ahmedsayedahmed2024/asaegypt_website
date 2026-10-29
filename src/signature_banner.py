@@ -14,7 +14,7 @@ simple static banner is written, and a warning is printed.
 
 Run on its own (after a build): python src/signature_banner.py
 """
-import base64, datetime, io, json, os, shutil, subprocess, sys, tempfile, urllib.request
+import base64, datetime, functools, io, json, os, shutil, subprocess, sys, tempfile, urllib.request
 sys.path.insert(0, os.path.dirname(__file__))
 import articles_meta, news, pages_en, pages_ar, asa_mark, mark
 
@@ -139,12 +139,86 @@ def tm_path_polys():
     return polys
 
 
-def tag_html():
-    """The "ASA HEXAGON" tag under the mark: one span per letter (the shine), then the lockup's one TM after the N
-    (the header logo's TM, mark.tm_svg, raised like an exponent) in a zero-size box on the baseline, so the letters
-    stay centred under the mark; the TM never shines."""
-    letters = ''.join(' ' if ch == ' ' else f'<span class="l">{ch}</span>' for ch in TAG)
-    return f'{letters}<i class="tmb">{mark.tm_svg()}</i>'
+TAG_FONT = os.path.join(FONTS, 'pjs-800.woff2')  # the tag's font (Plus Jakarta Sans ExtraBold)
+TAG_LS = 1.3 / 7.5        # the tag's letter-spacing (1.3px at 7.5px), in em
+TAG_DEPTH = 0.15          # optical spacing: openings deeper than this share of the cap height count only up to it
+
+
+@functools.lru_cache(maxsize=None)
+def tag_layout():
+    """Even, optical spacing for the letters of "ASA HEXAGON", in em (the same at any size): at the tag's tiny size the
+    font's own spacing looks uneven (S-A, A-G and O-N open). For each pair of letters, the space between them is
+    measured row by row over the cap height (an opening deeper than TAG_DEPTH of the cap height, such as the top of
+    an A, counts only up to that depth) and averaged; every pair is set to the same average, the mean of the font's
+    own pairs at the old letter-spacing (1.3px), so the word keeps about its width; the word space stays as before.
+    Used by the animated banner (and so its PNG) and by static_banner().
+    Returns x (each letter's origin), adv (advances), left (ink start of the first letter), right (ink end of the last).
+    None if the font tools are missing (the tag then keeps the plain letter-spacing)."""
+    try:
+        from fontTools.ttLib import TTFont
+        from PIL import Image, ImageDraw, ImageFont
+        tt = TTFont(TAG_FONT)
+        upm, cmap, hmtx = tt['head'].unitsPerEm, tt.getBestCmap(), tt['hmtx']
+        cap = tt['OS/2'].sCapHeight / upm
+        adv = lambda ch: hmtx[cmap[ord(ch)]][0] / upm
+        S = 200
+        font = ImageFont.truetype(TAG_FONT, S)
+
+        def rows(ch):  # {row: (ink left, ink right)} over the cap height, in em from the glyph's origin
+            im = Image.new('L', (2 * S, 2 * S), 0)
+            ImageDraw.Draw(im).text((S // 2, 3 * S // 2), ch, font=font, fill=255, anchor='ls')
+            im = im.point(lambda v: 255 if v > 127 else 0)
+            out = {}
+            for y in range(3 * S // 2 - round(cap * S), 3 * S // 2):
+                bb = im.crop((0, y, 2 * S, y + 1)).getbbox()
+                if bb:
+                    out[y] = ((bb[0] - S // 2) / S, (bb[2] - S // 2) / S)
+            return out
+        word = TAG.replace(' ', '')
+        P = {ch: rows(ch) for ch in set(word)}
+        depth = TAG_DEPTH * cap
+
+        def space(a, b, d):  # average optical space between a and b with b's origin d after a's
+            g = [d + P[b][y][0] - P[a][y][1] for y in P[a] if y in P[b]]
+            m = min(g)
+            return sum(min(v, m + depth) for v in g) / len(g)
+        gap_at = TAG.index(' ')  # the word space comes after this many letters
+        pairs = [(word[i], word[i + 1]) for i in range(len(word) - 1)]
+        own = [space(a, b, adv(a) + TAG_LS) for k, (a, b) in enumerate(pairs) if k != gap_at - 1]
+        target = sum(own) / len(own)
+        x = [0.0]
+        for k, (a, b) in enumerate(pairs):
+            if k == gap_at - 1:  # the word space: as the font sets it with the old letter-spacing
+                x.append(x[-1] + adv(a) + TAG_LS + adv(' ') + TAG_LS)
+                continue
+            lo, hi = 0.0, 2.0
+            for _ in range(50):
+                mid = (lo + hi) / 2
+                lo, hi = (mid, hi) if space(a, b, mid) < target else (lo, mid)
+            x.append(x[-1] + lo)
+        return dict(x=x, adv=[adv(ch) for ch in word],
+                    left=min(l for l, _ in P[word[0]].values()), right=x[-1] + max(r for _, r in P[word[-1]].values()))
+    except Exception as e:
+        print(f'WARNING: signature banner: even tag spacing skipped ({type(e).__name__}: {e})')
+        return None
+
+
+def tag_html(lay):
+    """The "ASA HEXAGON" tag under the mark: one span per letter (the shine), placed from tag_layout() (each letter's
+    margin = its origin minus the end of the previous letter's advance; no kerning, no letter-spacing), then the
+    lockup's one TM after the N (the header logo's TM, mark.tm_svg, raised like an exponent) in a zero-size box on
+    the baseline. The padding centres the ink of the letters under the mark; the TM hangs outside it and never shines."""
+    word = TAG.replace(' ', '')
+    if not lay:
+        letters = ''.join(' ' if ch == ' ' else f'<span class="l">{ch}</span>' for ch in TAG)
+        return f'<span class="tag">{letters}<i class="tmb">{mark.tm_svg()}</i></span>'
+    x, adv = lay['x'], lay['adv']
+    spans = ''.join(f'<span class="l" style="margin-left:{x[i] - x[i - 1] - adv[i - 1]:.4f}em">{ch}</span>' if i else
+                    f'<span class="l">{ch}</span>' for i, ch in enumerate(word))
+    lsb, rsb = lay['left'], x[-1] + adv[-1] - lay['right']   # side space before the first and after the last letter
+    pad = f'padding-left:{max(0, rsb - lsb):.4f}em;padding-right:{max(0, lsb - rsb):.4f}em'
+    return (f'<span class="tag even" style="{pad}">{spans}'
+            f'<i class="tmb">{mark.tm_svg()}</i></span>')
 
 
 def mark_svg():
@@ -162,8 +236,10 @@ body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiase
 .mk{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}}
 .mark{{display:block;width:76px;height:66px;margin-top:4px}}
 .mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:7.5px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
+.mk .tag.even{{letter-spacing:0;font-kerning:none}}
 .tmb{{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}}
 .tmb .tm{{position:absolute;left:calc(.05em - 1.3px);bottom:.457em;height:.432em;width:.817em;display:block;overflow:visible}}
+.even .tmb .tm{{left:.05em}}
 .items{{position:absolute;top:0;bottom:12px;inset-inline-start:116px;inset-inline-end:18px}}
 .item{{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0}}
 .kick{{display:flex;align-items:center;gap:6px;height:14px;font-weight:700;color:#C3D648;white-space:nowrap}}
@@ -179,7 +255,7 @@ body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiase
 .dashes i.on{{background:#C3D648}}
 bdi{{unicode-bidi:isolate}}
 </style></head><body>
-<div class="mk">{mark}<span class="tag">{tag}</span></div>
+<div class="mk">{mark}{tag}</div>
 <div class="items">{items}</div>
 <div class="dashes">{dashes}</div>
 <script>
@@ -243,7 +319,7 @@ def banner_html(L, items):
                 items=[dict(kicker=it['kicker'], title=it['short'], meta=' · '.join(it['meta'])) for it in items])
     return TEMPLATE.format(
         L=L, dir='rtl' if ar else 'ltr', fonts=fonts_css(L), lat=font_face('Lat', 800, 'pjs-800.woff2'),
-        W=W, H=H, mark=mark_svg(), tag=tag_html(), mark_top=(H - 86) // 2,
+        W=W, H=H, mark=mark_svg(), tag=tag_html(tag_layout()), mark_top=(H - 86) // 2,
         items=item_html, dashes='<i></i>' * len(items), data=json.dumps(data, ensure_ascii=False),
         kick_size=11 if ar else 9.5, kick_ls='0' if ar else '2px', kick_tt='' if ar else 'text-transform:uppercase',
         new_size=10 if ar else 8, new_ls='0' if ar else '1px',
@@ -423,19 +499,23 @@ def static_banner(out_dir):
         except Exception:
             big = small = tag = ImageFont.load_default()
         x_col = (18 + 41) * s if L == 'en' else (W - 18 - 41) * s
-        dr.text((x_col, ((H - 86) / 2 + 86) * s), 'ASA HEXAGON', font=tag, fill='#C3D648', anchor='md')
-        # the TM after the N, as in the animated banner: .432em tall, its top a third of its height above the
-        # capitals (bottom .457em up), tight to the N
-        try:
+        bottom = ((H - 86) / 2 + 86) * s
+        lay = tag_layout() if hasattr(tag, 'getmetrics') else None
+        if lay:
+            # the letters placed as in the animated banner (tag_layout), their ink centred under the mark, then the TM
+            # after the N: .432em tall, its top a third of its height above the capitals (bottom .457em up)
             em = tag.size
-            right = dr.textbbox((x_col, ((H - 86) / 2 + 86) * s), 'ASA HEXAGON', font=tag, anchor='md')[2]
-            base = ((H - 86) / 2 + 86) * s - tag.getmetrics()[1]
+            base = bottom - tag.getmetrics()[1]
+            x0 = x_col - (lay['left'] + lay['right']) / 2 * em
+            for ch, xi in zip(TAG.replace(' ', ''), lay['x']):
+                dr.text((x0 + xi * em, base), ch, font=tag, fill='#C3D648', anchor='ls')
+            right = x0 + (lay['x'][-1] + lay['adv'][-1]) * em
             k = 0.432 * em / 30                  # TM_MARK is 30 units tall (y 12..42), starts at x 975.4
             for poly in tm_path_polys():
                 dr.polygon([(right + 0.05 * em + (x - 975.4) * k, base - 0.457 * em - (42 - y) * k) for x, y in poly],
                            fill='#C3D648')
-        except Exception:
-            pass
+        else:
+            dr.text((x_col, bottom), 'ASA HEXAGON', font=tag, fill='#C3D648', anchor='md')
         anchor, x = ('la', 116 * s) if L == 'en' else ('ra', (W - 116) * s)
         dr.text((x, 38 * s), 'ASA Briefing · ASA Insights', font=big, fill='#FFFFFF', anchor=anchor)
         dr.text((x, 62 * s), 'asaegypt.com' + ('/latest' if L == 'en' else '/ar/latest'), font=small, fill='#C3D648', anchor=anchor)
