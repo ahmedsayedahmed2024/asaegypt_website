@@ -922,12 +922,16 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 .lt-more{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
 
 /* header: "ASA Hexagon" menu item (Latin in both languages: "ASA" in the menu colour, "Hexagon" in the logo blue).
-   Contact left the top menu (it stays in the mobile menu and the footer); a more compact "Book a consultation"
+   Contact left the top menu (it stays in the mobile menu and the footer); a more compact "Request a consultation"
    button keeps the whole header on one line from 1081px up, in English and Arabic */
 .nav-hex b{font-weight:700;color:var(--blue)}
 .site-header.solid .nav-hex b{color:var(--blue-dk)}
 .header-cta .btn{padding:9px 14px;font-size:.84rem}
 @media (max-width:1240px) and (min-width:1081px){.header-cta .btn{padding:8px 11px;font-size:.8rem}}
+/* English "Request a consultation" is longer than the old label: 1px less on each menu item and 2px less on the button
+   keep the English header on one line, edge to edge with the content, exactly as before (Arabic unchanged) */
+@media (min-width:1280px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:5px}html[lang="en"] .header-cta .btn{padding-inline:10px}}
+@media (min-width:1081px) and (max-width:1279px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:clamp(3px,calc(1.1vw - 9px),7px)}html[lang="en"] .header-cta .btn{padding-inline:clamp(7px,calc(1vw - 4px),12px)}}
 .site-footer h4 a:hover{color:var(--lime)}
 
 /* ---------- ASA Hexagon (/hexagon/): see hexagon.py and assets/js/hexagon.js ---------- */
