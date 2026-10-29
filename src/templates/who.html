@@ -11,7 +11,7 @@
 <section class="sec dark">
   <div class="wrap two-col" style="align-items:center">
     <div class="rv"><p class="kicker">{{ D.port_k }}</p><h2>{{ D.port_h }}</h2><p style="margin-top:18px">{{ D.port_p }}</p></div>
-    <div class="numbers rv" style="border-color:var(--graphite-3);grid-template-columns:1fr 1fr">{% for n in D.port_nums %}<div style="border-color:var(--graphite-3)"><b dir="ltr" style="color:#fff">{{ n[0]|safe }}</b><span style="color:var(--soft)">{{ n[1] }}</span></div>{% endfor %}</div>
+    <div class="numbers n2 rv" style="border-color:var(--graphite-3);--rule:var(--graphite-3)">{% for n in D.port_nums %}<div><b dir="ltr" style="color:#fff">{{ n[0]|safe }}</b><span style="color:var(--soft)">{{ n[1] }}</span></div>{% endfor %}</div>
   </div>
 </section>
 <section class="sec tint">
