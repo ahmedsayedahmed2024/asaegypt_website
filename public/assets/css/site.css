@@ -319,10 +319,16 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 
 /* desktop hero: the hexagon is sized from the window HEIGHT so the whole of it (arrows and dashes included) fits
    between the fixed header (84px) and the bottom of the screen: height = clamp(380px, 100vh - header - 2 x gap, column width).
-   The text column scales with the height too, so it never makes the row taller than the hexagon. Tablet/mobile unchanged. */
+   The text column scales with the height too, so it never makes the row taller than the hexagon. Tablet/mobile unchanged.
+   The stats strip sits in the flow under the content (not over it), so the hero always reserves the strip's real height
+   and the hexagon, text and buttons keep at least 24px above the strip's top line, whatever the strip's height. */
 @media (min-width:1081px){
-  .hero{--hg:clamp(14px,3.4vh,44px)}
-  .hero .wrap{padding-top:calc(84px + var(--hg));padding-bottom:calc(131px + var(--hg))}
+  .hero{--hg:clamp(14px,3.4vh,44px);display:flex;flex-direction:column;min-height:min(880px,100vh)}
+  .hero>.wrap{flex:1 0 auto;width:100%;min-height:0}
+  .hero .wrap{padding-top:calc(84px + var(--hg));padding-bottom:max(24px,var(--hg))}
+  .hero .stats{position:relative}
+  .hero .stats .wrap{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .stat b.sm{font-size:min(1.34rem,calc(2.08vw - 4.6px));white-space:nowrap}  /* "International networks" on one line at every desktop width */
   .hero .art{width:clamp(361px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129),100%)}
   .hero h1{font-size:clamp(2.3rem,min(5.2vw,8.6vh),4.3rem);margin-bottom:clamp(12px,2.8vh,26px)}
   .hero .kicker{margin-bottom:clamp(10px,2vh,18px)}
