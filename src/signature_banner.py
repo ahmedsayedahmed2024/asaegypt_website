@@ -30,6 +30,13 @@ NEW_DAYS = 7              # "NEW" tag on item 1 when it was added in the last 7 
 W, H, SCALE = 448, 112, 2  # CSS size; rendered at 2x
 HOLD_MS = 3500            # each item stays 3.5 s
 TRANSITION_MS = 840       # change between items: 12 frames of 70 ms
+# the light along the letters of "ASA HEXAGON" (A to N) right after the wave over the mark reaches the beam, like the
+# Hexagon page (site.css, "ASA Hexagon: the mark and kicker shine"): each letter brightens to pale lime with a soft
+# lime glow, then back to lime. It starts during the change and ends in extra frames before the hold (still 3.5 s).
+TAG = 'ASA HEXAGON'
+LETTER_AFTER_BEAM_MS = 110  # first letter's peak after the beam's
+LETTER_GAP_MS = 75          # between letters
+LETTER_RISE_MS, LETTER_FALL_MS = 180, 280
 MAX_KB = 290              # each GIF stays under this (check_links.py fails the build over 300 KB)
 # file size ladder: (transition frames, text steps per transition, gifsicle --lossy); the first one under MAX_KB
 # is kept. The light wave moves on every frame; the text fade has fewer steps (each one redraws the whole text
@@ -114,6 +121,32 @@ def _d(poly):
     return 'M' + 'L'.join(f'{x:.2f} {y:.2f}' for x, y in poly) + 'Z'
 
 
+def tm_path_polys():
+    """asa_mark.TM_MARK (the TM of the header logo: M, H, V, L, Z only) as polygons, for the Pillow fallback."""
+    import re
+    polys, x, y = [], 0.0, 0.0
+    for cmd, args in re.findall(r'([MHVLZ])([^MHVLZ]*)', asa_mark.TM_MARK):
+        v = [float(a) for a in re.findall(r'-?\d+(?:\.\d+)?', args)]
+        if cmd == 'M':
+            x, y = v[0], v[1]; polys.append([(x, y)]); v = v[2:]; cmd = 'L'
+        if cmd == 'L':
+            for k in range(0, len(v), 2):
+                x, y = v[k], v[k + 1]; polys[-1].append((x, y))
+        elif cmd == 'H':
+            for x in v: polys[-1].append((x, y))
+        elif cmd == 'V':
+            for y in v: polys[-1].append((x, y))
+    return polys
+
+
+def tag_html():
+    """The "ASA HEXAGON" tag under the mark: one span per letter (the shine), then the lockup's one TM after the N
+    (the header logo's TM, mark.tm_svg, raised like an exponent) in a zero-size box on the baseline, so the letters
+    stay centred under the mark; the TM never shines."""
+    letters = ''.join(' ' if ch == ' ' else f'<span class="l">{ch}</span>' for ch in TAG)
+    return f'{letters}<i class="tmb">{mark.tm_svg()}</i>'
+
+
 def mark_svg():
     paths = ''.join(f'<path fill="{c}" d="{_d(p)}"/>' for c, p in pieces())
     glow = ''.join(f'<path class="w" fill="#fff" fill-opacity="0" d="{_d(p)}"/>' for _, p in pieces())
@@ -129,6 +162,8 @@ body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiase
 .mk{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}}
 .mark{{display:block;width:76px;height:66px;margin-top:4px}}
 .mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:7.5px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
+.tmb{{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}}
+.tmb .tm{{position:absolute;left:calc(.05em - 1.3px);bottom:.457em;height:.432em;width:.817em;display:block;overflow:visible}}
 .items{{position:absolute;top:0;bottom:12px;inset-inline-start:116px;inset-inline-end:18px}}
 .item{{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0}}
 .kick{{display:flex;align-items:center;gap:6px;height:14px;font-weight:700;color:#C3D648;white-space:nowrap}}
@@ -144,7 +179,7 @@ body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiase
 .dashes i.on{{background:#C3D648}}
 bdi{{unicode-bidi:isolate}}
 </style></head><body>
-<div class="mk">{mark}<span class="tag">ASA HEXAGON</span></div>
+<div class="mk">{mark}<span class="tag">{tag}</span></div>
 <div class="items">{items}</div>
 <div class="dashes">{dashes}</div>
 <script>
@@ -173,8 +208,9 @@ document.querySelectorAll('.item').forEach((el, i) => {{
   fit(el.querySelector('.title'), DATA.items[i].title);
 }});
 const items = [...document.querySelectorAll('.item')], dashes = [...document.querySelectorAll('.dashes i')];
-const glow = [...document.querySelectorAll('.mark .w')];
-// one frame: {{items: {{index: [opacity, dy]}}, dash: index, wave: [5 opacities]}}
+const glow = [...document.querySelectorAll('.mark .w')], letters = [...document.querySelectorAll('.tag .l')];
+const mix = (a, b, v) => Math.round(a + (b - a) * v);
+// one frame: {{items: {{index: [opacity, dy]}}, dash: index, wave: [5 opacities], letters: [10 levels 0..1]}}
 window.setFrame = st => {{
   items.forEach((el, i) => {{
     const s = st.items[i];
@@ -183,6 +219,12 @@ window.setFrame = st => {{
   }});
   dashes.forEach((d, i) => d.classList.toggle('on', i === st.dash));
   glow.forEach((p, k) => p.setAttribute('fill-opacity', st.wave[k] || 0));
+  // lime #C3D648 -> pale lime #F4F8DC with a soft lime glow, and back
+  letters.forEach((el, k) => {{
+    const v = (st.letters || [])[k] || 0;
+    el.style.color = v ? 'rgb(' + mix(195, 244, v) + ',' + mix(214, 248, v) + ',' + mix(72, 220, v) + ')' : '';
+    el.style.textShadow = v ? '0 0 4px rgba(195,214,72,' + (.85 * v).toFixed(3) + '),0 0 9px rgba(195,214,72,' + (.35 * v).toFixed(3) + ')' : '';
+  }});
 }};
 window.titleLines = () => items.map(el => Math.round(el.querySelector('.title').scrollHeight / DATA.titleLh));
 </script></body></html>"""
@@ -201,7 +243,7 @@ def banner_html(L, items):
                 items=[dict(kicker=it['kicker'], title=it['short'], meta=' · '.join(it['meta'])) for it in items])
     return TEMPLATE.format(
         L=L, dir='rtl' if ar else 'ltr', fonts=fonts_css(L), lat=font_face('Lat', 800, 'pjs-800.woff2'),
-        W=W, H=H, mark=mark_svg(), mark_top=(H - 86) // 2,
+        W=W, H=H, mark=mark_svg(), tag=tag_html(), mark_top=(H - 86) // 2,
         items=item_html, dashes='<i></i>' * len(items), data=json.dumps(data, ensure_ascii=False),
         kick_size=11 if ar else 9.5, kick_ls='0' if ar else '2px', kick_tt='' if ar else 'text-transform:uppercase',
         new_size=10 if ar else 8, new_ls='0' if ar else '1px',
@@ -214,12 +256,35 @@ def ease(p):
     return p * p * (3 - 2 * p)
 
 
+def wave_at(t):
+    """The soft light wave over the five pieces of the mark (tl, tr, br, bl, beam), one after another, at t (0..1)."""
+    return [round(0.45 * max(0.0, 1 - abs(t - (0.12 + k * 0.17)) / 0.22), 3) for k in range(5)]
+
+
+def letters_at(ms, beam_ms):
+    """The light on each letter of the tag (0..1) at ms after the change starts; beam_ms: the beam's peak."""
+    out = []
+    for j in range(sum(ch != ' ' for ch in TAG)):
+        d = ms - (beam_ms + LETTER_AFTER_BEAM_MS + j * LETTER_GAP_MS)
+        out.append(round(max(0.0, 1 - (-d / LETTER_RISE_MS if d < 0 else d / LETTER_FALL_MS)), 3))
+    return out
+
+
 def timeline(n_items, n_trans, text_steps=None):
-    """[(state, duration_ms)]: item 1 held, change to item 2, held, ..., change back to item 1 (the GIF loops).
-    The light wave moves on every frame; the text changes on `text_steps` of them (fewer = smaller file)."""
+    """[(state, duration_ms)]: item 1 held, change to item 2 (then the last letters' light), held, ..., change back to
+    item 1 (the GIF loops). The light wave moves on every frame; the text changes on `text_steps` of them (fewer =
+    smaller file). The light along the letters follows the beam: it starts in the change and ends in a few frames
+    of their own (the new item already in place), then the hold (HOLD_MS) as before."""
     text_steps = text_steps or n_trans
     frames = []
     step = round(TRANSITION_MS / n_trans / 10) * 10  # GIF delays are in 1/100 s
+    # frame f of the change is shown at f * step ms and has t = (f + 1) / (n_trans + 1); the beam peaks at t = 0.80
+    beam_ms = (0.80 * (n_trans + 1) - 1) * step
+    tail = []
+    ms = n_trans * step
+    while any(letters_at(ms, beam_ms)):
+        tail.append(letters_at(ms, beam_ms))
+        ms += step
     for i in range(n_items):
         frames.append((dict(items={str(i): [1, 0]}, dash=i, wave=[0] * 5), HOLD_MS))
         nxt = (i + 1) % n_items
@@ -235,8 +300,10 @@ def timeline(n_items, n_trans, text_steps=None):
                 p = ease((tt - 0.5) / 0.5)
                 st = {str(nxt): [round(p, 3), round(5 * (1 - p), 2)]}
             # a soft light wave over the five pieces of the mark, one after another (brightness up, then back)
-            wave = [round(0.45 * max(0.0, 1 - abs(t - (0.12 + k * 0.17)) / 0.22), 3) for k in range(5)]
-            frames.append((dict(items=st, dash=i if tt < 0.5 else nxt, wave=wave), step))
+            frames.append((dict(items=st, dash=i if tt < 0.5 else nxt, wave=wave_at(t),
+                                letters=letters_at(f * step, beam_ms)), step))
+        for lv in tail:  # the letters' light ends over the new item
+            frames.append((dict(items={str(nxt): [1, 0]}, dash=nxt, wave=[0] * 5, letters=lv), step))
     return frames
 
 
@@ -357,6 +424,18 @@ def static_banner(out_dir):
             big = small = tag = ImageFont.load_default()
         x_col = (18 + 41) * s if L == 'en' else (W - 18 - 41) * s
         dr.text((x_col, ((H - 86) / 2 + 86) * s), 'ASA HEXAGON', font=tag, fill='#C3D648', anchor='md')
+        # the TM after the N, as in the animated banner: .432em tall, its top a third of its height above the
+        # capitals (bottom .457em up), tight to the N
+        try:
+            em = tag.size
+            right = dr.textbbox((x_col, ((H - 86) / 2 + 86) * s), 'ASA HEXAGON', font=tag, anchor='md')[2]
+            base = ((H - 86) / 2 + 86) * s - tag.getmetrics()[1]
+            k = 0.432 * em / 30                  # TM_MARK is 30 units tall (y 12..42), starts at x 975.4
+            for poly in tm_path_polys():
+                dr.polygon([(right + 0.05 * em + (x - 975.4) * k, base - 0.457 * em - (42 - y) * k) for x, y in poly],
+                           fill='#C3D648')
+        except Exception:
+            pass
         anchor, x = ('la', 116 * s) if L == 'en' else ('ra', (W - 116) * s)
         dr.text((x, 38 * s), 'ASA Briefing · ASA Insights', font=big, fill='#FFFFFF', anchor=anchor)
         dr.text((x, 62 * s), 'asaegypt.com' + ('/latest' if L == 'en' else '/ar/latest'), font=small, fill='#C3D648', anchor=anchor)

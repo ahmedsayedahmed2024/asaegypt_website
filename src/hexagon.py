@@ -283,6 +283,7 @@ def page_data(L):
         HIVE_ICONS=[Markup(icon_hive(i)) for i in range(len(D['hive']))],
         COMB=Markup(honeycomb()),
         SHINE_MARK=Markup(mark.shine_svg()),   # the mark above the kicker, with its light wave (site.css)
+        TM=Markup(mark.tm_svg()),              # the TM after "ASA HEXAGON" (still, never shines)
     )
 
 

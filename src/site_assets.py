@@ -1,21 +1,25 @@
 """Writes every logo file the website uses from src/asa_mark.py (run from the repo root).
 
     python src/site_assets.py        # SVGs only (no dependencies)
-    python src/site_assets.py --png  # + PNGs (needs cairosvg and Pillow, like logo.py --png)
+    python src/site_assets.py --png  # + PNGs and /favicon.ico (needs cairosvg and Pillow, like logo.py --png)
 
 Output names and pixel sizes are the same as the old logo files, so templates and email signatures keep working.
 """
-import io, os, sys
+import io, json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 import asa_mark as m
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMG = os.path.join(ROOT, 'public/assets/img')
 SMALL_ICON = m.square_icon_svg('prism', notch=False, side_ratio=1.04)   # 32 px and below: no notch
+LARGE_ICON = m.square_icon_svg('prism', side_ratio=1.04)                # 48 px and up: with the notch
+# the favicon set for browsers, Google, Bing and AI search (CLAUDE.md, "Favicon"): stable URLs, never rename
+ICON_SIZES = (48, 96, 192, 512)          # assets/img/favicon-<size>.png (favicon-32.png as before)
+ICO_SIZES = (16, 32, 48)                 # /favicon.ico at the site root
 
 
-def write(name, data):
-    path = os.path.join(IMG, name)
+def write(name, data, base=IMG):
+    path = os.path.join(base, name)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, 'wb' if isinstance(data, bytes) else 'w').write(data)
     print(f'{name}: {os.path.getsize(path):,} bytes')
@@ -33,6 +37,15 @@ def short_lockup_svg(word_fill=m.CHARCOAL, symbol='tm'):
     return (f'<svg {m.NS} viewBox="{SHORT_VIEWBOX}" width="1045" height="268" role="img" aria-label="ASA">'
             f'<title>ASA</title>{m.mark_paths("prism", True, m.lockup_tf)}'
             f'<path fill="{word_fill}" fill-rule="evenodd" d="{m.WORDMARK_SHIFTED}"/>{sym}</svg>')
+
+
+def manifest():
+    """/site.webmanifest: the firm's name, the site colours and the 192 and 512 px icons."""
+    return json.dumps({
+        'name': 'ASA Chartered Accountants and Consultants', 'short_name': 'ASA', 'start_url': '/', 'display': 'browser',
+        'theme_color': m.CHARCOAL, 'background_color': m.CHARCOAL,
+        'icons': [{'src': f'/assets/img/favicon-{n}.png', 'sizes': f'{n}x{n}', 'type': 'image/png'} for n in (192, 512)],
+    }, indent=2) + '\n'
 
 
 def og_svg():
@@ -58,6 +71,7 @@ if __name__ == '__main__':
     write('logo-asa-short-plain.svg', short_lockup_svg(m.WHITE, None))          # mobile menu, small uses
     write('logo-asa-short-plain-dark.svg', short_lockup_svg(m.CHARCOAL, None))
     write('asa-ledger-pattern-dark.svg', m.pattern_tile_svg())                  # faint pattern on Charcoal
+    write('site.webmanifest', manifest(), os.path.join(ROOT, 'public'))
     if '--png' in sys.argv:
         import cairosvg
         from PIL import Image
@@ -70,6 +84,13 @@ if __name__ == '__main__':
             out = io.BytesIO(); (c.convert('RGB') if bg else c).save(out, 'PNG', optimize=True); return out.getvalue()
 
         write('favicon-32.png', fit(SMALL_ICON, 32, 32))
+        for n in ICON_SIZES:
+            write(f'favicon-{n}.png', fit(LARGE_ICON, n, n))
+        # /favicon.ico (Bing and older crawlers): 16 and 32 px without the notch, 48 px with it, transparent
+        ico = [Image.open(io.BytesIO(fit(SMALL_ICON if n <= 32 else LARGE_ICON, n, n))) for n in ICO_SIZES]
+        out = io.BytesIO()
+        ico[-1].save(out, 'ICO', sizes=[(n, n) for n in ICO_SIZES], append_images=ico[:-1])
+        write('favicon.ico', out.getvalue(), os.path.join(ROOT, 'public'))
         ratio = (180 / 146) * (2 * m.H) / (2 * m.R)    # 180 px tile on charcoal, mark 146 px tall
         write('apple-touch-icon.png', fit(m.square_icon_svg('prism', side_ratio=ratio, bg=m.CHARCOAL), 180, 180, m.CHARCOAL))
         write('logo_color.png', fit(m.named_lockup_svg('prism', m.CHARCOAL), 900, 268))     # email signature: same URL

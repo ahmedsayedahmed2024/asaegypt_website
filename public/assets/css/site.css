@@ -947,6 +947,12 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 .hxg-mark .hxl-beam{animation-name:hxlb}
 @keyframes hxl{0%{opacity:0}5%{opacity:.5}12%{opacity:0}100%{opacity:0}}
 @keyframes hxlb{0%{opacity:0}6%{opacity:.6}16%{opacity:0}100%{opacity:0}}
+/* the TM of the "ASA HEXAGON" lockup: a zero-size box after the N (on the baseline, so the word stays centred under the
+   mark and nothing moves) holding the header logo's TM at .58em (.432em tall), raised like an exponent: its top a third
+   of its height above the capitals (cap height .745em), so its bottom is .457em up; tight to the N (the N's
+   letter-spacing, .24em, is taken back); lime, and never part of the shine */
+.hxg-tm{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}
+.hxg-tm .tm{position:absolute;left:-.185em;bottom:.457em;height:.432em;width:.817em;max-width:none;display:block;overflow:visible}
 .hxg-kl>span{animation:hxch 5s ease-in-out calc(2.05s + var(--j) * .075s) infinite}
 @keyframes hxch{0%{color:#C3D648;text-shadow:none}4%{color:#F4F8DC;text-shadow:0 0 10px rgba(195,214,72,.85),0 0 22px rgba(195,214,72,.35)}10%{color:#C3D648;text-shadow:none}100%{color:#C3D648;text-shadow:none}}
 .hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}
