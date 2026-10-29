@@ -154,8 +154,25 @@ def image_for(item, kind, L):
     focus = im.get('focus', '50% 50%')
     if not re.fullmatch(r'(100|[1-9]?\d)% (100|[1-9]?\d)%', focus):
         sys.exit(f"ERROR: {kind} '{item['slug']}' has an invalid image focus {focus!r} (expected e.g. \"70% 50%\")")
-    return dict(lg=lg, card=card, alt=im['alt_' + L], illustration=illustration, focus=focus,
+    return dict(lg=lg, card=card, alt=image_alt(item, kind, L), illustration=illustration, focus=focus,
                 photographer=im.get('photographer'), site=im.get('site'), source=im.get('source'))
+
+ALT_WARNED = set()
+
+def image_alt(item, kind, L):
+    """The image's alt text in the page's language: what the image shows, the same text wherever it appears
+    (homepage hexagon, cards, image band). From the item's alt_en / alt_ar, else from the photo library's
+    description. Missing: a warning naming the photo (the build goes on, with alt="")."""
+    im = item['image']
+    alt = (im.get('alt_' + L) or '').strip()
+    if not alt and im.get('library'):
+        p = next((x for x in photos.library() if x['id'] == im['library']), None)
+        alt = ((p or {}).get('alt_' + L) or '').strip()
+    if not alt and (kind, item['slug'], L) not in ALT_WARNED:
+        ALT_WARNED.add((kind, item['slug'], L))
+        name = im.get('library') or im.get('source') or f"{IMG_DIR}/{IMG_SECTION[kind]}/{item['slug']}"
+        print(f"WARNING: {kind} '{item['slug']}': the image has no alt_{L} (photo: {name}); add a short description of what it shows")
+    return alt
 
 def news_by_date():
     # newest first; items with the same date keep their order in news.py
