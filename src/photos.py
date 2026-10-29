@@ -254,6 +254,13 @@ def check_meta(a):
         sys.exit(f'ERROR: {a.site!r} / {a.licence!r} is not an allowed source and licence: {SOURCES}')
     if not re.fullmatch(r'(100|[1-9]?\d)% (100|[1-9]?\d)%', a.focus):
         sys.exit(f'ERROR: invalid focus {a.focus!r} (expected e.g. "70% 50%")')
+    # alt text: what the photo shows (not the headline), in each language, about 100 characters at most
+    for L in ('en', 'ar'):
+        alt = getattr(a, 'alt_' + L).strip()
+        if not alt:
+            sys.exit(f'ERROR: --alt-{L} is empty: describe what the photo shows')
+        if len(alt) > 110:
+            print(f'WARNING: --alt-{L} is {len(alt)} characters; keep it to about 100')
 
 
 def register(who, meta, files, library_id=None):

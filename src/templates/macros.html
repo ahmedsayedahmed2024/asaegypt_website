@@ -56,8 +56,8 @@
 <span class="ph" aria-hidden="true">{% if label %}<span class="ph-l">{{ label|bidi(L) }}</span>{% endif %}</span>
 {%- endmacro %}
 {% macro card_img(i) -%}
-{# card frame image: decorative, the card's title names the link #}
-<img class="thumb-img" src="{{ R }}{{ i.card }}" style="object-position:{{ i.focus }}" alt="" loading="lazy" decoding="async">
+{# card frame image, with its alt text: what the image shows, in the page's language (the card's title names the link) #}
+<img class="thumb-img" src="{{ R }}{{ i.card }}" style="object-position:{{ i.focus }}" alt="{{ i.alt }}" loading="lazy" decoding="async">
 {%- endmacro %}
 {% macro img_band(i) -%}
 {# wide image band under the dark header of an article / Briefing / ASA NEXT page #}
