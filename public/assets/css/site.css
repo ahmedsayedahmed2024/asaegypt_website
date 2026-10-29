@@ -157,10 +157,15 @@ html[dir="rtl"] .mobile-nav{transform:translateX(-100%)}
 .mark .s{transform-box:fill-box;opacity:0;animation:bPiece .8s var(--ease) calc(var(--i) * 140ms + 200ms) forwards}
 .mark .nm-beam{transform-origin:center;animation:bBeam .6s cubic-bezier(.65,0,.35,1) .85s forwards}
 .hero .stats{position:absolute;inset-inline:0;bottom:0;border-top:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.14)}
-.hero .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);min-height:auto;padding:0 var(--gut);gap:0}
-.stat{padding:26px 24px 26px 0;border-inline-end:1px solid rgba(255,255,255,.08)}
-html[dir="rtl"] .stat{padding:26px 0 26px 24px}
-.stat:last-child{border:0}
+.hero .stats .wrap{--rule:rgba(255,255,255,.08);grid-template-columns:repeat(4,1fr);align-items:stretch;min-height:auto;padding:0 var(--gut)}
+/* stats and number grids: the dividers come from the grid, never from each cell's own borders.
+   The columns (and, in two columns, the rows) are 1px apart and the lines fill those gaps: the vertical ones
+   as backgrounds of the grid (continuous from top to bottom), the horizontal one as ::after across the full
+   width of row 2. Each cell has the same padding on both sides of a divider. */
+.hero .stats .wrap,.numbers{display:grid;gap:0 1px;background-repeat:no-repeat;background-origin:content-box;background-image:linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule));background-size:1px 100%;background-position:calc(25% - .5px) 0,50% 0,calc(75% + .5px) 0}
+.hero .stats .wrap::after,.numbers::after{content:"";position:absolute;grid-column:1/-1;grid-row:1/2;inset-inline:0;bottom:-1px;height:1px;background:var(--rule);display:none}
+.stat{padding:26px 24px}
+.stat:nth-child(4n+1){padding-inline-start:0}  /* the first column lines up with the page content */
 a.stat-link{display:block;transition:background .2s}
 a.stat-link:hover b,a.stat-link:focus-visible b{color:var(--lime)}
 a.stat-link span{text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:3px}
@@ -331,8 +336,9 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .hero .wrap{grid-template-columns:1fr;padding-top:120px;padding-bottom:60px;min-height:auto}
   .hero .art{justify-self:start;width:min(360px,70%);order:-1;margin-top:10px}
   .hero .stats{position:relative}
-  .hero .stats .wrap{grid-template-columns:repeat(2,1fr)}
-  .stat{border-bottom:1px solid rgba(255,255,255,.08)}
+  .hero .stats .wrap{grid-template-columns:repeat(2,1fr);row-gap:1px;background-image:linear-gradient(var(--rule),var(--rule));background-position:50% 0}
+  .hero .stats .wrap::after{display:block}
+  .stat:nth-child(odd){padding-inline-start:0}
   .sec-head{grid-template-columns:1fr;gap:18px}
   .grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}
   .spot{grid-template-columns:1fr;gap:40px}
@@ -346,7 +352,7 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .steps{grid-template-columns:1fr}
   .step .top .line{display:none}
   .hero .stats .wrap{grid-template-columns:1fr 1fr}
-  .stat{padding:20px 14px 20px 0}
+  .stat{padding:20px 14px}
   .stat b{font-size:1.5rem}
   .stat b.sm{font-size:1.1rem}
   .site-footer .top{grid-template-columns:1fr}
@@ -392,9 +398,9 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
 .faq button svg{width:14px;height:14px;flex:none;transition:transform .3s var(--ease);color:var(--blue-dk)}
 .faq button[aria-expanded="true"] svg{transform:rotate(45deg)}
 .faq .ans{padding:0 0 24px;color:var(--muted);max-width:75ch}
-.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.numbers div{padding:34px 26px;border-inline-end:1px solid var(--line)}
-.numbers div:last-child{border:0}
+.numbers{--rule:var(--line);position:relative;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.numbers.n2{grid-template-columns:repeat(2,1fr);background-image:linear-gradient(var(--rule),var(--rule));background-position:50% 0}  /* two numbers, one row */
+.numbers div{padding:34px 26px}
 .numbers b{display:block;font-size:2.6rem;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-.03em}
 .numbers b i{font-style:normal;color:var(--blue-dk)}
 html[dir="rtl"] .numbers b,html[dir="rtl"] .stat b{text-align:right}
@@ -494,9 +500,9 @@ html[dir="rtl"] .filters-line button{margin:0 0 8px 6px}
 @media (max-width:1080px){
   .two-col,.contact-grid{grid-template-columns:1fr;gap:40px}
   .side-card{position:relative;top:auto}
-  .numbers{grid-template-columns:repeat(2,1fr)}
-  .numbers div:nth-child(2){border-inline-end:0}
-  .numbers div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .numbers{grid-template-columns:repeat(2,1fr);row-gap:1px;background-image:linear-gradient(var(--rule),var(--rule));background-position:50% 0}
+  .numbers::after{display:block}
+  .numbers.n2::after{display:none}
   .vm{grid-template-columns:1fr}
   .values{grid-template-columns:repeat(2,1fr)}
   .person{grid-template-columns:1fr;gap:40px}
