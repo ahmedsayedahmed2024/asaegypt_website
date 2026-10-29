@@ -14,7 +14,7 @@ simple static banner is written, and a warning is printed.
 
 Run on its own (after a build): python src/signature_banner.py
 """
-import base64, datetime, functools, io, json, os, shutil, subprocess, sys, tempfile, urllib.request
+import base64, datetime, functools, io, json, math, os, shutil, subprocess, sys, tempfile, urllib.request
 sys.path.insert(0, os.path.dirname(__file__))
 import articles_meta, news, pages_en, pages_ar, asa_mark, mark
 
@@ -140,7 +140,14 @@ def tm_path_polys():
 
 
 TAG_FONT = os.path.join(FONTS, 'pjs-800.woff2')  # the tag's font (Plus Jakarta Sans ExtraBold)
+TAG_PX = 7.5              # the tag's letter size (CSS px; drawn at SCALE)
 TAG_LS = 1.3 / 7.5        # the tag's letter-spacing (1.3px at 7.5px), in em
+# the TM after the N: the superscript proportions of the Hexagon page (mark.TM_H tall, its bottom mark.TM_RAISE above
+# the baseline) and its gap after the N's ink, TM_GAP (there: the .24em letter-spacing + the N's .072em side bearing);
+# never under TM_MIN_PX device pixels tall (legibility at email size), with the same raise and gap
+TM_GAP = 0.312
+TM_MIN_PX = 4
+TM_H = max(mark.TM_H, TM_MIN_PX / SCALE / TAG_PX)
 TAG_DEPTH = 0.15          # optical spacing: openings deeper than this share of the cap height count only up to it
 
 
@@ -203,22 +210,131 @@ def tag_layout():
         return None
 
 
-def tag_html(lay):
-    """The "ASA HEXAGON" tag under the mark: one span per letter (the shine), placed from tag_layout() (each letter's
-    margin = its origin minus the end of the previous letter's advance; no kerning, no letter-spacing), then the
-    lockup's one TM after the N (the header logo's TM, mark.tm_svg, raised like an exponent) in a zero-size box on
-    the baseline. The padding centres the ink of the letters under the mark; the TM hangs outside it and never shines."""
+@functools.lru_cache(maxsize=None)
+def tag_outlines():
+    """The outlines of the tag's letters from the font (TAG_FONT), in em, y down, origin on the baseline:
+    {letter: [contour, ...]} with each contour a polygon (curves flattened). None without fontTools."""
+    try:
+        from fontTools.ttLib import TTFont
+        from fontTools.pens.basePen import BasePen
+    except ImportError:
+        return None
+
+    class Flat(BasePen):
+        def __init__(self, gs, upm):
+            super().__init__(gs)
+            self.k, self.out = 1 / upm, []
+
+        def _pt(self, p):
+            return (p[0] * self.k, -p[1] * self.k)
+
+        def _moveTo(self, p):
+            self.out.append([self._pt(p)])
+            self.cur = p
+
+        def _lineTo(self, p):
+            self.out[-1].append(self._pt(p))
+            self.cur = p
+
+        def _curveToOne(self, a, b, c):
+            p0 = self.cur
+            for i in range(1, 9):
+                t = i / 8
+                u = 1 - t
+                self.out[-1].append(self._pt((u ** 3 * p0[0] + 3 * u * u * t * a[0] + 3 * u * t * t * b[0] + t ** 3 * c[0],
+                                              u ** 3 * p0[1] + 3 * u * u * t * a[1] + 3 * u * t * t * b[1] + t ** 3 * c[1])))
+            self.cur = c
+
+        def _qCurveToOne(self, a, b):
+            p0 = self.cur
+            for i in range(1, 9):
+                t = i / 8
+                u = 1 - t
+                self.out[-1].append(self._pt((u * u * p0[0] + 2 * u * t * a[0] + t * t * b[0],
+                                              u * u * p0[1] + 2 * u * t * a[1] + t * t * b[1])))
+            self.cur = b
+    tt = TTFont(TAG_FONT)
+    gs, cmap, upm = tt.getGlyphSet(), tt.getBestCmap(), tt['head'].unitsPerEm
+    out = {}
+    for ch in set(TAG.replace(' ', '')):
+        pen = Flat(gs, upm)
+        gs[cmap[ord(ch)]].draw(pen)
+        out[ch] = [c for c in pen.out if len(c) > 2]
+    return out
+
+
+@functools.lru_cache(maxsize=None)
+def tag_paths():
+    """The tag's letters as SVG path data from the font (exact curves), in font units (1 em = 1000), y down, origin on
+    the baseline: {letter: d}. None without fontTools."""
+    try:
+        from fontTools.ttLib import TTFont
+        from fontTools.pens.svgPathPen import SVGPathPen
+        from fontTools.pens.transformPen import TransformPen
+        tt = TTFont(TAG_FONT)
+        gs, cmap, upm = tt.getGlyphSet(), tt.getBestCmap(), tt['head'].unitsPerEm
+        out = {}
+        for ch in set(TAG.replace(' ', '')):
+            pen = SVGPathPen(gs)
+            gs[cmap[ord(ch)]].draw(TransformPen(pen, (1000 / upm, 0, 0, -1000 / upm, 0, 0)))
+            out[ch] = pen.getCommands()
+        return out
+    except Exception as e:
+        print(f'WARNING: signature banner: tag outlines skipped ({type(e).__name__}: {e})')
+        return None
+
+
+def tm_at(lay):
+    """The TM's box after the N, in em from the first letter's origin and the baseline (y down): x, top, width, height."""
+    h = TM_H
+    return lay['right'] + TM_GAP, -(mark.TM_RAISE + h), h * mark.TM_BOX[2] / mark.TM_BOX[3], h
+
+
+def tag_svg(lay, paths):
+    """The letters of the tag as vector outlines from the font, each at its tag_layout() position, and the TM, in one
+    SVG (font units: 1 em = 1000, y down, the first letter's origin on the baseline at 0,0). Nothing is snapped to
+    the pixel grid letter by letter (HTML text is), so the spacing stays even at email size. The shine (setFrame):
+    each letter (class "l") changes colour, and its two blurred copies under the letters (classes "g1", "g2", the
+    old text-shadow 0 0 4px and 0 0 9px) light up. The SVG box is a whole number of CSS pixels (so it is not
+    resized to the pixel grid), placed from a zero-size box on the baseline (tag_html)."""
     word = TAG.replace(' ', '')
-    if not lay:
+    u = 1000 / TAG_PX                                   # font units per CSS pixel
+    tx, ty, tw, th = tm_at(lay)
+    left, below = 1, 2                                  # CSS px of the box before the first origin and under the baseline
+    w = math.ceil((tx + tw) * TAG_PX) + left + 1
+    h = math.ceil(-ty * TAG_PX) + below + 1
+    vb = f'{-left * u:.2f} {-(h - below) * u:.2f} {w * u:.2f} {h * u:.2f}'
+    defs = ''.join(f'<path id="tg{i}" d="{paths[ch]}" transform="translate({lay["x"][i] * 1000:.2f} 0)"/>'
+                   for i, ch in enumerate(word))
+    blur = ''.join(f'<filter id="tgb{n}" filterUnits="userSpaceOnUse" x="{-40 * u:.0f}" y="{-40 * u:.0f}" '
+                   f'width="{(w + 80) * u:.0f}" height="{(h + 80) * u:.0f}"><feGaussianBlur stdDeviation="{r / 2 * u:.2f}"/></filter>'
+                   for n, r in ((1, 4), (2, 9)))
+    glow = ''.join(f'<use href="#tg{i}" class="g{n}" fill="#C3D648" opacity="0" filter="url(#tgb{n})"/>'
+                   for n in (2, 1) for i in range(len(word)))
+    letters = ''.join(f'<use href="#tg{i}" class="l" fill="#C3D648"/>' for i in range(len(word)))
+    bx, by, bw, bh = mark.TM_BOX
+    k = th * 1000 / bh
+    tm = (f'<path fill="#C3D648" transform="matrix({k:.5f} 0 0 {k:.5f} {tx * 1000 - bx * k:.2f} {ty * 1000 - by * k:.2f})" '
+          f'd="{asa_mark.TM_MARK}"/>')
+    return (f'<svg class="tgv" viewBox="{vb}" width="{w}" height="{h}" style="left:{-left}px;bottom:{-below}px" '
+            f'xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>{defs}{blur}</defs>{glow}{letters}{tm}</svg>')
+
+
+def tag_html(lay):
+    """The "ASA HEXAGON" tag under the mark. With tag_layout() and the font's outlines: the letters and the lockup's
+    one TM after the N (the header logo's TM, as a small superscript) drawn as vector outlines (tag_svg), from a
+    zero-size box on the tag's baseline; the box is as wide as the letters were, and its padding centres their ink
+    under the mark; the TM hangs outside it and never shines. Without them: the letters as text, one span per letter
+    (the shine), and the TM (mark.tm_svg) in a zero-size box on the baseline."""
+    paths = tag_paths() if lay else None
+    if not paths:
         letters = ''.join(' ' if ch == ' ' else f'<span class="l">{ch}</span>' for ch in TAG)
         return f'<span class="tag">{letters}<i class="tmb">{mark.tm_svg()}</i></span>'
     x, adv = lay['x'], lay['adv']
-    spans = ''.join(f'<span class="l" style="margin-left:{x[i] - x[i - 1] - adv[i - 1]:.4f}em">{ch}</span>' if i else
-                    f'<span class="l">{ch}</span>' for i, ch in enumerate(word))
     lsb, rsb = lay['left'], x[-1] + adv[-1] - lay['right']   # side space before the first and after the last letter
-    pad = f'padding-left:{max(0, rsb - lsb):.4f}em;padding-right:{max(0, lsb - rsb):.4f}em'
-    return (f'<span class="tag even" style="{pad}">{spans}'
-            f'<i class="tmb">{mark.tm_svg()}</i></span>')
+    pl, pr = max(0, rsb - lsb), max(0, lsb - rsb)
+    style = f'width:{pl + x[-1] + adv[-1] + pr:.4f}em;padding-left:{pl:.4f}em;padding-right:{pr:.4f}em'
+    return f'<span class="tag even" style="{style}"><i class="tgb">{tag_svg(lay, paths)}</i></span>'
 
 
 def mark_svg():
@@ -235,11 +351,11 @@ html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#23262B}}
 body{{font-family:'Sans',sans-serif;color:#fff;-webkit-font-smoothing:antialiased;position:relative}}
 .mk{{position:absolute;top:{mark_top}px;inset-inline-start:18px;width:82px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}}
 .mark{{display:block;width:76px;height:66px;margin-top:4px}}
-.mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:7.5px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
+.mk .tag{{direction:ltr;font-family:'Lat',sans-serif;font-weight:800;font-size:{tag_px}px;line-height:9px;letter-spacing:1.3px;padding-left:1.3px;color:#C3D648;white-space:nowrap}}
 .mk .tag.even{{letter-spacing:0;font-kerning:none}}
-.tmb{{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}}
-.tmb .tm{{position:absolute;left:calc(.05em - 1.3px);bottom:.457em;height:.432em;width:.817em;display:block;overflow:visible}}
-.even .tmb .tm{{left:.05em}}
+.tmb,.tgb{{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}}
+.tmb .tm{{position:absolute;left:calc({tm_gap}em - 1.3px - .066em);bottom:{tm_raise}em;height:{tm_h}em;width:{tm_w}em;display:block;overflow:visible}}
+.tgb .tgv{{position:absolute;display:block;overflow:visible}}
 .items{{position:absolute;top:0;bottom:12px;inset-inline-start:116px;inset-inline-end:18px}}
 .item{{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0}}
 .kick{{display:flex;align-items:center;gap:6px;height:14px;font-weight:700;color:#C3D648;white-space:nowrap}}
@@ -285,6 +401,7 @@ document.querySelectorAll('.item').forEach((el, i) => {{
 }});
 const items = [...document.querySelectorAll('.item')], dashes = [...document.querySelectorAll('.dashes i')];
 const glow = [...document.querySelectorAll('.mark .w')], letters = [...document.querySelectorAll('.tag .l')];
+const g1 = [...document.querySelectorAll('.tag .g1')], g2 = [...document.querySelectorAll('.tag .g2')];
 const mix = (a, b, v) => Math.round(a + (b - a) * v);
 // one frame: {{items: {{index: [opacity, dy]}}, dash: index, wave: [5 opacities], letters: [10 levels 0..1]}}
 window.setFrame = st => {{
@@ -296,9 +413,17 @@ window.setFrame = st => {{
   dashes.forEach((d, i) => d.classList.toggle('on', i === st.dash));
   glow.forEach((p, k) => p.setAttribute('fill-opacity', st.wave[k] || 0));
   // lime #C3D648 -> pale lime #F4F8DC with a soft lime glow, and back
+  // (vector letters: the fill, and their two blurred copies for the glow; text letters: color and text-shadow)
   letters.forEach((el, k) => {{
     const v = (st.letters || [])[k] || 0;
-    el.style.color = v ? 'rgb(' + mix(195, 244, v) + ',' + mix(214, 248, v) + ',' + mix(72, 220, v) + ')' : '';
+    const c = v ? 'rgb(' + mix(195, 244, v) + ',' + mix(214, 248, v) + ',' + mix(72, 220, v) + ')' : '';
+    if (g1.length) {{
+      el.style.fill = c;
+      g1[k].setAttribute('opacity', (.85 * v).toFixed(3));
+      g2[k].setAttribute('opacity', (.35 * v).toFixed(3));
+      return;
+    }}
+    el.style.color = c;
     el.style.textShadow = v ? '0 0 4px rgba(195,214,72,' + (.85 * v).toFixed(3) + '),0 0 9px rgba(195,214,72,' + (.35 * v).toFixed(3) + ')' : '';
   }});
 }};
@@ -319,7 +444,8 @@ def banner_html(L, items):
                 items=[dict(kicker=it['kicker'], title=it['short'], meta=' · '.join(it['meta'])) for it in items])
     return TEMPLATE.format(
         L=L, dir='rtl' if ar else 'ltr', fonts=fonts_css(L), lat=font_face('Lat', 800, 'pjs-800.woff2'),
-        W=W, H=H, mark=mark_svg(), tag=tag_html(tag_layout()), mark_top=(H - 86) // 2,
+        W=W, H=H, mark=mark_svg(), tag=tag_html(tag_layout()), mark_top=(H - 86) // 2, tag_px=TAG_PX,
+        tm_gap=TM_GAP, tm_raise=mark.TM_RAISE, tm_h=f'{TM_H:.4f}', tm_w=f'{TM_H * mark.TM_BOX[2] / mark.TM_BOX[3]:.4f}',
         items=item_html, dashes='<i></i>' * len(items), data=json.dumps(data, ensure_ascii=False),
         kick_size=11 if ar else 9.5, kick_ls='0' if ar else '2px', kick_tt='' if ar else 'text-transform:uppercase',
         new_size=10 if ar else 8, new_ls='0' if ar else '1px',
@@ -480,6 +606,31 @@ def keep_live(out_dir):
         open(os.path.join(out_dir, f), 'wb').write(data)
 
 
+def fill_shapes(im, shapes, colour, ss=8):
+    """Paint shapes (each a list of contours in device pixels; a contour wound against the shape's largest one is a
+    hole) onto im, anti-aliased: drawn ss times larger, then reduced."""
+    from PIL import Image, ImageChops, ImageDraw
+    pts = [p for sh in shapes for c in sh for p in c]
+    x0, y0 = math.floor(min(p[0] for p in pts)) - 1, math.floor(min(p[1] for p in pts)) - 1
+    x1, y1 = math.ceil(max(p[0] for p in pts)) + 1, math.ceil(max(p[1] for p in pts)) + 1
+    big = Image.new('L', ((x1 - x0) * ss, (y1 - y0) * ss), 0)
+    area = lambda c: sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(c, c[1:] + c[:1]))
+    for sh in shapes:
+        one = Image.new('L', big.size, 0)
+        d = ImageDraw.Draw(one)
+        sign = area(max(sh, key=lambda c: abs(area(c)))) > 0
+        to = lambda c: [((x - x0) * ss, (y - y0) * ss) for x, y in c]
+        for c in sh:
+            if (area(c) > 0) == sign:
+                d.polygon(to(c), fill=255)
+        for c in sh:
+            if (area(c) > 0) != sign:
+                d.polygon(to(c), fill=0)
+        big = ImageChops.lighter(big, one)
+    mask = big.resize((x1 - x0, y1 - y0), Image.Resampling.BOX)
+    im.paste(colour, (x0, y0, x1, y1), mask)
+
+
 def static_banner(out_dir):
     """Last resort, without a browser: the logo hexagon and the site address on the dark background."""
     from PIL import Image, ImageDraw, ImageFont
@@ -501,19 +652,21 @@ def static_banner(out_dir):
         x_col = (18 + 41) * s if L == 'en' else (W - 18 - 41) * s
         bottom = ((H - 86) / 2 + 86) * s
         lay = tag_layout() if hasattr(tag, 'getmetrics') else None
-        if lay:
-            # the letters placed as in the animated banner (tag_layout), their ink centred under the mark, then the TM
-            # after the N: .432em tall, its top a third of its height above the capitals (bottom .457em up)
-            em = tag.size
+        outlines = tag_outlines() if lay else None
+        if outlines:
+            # the letters as outlines from the font, placed as in the animated banner (tag_layout), their ink centred
+            # under the mark, then the TM after the N as in the animated banner (tm_at); anti-aliased, not snapped
+            em = TAG_PX * s
             base = bottom - tag.getmetrics()[1]
             x0 = x_col - (lay['left'] + lay['right']) / 2 * em
-            for ch, xi in zip(TAG.replace(' ', ''), lay['x']):
-                dr.text((x0 + xi * em, base), ch, font=tag, fill='#C3D648', anchor='ls')
-            right = x0 + (lay['x'][-1] + lay['adv'][-1]) * em
-            k = 0.432 * em / 30                  # TM_MARK is 30 units tall (y 12..42), starts at x 975.4
-            for poly in tm_path_polys():
-                dr.polygon([(right + 0.05 * em + (x - 975.4) * k, base - 0.457 * em - (42 - y) * k) for x, y in poly],
-                           fill='#C3D648')
+            shapes = [[[(x0 + (xi + gx) * em, base + gy * em) for gx, gy in c] for c in outlines[ch]]
+                      for ch, xi in zip(TAG.replace(' ', ''), lay['x'])]
+            tx, ty, tw, th = tm_at(lay)
+            bx, by, bw, bh = mark.TM_BOX
+            k = th * em / bh
+            shapes.append([[(x0 + tx * em + (x - bx) * k, base + ty * em + (y - by) * k) for x, y in poly]
+                           for poly in tm_path_polys()])
+            fill_shapes(im, shapes, '#C3D648')
         else:
             dr.text((x_col, bottom), 'ASA HEXAGON', font=tag, fill='#C3D648', anchor='md')
         anchor, x = ('la', 116 * s) if L == 'en' else ('ra', (W - 116) * s)

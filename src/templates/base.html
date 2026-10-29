@@ -59,7 +59,7 @@
     <nav aria-label="{{ T.mainnav }}">
       <ul class="nav">
         <li><a href="{{ P('about') }}"{% if section=='about' %} aria-current="page"{% endif %}>{{ T.nav.about }}</a></li>
-{% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
+{% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon<i class="tmn">{{ TM_NAV }}</i></b></span></a></li>
 {% endif %}        {#- "Services": the label is a link to /services/; the chevron next to it toggles the dropdown (which also opens on hover) #}
         <li class="has-dd">
           <a class="dd-link" href="{{ P('services') }}"{% if path in ('/services/', '/ar/services/') %} aria-current="page"{% endif %}{% if section=='services' %} style="color:var(--lime);opacity:1"{% endif %}>{{ T.nav.services }}</a><button type="button" class="dd-tgl" aria-expanded="false" aria-controls="dd-services" aria-label="{{ T.nav.services }}"{% if section=='services' %} style="color:var(--lime);opacity:1"{% endif %}>{{ I('FaChevronDown') }}</button>
@@ -102,7 +102,7 @@
   <div class="top"><img src="{{ R }}assets/img/logo-asa-short-plain.svg" alt="ASA" width="133" height="34"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
   <a href="{{ P('about') }}">{{ T.nav.about }}</a>
-{% if HEXAGON %}  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a>
+{% if HEXAGON %}  <a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon<i class="tmn">{{ TM_NAV }}</i></b></span></a>
 {% endif %}  <div class="mn-dd"><a href="{{ P('services') }}">{{ T.nav.services }}</a><button type="button" class="mn-tgl" aria-expanded="{{ 'true' if section=='services' else 'false' }}" aria-controls="mn-services" aria-label="{{ T.nav.services }}">{{ I('FaChevronDown') }}</button></div>
   <div class="mn-sub" id="mn-services"{% if section!='services' %} hidden{% endif %}>{% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}<p class="sub more">{{ T.more }}</p></div>
   <a href="{{ P('who') }}">{{ T.nav.who }}</a>

@@ -53,6 +53,7 @@ BRIEF_MARK = Markup(mark.svg('brief-mark'))
 
 env = Environment(loader=FileSystemLoader(os.path.join(ROOT, 'src/templates')), autoescape=True)
 env.globals['HEXAGON'] = config.HEXAGON_PUBLIC  # menu items and links to the ASA Hexagon page (config.py)
+env.globals['TM_NAV'] = Markup(mark.tm_svg(fill='currentColor'))  # the TM after "Hexagon" in the header and mobile menus
 env.globals['LINKEDIN'] = seo.LINKEDIN  # footer icon (the same URL is the schema sameAs)
 
 # Arabic text with English words (Excel 2021, IFRS 9, XLOOKUP...): wrap each Latin run in <bdi class="lt">
