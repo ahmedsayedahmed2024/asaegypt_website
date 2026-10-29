@@ -926,12 +926,21 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
    button keeps the whole header on one line from 1081px up, in English and Arabic */
 .nav-hex b{font-weight:700;color:var(--blue)}
 .site-header.solid .nav-hex b{color:var(--blue-dk)}
+/* the TM after "Hexagon" (header menu and mobile menu; not the footer): the header logo's TM in the colour of the word
+   (fill currentColor), with the superscript proportions of the Hexagon page (.26em tall, bottom .68em above the
+   baseline), in its own box (a visible gap of about .1em after the n, then the TM's own width) on the baseline, so the
+   item is a little wider and the line keeps its height */
+.nav-hex .tmn{position:relative;display:inline-block;width:.5514em;height:0;vertical-align:baseline}
+.nav-hex .tmn .tm{position:absolute;left:.06em;bottom:.68em;width:.4914em;height:.26em;max-width:none;display:block;overflow:visible}
 .header-cta .btn{padding:9px 14px;font-size:.84rem}
 @media (max-width:1240px) and (min-width:1081px){.header-cta .btn{padding:8px 11px;font-size:.8rem}}
 /* English "Request a consultation" is longer than the old label: 1px less on each menu item and 2px less on the button
-   keep the English header on one line, edge to edge with the content, exactly as before (Arabic unchanged) */
-@media (min-width:1280px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:5px}html[lang="en"] .header-cta .btn{padding-inline:10px}}
-@media (min-width:1081px) and (max-width:1279px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:clamp(3px,calc(1.1vw - 9px),7px)}html[lang="en"] .header-cta .btn{padding-inline:clamp(7px,calc(1vw - 4px),12px)}}
+   keep the English header on one line, edge to edge with the content, exactly as before (Arabic unchanged).
+   The TM after "Hexagon" (about 7-8px) is taken evenly from the same menu item padding: .25px less on each side from
+   1280px up, .4px less from 1081 to 1279px; the Services chevron keeps its size and about the same room is left
+   spare as before (2.2px at 1081px, the tightest width; 2.3px before) */
+@media (min-width:1280px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:4.75px}html[lang="en"] .header-cta .btn{padding-inline:10px}}
+@media (min-width:1081px) and (max-width:1279px){html[lang="en"] .nav>li>a,html[lang="en"] .nav>li>button{padding-inline:clamp(2.6px,calc(1.1vw - 9.4px),6.6px)}html[lang="en"] .header-cta .btn{padding-inline:clamp(7px,calc(1vw - 4px),12px)}}
 .site-footer h4 a:hover{color:var(--lime)}
 
 /* ---------- ASA Hexagon (/hexagon/): see hexagon.py and assets/js/hexagon.js ---------- */
@@ -952,11 +961,12 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 @keyframes hxl{0%{opacity:0}5%{opacity:.5}12%{opacity:0}100%{opacity:0}}
 @keyframes hxlb{0%{opacity:0}6%{opacity:.6}16%{opacity:0}100%{opacity:0}}
 /* the TM of the "ASA HEXAGON" lockup: a zero-size box after the N (on the baseline, so the word stays centred under the
-   mark and nothing moves) holding the header logo's TM at .58em (.432em tall), raised like an exponent: its top a third
-   of its height above the capitals (cap height .745em), so its bottom is .457em up; tight to the N (the N's
-   letter-spacing, .24em, is taken back); lime, and never part of the shine */
+   mark and nothing moves) holding the header logo's TM as a small superscript (mark.TM_H, TM_RAISE): .26em tall, its
+   bottom .68em above the baseline (its top .195em above the capitals, cap height .745em); it starts where a next letter
+   would (after the N's letter-spacing, .24em), a clear gap after the N; lime, and never part of the shine.
+   The Hexagon sharing images (hexagon.py --og) use the same rule */
 .hxg-tm{position:relative;display:inline-block;width:0;height:0;vertical-align:baseline}
-.hxg-tm .tm{position:absolute;left:-.185em;bottom:.457em;height:.432em;width:.817em;max-width:none;display:block;overflow:visible}
+.hxg-tm .tm{position:absolute;left:0;bottom:.68em;height:.26em;width:.4914em;max-width:none;display:block;overflow:visible}
 .hxg-kl>span{animation:hxch 5s ease-in-out calc(2.05s + var(--j) * .075s) infinite}
 @keyframes hxch{0%{color:#C3D648;text-shadow:none}4%{color:#F4F8DC;text-shadow:0 0 10px rgba(195,214,72,.85),0 0 22px rgba(195,214,72,.35)}10%{color:#C3D648;text-shadow:none}100%{color:#C3D648;text-shadow:none}}
 .hxg-title{color:#fff;font-size:clamp(1.65rem,min(4.2vw,6.2vh),3.1rem);line-height:1.2;margin:0 auto clamp(4px,1.1vh,12px)}

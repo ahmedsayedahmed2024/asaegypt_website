@@ -64,11 +64,19 @@ def shine_svg(cls='hxg-mark'):
     return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">{parts}{glow}</svg>'
 
 
-def tm_svg(cls='tm'):
-    """The TM of the header logo (am.TM_MARK, Plus Jakarta Sans ExtraBold), cropped to its letters and filled
-    lime: the one TM of the "ASA HEXAGON" lockup (mark above, word under), after the word. Sized and placed by CSS."""
-    return (f'<svg class="{cls}" viewBox="975.4 12 56.7 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" '
-            f'focusable="false"><path fill="#C3D648" d="{am.TM_MARK}"/></svg>')
+# the superscript TM after "ASA HEXAGON" (Hexagon page, signature banner, sharing images) and after "Hexagon" in the
+# menu, in em of the word's letters: TM_H tall, its bottom TM_RAISE above the baseline (its top well above the capitals)
+TM_H, TM_RAISE = 0.26, 0.68
+TM_BOX = (975.4, 12, 56.7, 30)      # TM_MARK cropped to its letters: x, y, width, height
+TM_W = TM_H * TM_BOX[2] / TM_BOX[3]
+
+
+def tm_svg(cls='tm', fill='#C3D648'):
+    """The TM of the header logo (am.TM_MARK, Plus Jakarta Sans ExtraBold), cropped to its letters: the one TM of the
+    "ASA HEXAGON" lockup (mark above, word under), after the word, lime; and after "Hexagon" in the menu
+    (fill="currentColor", the colour of the word). Sized and placed by CSS (TM_H, TM_RAISE)."""
+    return (f'<svg class="{cls}" viewBox="{" ".join(f"{v:g}" for v in TM_BOX)}" xmlns="http://www.w3.org/2000/svg" '
+            f'aria-hidden="true" focusable="false"><path fill="{fill}" d="{am.TM_MARK}"/></svg>')
 
 
 if __name__ == '__main__':
