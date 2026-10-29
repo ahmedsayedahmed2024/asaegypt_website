@@ -8,7 +8,7 @@ SERVICES_HUB = dict(
     desc="Audit and assurance, tax and transfer pricing, accounting and IFRS, advisory and market-entry services in Egypt and Saudi Arabia, from one senior team.",
     kicker="Our services", h1="Integrated services, one senior team.",
     lead="We provide a wide range of professional services in audit, accounting, tax and advisory, and shape the scope of each engagement around the client's needs.",
-    int_k="One team", int_h="Joined-up support before, during and after the audit.",
+    int_k="One team", int_h="Joined-up support across reporting, tax and advisory.",
     int_p=["Most organisations don't need several different advisers — they need one team that understands how their accounting, tax position and risks connect.",
            "Because our audit, tax and advisory expertise works under one leadership, our clients get a connected view. For audit clients in particular, we provide only the services permitted by the independence rules of the Code of Ethics and Egyptian law, after assessing independence before every engagement."],
     pillars=[("FaUserTie", "Professional oversight", "Every engagement is overseen by experienced professionals, available to you throughout."),

@@ -60,7 +60,7 @@ HOME = dict(
            ("FaLink", "Members of the Arab Federation of Accountants & Auditors"),
            ("FaGraduationCap", "ACCA, CPA & SOCPA qualified professionals")],
     svc_k="What we do", svc_h="Integrated services across the reporting, tax and advisory cycle.",
-    svc_p="One team supports you before, during and after the audit — from clean records and robust reporting to specialist technical conclusions.",
+    svc_p="One team supports you across the reporting cycle — from clean records and robust reporting to specialist technical conclusions.",
     who_k="Who we serve", who_h="Built for organisations at every stage.",
     who_p="From listed groups and family businesses to venture-backed startups and international investors — we adapt our approach to your size, sector and ambition.",
     who_feature_t="A diverse client portfolio in Egypt and abroad",
