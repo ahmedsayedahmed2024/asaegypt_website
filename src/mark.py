@@ -64,5 +64,12 @@ def shine_svg(cls='hxg-mark'):
     return f'<svg class="{cls}" viewBox="{VIEWBOX}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">{parts}{glow}</svg>'
 
 
+def tm_svg(cls='tm'):
+    """The TM of the header logo (am.TM_MARK, Plus Jakarta Sans ExtraBold), cropped to its letters and filled
+    lime: the one TM of the "ASA HEXAGON" lockup (mark above, word under), after the word. Sized and placed by CSS."""
+    return (f'<svg class="{cls}" viewBox="975.4 12 56.7 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" '
+            f'focusable="false"><path fill="#C3D648" d="{am.TM_MARK}"/></svg>')
+
+
 if __name__ == '__main__':
     print(svg())

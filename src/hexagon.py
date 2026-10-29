@@ -283,6 +283,7 @@ def page_data(L):
         HIVE_ICONS=[Markup(icon_hive(i)) for i in range(len(D['hive']))],
         COMB=Markup(honeycomb()),
         SHINE_MARK=Markup(mark.shine_svg()),   # the mark above the kicker, with its light wave (site.css)
+        TM=Markup(mark.tm_svg()),              # the TM after "ASA HEXAGON" (still, never shines)
     )
 
 
@@ -302,12 +303,13 @@ body{{background:radial-gradient(ellipse 60% 60% at 50% 62%,#2B2F35 0%,#23262B 6
 .og h1{{color:#fff;font-size:{h1}px;line-height:1.2;margin:0 0 6px;letter-spacing:{ls}}}
 .og .hxd{{flex:1;width:100%;min-height:0}}
 </style></head><body><div class="og">
-<p class="kicker" dir="ltr" lang="en">ASA HEXAGON</p>
+<p class="kicker" dir="ltr" lang="en"><span>ASA HEXAGON<i class="hxg-tm">{tm}</i></span></p>
 <h1 class="hxg-title">{title}</h1>{svg}</div></body></html>"""
 
 
 def build_og(dist):
-    """Render the finished diagram with the page title to 1200x630 PNGs (public/assets/img/og-hexagon-<L>.png)."""
+    """Render the finished diagram with the page title to 1200x630 PNGs (public/assets/img/og-hexagon-<L>.png).
+    The kicker carries the lockup's TM after the N, as on the page (site.css, .hxg-tm)."""
     from playwright.sync_api import sync_playwright
     from PIL import Image
     import io
@@ -321,7 +323,7 @@ def build_og(dist):
                 title = '<span class="dot"> · </span>'.join(f'<span>{E(t)}</span>' for t in D['h1'])
                 open(tmp, 'w', encoding='utf-8').write(OG_HTML.format(
                     L=L, dir='rtl' if L == 'ar' else 'ltr', css='assets/css/site.css', h1=44 if L == 'en' else 46,
-                    ls='-.02em' if L == 'en' else '0', title=title,
+                    ls='-.02em' if L == 'en' else '0', title=title, tm=mark.tm_svg(),
                     svg=diagram(L, 'wide').replace('<svg class="hxd ', '<svg class="hxd hxd-og ')))
                 pg.goto('file://' + tmp, wait_until='load')
                 pg.evaluate('document.fonts.ready')

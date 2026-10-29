@@ -6,10 +6,11 @@
   <div class="hxg-fold">
     <div class="wrap hxg-head">
       {#- the mark and the kicker shine in turn (site.css, "ASA Hexagon: the mark and kicker shine"): the mark's pieces
-          (mark.shine_svg), then the letters (--j = 0..9, the space not counted); screen readers get the word once #}
+          (mark.shine_svg), then the letters (--j = 0..9, the space not counted); screen readers get the word once.
+          The TM after the N (mark.tm_svg) hangs outside the centring and never shines #}
       {{ SHINE_MARK }}
       {%- set j = namespace(n=0) %}
-      <p class="kicker hxg-kick" dir="ltr" lang="en"><span class="sr">{{ D.kicker }}</span><span class="hxg-kl" aria-hidden="true">{% for ch in D.kicker %}{% if ch == ' ' %} {% else %}<span style="--j:{{ j.n }}">{{ ch }}</span>{% set j.n = j.n + 1 %}{% endif %}{% endfor %}</span></p>
+      <p class="kicker hxg-kick" dir="ltr" lang="en"><span class="sr">{{ D.kicker }}™</span><span class="hxg-kl" aria-hidden="true">{% for ch in D.kicker %}{% if ch == ' ' %} {% else %}<span style="--j:{{ j.n }}">{{ ch }}</span>{% set j.n = j.n + 1 %}{% endif %}{% endfor %}<i class="hxg-tm">{{ TM }}</i></span></p>
       <h1 id="hxg-h1" class="hxg-title">{% for t in D.h1 %}{% if not loop.first %}<span class="dot"> · </span>{% endif %}<span>{{ t }}</span>{% endfor %}</h1>
       <p class="lead">{{ D.lead|bidi(L) }}</p>
     </div>
