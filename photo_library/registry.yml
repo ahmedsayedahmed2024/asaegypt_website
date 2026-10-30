@@ -168,3 +168,10 @@ photos:
   library: tax/cairo-tower-corniche
   dhash: 3f0f4f1773999a07
   sha256: ef26480e3b66d2955a1d7c76d812f85b5765bb877d242fdf110d4c725130915d
+- used_by: news:iaasb-isa-330-500-520-consultation
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Pen_on_a_notebook_(Unsplash).jpg
+  photographer: Thomas Martinsen
+  licence: CC0
+  dhash: b8f4fcfde9fce0c0
+  sha256: e347de1f902c6115cd24be8b593c91366a76f991af9dff0560e659bca1f4c6d5

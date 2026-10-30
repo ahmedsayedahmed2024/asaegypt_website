@@ -27,6 +27,33 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="iaasb-isa-330-500-520-consultation", date="2026-10-26", added="2026-10-30", added_at="04:17", category="standards", region="global",
+      title_en="IAASB: consultation on proposed revisions to ISA 330, ISA 500 and ISA 520 closes on 15 December 2026",
+      title_ar="مجلس IAASB: المشاورة بشأن التعديلات المقترحة على ISA 330 وISA 500 وISA 520 تُغلق في 15 ديسمبر 2026",
+      short_en="IAASB audit evidence consultation closes 15 December",
+      short_ar="مشاورة IAASB حول أدلة المراجعة تُغلق 15 ديسمبر",
+      seo_title_en="IAASB consultation on ISA 330, 500 and 520 closes 15 December",
+      seo_title_ar="مشاورة IAASB حول ISA 330 و500 و520 تُغلق في 15 ديسمبر",
+      summary_en="The International Auditing and Assurance Standards Board has issued a special edition of its eNews on its proposed revisions to ISA 330, ISA 500 and ISA 520. The consultation on the three linked standards closes on 15 December 2026.",
+      summary_ar="أصدر مجلس معايير المراجعة والتأكيد الدولية (IAASB) عددًا خاصًا من نشرته الإلكترونية حول التعديلات المقترحة على المعايير ISA 330 وISA 500 وISA 520. وتُغلق المشاورة بشأن هذه المعايير الثلاثة المترابطة في 15 ديسمبر 2026.",
+      image=dict(focus='65% 40%', source='https://commons.wikimedia.org/wiki/File:Pen_on_a_notebook_(Unsplash).jpg',
+                 photographer='Thomas Martinsen', site='Wikimedia Commons', licence='CC0',
+                 alt_en='A silver pen resting on a closed dark grey notebook on a wooden desk',
+                 alt_ar='قلم فضي موضوع على دفتر رمادي داكن مغلق فوق مكتب خشبي'),
+      body_en=[
+          "On 26 October 2026, the International Auditing and Assurance Standards Board (IAASB) issued a special edition of its eNews on its proposed revisions to three interconnected standards: ISA 330, The Auditor's Responses to Assessed Risks; ISA 500, Audit Evidence; and ISA 520, Analytical Procedures.",
+          "The IAASB groups the proposals under four themes: audit evidence, building a more thorough basis for auditors' judgements about audit evidence; risk response, strengthening the link between assessed risks and the auditor's responses to them; professional judgement, reinforcing professional scepticism and professional judgement throughout the audit; and innovation, supporting innovation while keeping the standards principles-based rather than technology-specific.",
+          "The special edition brings together the consultation resources in one place: explanations of what is changing, on-demand recordings of a two-part webinar series, a four-part video series on key aspects of the proposals, and links for responding.",
+          "Auditors, firms, regulators, professional accountancy organisations, national standard setters and academics can respond through an integrated response form covering the three standards. Users of audited financial statements and others can instead complete a shorter user survey. The consultation closes on 15 December 2026.",
+      ],
+      body_ar=[
+          "أصدر مجلس معايير المراجعة والتأكيد الدولية (IAASB)، في 26 أكتوبر 2026، عددًا خاصًا من نشرته الإلكترونية (eNews) حول التعديلات المقترحة على ثلاثة معايير مترابطة، هي: ISA 330 «استجابات المراجع للمخاطر المقيَّمة»، وISA 500 «أدلة المراجعة»، وISA 520 «الإجراءات التحليلية».",
+          "ويصنّف المجلس هذه المقترحات تحت أربعة محاور: أدلة المراجعة، بإرساء أساس أكثر شمولًا للأحكام التي يتخذها المراجع بشأنها؛ والاستجابة للمخاطر، بتوثيق الصلة بين المخاطر المقيَّمة وإجراءات المراجع في الاستجابة لها؛ والحكم المهني، بتعزيز الشك المهني والحكم المهني في جميع مراحل المراجعة؛ والابتكار، بدعمه مع الإبقاء على المعايير قائمةً على المبادئ لا مرتبطةً بتقنيات بعينها.",
+          "ويجمع العدد الخاص موارد المشاورة في موضع واحد: شروحًا لما يتغيّر، وتسجيلات متاحة عند الطلب لسلسلة ندوات إلكترونية من جزأين، وسلسلة مرئية من أربعة أجزاء حول الجوانب الرئيسية للمقترحات، وروابط لتقديم الردود.",
+          "ويمكن للمراجعين ومكاتب المراجعة والجهات الرقابية والمنظمات المهنية للمحاسبة وواضعي المعايير الوطنية والأكاديميين الرد عبر نموذج موحّد يغطي المعايير الثلاثة، فيما يمكن لمستخدمي القوائم المالية المراجَعة وغيرهم الإجابة عن استبيان أقصر مخصص للمستخدمين. وتُغلق المشاورة في 15 ديسمبر 2026.",
+      ],
+      source_name="International Auditing and Assurance Standards Board (IAASB)",
+      source_url="https://www.iaasb.org/news-events/2026-10/special-edition-enews-proposed-revisions-isa-330-isa-500-and-isa-520"),
  dict(slug="bis-ai-infrastructure-debt-off-balance-sheet", date="2026-10-27", added="2026-10-29", added_at="04:19", category="tech", region="global",
       title_en="BIS: AI infrastructure is increasingly financed through long-term debt and off-balance-sheet vehicles",
       title_ar="بنك التسويات الدولية: تمويل البنية التحتية للذكاء الاصطناعي يعتمد بصورة متزايدة على الديون طويلة الأجل والكيانات خارج الميزانية",
