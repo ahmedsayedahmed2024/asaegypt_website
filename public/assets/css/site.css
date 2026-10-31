@@ -1067,7 +1067,13 @@ html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 .hxg-why em{font-style:italic;color:var(--ink)}
 /* the meaning of the mark: the mark alone beside the last two paragraphs */
 .hxg-story{display:grid;grid-template-columns:120px 1fr;gap:10px 30px;align-items:start;margin-top:8px;padding-top:26px;border-top:1px solid var(--line)}
-.hxg-story-mark{width:120px;height:auto;margin-top:6px}
+.hxg-story-mark{position:relative;display:block;width:120px;margin-top:6px}
+.hxg-story-mark img{display:block;width:100%;height:auto}
+/* the story mark's TM, top-right in both languages: max(9% of the mark's width, 9px) wide, its top level with the
+   hexagon's top, the T's stem centred above the beam's far-right tip (x = 100%; the stem's centre is .1896 of the TM's
+   width: x 986.15 in TM_BOX 975.4 + 56.7); static, outside the layout, never clipped */
+.hxg-story-tm{--w:max(9%,9px);position:absolute;top:0;left:calc(100% - .1896 * var(--w));width:var(--w);height:auto;
+  overflow:visible;pointer-events:none}
 @media (max-width:640px){.hxg-story{grid-template-columns:1fr}.hxg-story-mark{width:84px}}
 .hxg-comb{position:absolute;top:0;bottom:0;inset-inline-end:0;width:min(46%,620px);height:100%;pointer-events:none;
   -webkit-mask-image:linear-gradient(to left,#000 20%,transparent 95%);mask-image:linear-gradient(to left,#000 20%,transparent 95%)}
