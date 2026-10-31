@@ -284,6 +284,7 @@ def page_data(L):
         COMB=Markup(honeycomb()),
         SHINE_MARK=Markup(mark.shine_svg()),   # the mark above the kicker, with its light wave (site.css)
         TM=Markup(mark.tm_svg()),              # the TM after "ASA HEXAGON" (still, never shines)
+        STORY_TM=Markup(mark.tm_svg('hxg-story-tm', '#1C7AA6')),  # the Deep Blue TM on the story mark (static)
     )
 
 

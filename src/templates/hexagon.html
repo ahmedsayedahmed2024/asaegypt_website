@@ -42,7 +42,7 @@
       <h2 id="hxg-why">{{ D.why_h }}</h2>
       {% for p in D.why[:3] %}<p>{{ p|safe }}</p>{% endfor %}
       {#- the meaning of the mark: the mark alone beside these paragraphs #}
-      {% if D.why|length > 3 %}<div class="hxg-story"><img class="hxg-story-mark" src="{{ R }}assets/img/mark.svg" alt="" width="120" height="104" loading="lazy"><div>{% for p in D.why[3:] %}<p>{{ p|safe }}</p>{% endfor %}</div></div>{% endif %}
+      {% if D.why|length > 3 %}<div class="hxg-story"><span class="hxg-story-mark"><img src="{{ R }}assets/img/mark.svg" alt="" width="120" height="104" loading="lazy">{{ STORY_TM }}</span><div>{% for p in D.why[3:] %}<p>{{ p|safe }}</p>{% endfor %}</div></div>{% endif %}
     </div>
   </div>
 </section>
