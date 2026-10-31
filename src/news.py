@@ -27,6 +27,29 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="uae-einvoicing-administrative-penalties-cabinet-decision", date="2026-10-30", added="2026-10-31", added_at="04:19", category="economy", region="gcc",
+      title_en="UAE Ministry of Finance announces a new Cabinet Decision on administrative penalties for the e-invoicing system",
+      title_ar="وزارة المالية الإماراتية تعلن قرارًا جديدًا لمجلس الوزراء بشأن الغرامات الإدارية المرتبطة بنظام الفوترة الإلكترونية",
+      short_en="UAE revises e-invoicing penalties with AED 50,000 cap",
+      short_ar="الإمارات تعدّل غرامات الفوترة الإلكترونية بسقف 50 ألف درهم",
+      seo_title_en="UAE revises e-invoicing penalties with an AED 50,000 cap",
+      seo_title_ar="الإمارات تعدّل غرامات الفوترة الإلكترونية بسقف 50,000 درهم",
+      summary_en="The UAE Ministry of Finance has announced a new Cabinet Decision on e-invoicing administrative penalties, replacing Cabinet Decision No. 106 of 2025. Non-compliance by Issuers and Recipients now carries AED 5,000 for the first violation and AED 5,000 for each month it continues, capped at AED 50,000 in any twelve consecutive months.",
+      summary_ar="أعلنت وزارة المالية الإماراتية قرارًا جديدًا لمجلس الوزراء بشأن الغرامات الإدارية لنظام الفوترة الإلكترونية، يحل محل قرار مجلس الوزراء رقم (106) لسنة 2025. وبموجبه تبلغ غرامة عدم التزام المُصدِر والمتلقي 5,000 درهم عن المخالفة الأولى، و5,000 درهم عن كل شهر تستمر فيه المخالفة، بحد أقصى 50,000 درهم خلال أي اثني عشر شهرًا متتالية.",
+      body_en=[
+          "On 30 October 2026, the UAE Ministry of Finance announced a new Cabinet Decision on the administrative penalties related to the UAE e-invoicing system, replacing Cabinet Decision No. 106 of 2025. The Ministry states that the amendments follow feedback from stakeholders and aim to provide a clear, proportionate and practical compliance framework ahead of mandatory e-invoicing.",
+          "The main change is a proportionate penalty for non-compliance by the Issuer and the Recipient with e-invoicing implementation obligations: AED 5,000 for the first violation, and AED 5,000 for each month, or part of a month, in which the non-compliance continues, up to a maximum of AED 50,000 for these violations in any twelve consecutive months.",
+          "The new decision removes the penalty that previously applied when the Issuer or the Recipient failed to notify the Authority of a system failure. To avoid duplicate penalties, where the same person acts as Issuer, Recipient or both in respect of the same violation, only one administrative penalty is imposed.",
+          "According to the Ministry, the revised penalties are designed to better match the nature of each obligation, encourage timely compliance, reduce the administrative burden on businesses and give them greater certainty as they prepare for the transition to e-invoicing.",
+      ],
+      body_ar=[
+          "أعلنت وزارة المالية في دولة الإمارات، في 30 أكتوبر 2026، قرارًا جديدًا لمجلس الوزراء بشأن الغرامات الإدارية المرتبطة بنظام الفوترة الإلكترونية في الدولة، يحل محل قرار مجلس الوزراء رقم (106) لسنة 2025. وأوضحت الوزارة أن هذه التعديلات جاءت استجابةً لملاحظات الجهات المعنية، وتهدف إلى توفير إطار واضح ومتناسب وعملي للامتثال قبل التطبيق الإلزامي للفوترة الإلكترونية.",
+          "ويتمثل التغيير الرئيسي في غرامة متناسبة على عدم التزام المُصدِر والمتلقي بمتطلبات تطبيق الفوترة الإلكترونية، قدرها 5,000 درهم عن المخالفة الأولى، و5,000 درهم عن كل شهر أو جزء منه تستمر فيه المخالفة، على ألا يتجاوز مجموع الغرامات عن هذه المخالفات 50,000 درهم خلال أي اثني عشر شهرًا متتالية.",
+          "وألغى القرار الجديد الغرامة التي كانت تُفرض على المُصدِر أو المتلقي عند عدم إخطار الهيئة بتعطل النظام. ومنعًا لتعدد الغرامات، إذا كان الشخص نفسه مُصدِرًا أو متلقيًا أو كليهما في المخالفة ذاتها، تُفرض عليه غرامة إدارية واحدة فقط.",
+          "وبحسب الوزارة، صُممت الغرامات المعدلة لتتناسب على نحو أفضل مع طبيعة كل التزام، وتشجع على الامتثال في الوقت المحدد، وتخفف الأعباء الإدارية عن الشركات، وتمنحها قدرًا أكبر من الوضوح وهي تستعد للانتقال إلى الفوترة الإلكترونية.",
+      ],
+      source_name="Ministry of Finance, UAE",
+      source_url="https://mof.gov.ae/en/news/mof-announces-updated-administrative-penalties-related-to-the-uae-einvoicing-system-to-enhance-clarity-and-support-business-compliance/"),
  dict(slug="iaasb-isa-330-500-520-consultation", date="2026-10-26", added="2026-10-30", added_at="04:17", category="standards", region="global",
       title_en="IAASB: consultation on proposed revisions to ISA 330, ISA 500 and ISA 520 closes on 15 December 2026",
       title_ar="مجلس IAASB: المشاورة بشأن التعديلات المقترحة على ISA 330 وISA 500 وISA 520 تُغلق في 15 ديسمبر 2026",
