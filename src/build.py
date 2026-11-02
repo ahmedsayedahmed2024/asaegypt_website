@@ -154,8 +154,25 @@ def image_for(item, kind, L):
     focus = im.get('focus', '50% 50%')
     if not re.fullmatch(r'(100|[1-9]?\d)% (100|[1-9]?\d)%', focus):
         sys.exit(f"ERROR: {kind} '{item['slug']}' has an invalid image focus {focus!r} (expected e.g. \"70% 50%\")")
-    return dict(lg=lg, card=card, alt=image_alt(item, kind, L), illustration=illustration, focus=focus,
+    w, h = image_size(os.path.join(DIST, lg) if os.path.exists(os.path.join(DIST, lg)) else os.path.join(ROOT, 'public', lg))
+    return dict(lg=lg, card=card, alt=image_alt(item, kind, L), illustration=illustration, focus=focus, w=w, h=h,
                 photographer=im.get('photographer'), site=im.get('site'), source=im.get('source'))
+
+IMAGE_SIZES = {}
+
+def image_size(path):
+    """(width, height) of an image file, for the width/height attributes that let the browser reserve its box
+    before it loads (a WebP is read from its header; an SVG from its width/height or viewBox)."""
+    if path not in IMAGE_SIZES:
+        if path.endswith('.svg'):
+            head = open(path, encoding='utf-8').read(2000)
+            m = re.search(r'viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)', head)
+            IMAGE_SIZES[path] = (round(float(m[1])), round(float(m[2]))) if m else (1600, 900)
+        else:
+            from PIL import Image
+            with Image.open(path) as im:
+                IMAGE_SIZES[path] = im.size
+    return IMAGE_SIZES[path]
 
 ALT_WARNED = set()
 

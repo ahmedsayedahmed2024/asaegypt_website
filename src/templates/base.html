@@ -41,6 +41,7 @@
 <link rel="manifest" href="{{ R }}site.webmanifest">
 {% if L=='ar' %}<link rel="preload" href="{{ R }}assets/fonts/plexar-ar-400.woff2" as="font" type="font/woff2" crossorigin>{% else %}<link rel="preload" href="{{ R }}assets/fonts/pjs-400.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
 <link rel="stylesheet" href="{{ R }}assets/css/site.css?v={{ V }}">
+{% block head %}{% endblock %}
 {{ schema|safe }}
 </head>
 <body>

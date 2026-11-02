@@ -1,4 +1,12 @@
 {% extends "base.html" %}{% import "macros.html" as m with context %}
+{% block head %}
+{#- speed (CLAUDE.md, "Homepage hexagon"): the first slide's photo is the page's largest image, so it is fetched at
+    once, with high priority (the other slides' photos load later, from site.js); the font of the hero heading too #}
+{%- set f = BRIEF[0].image if BRIEF and BRIEF[0].image %}
+{%- if f %}<link rel="preload" as="image" href="{{ R }}{{ f.card if f.illustration else f.lg }}"{% if not f.illustration %} imagesrcset="{{ R }}{{ f.card }} 800w, {{ R }}{{ f.lg }} 1600w" imagesizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %} fetchpriority="high">
+{% endif -%}
+{% if L=='ar' %}<link rel="preload" href="{{ R }}assets/fonts/plexar-ar-700.woff2" as="font" type="font/woff2" crossorigin>{% else %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
+{% endblock %}
 {% block main %}
 {% set H = C.HOME %}
 <section class="hero">
@@ -19,7 +27,7 @@
            alt text (for image search); the group stays aria-hidden because the slide text already says what each item is #}
         <div class="brief-media" aria-hidden="true">
           {% for b in BRIEF if b.image %}{% set i = b.image %}{% set at = '' if loop.first and b is sameas BRIEF[0] else 'data-' %}
-          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img style="object-position:{{ i.focus }}" {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %}{% if not at %} fetchpriority="high"{% endif %} alt="{{ i.alt }}" decoding="async"></span>
+          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img style="object-position:{{ i.focus }}" {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %} width="{{ i.w }}" height="{{ i.h }}"{% if at %} loading="lazy" decoding="async"{% else %} loading="eager" fetchpriority="high"{% endif %} alt="{{ i.alt }}"></span>
           {% endfor %}
         </div>
         {%- endif %}
