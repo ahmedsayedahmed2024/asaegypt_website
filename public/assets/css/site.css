@@ -327,6 +327,10 @@ html[lang="ar"] .site-footer h4{letter-spacing:0;font-size:.95rem}
   .hero>.wrap{flex:1 0 auto;width:100%;min-height:0}
   .hero .wrap{padding-top:calc(84px + var(--hg));padding-bottom:max(24px,var(--hg))}
   .hero .stats{position:relative}
+  /* layout shift: the stats strip comes about 35 KB into the page, after the hexagon's markup, and the browser may draw
+     the hero before it arrives; until then its height (131px on desktop, EN and AR) is kept free, so the hero text and
+     the hexagon do not move up when it appears */
+  .hero:not(:has(>.stats))>.wrap{margin-bottom:131px}
   .hero .stats .wrap{grid-template-columns:repeat(4,minmax(0,1fr))}
   .stat b.sm{font-size:min(1.34rem,calc(2.08vw - 4.6px));white-space:nowrap}  /* "International networks" on one line at every desktop width */
   .hero .art{width:clamp(361px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129),100%)}
@@ -454,6 +458,11 @@ html[dir="rtl"] .numbers b,html[dir="rtl"] .stat b{text-align:right}
 .scope{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
 .scope li{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;border-radius:var(--radius);font-weight:600;color:var(--ink);line-height:1.45}
 .scope li .hx{width:16px;height:14px}
+.scope li.wide{grid-column:1/-1;align-items:flex-start;scroll-margin-top:110px}
+.scope li.wide .hx{margin-top:5px}
+.scope .scope-h{display:block}
+.scope .scope-p{display:block;margin-top:4px;font-weight:400;color:var(--text);font-size:.94rem;line-height:1.6}
+.scope li a{color:var(--blue-dk);text-decoration:underline;text-underline-offset:3px}
 .scope li.more{grid-column:1/-1;background:none;padding:6px 0 0;font-weight:400;color:var(--muted);font-style:italic}
 .more{color:var(--muted);font-size:.9rem;font-style:italic;opacity:.85}
 html[lang="ar"] .more{font-style:normal}
@@ -958,7 +967,7 @@ html[dir="rtl"] .latest-card .lt-kick{letter-spacing:0}
 /* ---------- ASA Hexagon (/hexagon/): see hexagon.py and assets/js/hexagon.js ---------- */
 .hxg-hero{position:relative;background:radial-gradient(ellipse 60% 55% at 50% 64%,#2B2F35 0%,var(--graphite) 60%,#1B1D21 100%);color:#fff;text-align:center;overflow:hidden;isolation:isolate}
 .hxg-fold{display:flex;flex-direction:column;padding-top:84px}
-.hxg-head{padding-top:clamp(8px,2.6vh,30px)}
+.hxg-head{padding-top:clamp(8px,2.6vh,30px);width:100%}  /* full width (not shrink-to-fit in the flex column), so a late font cannot change its box */
 .hxg-mark{display:block;height:clamp(40px,7.1vh,64px);width:auto;margin:0 auto clamp(6px,1.3vh,14px)}
 .hxg-hero .hxg-kick,html[lang="ar"] .hxg-hero .hxg-kick{font-family:var(--f-en);letter-spacing:.24em;font-size:.76rem;font-weight:700;color:var(--lime);margin-bottom:clamp(4px,1.1vh,12px)}
 /* ASA Hexagon: the mark and kicker shine. No hexagon bullet on this kicker (it stays an empty box, 0 wide and
@@ -1024,6 +1033,9 @@ html[lang="ar"] .hxd-wide .hxd-bp{font-size:17px}
 .hxg-replay{margin-top:8px;color:var(--soft);font-size:.82rem;padding:5px 14px;border:1px solid #4A4F57;border-radius:20px;transition:color .2s,border-color .2s}
 .hxg-replay:hover{color:var(--lime);border-color:var(--lime)}
 .hxg-replay[hidden]{display:none}
+/* layout shift: hexagon.js shows the button once it runs; with motion (.hxg-pre, set before the first frame) its line
+   is reserved, invisible, from the start, so nothing below it moves */
+.hxg-pre .hxg-replay[hidden]{display:inline-block;visibility:hidden}
 /* laptops and desktops (landscape screens): header + title + lead + diagram fill the first screen; the diagram takes
    the height that is left (never cropped: the SVG scales to fit, "meet"). Below 820px of height the hover text and
    the Replay button sit just under the first screen; from 820px they fit in it too (the tail has a fixed height).

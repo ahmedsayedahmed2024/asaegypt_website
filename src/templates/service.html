@@ -20,7 +20,12 @@
   <div class="wrap">
     <div class="sec-head rv"><div><p class="kicker">{{ X.offer_k }}</p><h2>{{ D.offer_h }}</h2></div><p class="lead">{{ D.offer_p }}</p></div>
     <ul class="scope rv">
-      {% for o in D.scope %}<li><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}" aria-hidden="true"></span><span>{{ o|bidi(L) }}</span></li>{% endfor %}
+      {#- an item is a line of text; dict(h, p, id) a heading with a short text under it (full width);
+          dict(t, a, after, to, frag) a line with a link to another service page's item #}
+      {% for o in D.scope %}{% set hx %}<span class="hx {{ 'lime' if loop.index0 % 2 else '' }}" aria-hidden="true"></span>{% endset %}
+      {%- if o is mapping and o.h %}<li class="wide" id="{{ o.id }}" data-passage>{{ hx }}<span><span class="scope-h">{{ o.h|bidi(L) }}</span><span class="scope-p">{{ o.p|bidi(L) }}</span></span></li>
+      {%- elif o is mapping %}<li>{{ hx }}<span>{{ o.t|bidi(L) }}<a href="{{ P(o.to) }}#{{ o.frag }}">{{ o.a|bidi(L) }}</a>{{ o.after }}</span></li>
+      {%- else %}<li>{{ hx }}<span>{{ o|bidi(L) }}</span></li>{% endif %}{% endfor %}
       <li class="more" data-noindex>{{ T.more }}</li>
     </ul>
   </div>

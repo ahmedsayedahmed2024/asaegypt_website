@@ -143,8 +143,13 @@ def organization(B, L):
                                       "opens": f"{int(m[1]):02d}:{m[2]}", "closes": f"{int(m[3]):02d}:{m[4]}"},
         "areaServed": [{"@type": "Country", "name": "Egypt"}, {"@type": "Country", "name": "Saudi Arabia"}],
         "knowsLanguage": ["ar", "en"], "foundingDate": "2022", "taxID": "577-152-629",
-        "knowsAbout": [s['name'] for s in B.C[L].SERVICES], "sameAs": SAME_AS,
+        "knowsAbout": [s['name'] for s in B.C[L].SERVICES] + scope_headings(L), "sameAs": SAME_AS,
     }
+
+
+def scope_headings(L):
+    """Named service items inside a service page's scope (dict(h=...), e.g. company secretarial & corporate services)."""
+    return [o['h'] for d in PC[L].SVC.values() for o in d['scope'] if isinstance(o, dict) and o.get('h')]
 
 
 def website(B, L):

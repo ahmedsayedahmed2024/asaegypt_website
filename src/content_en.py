@@ -34,7 +34,7 @@ SERVICES = [
          desc="Corporate tax, VAT and inspection support, double tax treaty relief and transfer pricing documentation that stands up to scrutiny."),
     dict(key="svc-acc", slug="accounting-consolidation", icon="FaCalculator", name="Accounting & IFRS",
          short="IFRS advice, consolidation, outsourcing",
-         desc="IFRS and Egyptian Accounting Standards advisory, consolidated financial statements, accounting policies and outsourced accounting and financial reporting."),
+         desc="IFRS and Egyptian Accounting Standards advisory, consolidated financial statements, accounting policies, outsourced accounting and financial reporting, and company secretarial and corporate services."),
     dict(key="svc-adv", slug="financial-advisory", icon="FaLightbulb", name="Advisory",
          short="Due diligence, internal audit, feasibility",
          desc="Financial due diligence, internal audit and internal control reviews, quality management set-up, feasibility studies and IPO readiness support."),
@@ -44,7 +44,7 @@ SERVICES = [
 ]
 
 HOME = dict(
-    title="ASA Chartered Accountants and Consultants | Audit Firm Egypt",
+    title="Audit & Accounting Firm in Egypt | ASA Chartered Accountants",
     desc="Audit, accounting, tax, transfer pricing and advisory services in Egypt, from Giza, for corporate groups, family businesses, startups and international clients.",
     kicker="Chartered Accountants & Consultants",
     h1="Audit, tax and advisory, built on <em>technical depth</em>.",
