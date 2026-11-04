@@ -175,3 +175,19 @@ photos:
   licence: CC0
   dhash: b8f4fcfde9fce0c0
   sha256: e347de1f902c6115cd24be8b593c91366a76f991af9dff0560e659bca1f4c6d5
+- used_by: news:eta-main-tax-system-giza-first-merged
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Pyramids_of_Giza,_Giza,_GG,_EGY_(46986597135).jpg
+  photographer: Warren LeMay
+  licence: CC0
+  library: tax/giza-pyramids-desert
+  dhash: 00000001dc9ce316
+  sha256: c29f19f840feb9c3b49bce2925802522ec374572e89bba9009af2cdd5d5a51e9
+- used_by: news:cbe-raises-policy-rates-100bps-october-2026
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Alexandria_egypt_morning.jpg
+  photographer: Medo55X
+  licence: CC0
+  library: tax/alexandria-seafront-morning
+  dhash: 8480030fef653ab4
+  sha256: 4ecffe2c65a11f58aba3314e835b88ffd7688ad480e5a96c5435a168a07e4dae

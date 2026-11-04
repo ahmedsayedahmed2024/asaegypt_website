@@ -39,7 +39,7 @@ photos:
   licence: CC0
   focus: 30% 60%
   dhash: 00000003cc9ce316
-  used_by: ''
+  used_by: news:eta-main-tax-system-giza-first-merged
 - id: tax/alexandria-seafront-morning
   category: tax
   file: photo_library/tax/alexandria-seafront-morning-lg.webp
@@ -51,7 +51,7 @@ photos:
   licence: CC0
   focus: 60% 50%
   dhash: 8400030fef653ab4
-  used_by: ''
+  used_by: news:cbe-raises-policy-rates-100bps-october-2026
 - id: economy/dubai-skyline-night
   category: economy
   file: photo_library/economy/dubai-skyline-night-lg.webp
