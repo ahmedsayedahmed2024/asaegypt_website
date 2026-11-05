@@ -27,6 +27,32 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="fra-nbfi-kyc-forms-update", date="2026-11-03", added="2026-11-05", added_at="04:20", category="economy", region="egypt",
+      title_en="FRA directs non-banking financial institutions to update their KYC and identity verification forms",
+      title_ar="الرقابة المالية تُلزم مؤسسات القطاع المالي غير المصرفي بتحديث نماذج التعرف على العملاء والتحقق من هويتهم",
+      short_en="FRA requires non-bank financial firms to update KYC forms",
+      short_ar="الرقابة المالية تُلزم الجهات غير المصرفية بتحديث نماذج اعرف عميلك",
+      seo_title_en="FRA directs non-bank firms to update KYC forms",
+      seo_title_ar="الرقابة المالية تُلزم بتحديث نماذج اعرف عميلك",
+      summary_en="Egypt's Financial Regulatory Authority has directed non-banking financial institutions to update their know-your-customer (KYC) and identity verification forms. Approved updated policies and internal control frameworks are due with the annual AML/CFT activity report for fiscal year 2026, by 31 January 2027.",
+      summary_ar="ألزمت الهيئة العامة للرقابة المالية مؤسسات القطاع المالي غير المصرفي بتحديث نماذج التعرف على العملاء والتحقق من هويتهم. وتُقدَّم السياسات وأطر الرقابة الداخلية المحدَّثة والمعتمدة مع التقرير السنوي لنشاط مكافحة غسل الأموال وتمويل الإرهاب عن العام المالي 2026، في موعد أقصاه 31 يناير 2027.",
+      image=dict(focus='50% 78%', source='https://commons.wikimedia.org/wiki/File:Skyline,_al-Q%C4%81hirah,_CG,_EGY_(47859442162).jpg', photographer='Warren LeMay', site='Wikimedia Commons', licence='CC0',
+                 alt_en='Office towers and buildings along the Cairo skyline under a clear blue sky',
+                 alt_ar='أبراج ومبانٍ إدارية على امتداد أفق القاهرة تحت سماء زرقاء صافية'),
+      body_en=[
+          "On 3 November 2026, the Financial Regulatory Authority (FRA) announced that its Chairman had issued a circular directing entities in the non-banking financial sector to update their know-your-customer (KYC) and identity verification forms. The circular follows the updated customer due diligence procedures for financial institutions supervised by the FRA, issued in September by Egypt's Money Laundering and Terrorist Financing Combating Unit (EMLCU).",
+          "Institutions must design updated KYC and ultimate beneficial owner (UBO) forms that serve People of Determination, clients who cannot read and write, and senior citizens. The FRA also stresses that supervised entities must keep their policy manuals, internal procedures and control systems up to date.",
+          "Under Circular No. 8 of 2026, the EMLCU's updated due diligence standards must be applied across the application forms for all products and services. Approved copies of the updated policy manuals and internal control frameworks must be submitted with the annual anti-money laundering and counter-terrorist financing (AML/CFT) activity report for fiscal year 2026, with a final deadline of 31 January 2027.",
+          "According to the FRA, the circular aims to accelerate AML/CFT compliance, simplify transactions, extend coverage to all client categories and verify the authenticity of client data. It forms part of the FRA's wider focus on AML/CFT controls in capital markets, insurance and non-bank financing, alongside Circular No. 5 of 2026 issued in September and recent decisions on digital identity verification in consumer finance and micro, small and medium enterprise (MSME) finance.",
+      ],
+      body_ar=[
+          "أعلنت الهيئة العامة للرقابة المالية، في 3 نوفمبر 2026، أن رئيسها أصدر كتابًا دوريًا يُلزم الجهات العاملة في القطاع المالي غير المصرفي بتحديث نماذج التعرف على العملاء والتحقق من هويتهم. ويأتي ذلك في أعقاب إصدار وحدة مكافحة غسل الأموال وتمويل الإرهاب، في سبتمبر الماضي، إجراءات العناية الواجبة المحدَّثة للمؤسسات المالية الخاضعة لرقابة الهيئة.",
+          "وبموجب الكتاب الدوري، تُصمِّم المؤسسات نماذج محدَّثة للتعرف على العملاء وعلى المستفيد الحقيقي، تراعي ذوي الهمم وغير القادرين على القراءة والكتابة وكبار السن. وأكدت الهيئة ضرورة أن تحافظ الجهات الخاضعة لرقابتها على تحديث أدلة سياساتها وإجراءاتها الداخلية ونظم الرقابة لديها.",
+          "ويقضي الكتاب الدوري رقم 8 لسنة 2026 بتطبيق معايير العناية الواجبة المحدَّثة الصادرة عن الوحدة على نماذج طلبات جميع المنتجات والخدمات. وتُقدَّم نسخ معتمدة من أدلة السياسات وأطر الرقابة الداخلية المحدَّثة مع التقرير السنوي لنشاط مكافحة غسل الأموال وتمويل الإرهاب عن العام المالي 2026، في موعد نهائي أقصاه 31 يناير 2027.",
+          "وبحسب الهيئة، يستهدف الكتاب الدوري تسريع الامتثال لمتطلبات مكافحة غسل الأموال وتمويل الإرهاب، وتيسير المعاملات، ومدّ التغطية إلى جميع فئات العملاء، والتحقق من صحة بياناتهم. ويندرج ذلك ضمن اهتمام الهيئة الأوسع بضوابط مكافحة غسل الأموال وتمويل الإرهاب في أسواق رأس المال والتأمين والتمويل غير المصرفي، إلى جانب الكتاب الدوري رقم 5 لسنة 2026 الصادر في سبتمبر، والقرارات الأخيرة بشأن التحقق الرقمي من الهوية في التمويل الاستهلاكي وتمويل المشروعات المتوسطة والصغيرة ومتناهية الصغر.",
+      ],
+      source_name="Financial Regulatory Authority (FRA)",
+      source_url="https://fra.gov.eg/en/fra_news/%d8%a7%d9%84%d8%b1%d9%82%d8%a7%d8%a8%d8%a9-%d8%a7%d9%84%d9%85%d8%a7%d9%84%d9%8a%d8%a9-%d8%aa%d9%84%d8%b2%d9%85-%d9%85%d8%a4%d8%b3%d8%b3%d8%a7%d8%aa-%d8%a7%d9%84%d9%82%d8%b7%d8%a7%d8%b9-%d8%a7/"),
  dict(slug="cbe-raises-policy-rates-100bps-october-2026", date="2026-10-29", added="2026-11-04", added_at="04:20", category="economy", region="egypt",
       title_en="Central Bank of Egypt raises key policy rates by 100 basis points",
       title_ar="البنك المركزي المصري يرفع أسعار العائد الأساسية بواقع 100 نقطة أساس",

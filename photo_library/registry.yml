@@ -191,3 +191,10 @@ photos:
   library: tax/alexandria-seafront-morning
   dhash: 8480030fef653ab4
   sha256: 4ecffe2c65a11f58aba3314e835b88ffd7688ad480e5a96c5435a168a07e4dae
+- used_by: news:fra-nbfi-kyc-forms-update
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Skyline,_al-Q%C4%81hirah,_CG,_EGY_(47859442162).jpg
+  photographer: Warren LeMay
+  licence: CC0
+  dhash: 80805050701250c5
+  sha256: 1c4b9402260e9f677aabbc8322d3d495347c20a6d203b5b19d1aa8f0d238c288
