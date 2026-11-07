@@ -27,6 +27,32 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="fra-ifc-sustainability-governance-agreements", date="2026-11-04", added="2026-11-07", added_at="04:18", category="standards", region="egypt",
+      title_en="FRA and IFC sign agreements on ESG, sustainability reporting and corporate governance",
+      title_ar="الرقابة المالية ومؤسسة التمويل الدولية توقّعان اتفاقيتين في الاستدامة والحوكمة والإفصاح البيئي والاجتماعي",
+      short_en="FRA and IFC partner on ESG and governance",
+      short_ar="الرقابة المالية ومؤسسة التمويل الدولية تتعاونان في الاستدامة والحوكمة",
+      seo_title_en="FRA and IFC sign ESG and governance agreements",
+      seo_title_ar="الرقابة المالية ومؤسسة التمويل الدولية: اتفاقيتان للاستدامة",
+      summary_en="Egypt's Financial Regulatory Authority has signed two agreements with the International Finance Corporation on ESG, sustainability and corporate governance. The work includes an ESG scorecard, a review of the FRA's new sustainability reporting framework and training on IFRS S1 and IFRS S2.",
+      summary_ar="وقّعت الهيئة العامة للرقابة المالية اتفاقيتين مع مؤسسة التمويل الدولية في مجالات الحوكمة البيئية والاجتماعية والاستدامة وحوكمة الشركات. وتشمل الأعمال بطاقة لتقييم الأداء البيئي والاجتماعي والحوكمة، ومراجعة الإطار الجديد للهيئة لتقارير الاستدامة، وتدريبًا على المعيارين IFRS S1 وIFRS S2.",
+      image=dict(focus='55% 55%', source='https://commons.wikimedia.org/wiki/File:Fixed_Tilt_Solar_panel_at_Canterbury_Municipal_Building_Canterbury_New_Hampshire.jpg', photographer='SayCheeeeeese', site='Wikimedia Commons', licence='CC0',
+                 alt_en='Rows of tilted solar panels in a grassy field in front of green trees',
+                 alt_ar='صفوف من الألواح الشمسية المائلة في حقل عشبي أمام أشجار خضراء'),
+      body_en=[
+          "On 4 November 2026, the Financial Regulatory Authority (FRA) announced the signing of two agreements with the International Finance Corporation (IFC), a member of the World Bank Group, on environmental, social and governance (ESG) matters, sustainability and corporate governance. The FRA states that the agreements form part of its work to develop regulatory frameworks and promote governance and sustainability principles across non-banking financial institutions.",
+          "Under the first agreement, the IFC will provide advisory and technical services to strengthen the FRA's sustainability and ESG framework. The work covers the design of an ESG scorecard to assess the sustainability performance of companies, core indicators and technical standards, a review of the FRA's new sustainability reporting framework with technical feedback, and a preliminary framework for the roles and responsibilities of Sustainability Officers within institutions, in line with international best practice.",
+          "The IFC will also run specialised workshops for FRA staff on the International Sustainability Disclosure Standards IFRS S1 and IFRS S2 (climate-related disclosures), to build capacity in overseeing disclosure requirements and evaluating corporate sustainability practices.",
+          "Under the second agreement, the Egyptian Institute of Directors (EIoD), the FRA's training arm, receives a three-year licence to use and adapt four IFC corporate governance materials in its certified training programmes: Sustainability Training for Board Members, the Board Member Certification Program, the Board Secretaries Manual and the Internal Control Environment Manual. The materials cover governance frameworks, the role of board secretaries, internal control, risk management, internal audit and compliance.",
+      ],
+      body_ar=[
+          "أعلنت الهيئة العامة للرقابة المالية، في 4 نوفمبر 2026، توقيع اتفاقيتين مع مؤسسة التمويل الدولية (IFC)، عضو مجموعة البنك الدولي، في مجالات الحوكمة البيئية والاجتماعية (ESG) والاستدامة وحوكمة الشركات. وأوضحت الهيئة أن الاتفاقيتين تأتيان ضمن جهودها لتطوير الأطر التنظيمية وترسيخ مبادئ الحوكمة والاستدامة في المؤسسات المالية غير المصرفية.",
+          "وبموجب الاتفاقية الأولى، تقدم مؤسسة التمويل الدولية خدمات استشارية وفنية لتعزيز إطار الاستدامة والحوكمة البيئية والاجتماعية لدى الهيئة. وتشمل الأعمال تصميم بطاقة لتقييم أداء الشركات في مجال الاستدامة، ووضع مؤشرات أساسية ومعايير فنية، ومراجعة الإطار الجديد للهيئة لتقارير الاستدامة وتقديم ملاحظات فنية عليه، وإعداد إطار مبدئي لأدوار مسؤولي الاستدامة ومسؤولياتهم داخل المؤسسات، وفق أفضل الممارسات الدولية.",
+          "كما تنظم المؤسسة ورش عمل متخصصة للعاملين بالهيئة حول المعايير الدولية للإفصاح عن الاستدامة IFRS S1 وIFRS S2 (الإفصاحات المتعلقة بالمناخ)، بهدف بناء القدرات في الإشراف على متطلبات الإفصاح وتقييم ممارسات الشركات في مجال الاستدامة.",
+          "وبموجب الاتفاقية الثانية، يحصل المعهد المصري لأعضاء مجالس الإدارة، الذراع التدريبية للهيئة، على ترخيص لمدة ثلاث سنوات لاستخدام أربع مواد متخصصة في حوكمة الشركات من إعداد مؤسسة التمويل الدولية وتكييفها ضمن برامجه التدريبية المعتمدة، وهي: التدريب على الاستدامة لأعضاء مجالس الإدارة، وبرنامج اعتماد أعضاء مجالس الإدارة، ودليل أمناء سر مجالس الإدارة، ودليل بيئة الرقابة الداخلية. وتتناول هذه المواد أطر الحوكمة، ودور أمناء سر المجالس، والرقابة الداخلية، وإدارة المخاطر، والمراجعة الداخلية، والالتزام.",
+      ],
+      source_name="Financial Regulatory Authority (FRA)",
+      source_url="https://fra.gov.eg/en/fra_news/%d8%aa%d8%b9%d8%a7%d9%88%d9%86-%d8%ab%d9%86%d8%a7%d8%a6%d9%8a-%d8%a8%d9%8a%d9%86-%d9%87%d9%8a%d8%a6%d8%a9-%d8%a7%d9%84%d8%b1%d9%82%d8%a7%d8%a8%d8%a9-%d8%a7%d9%84%d9%85%d8%a7%d9%84%d9%8a%d8%a9-%d9%88/"),
  dict(slug="fra-nbfi-kyc-forms-update", date="2026-11-03", added="2026-11-05", added_at="04:20", category="economy", region="egypt",
       title_en="FRA directs non-banking financial institutions to update their KYC and identity verification forms",
       title_ar="الرقابة المالية تُلزم مؤسسات القطاع المالي غير المصرفي بتحديث نماذج التعرف على العملاء والتحقق من هويتهم",
