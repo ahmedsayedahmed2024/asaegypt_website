@@ -205,3 +205,17 @@ photos:
   licence: CC0
   dhash: dbc20d3d5cbd3d17
   sha256: 19cc7b088ea50ef4608db385183d6fef1182a5d7088db6706be9744ed05d269e
+- used_by: news:iaasb-ai-tools-quality-management-guide-1
+  site: Unsplash
+  source: https://unsplash.com/photos/server-rack-with-blinking-green-lights-VHmBX7FnXw0
+  photographer: Domaintechnik
+  licence: Unsplash License
+  dhash: f451c4c0901243c0
+  sha256: f6d72e02b4e2a12efeb319206352b65e54e1d0802a1a0cc89ea1cbfbb850e529
+- used_by: news:fra-consumer-finance-microfinance-licensing-freeze-2027
+  site: Unsplash
+  source: https://unsplash.com/photos/rz_0EzMAmis
+  photographer: Shutter Speed
+  licence: Unsplash License
+  dhash: 3c1e186b661e990e
+  sha256: 0e921e56fe06b59c584302f72ed221310182e017c068c6e3555ae05807286a82
