@@ -323,7 +323,7 @@ def build(pages=None):
 
 # Retired pages: old URL (en) -> route key of the page that now covers it. Each old URL (and its /ar/ twin)
 # gets a small noindex page that forwards visitors, so links already shared keep working. Not in the sitemap.
-REDIRECTS = {'/services/ifrs-9-ecl/': 'svc-acc'}  # ECL is now one line under Accounting & IFRS
+REDIRECTS = {'/services/ifrs-9-ecl/': 'svc-ecl'}  # the former IFRS 9 / ECL page: now ASA ECL Solutions
 if not config.HEXAGON_PUBLIC:
     REDIRECTS['/hexagon/'] = 'about'  # ASA Hexagon hidden until the trademark is registered (config.py)
 # files used only by the ASA Hexagon page: left out of dist/ while the page is hidden (they stay in public/)
