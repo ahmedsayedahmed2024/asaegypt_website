@@ -148,8 +148,13 @@ def organization(B, L):
 
 
 def scope_headings(L):
-    """Named service items inside a service page's scope (dict(h=...), e.g. company secretarial & corporate services)."""
-    return [o['h'] for d in PC[L].SVC.values() for o in d['scope'] if isinstance(o, dict) and o.get('h')]
+    """Named service items inside a service page's scope (dict(h=...), e.g. company secretarial & corporate services).
+    Not the ASA ECL Solutions page, whose scope headings are ways of working ("Own the models", "Training"), not subjects."""
+    return [o['h'] for k, d in PC[L].SVC.items() if k not in SCOPE_HEADINGS_SKIP
+            for o in d['scope'] if isinstance(o, dict) and o.get('h')]
+
+
+SCOPE_HEADINGS_SKIP = {'svc-ecl'}
 
 
 def website(B, L):
