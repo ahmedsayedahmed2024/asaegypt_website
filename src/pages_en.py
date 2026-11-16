@@ -108,7 +108,7 @@ SVC = {
          ("Is outsourced accounting compatible with ASA being our auditor?", "Independence rules restrict providing certain accounting services to audit clients. We assess every engagement against these rules and will advise on the right structure.")],
     related=['consolidation-common-errors', 'leases-implementation-lessons', 'revenue-recognition-five-steps']),
  'svc-ecl': dict(
-    title="ECL Models & Studies under IFRS 9 / EAS 47 in Egypt | ASA ECL Solutions",
+    title="ECL Models & Studies in Egypt | ASA ECL Solutions",
     desc="Expected credit loss studies, licensed Excel models with full formulas, and training for finance teams, under IFRS 9 and Egyptian Accounting Standard No. 47.",
     kicker="ASA ECL Solutions", h1="Expected credit loss models your team can own.",
     lead="We prepare expected credit loss studies under IFRS 9 and Egyptian Accounting Standard No. 47, or hand your team licensed models with their full formulas, train it to run them, and support it at the next reporting dates.",
@@ -118,7 +118,7 @@ SVC = {
         "We work with companies in every sector. Each engagement is accepted after our usual independence and acceptance review."],
     why=["Every assumption documented, with its source", "Forward-looking view with weighted economic scenarios",
          "Models with full formulas, not black boxes", "Independent internal quality review before delivery",
-         "Partner-led, from the data to the year-end"],
+         "Professional oversight, from the data to the year-end"],
     offer_h="Three ways to work with us.", offer_p="Choose the level of ownership that suits your finance team.",
     scope=[dict(id="prepare", h="We prepare the studies",
                 p="ASA prepares your expected credit loss studies at each reporting date, with the journal entry, the movement in the provision and the disclosure tables. The models stay with ASA."),
