@@ -27,6 +27,28 @@ REGIONS = {
 }
 
 NEWS = [
+ dict(slug="uae-fta-tax-revenue-compliance-statistics-2026", date="2026-11-11", added="2026-11-17", added_at="04:16", category="economy", region="gcc",
+      title_en="UAE Federal Tax Authority reports 33.9% growth in Corporate Tax revenue and higher filing rates",
+      title_ar="الهيئة الاتحادية للضرائب في الإمارات تعلن نمو إيرادات ضريبة الشركات بنسبة 33.9% وارتفاع معدلات تقديم الإقرارات",
+      short_en="UAE Corporate Tax revenue grows 33.9%, filing rates rise",
+      short_ar="نمو إيرادات ضريبة الشركات في الإمارات 33.9% وارتفاع معدلات الالتزام",
+      seo_title_ar="نمو إيرادات ضريبة الشركات في الإمارات 33.9%",
+      summary_en="The UAE Federal Tax Authority reports Corporate Tax revenue of about AED 46.52 billion for tax periods ending in 2025, up 33.9% on 2024. Timely filing rates rose in 2026 for Corporate Tax, VAT and Excise Tax.",
+      summary_ar="أعلنت الهيئة الاتحادية للضرائب في الإمارات أن إيرادات ضريبة الشركات للفترات الضريبية المنتهية في 2025 بلغت نحو 46.52 مليار درهم، بنمو 33.9% عن 2024. وارتفعت في 2026 معدلات تقديم الإقرارات في مواعيدها لضريبة الشركات والقيمة المضافة والضريبة الانتقائية.",
+      body_en=[
+          "On 11 November 2026, the Federal Tax Authority (FTA) of the United Arab Emirates published statistics on revenue and compliance rates for Corporate Tax, Value Added Tax (VAT) and Excise Tax.",
+          "Corporate Tax revenue collected for tax periods ending in the 2025 financial year amounted to approximately AED 46.52 billion, compared with approximately AED 34.75 billion for tax periods ending in the 2024 financial year, a growth of 33.9%. Total revenue collected for tax periods from the introduction of Corporate Tax to the end of 2025 reached approximately AED 81.27 billion.",
+          "VAT revenue distributed to the Federal government and the Emirate governments for January to August 2026 amounted to approximately AED 28.27 billion. Excise Tax revenue over the same period amounted to approximately AED 1.4 billion.",
+          "On compliance, the timely filing rate for Corporate Tax returns reached 91% in 2026, compared with 87% in 2025, and the Corporate Tax on-time payment rate reached 97%. The timely filing rate for VAT returns reached 83% in 2026, compared with 81% in 2025, and the VAT on-time payment rate rose to 98%. For Excise Tax, the return filing rate reached 92% in 2026, compared with 91% in 2025, and the on-time payment rate reached 98%.",
+      ],
+      body_ar=[
+          "نشرت الهيئة الاتحادية للضرائب في دولة الإمارات العربية المتحدة، في 11 نوفمبر 2026، إحصاءات عن الإيرادات ومعدلات الالتزام الضريبي في ضريبة الشركات وضريبة القيمة المضافة والضريبة الانتقائية.",
+          "وبلغت إيرادات ضريبة الشركات المحصَّلة عن الفترات الضريبية المنتهية في السنة المالية 2025 نحو 46.52 مليار درهم، مقابل نحو 34.75 مليار درهم عن الفترات الضريبية المنتهية في السنة المالية 2024، بنمو نسبته 33.9%. ووصل إجمالي الإيرادات المحصَّلة عن الفترات الضريبية منذ بدء تطبيق ضريبة الشركات حتى نهاية 2025 إلى نحو 81.27 مليار درهم.",
+          "وبلغت إيرادات ضريبة القيمة المضافة الموزَّعة على الحكومة الاتحادية والحكومات المحلية للإمارات عن الفترة من يناير إلى أغسطس 2026 نحو 28.27 مليار درهم، فيما بلغت إيرادات الضريبة الانتقائية عن الفترة نفسها نحو 1.4 مليار درهم.",
+          "وعلى صعيد الالتزام، بلغ معدل تقديم إقرارات ضريبة الشركات في مواعيدها 91% في 2026، مقابل 87% في 2025، ووصل معدل سداد ضريبة الشركات في موعده إلى 97%. وبلغ معدل تقديم إقرارات ضريبة القيمة المضافة في مواعيدها 83% في 2026، مقابل 81% في 2025، وارتفع معدل سدادها في موعده إلى 98%. أما الضريبة الانتقائية، فبلغ معدل تقديم إقراراتها 92% في 2026، مقابل 91% في 2025، ووصل معدل سدادها في موعده إلى 98%.",
+      ],
+      source_name="Federal Tax Authority (FTA), UAE",
+      source_url="https://tax.gov.ae/en/media.centre/News/fta.announces.corporate.tax.vat.and.excise.tax.and.tax.compliance.rates.statistics.aspx"),
  dict(slug="fra-insurance-capital-increase-deadline-july-2027", date="2026-11-12", added="2026-11-16", added_at="04:17", category="economy", region="egypt",
       title_en="FRA extends insurers' deadlines for capital increases and regulatory compliance",
       title_ar="الرقابة المالية تمدّد مهل زيادة رؤوس أموال شركات التأمين وتوفيق أوضاعها",
