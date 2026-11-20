@@ -2,7 +2,7 @@ import datetime, json, os, re, shutil, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, config, content_en, content_ar, content_zh, articles_meta, news, photos, seo
+import mark, config, content_en, content_ar, content_zh, articles_meta, articles_zh, news, photos, seo
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,15 +41,51 @@ for n in news.NEWS:
 for x in nextdata.NEXT:
     ROUTES['nx-' + x['slug']] = f"/next/{x['slug']}/"
 
-# Simplified Chinese (/zh/): the fixed pages and the China page. Insights, Briefing, ASA NEXT, the reference guide,
-# /latest/, search and 404 have no Chinese version yet: on Chinese pages, links to them open the English pages, and
-# 中文 in the language switcher of such a page opens /zh/ (CLAUDE.md, "Chinese (zh-Hans)").
-ZH_KEYS = {'home', 'about', 'services', 'who', 'china', 'approach', 'people', 'contact', 'privacy'} | {s['key'] for s in content_en.SERVICES}
+# Simplified Chinese (/zh/): the fixed pages, the China page, the Insights and Briefing lists and every article or
+# Briefing item that has Chinese text (articles_zh.ART_ZH; title_zh... in news.py). ASA NEXT, the reference guide,
+# /latest/, search and 404 have no Chinese version yet: on Chinese pages, links to them (and to items without Chinese
+# text) open the English pages. 中文 in the language switcher of a page without a Chinese version opens the Chinese
+# list of its section (an article: /zh/insights/, a Briefing item: /zh/briefing/), else /zh/ (CLAUDE.md, "Chinese (zh-Hans)").
+NEWS_ZH = ('title_zh', 'short_zh', 'summary_zh', 'body_zh')  # all four, or none
+ZH_ROLES = {'Managing Partner': '管理合伙人'}  # a person's job title in a Chinese byline (the name stays in Latin letters)
+
+def zh_news(n):
+    """True when a Briefing item has its Chinese text. Some but not all of it stops the build."""
+    have = [f for f in NEWS_ZH if n.get(f)]
+    if have and len(have) < len(NEWS_ZH):
+        sys.exit(f"ERROR: Briefing '{n['slug']}' has {', '.join(have)} but not {', '.join(f for f in NEWS_ZH if f not in have)}")
+    if have and n.get('note'):
+        for f in ('who_zh', 'accounting_zh', 'auditor_zh'):
+            if not n['note'].get(f):
+                sys.exit(f"ERROR: Briefing '{n['slug']}' has Chinese text but its note has no {f}")
+    return bool(have)
+
+def zh_article(a):
+    """True when an article has its Chinese text (articles_zh.ART_ZH). Reference guides are not translated yet."""
+    d = articles_zh.ART_ZH.get(a['slug'])
+    if d is None:
+        return False
+    for f in ('title', 'summary', 'key', 'body'):
+        if not d.get(f):
+            sys.exit(f"ERROR: articles_zh.ART_ZH['{a['slug']}'] has no {f}")
+    if a.get('role_en') and a['role_en'] not in ZH_ROLES:
+        sys.exit(f"ERROR: article '{a['slug']}': no Chinese job title for {a['role_en']!r} (build.ZH_ROLES)")
+    return True
+
+for x in articles_zh.ART_ZH:
+    if not any(a['slug'] == x for a in articles_meta.ARTICLES):
+        sys.exit(f"ERROR: articles_zh.ART_ZH['{x}'] is not an article in articles_meta.py")
+ZH_ARTICLES = [a['slug'] for a in articles_meta.ARTICLES if zh_article(a)]
+ZH_NEWS = [n['slug'] for n in news.NEWS if zh_news(n)]
+ZH_KEYS = ({'home', 'about', 'services', 'who', 'china', 'approach', 'people', 'contact', 'privacy', 'insights', 'briefing'}
+           | {s['key'] for s in content_en.SERVICES} | {'art-' + s for s in ZH_ARTICLES} | {'news-' + s for s in ZH_NEWS})
 if config.HEXAGON_PUBLIC:
     ZH_KEYS.add('hexagon')
 
 def has_lang(key, L):
     return L != 'zh' or key in ZH_KEYS
+
+LX = {'en': 0, 'ar': 1, 'zh': 2}  # index of a language in the (en, ar, zh) category and region names
 
 def path_for(key, L):
     p = ROUTES[key]
@@ -100,14 +136,16 @@ def link(key, L, from_path):
     depth = len([x for x in from_path.split('/') if x])
     return '../' * depth + target.lstrip('/') + 'index.html'
 
+def fmt_date(iso, L):
+    d = datetime.date.fromisoformat(iso)
+    if L == 'zh':
+        return f"{d.year}年{d.month}月{d.day}日"
+    return f"{d.day} {MONTHS[L][d.month - 1]} {d.year}"
+
 MONTHS = {'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
                   'September', 'October', 'November', 'December'],
           'ar': ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس',
                  'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']}
-
-def fmt_date(iso, L):
-    d = datetime.date.fromisoformat(iso)
-    return f"{d.day} {MONTHS[L][d.month - 1]} {d.year}"
 
 def by_date():
     # newest first; articles with the same date keep their order in articles_meta.py
@@ -116,26 +154,62 @@ def by_date():
 def latest(n):
     return [a['slug'] for a in by_date()[:n]]
 
+def author_of(a, L):
+    """(author, role) of an article in one language. Chinese: a team article is by "ASA 洞察团队"; an article signed
+    by a person keeps the name in Latin letters with the Chinese job title (ZH_ROLES)."""
+    if L != 'zh':
+        return a['author_' + L], a['role_' + L]
+    if not a['role_en']:
+        return content_zh.T['team'], ''
+    return a['author_en'], ZH_ROLES[a['role_en']]
+
+def byline(author, role, L):
+    if L == 'zh':
+        return content_zh.T['by'] + author + ('，' + role if role else '')
+    return (f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else "")
+
 def featured(L, slugs, from_path='/'):
-    i = 0 if L == 'en' else 1
+    """Article cards and details, newest first. On Chinese pages only the articles that have Chinese text."""
+    i = LX[L]
     out = []
     for a in by_date():
-        if a['slug'] in slugs:
-            author, role = a['author_' + L], a['role_' + L]
-            out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
-                            cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=a['title'][i],
-                            card_title=a.get('short', a['title'])[i],
-                            reviewed_iso=a.get('reviewed'), reviewed=a.get('reviewed') and fmt_date(a['reviewed'], L),
-                            summary=a['summary'][i], author=author, role=role,
-                            byline=(f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else ""),
-                            date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
-                            read=read_time(guide.minutes(a['slug']) if a['slug'] in guide.GUIDES else a['minutes'], L)))
+        if a['slug'] not in slugs or (L == 'zh' and a['slug'] not in ZH_ARTICLES):
+            continue
+        if L == 'zh':
+            z = articles_zh.ART_ZH[a['slug']]
+            title, short, summary = z['title'], z.get('short') or z['title'], z['summary']
+            minutes = zh_minutes(a['slug'])
+        else:
+            title, short, summary = a['title'][i], a.get('short', a['title'])[i], a['summary'][i]
+            minutes = guide.minutes(a['slug']) if a['slug'] in guide.GUIDES else a['minutes']
+        author, role = author_of(a, L)
+        out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
+                        cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=title,
+                        card_title=short,
+                        reviewed_iso=a.get('reviewed'), reviewed=a.get('reviewed') and fmt_date(a['reviewed'], L),
+                        summary=summary, author=author, role=role, byline=byline(author, role, L),
+                        date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
+                        read=read_time(minutes, L)))
     return out
 
+CJK = re.compile(r'[\u3400-\u9fff\uf900-\ufaff]')
+
+def zh_minutes(slug):
+    """Reading time of a Chinese article: its Chinese characters (plus each Latin word or number) at about 400 a minute."""
+    z = articles_zh.ART_ZH[slug]
+    parts = [z['title'], z['summary']] + z['key']
+    for b in z['body']:
+        parts += [str(v) for v in (b[1] if isinstance(b[1], list) else [b[1]])] + [str(v) for v in b[2:]]
+    t = ' '.join(parts)
+    n = len(CJK.findall(t)) + len(re.findall(r'[A-Za-z0-9][A-Za-z0-9.,%]*', t))
+    return max(1, round(n / 400))
+
 def read_time(n, L):
-    """Reading time: "7 min read" / «7 دقائق قراءة». Arabic: 3–10 take «دقائق», 11 and above «دقيقة» («18 دقيقة قراءة»)."""
+    """Reading time: "7 min read" / «7 دقائق قراءة» / 约 7 分钟阅读. Arabic: 3–10 take «دقائق», 11 and above «دقيقة» («18 دقيقة قراءة»)."""
     if L == 'en':
         return f"{n} min read"
+    if L == 'zh':
+        return content_zh.T['read'].format(n=n)
     return f"{n} {'دقائق' if 3 <= n <= 10 else 'دقيقة'} قراءة"
 
 # Images (see CLAUDE.md, "Images"). Files live in public/assets/img/content/<section>/:
@@ -202,6 +276,8 @@ def image_alt(item, kind, L):
     description. Missing: a warning naming the photo (the build goes on, with alt="")."""
     im = item['image']
     alt = (im.get('alt_' + L) or '').strip()
+    if not alt and L == 'zh':  # Chinese: an article's alt is in articles_zh.ART_ZH; a Briefing item's in image['alt_zh'] (or alt_zh)
+        alt = ((articles_zh.ART_ZH.get(item['slug'], {}).get('alt') if kind == 'article' else item.get('alt_zh')) or '').strip()
     if not alt and im.get('library'):
         p = next((x for x in photos.library() if x['id'] == im['library']), None)
         alt = ((p or {}).get('alt_' + L) or '').strip()
@@ -216,14 +292,17 @@ def news_by_date():
     return sorted(news.NEWS, key=lambda n: n['date'], reverse=True)
 
 def news_items(L, from_path):
-    i = 0 if L == 'en' else 1
+    """Briefing items, newest first. On Chinese pages only the items that have Chinese text."""
+    i = LX[L]
     out = []
     for n in news_by_date():
+        if L == 'zh' and n['slug'] not in ZH_NEWS:
+            continue
         out.append(dict(slug=n['slug'], url=link('news-' + n['slug'], L, from_path),
                         cat=n['category'], cat_label=news.CATEGORIES[n['category']][i],
                         region=n['region'], region_label=news.REGIONS[n['region']][i],
                         title=n['title_' + L], short=n['short_' + L], summary=n['summary_' + L],
-                        body=n['body_' + L], source_name=n['source_name'], source_url=n['source_url'],
+                        body=n['body_' + L], source_name=n.get('source_name_' + L) or n['source_name'], source_url=n['source_url'],
                         note=n.get('note'), related=n.get('related'), image=image_for(n, 'news', L),
                         date_iso=n['date'], date=fmt_date(n['date'], L)))
     return out
@@ -249,21 +328,28 @@ def added_key(item, kind):
         print(f"WARNING: {kind} '{item['slug']}' has no 'added' date; using 'date' ({item['date']}) instead")
     return (item.get('added') or item['date']) + ' ' + item.get('added_at', '24:00')
 
-def recently_added(n=BRIEF_COUNT, kinds=('article', 'news', 'next')):
+ITEM_PREFIX = {'article': 'art-', 'news': 'news-', 'next': 'nx-'}
+
+def recently_added(n=BRIEF_COUNT, kinds=('article', 'news', 'next'), L='en'):
     """The n items most recently added to the site, across Insights, Briefing and ASA NEXT (or only `kinds`):
-    [(kind, slug)]. Newest first; ties keep the order of the data files (newer items sit higher in each list)."""
+    [(kind, slug)]. Newest first; ties keep the order of the data files (newer items sit higher in each list).
+    L='zh': only the items that have Chinese text."""
     data = {'article': articles_meta.ARTICLES, 'news': news.NEWS, 'next': nextdata.NEXT}
-    pool = [(added_key(x, kind), kind, x['slug']) for kind in ('article', 'news', 'next') if kind in kinds for x in data[kind]]
+    pool = [(added_key(x, kind), kind, x['slug']) for kind in ('article', 'news', 'next') if kind in kinds for x in data[kind]
+            if has_lang(ITEM_PREFIX[kind] + x['slug'], L)]
     pool.sort(key=lambda p: p[0], reverse=True)  # stable: same key keeps file order
     return [(kind, slug) for _, kind, slug in pool[:n]]
 
+BRIEF_MIN_ZH = 3  # /zh/: the rotating hexagon needs at least this many Chinese items, else the static mark stays
+
 def brief_slots(L, from_path='/'):
-    """The rotating items of the homepage hexagon: the BRIEF_COUNT items most recently added to the site."""
+    """The rotating items of the homepage hexagon: the BRIEF_COUNT items most recently added to the site
+    (on /zh/, those that have Chinese text)."""
     H = C[L].HOME
     ns = {n['slug']: n for n in news_items(L, from_path)}
-    xs = {x['slug']: x for x in next_items(L, from_path)}
+    xs = {x['slug']: x for x in next_items(L, from_path)} if L != 'zh' else {}
     items = []
-    for kind, slug in recently_added():
+    for kind, slug in recently_added(L=L):
         if kind == 'news':
             n = ns[slug]
             items.append(dict(kind=kind, chip=n['cat_label'], title=n['short'], summary=n['summary'], by=n['source_name'],
@@ -288,10 +374,15 @@ def search_cfg(L, R, from_path):
                 page=P('search'), page2=link('search', other, from_path), months=MONTHS[L], s={k: v for k, v in S.items() if k not in ('title', 'desc', 'kicker', 'h1', 'lead', 'nojs', 'notfound')},
                 links=[[nav['insights'], P('insights')], [nav['briefing'], P('briefing')], [nav['contact'], P('contact')]])
 
+def lang_fallback(key):
+    """Where 中文 leads from a page that has no Chinese version: the Chinese list of its section, else /zh/."""
+    return 'insights' if key.startswith('art-') else 'briefing' if key.startswith('news-') else 'home'
+
 def lang_options(key, L, from_path):
     """The language switcher: [(lang code, name, href, current, same page)] in a fixed order. A language without this page:
-    中文 opens /zh/ (the Chinese home page)."""
-    return [(HTML_LANG[x], LANG_NAME[x], link(key if has_lang(key, x) else 'home', x, from_path), x == L, has_lang(key, x)) for x in LANGS]
+    lang_fallback() (an article: /zh/insights/, a Briefing item: /zh/briefing/, else /zh/)."""
+    return [(HTML_LANG[x], LANG_NAME[x], link(key if has_lang(key, x) else lang_fallback(key), x, from_path), x == L, has_lang(key, x))
+            for x in LANGS]
 
 def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx):
     mod = C[L]
@@ -317,7 +408,7 @@ def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx
 # Chinese headings: a line may break between any two characters, so a heading can split a phrase ("最 / 常遇到").
 # Each phrase of a heading (up to and including , 、 : ; and the like) becomes an inline-block (.zs), so lines break
 # between phrases; a phrase wider than the line still wraps inside. Layout only: the text is unchanged.
-ZH_HEADING = re.compile(r'(<h[1-4]\b[^>]*>|<p class="hero-sub">)(.*?)(</h[1-4]>|</p>)', re.S)
+ZH_HEADING = re.compile(r'(<h[1-4]\b[^>]*>|<p class="hero-sub">|<p class="brief-h">)(.*?)(</h[1-4]>|</p>)', re.S)
 ZH_PHRASE = re.compile(r'[^，、：；。！？]+[，、：；。！？]*|[，、：；。！？]+')
 
 def zh_phrases(html):
@@ -360,10 +451,15 @@ def build(pages=None):
         import signature_banner
         importlib.reload(signature_banner)
         built += signature_banner.build_page(L, render, sys.modules[__name__])
-    # Simplified Chinese: the home page, the fixed pages, the services and the China page (no search, no items yet)
+    # Simplified Chinese: the home page, the fixed pages, the services, the China page, and the Insights and Briefing
+    # items that have Chinese text (no search yet). The home hexagon rotates once there are BRIEF_MIN_ZH Chinese items.
     H = C['zh'].HOME
-    built.append(render('home_zh.html', 'home', 'zh', H['title'], H['desc'], TAX_CHANGES=config.ZH_TAX_CHANGES_PUBLIC))
+    brief = brief_slots('zh', path_for('home', 'zh'))
+    brief = brief if len(brief) >= BRIEF_MIN_ZH else []
+    built.append(render('home_zh.html', 'home', 'zh', H['title'], H['desc'], TAX_CHANGES=config.ZH_TAX_CHANGES_PUBLIC,
+                        BRIEF=brief, BRIEF_MARK=BRIEF_MARK))
     built += pages.build_all('zh', render, featured, path_for, C, ROUTES)
+    built += briefing.build('zh', render, featured, news_items, path_for)
     if config.HEXAGON_PUBLIC:
         built += hexagon.build('zh', render, path_for)
     import search

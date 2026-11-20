@@ -17,22 +17,25 @@
 #     or library=<id> for a photo from the private library (photo_library/; the build copies it). Never a photo used before.
 #     A reference guide may use an original cover instead: dict(kind="cover", focus, alt_en, alt_ar) with
 #     <slug>.svg (image band) + <slug>-card.webp (cards) + <slug>-og.png (share image), drawn by src/guide_cover.py.
+# Chinese text (title, summary, short, key takeaways, body, image alt) is in articles_zh.py -> ART_ZH[slug]; an article
+# without it is not published in Chinese. On Chinese pages a team article is by "ASA 洞察团队"; a person's name stays
+# in Latin letters with the Chinese job title (build.ZH_ROLES: "Managing Partner" -> 管理合伙人).
 # The byline (author + role) is the only place a person's name may appear on the site, besides the founder's
 # name in the About page story (CLAUDE.md rules 1 and 8).
 
-# The one place for Insights categories (EN, AR). The tabs on /insights/ are built from the categories
+# The one place for Insights categories (EN, AR, ZH). The tabs on /insights/ are built from the categories
 # that at least one article uses, so a new category's tab appears automatically.
 CATEGORIES = {
-    'ifrs': ("IFRS", "المعايير الدولية"),
-    'ifrs9-ecl': ("IFRS 9 / ECL", "المعيار 9"),
-    'tax': ("Tax", "الضرائب"),
-    'transfer-pricing': ("Transfer Pricing", "تسعير المعاملات"),
-    'reporting': ("Reporting", "التقارير المالية"),
-    'advisory': ("Advisory", "الاستشارات"),
-    'startups': ("Startups", "الشركات الناشئة"),
-    'ai-tech': ("AI & Technology", "الذكاء الاصطناعي والتقنية"),
-    'economy': ("Economy", "الاقتصاد"),
-    'guides': ("Professional guides", "أدلة مهنية"),
+    'ifrs': ("IFRS", "المعايير الدولية", "IFRS"),
+    'ifrs9-ecl': ("IFRS 9 / ECL", "المعيار 9", "IFRS 9 / ECL"),
+    'tax': ("Tax", "الضرائب", "税务"),
+    'transfer-pricing': ("Transfer Pricing", "تسعير المعاملات", "转让定价"),
+    'reporting': ("Reporting", "التقارير المالية", "财务报告"),
+    'advisory': ("Advisory", "الاستشارات", "咨询"),
+    'startups': ("Startups", "الشركات الناشئة", "初创企业"),
+    'ai-tech': ("AI & Technology", "الذكاء الاصطناعي والتقنية", "人工智能与技术"),
+    'economy': ("Economy", "الاقتصاد", "经济"),
+    'guides': ("Professional guides", "أدلة مهنية", "专业指南"),
 }
 
 ARTICLES = [

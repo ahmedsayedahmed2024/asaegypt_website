@@ -1,0 +1,3 @@
+{%- set f = BRIEF[0].image if BRIEF and BRIEF[0].image %}
+{%- if f %}<link rel="preload" as="image" href="{{ R }}{{ f.card if f.illustration else f.lg }}"{% if not f.illustration %} imagesrcset="{{ R }}{{ f.card }} 800w, {{ R }}{{ f.lg }} 1600w" imagesizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %} fetchpriority="high">
+{% endif -%}

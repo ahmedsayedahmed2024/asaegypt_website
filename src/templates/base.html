@@ -42,7 +42,10 @@
 <link rel="manifest" href="{{ R }}site.webmanifest">
 {% if L=='ar' %}<link rel="preload" href="{{ R }}assets/fonts/plexar-ar-400.woff2" as="font" type="font/woff2" crossorigin>{% else %}<link rel="preload" href="{{ R }}assets/fonts/pjs-400.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
 <link rel="stylesheet" href="{{ R }}assets/css/site.css?v={{ V }}">
-{% block head %}{% endblock %}
+{% if ZH %}{#- Chinese header (CLAUDE.md, "Chinese (zh-Hans)"): the compact header when the menu does not fit with this computer's
+    Chinese font. Before the first paint: the decision last measured at this window width (checked again under the header) #}
+<script>try{var h=JSON.parse(localStorage.getItem('asaZhHdr'));if(h&&h.w===innerWidth&&h.c)document.documentElement.classList.add('hdr-compact')}catch(e){}</script>
+{% endif %}{% block head %}{% endblock %}
 {{ schema|safe }}
 </head>
 <body>
@@ -71,12 +74,12 @@
           </div>
         </li>
         <li><a href="{{ P('who') }}"{% if section=='who' %} aria-current="page"{% endif %}>{{ T.nav.who }}</a></li>
-{% if ZH %}{#- Chinese menu: the China page and Our Approach; Insights and Briefing open in English (the EN tag) #}
+{% if ZH %}{#- Chinese menu: the China page and Our Approach; Insights and Briefing open their Chinese lists #}
         <li><a href="{{ P('china') }}"{% if section=='china' %} aria-current="page"{% endif %}>{{ T.nav.china }}</a></li>
         <li><a href="{{ P('approach') }}"{% if path.startswith('/zh/our-approach/') %} aria-current="page"{% endif %}>{{ T.nav.approach }}</a></li>
         <li><a href="{{ P('people') }}"{% if section=='people' %} aria-current="page"{% endif %}>{{ T.nav.people }}</a></li>
-        <li><a href="{{ P('insights') }}" hreflang="en">{{ T.nav.insights }}{{ EN_TAG }}</a></li>
-        <li><a href="{{ P('briefing') }}" hreflang="en">{{ T.nav.briefing }}{{ EN_TAG }}</a></li>
+        <li><a href="{{ P('insights') }}"{% if section=='insights' %} aria-current="page"{% endif %}>{{ T.nav.insights }}</a></li>
+        <li><a href="{{ P('briefing') }}"{% if section=='briefing' %} aria-current="page"{% endif %}>{{ T.nav.briefing }}</a></li>
 {% else %}        <li><a href="{{ P('people') }}"{% if section=='people' %} aria-current="page"{% endif %}>{{ T.nav.people }}</a></li>
         <li><a href="{{ P('insights') }}"{% if section=='insights' %} aria-current="page"{% endif %}>{{ T.nav.insights }}</a></li>
         <li><a href="{{ P('briefing') }}"{% if section=='briefing' %} aria-current="page"{% endif %}>{{ T.nav.briefing }}</a></li>
@@ -113,7 +116,17 @@
     </div>
   </div>
 {% endif %}</header>
-{% if SEARCH %}<div class="search-scrim" data-close-search hidden></div>{% endif %}
+{% if ZH %}{#- Chinese header: measured right after it is parsed (before the first paint), again once the fonts have loaded and
+    on every resize. From 1081px up, when the logo, the menu and the buttons do not fit in the content width, the page
+    uses the compact header (logo, language, menu button), as below 1081px; the full header whenever it fits. #}
+<script>(function(){var d=document.documentElement,b=document.querySelector('.site-header .bar'),mq=window.matchMedia('(min-width: 1081px)');if(!b)return;
+function fit(){var c=false;d.classList.remove('hdr-compact');if(mq.matches){var s=getComputedStyle(b),g=parseFloat(s.columnGap)||0,w=b.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),n=0,k=0;
+for(var i=0;i<b.children.length;i++){var e=b.children[i],es=getComputedStyle(e);if(es.display==='none'||es.position==='absolute'||es.position==='fixed')continue;n+=e.getBoundingClientRect().width;k++}
+c=n+g*Math.max(0,k-1)>w+0.5||b.scrollWidth>b.clientWidth+1}
+d.classList.toggle('hdr-compact',c);try{localStorage.setItem('asaZhHdr',JSON.stringify({w:innerWidth,c:c}))}catch(e){}}
+fit();var t;window.addEventListener('resize',function(){cancelAnimationFrame(t);t=requestAnimationFrame(fit)});window.addEventListener('load',fit);
+if(document.fonts){if(document.fonts.ready)document.fonts.ready.then(fit);if(document.fonts.addEventListener)document.fonts.addEventListener('loadingdone',fit)}})();</script>
+{% endif %}{% if SEARCH %}<div class="search-scrim" data-close-search hidden></div>{% endif %}
 <div class="mobile-nav" aria-label="{{ T.mainnav }}">
   <div class="top"><img src="{{ R }}assets/img/logo-asa-short-plain.svg" alt="ASA" width="133" height="34"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
@@ -125,8 +138,8 @@
 {% if ZH %}  <a href="{{ P('china') }}">{{ T.nav.china }}</a>
 {% endif %}  <a href="{{ P('approach') }}">{{ T.nav.approach }}</a>
   <a href="{{ P('people') }}">{{ T.nav.people }}</a>
-  <a href="{{ P('insights') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.insights }}{{ EN_TAG }}</a>
-  <a href="{{ P('briefing') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.briefing }}{{ EN_TAG }}</a>
+  <a href="{{ P('insights') }}">{{ T.nav.insights }}</a>
+  <a href="{{ P('briefing') }}">{{ T.nav.briefing }}</a>
   <a class="nav-next" href="{{ P('next') }}"{% if ZH %} hreflang="en"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span>{{ EN_TAG }}</a>
   <a href="{{ P('contact') }}">{{ T.nav.contact }}</a>
   <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }}</a>
@@ -156,8 +169,8 @@
         <li><a href="{{ P('who') }}">{{ T.nav.who }}</a></li>
 {% if ZH %}        <li><a href="{{ P('china') }}">{{ T.nav.china }}</a></li>
 {% endif %}        <li><a href="{{ P('people') }}">{{ T.nav.people }}</a></li>
-        <li><a href="{{ P('insights') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.insights }}{{ EN_TAG }}</a></li>
-        <li><a href="{{ P('briefing') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.briefing }}{{ EN_TAG }}</a></li>
+        <li><a href="{{ P('insights') }}">{{ T.nav.insights }}</a></li>
+        <li><a href="{{ P('briefing') }}">{{ T.nav.briefing }}</a></li>
         <li><a class="nav-next" href="{{ P('next') }}"{% if ZH %} hreflang="en"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span>{{ EN_TAG }}</a></li>
         <li><a href="{{ P('privacy') }}">{{ T.nav.privacy }}</a></li>
       </ul>

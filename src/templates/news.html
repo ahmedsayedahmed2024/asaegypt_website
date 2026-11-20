@@ -15,7 +15,7 @@
   <div class="wrap">
     <article class="article prose news-item">
       {% for p in N.body %}<p>{{ p }}</p>{% endfor %}
-      <p class="news-source"><b>{{ D.source }}</b> <a href="{{ N.source_url }}" target="_blank" rel="noopener">{{ N.source_name }} {{ I('FaArrowRight','arrow') }}</a></p>
+      <p class="news-source"><b>{{ D.source }}</b>{{ '' if ZH else ' ' }}<a href="{{ N.source_url }}" target="_blank" rel="noopener">{{ N.source_name }} {{ I('FaArrowRight','arrow') }}</a></p>
       {% if N.note %}{% set nt = N.note %}
       <aside class="asa-note asa-note-{{ nt.type }}" aria-labelledby="note-title">
         <h2 id="note-title"><span class="hx lime" style="width:34px;height:30px;font-size:13px">{{ I('FaLightbulb' if nt.type=='tech' else 'FaChartLine') }}</span>{{ D.note_titles[nt.type] }}</h2>

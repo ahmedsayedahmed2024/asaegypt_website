@@ -49,6 +49,9 @@ jobs:
       # FriBiDi lets Pillow lay out Arabic on the sharing cards (src/seo.py); without it the Arabic pages use the English card
       - name: Install FriBiDi (Arabic sharing cards)
         run: sudo apt-get install -y --no-install-recommends libfribidi0 || echo "::warning::libfribidi0 not installed; Arabic sharing cards fall back to English"
+      # A CJK font draws the sharing cards of Chinese items without a photo (src/seo.py); without it they use og-zh.png
+      - name: Install a Chinese font (Chinese sharing cards)
+        run: sudo apt-get install -y --no-install-recommends fonts-wqy-zenhei || (sudo apt-get update && sudo apt-get install -y --no-install-recommends fonts-wqy-zenhei) || echo "::warning::fonts-wqy-zenhei not installed; Chinese item cards fall back to og-zh.png"
       - name: Build site
         run: |
           rm -rf dist
