@@ -2,8 +2,9 @@ import config
 T = dict(
     skip="انتقل إلى المحتوى", home="الرئيسية", mainnav="القائمة الرئيسية", menu="فتح القائمة", close="إغلاق القائمة",
     nav=dict(hexagon="ASA Hexagon", about="من نحن", services="خدماتنا", who="من نخدم", approach="منهجية العمل", people="فريقنا",
-             insights="مقالات ورؤى", briefing="إحاطة ASA", next="ASA NEXT", contact="تواصل معنا", privacy="سياسة الخصوصية"),
-    linkedin="ASA على LinkedIn", cta_consult="اطلب استشارة", learn="اعرف المزيد", firm="المكتب", photo="تصوير", logo_alt="ASA محاسبون قانونيون ومستشارون",
+             insights="مقالات ورؤى", briefing="إحاطة ASA", next="ASA NEXT", contact="تواصل معنا", privacy="سياسة الخصوصية",
+             china="الشركات الصينية في مصر"),
+    linkedin="ASA على LinkedIn", cta_consult="اطلب استشارة", learn="اعرف المزيد", firm="المكتب", photo="تصوير", logo_alt="ASA محاسبون قانونيون ومستشارون", lang="اللغة",
     foot_about="مكتب مستقل من المحاسبين القانونيين والمستشارين، يقدّم خدمات المراجعة والمحاسبة والضرائب والاستشارات لعملائه في مصر والمملكة العربية السعودية وخارجهما.",
     more="… وغيرها من الخدمات ذات العلاقة.",
     address="58 أ شارع ترعة الزمر، الهرم، الجيزة، مصر",

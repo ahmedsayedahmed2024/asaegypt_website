@@ -9,16 +9,16 @@ Text: pages_en.HEXAGON / pages_ar.HEXAGON. This module draws, at build time:
 The hexagon outline and the faint colour pieces behind it come from the ASA mark (asa_mark.py: flat top and bottom,
 pointed left and right, exactly as the logo), scaled so the hexagon is 348 units tall; never redraw them.
 
-Open Graph images (1200x630, one per language): python src/hexagon.py --og (after a build; needs Playwright).
-They are written to public/assets/img/og-hexagon-en.png / og-hexagon-ar.png; run it again when the text changes.
+Open Graph images (1200x630, one per language): python src/hexagon.py --og [en ar zh] (after a build; needs Playwright,
+and a CJK system font for zh). They are written to public/assets/img/og-hexagon-<L>.png; run it again when the text changes.
 """
 import html, importlib, os, re, sys
 sys.path.insert(0, os.path.dirname(__file__))
-import asa_mark, mark, pages_en, pages_ar
+import asa_mark, mark, pages_en, pages_ar, pages_zh
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PC = {'en': pages_en, 'ar': pages_ar}
-OG = {L: f'/assets/img/og-hexagon-{L}.png' for L in ('en', 'ar')}
+PC = {'en': pages_en, 'ar': pages_ar, 'zh': pages_zh}
+OG = {L: f'/assets/img/og-hexagon-{L}.png' for L in ('en', 'ar', 'zh')}  # python src/hexagon.py --og
 
 # ---------------------------------------------------------------- geometry (from the ASA mark)
 
@@ -42,6 +42,7 @@ SIDES = [('TL', 'TR'), ('TR', 'R'), ('R', 'BR'), ('BR', 'BL'), ('BL', 'L'), ('L'
 # pillar n (1-6) -> corner. Fixed (CLAUDE.md): Arabic 1 top-right ... 6 bottom-left; English mirrored.
 CORNER = {'ar': {1: 'TR', 2: 'TL', 3: 'R', 4: 'L', 5: 'BR', 6: 'BL'},
           'en': {1: 'TL', 2: 'TR', 3: 'L', 4: 'R', 5: 'BL', 6: 'BR'}}
+CORNER['zh'] = CORNER['en']   # Chinese reads left to right: the English corners
 # balance i (0-2): its line and its two pillars (top: side TL-TR; middle: the beam's centre, tip to tip; bottom: BL-BR)
 BALANCES = [('TL', 'TR', (1, 2)), ('L', 'R', (3, 4)), ('BL', 'BR', (5, 6))]
 LIME, WHITE = '#C3D648', '#FFFFFF'
@@ -60,15 +61,18 @@ def pieces_order(s=1):
 # layout per variant: viewBox, size of the hexagon (s: 1 = 348 units tall), font sizes (diagram units), line steps,
 # balance label column. Names too long for their place wrap onto two lines (WRAP); the viewBoxes hold every label.
 LAYOUT = {
-    'wide': dict(box={'en': '-620 -277 1240 538', 'ar': '-585 -280 1170 556'}, s=1,
-                 step_nm=27, step_nm2=25, step_en=21, bal_x={'en': 380, 'ar': 385}),
-    'narrow': dict(box={'en': '-385 -258 770 523', 'ar': '-365 -252 730 506'}, s=.85,
+    'wide': dict(box={'en': '-620 -277 1240 538', 'ar': '-585 -280 1170 556', 'zh': '-620 -277 1240 538'}, s=1,
+                 step_nm=27, step_nm2=25, step_en=21, bal_x={'en': 380, 'ar': 385, 'zh': 380}),
+    'narrow': dict(box={'en': '-385 -258 770 523', 'ar': '-365 -252 730 506', 'zh': '-385 -258 770 523'}, s=.85,
                    step_nm=30, step_nm2=28, step_en=23, bal_x=None),
 }
 WRAP = {'wide': {'Quality & professional behaviour': ['Quality &', 'professional behaviour'],
                  'Confidentiality & competence and due care': ['Confidentiality &', 'competence and due care']},
         'narrow': {'Quality & professional behaviour': ['Quality &', 'professional behaviour'],
                    'Competence & due care': ['Competence &', 'due care']}}
+# Chinese: the long pillar and pair names on two lines
+WRAP['wide'].update({'质量与良好职业行为': ['质量与', '良好职业行为'], '保密与专业胜任能力和勤勉尽责': ['保密与', '专业胜任能力和勤勉尽责']})
+WRAP['narrow'].update({'质量与良好职业行为': ['质量与', '良好职业行为'], '专业胜任能力与勤勉尽责': ['专业胜任能力', '与勤勉尽责']})
 E = html.escape
 
 
@@ -167,7 +171,7 @@ def diagram(L, variant):
         o.append(f'<line class="hxd-hit" data-n="{pair[0]}" x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" stroke="transparent" stroke-width="26" pointer-events="stroke"/>')
     o.append('</g>')
     # the trust axis: in English the word "Trust" sits on the axis, so the axis stops just above it
-    segs = [(top, -46), (0, bot)] if L == 'en' else [(top, bot)]
+    segs = [(top, -46), (0, bot)] if L != 'ar' else [(top, bot)]
     o.append('<g class="hxd-axis">' + ''.join(
         f'<line x1="0" y1="{a:g}" x2="0" y2="{b:g}" stroke="#fff" stroke-opacity=".6" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" clip-path="url(#{p}-cax)"/>'
         for a, b in segs) + '</g>')
@@ -289,9 +293,10 @@ def page_data(L):
 
 
 def build(L, render, path_for):
-    importlib.reload(pages_en); importlib.reload(pages_ar)
+    importlib.reload(pages_en); importlib.reload(pages_ar); importlib.reload(pages_zh)
     D = PC[L].HEXAGON
-    return [render('hexagon.html', 'hexagon', L, D['title'], D['desc'], section='hexagon', D=D, og_image=OG[L], **page_data(L))]
+    og = OG[L] if os.path.exists(os.path.join(ROOT, 'public' + OG[L])) else OG['en']
+    return [render('hexagon.html', 'hexagon', L, D['title'], D['desc'], section='hexagon', D=D, og_image=og, **page_data(L))]
 
 # ---------------------------------------------------------------- Open Graph images
 
@@ -308,7 +313,7 @@ body{{background:radial-gradient(ellipse 60% 60% at 50% 62%,#2B2F35 0%,#23262B 6
 <h1 class="hxg-title">{title}</h1>{svg}</div></body></html>"""
 
 
-def build_og(dist):
+def build_og(dist, langs=('en', 'ar', 'zh')):
     """Render the finished diagram with the page title to 1200x630 PNGs (public/assets/img/og-hexagon-<L>.png).
     The kicker carries the lockup's TM after the N, as on the page (site.css, .hxg-tm)."""
     from playwright.sync_api import sync_playwright
@@ -319,11 +324,11 @@ def build_og(dist):
         with sync_playwright() as pw:
             b = pw.chromium.launch()
             pg = b.new_page(viewport=dict(width=1200, height=630))
-            for L in ('en', 'ar'):
+            for L in langs:
                 D = PC[L].HEXAGON
                 title = '<span class="dot"> · </span>'.join(f'<span>{E(t)}</span>' for t in D['h1'])
                 open(tmp, 'w', encoding='utf-8').write(OG_HTML.format(
-                    L=L, dir='rtl' if L == 'ar' else 'ltr', css='assets/css/site.css', h1=44 if L == 'en' else 46,
+                    L={'zh': 'zh-Hans'}.get(L, L), dir='rtl' if L == 'ar' else 'ltr', css='assets/css/site.css', h1=44 if L == 'en' else 46,
                     ls='-.02em' if L == 'en' else '0', title=title, tm=mark.tm_svg(),
                     svg=diagram(L, 'wide').replace('<svg class="hxd ', '<svg class="hxd hxd-og ')))
                 pg.goto('file://' + tmp, wait_until='load')
@@ -340,7 +345,8 @@ def build_og(dist):
 
 
 if __name__ == '__main__':
-    if '--og' in sys.argv:
-        build_og(os.path.join(ROOT, 'dist'))
+    if '--og' in sys.argv:  # python src/hexagon.py --og [en ar zh]: all three, or only the languages named
+        langs = [a for a in sys.argv[sys.argv.index('--og') + 1:] if a in PC]
+        build_og(os.path.join(ROOT, 'dist'), tuple(langs) or ('en', 'ar', 'zh'))
     else:
         print(G)

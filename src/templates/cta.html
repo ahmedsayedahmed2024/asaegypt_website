@@ -2,7 +2,7 @@
   {{ MARK_BG|safe }}
   <div class="wrap">
     <div class="rv">
-      <p class="kicker">{{ T.cta_k }}</p>
+      {% if T.cta_k %}<p class="kicker">{{ T.cta_k }}</p>{% endif %}
       <h2>{{ T.cta_h }}</h2>
       <p>{{ T.cta_p }}</p>
     </div>

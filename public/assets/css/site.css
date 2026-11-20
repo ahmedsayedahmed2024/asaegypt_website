@@ -1545,3 +1545,135 @@ html[lang="ar"] .g-qrow dt{letter-spacing:0;text-transform:none;font-size:.86rem
 .tm-note{background:var(--tint);border-top:1px solid var(--line);padding:18px 0}
 .tm-note p{font-size:.78rem;line-height:1.6;color:var(--muted);max-width:none}
 html[lang="ar"] .tm-note p{font-size:.84rem}
+
+/* ---------- Simplified Chinese (zh-Hans) ---------- */
+/* no web font for Chinese (no Google Fonts or other CDN: they are blocked or slow in mainland China): the site's own
+   Latin font first, then the system Chinese fonts. Body line-height about 1.8; headings balanced so a line never ends
+   with a single character. */
+/* the same Latin font files, without the quotes, the dash — and the ellipsis …: in Chinese text these come from the
+   Chinese font, full width (“ ” —— ……) */
+@font-face{font-family:'Plus Jakarta Sans ZH';font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/pjs-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-2013,U+2015-2017,U+201A-201B,U+201E-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Plus Jakarta Sans ZH';font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/pjs-500.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-2013,U+2015-2017,U+201A-201B,U+201E-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Plus Jakarta Sans ZH';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/pjs-600.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-2013,U+2015-2017,U+201A-201B,U+201E-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Plus Jakarta Sans ZH';font-style:normal;font-weight:700;font-display:swap;src:url(../fonts/pjs-700.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-2013,U+2015-2017,U+201A-201B,U+201E-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Plus Jakarta Sans ZH';font-style:normal;font-weight:800;font-display:swap;src:url(../fonts/pjs-800.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-2013,U+2015-2017,U+201A-201B,U+201E-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{--f-zh:"Plus Jakarta Sans ZH","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",sans-serif}
+html[lang="zh-Hans"]{--font:var(--f-zh)}
+html[lang="zh-Hans"] body{line-height:1.8;line-break:strict}
+html[lang="zh-Hans"] h1,html[lang="zh-Hans"] h2,html[lang="zh-Hans"] h3,html[lang="zh-Hans"] h4{letter-spacing:0;line-height:1.4;text-wrap:balance}
+html[lang="zh-Hans"] h1{line-height:1.3}
+html[lang="zh-Hans"] h2{font-size:clamp(1.6rem,2.9vw,2.4rem)}
+html[lang="zh-Hans"] .page-hero .lead{max-width:36em}
+html[lang="zh-Hans"] .kicker,html[lang="zh-Hans"] .trust p,html[lang="zh-Hans"] .site-footer h4{letter-spacing:.08em;font-size:.9rem}
+html[lang="zh-Hans"] .more{font-style:normal}
+html[lang="zh-Hans"] .faq button{line-height:1.6}
+
+/* header: language switcher (English, العربية, 中文). The button shows the current language; the list opens under it,
+   at its end edge (mirrored in Arabic). <details>: works without JavaScript; site.js closes it on Escape / outside click */
+.lang-sw{position:relative}
+.lang-sw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;user-select:none;white-space:nowrap}
+.lang-sw>summary::-webkit-details-marker{display:none}
+.lang-sw .lang-chev{width:9px;height:9px;flex:none;transition:transform .2s}
+.lang-sw[open] .lang-chev{transform:rotate(180deg)}
+.lang-sw[open]>summary{border-color:#fff}
+.site-header.solid .lang-sw[open]>summary{border-color:var(--ink)}
+.lang-cur{line-height:1.2}
+html[lang="ar"] .lang-cur{font-family:var(--f-ar)}
+.lang-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:168px;background:#fff;border-radius:6px;box-shadow:0 24px 60px rgba(15,18,22,.18);padding:6px;list-style:none;z-index:5}
+.lang-menu a{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 12px;border-radius:4px;color:var(--ink);font-weight:600;font-size:.94rem;line-height:1.3}
+.lang-menu a:hover,.lang-menu a:focus-visible{background:var(--tint)}
+.lang-menu a[aria-current]{color:var(--blue-dk)}
+.lang-menu .lang-ok{width:12px;height:12px;flex:none}
+.lang-menu a[lang="en"]{font-family:var(--f-en)}
+.lang-menu a[lang="ar"]{font-family:var(--f-ar);font-size:1rem}
+.lang-menu a[lang="zh-Hans"]{font-family:var(--f-zh)}
+
+/* Chinese pages: a link that opens an English page (Insights, Briefing, ASA NEXT) carries a small EN tag */
+.en-tag{display:inline-block;margin-inline-start:5px;padding:0 4px;font-family:var(--f-en);font-size:.6rem;font-weight:700;letter-spacing:.04em;line-height:1.5;border:1px solid currentColor;border-radius:3px;opacity:.7;vertical-align:.18em}
+.nav .en-tag{vertical-align:.12em}
+
+/* two-line headings (China page hero, ZH home hero): one span per line, the last in Lime */
+.h1-lines span{display:block}
+.h1-lines .hl{color:var(--lime)}
+.page-hero h1.h1-lines{max-width:none}
+.hero-note{display:flex;gap:10px;align-items:flex-start;margin-top:30px;color:#fff;font-size:.97rem;max-width:64ch}
+.hero-note svg{width:16px;height:16px;color:var(--lime);flex:none;margin-top:.3em}
+.seg-link{margin-top:16px}
+
+/* Services for Chinese companies */
+.cn-core .ticks{list-style:none;display:grid;gap:10px;margin-top:16px}
+.cn-core .ticks li{display:flex;gap:10px;font-size:.95rem;color:var(--muted)}
+.cn-core .ticks svg{width:13px;height:13px;color:var(--blue-dk);flex:none;margin-top:.45em}
+.cn-other-h{margin:60px 0 18px}
+.cn-other{list-style:none;border-top:1px solid var(--line)}
+.cn-other li{display:grid;grid-template-columns:minmax(220px,.75fr) 2fr;gap:28px;padding:16px 0;border-bottom:1px solid var(--line)}
+.cn-other a{font-weight:700;color:var(--ink);transition:color .2s}
+.cn-other a:hover{color:var(--blue-dk)}
+.cn-other span{color:var(--muted)}
+.cn-more{margin-top:20px}
+#contractors h2 .ln{display:block}
+.cn-work .box{padding:30px 28px;background:var(--graphite-2);border:1px solid var(--graphite-3);border-radius:var(--radius)}
+.cn-work .box h3{color:#fff;margin:18px 0 10px}
+.cn-work .box p{font-size:.95rem}
+.cta-wechat .wrap{grid-template-columns:1.4fr .6fr}
+.cta-wechat .acts{flex-direction:row;flex-wrap:wrap;align-items:center;gap:16px 26px;margin-top:28px}
+.cta-mail{display:inline-flex;gap:10px;align-items:center;color:#fff;font-weight:600}
+.cta-mail svg{width:16px;height:16px;color:var(--lime);flex:none}
+.cta-mail:hover span[dir]{text-decoration:underline;text-underline-offset:3px}
+.cta-wechat .wechat-qr{justify-self:end}
+
+/* WeChat QR (ZH home, the China page in three languages, ZH contact): dark modules on a white card */
+.wechat-qr{margin:0;display:inline-flex;flex-direction:column;align-items:center;gap:10px;background:#fff;padding:14px 14px 12px;border-radius:var(--radius);position:relative}
+.wechat-qr img{width:160px;height:160px;display:block}
+.wechat-qr figcaption{font-size:.86rem;color:var(--ink);font-weight:600;line-height:1.3}
+.wechat{display:flex;gap:26px;align-items:center}
+.wechat .wechat-qr{border:1px solid var(--line);flex:none}
+.wechat-txt b{display:block;color:var(--ink);margin-bottom:6px}
+.wechat-txt p{color:var(--muted);font-size:.93rem;margin-bottom:8px}
+.wechat-txt p:last-child{margin-bottom:0}
+.wechat-card{margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+.wechat-card .wechat-qr img{width:140px;height:140px}
+@media (max-width:1080px){.cta-wechat .wechat-qr{justify-self:start}}
+@media (max-width:640px){
+  .cn-other li{grid-template-columns:1fr;gap:4px}
+  .wechat{flex-direction:column;align-items:flex-start;gap:18px}
+}
+
+/* ZH home: hero with the colour mark (static), three-item strip, six concerns, monthly summary */
+.hero-zh h1{font-size:clamp(2rem,4.4vw,3.3rem)}
+.hero-zh .hero-sub{color:#fff;font-size:clamp(1.08rem,1.6vw,1.3rem);font-weight:600;margin:0 0 14px}
+.hero-zh .lead{font-size:clamp(1rem,1.3vw,1.1rem)}
+.hero-zh .art .mark .s{opacity:1;animation:none}
+.hero-zh .art .mark .nm-beam{animation:none}
+.hero .stats.stats-3 .wrap{grid-template-columns:repeat(3,minmax(0,1fr));background-size:1px 100%,1px 100%,0 0;background-position:calc(33.333% - .333px) 0,calc(66.667% + .333px) 0,0 0}
+.hero .stats.stats-3 .wrap::after{display:none}
+.stats-3 .stat:nth-child(n){padding-inline-start:24px}
+.stats-3 .stat:first-child{padding-inline-start:0}
+.stats-3 .stat b.sm{white-space:normal}
+.cn-concern .hxo-ico{width:36px;height:31px;fill:none;stroke:var(--blue-dk);stroke-width:1.6;stroke-linejoin:round}
+.cn-concern:nth-child(even) .hxo-ico{stroke:var(--lime-dk)}
+.cn-sum{align-items:center}
+.cn-sum .wechat{justify-self:center}
+.cn-sum-act{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;margin-top:28px}
+.cn-sum-act span{color:var(--muted);font-size:.95rem}
+@media (min-width:1081px){
+  .hero-zh h1{font-size:clamp(2.1rem,min(3.7vw,7vh),3.4rem)}
+  .hero-zh .art{width:clamp(300px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129 * .8),88%)}
+}
+@media (max-width:1080px){
+  .hero .stats.stats-3 .wrap{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:0;background-image:linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule))}
+  .hero-zh .art{width:min(240px,50%)}
+}
+@media (max-width:640px){
+  /* phones: one item per row; the lines between rows are the 1px row gaps (the grid's own background), never cell borders */
+  .hero .stats.stats-3 .wrap{grid-template-columns:1fr;row-gap:1px;background:linear-gradient(var(--rule),var(--rule)) content-box}
+  .stats-3 .stat,.stats-3 .stat:nth-child(n){padding:16px 0;background:#1E2125}
+  .hero-zh .art{width:min(180px,46%)}
+}
+/* the Chinese menu has nine items (no search button): a little tighter on small desktops, so it stays on one line */
+@media (max-width:1240px) and (min-width:1081px){html[lang="zh-Hans"] .nav>li>a,html[lang="zh-Hans"] .nav>li>button{padding-inline:4px;font-size:.81rem}html[lang="zh-Hans"] .nav>li>a.dd-link{padding-inline-end:2px}}
+/* Chinese headings: one inline-block per phrase (build.zh_phrases), so a line breaks between phrases, not inside them */
+.zs{display:inline-block}
+html[lang="zh-Hans"] p,html[lang="zh-Hans"] li{text-wrap:pretty}
+@media (min-width:1081px){.cn-sum{grid-template-columns:1.1fr .9fr}}
+html[lang="zh-Hans"] .page-hero h1{font-size:clamp(1.85rem,4vw,3.2rem)}

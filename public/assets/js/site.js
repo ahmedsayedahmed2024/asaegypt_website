@@ -23,6 +23,14 @@
     li.addEventListener('focusout',function(e){if(li.classList.contains('open')&&!li.contains(e.relatedTarget))set(false)});
   });
   document.addEventListener('click',function(e){document.querySelectorAll('.nav .has-dd.open').forEach(function(li){if(!li.contains(e.target)){li.classList.remove('open');li.querySelector('.dd-tgl').setAttribute('aria-expanded','false')}})});
+  // language switcher (<details class="lang-sw">): opens and closes by itself (click, Enter, Space; no JS needed);
+  // here: Escape closes it and returns focus to its button, a click elsewhere or focus leaving it closes it
+  document.querySelectorAll('.lang-sw').forEach(function(d){
+    var s=d.querySelector('summary');
+    d.addEventListener('keydown',function(e){if(e.key==='Escape'&&d.open){d.open=false;s.focus()}});
+    document.addEventListener('click',function(e){if(d.open&&!d.contains(e.target))d.open=false});
+    d.addEventListener('focusout',function(e){if(d.open&&e.relatedTarget&&!d.contains(e.relatedTarget))d.open=false});
+  });
   // mobile menu: the chevron next to "Services" shows / hides the list of services
   document.querySelectorAll('.mn-tgl').forEach(function(t){
     t.addEventListener('click',function(){var o=t.getAttribute('aria-expanded')!=='true';t.setAttribute('aria-expanded',o);document.getElementById(t.getAttribute('aria-controls')).hidden=!o});
@@ -127,7 +135,8 @@
 
   var y=document.querySelectorAll('[data-year]');y.forEach(function(e){e.textContent=new Date().getFullYear()});
 
-  // language switch (English / العربية): the other language opens at the same place. On click, the element at the
+  // language switch (English / العربية / 中文): the other language opens at the same place (between two versions of
+  // the same page; a page without a Chinese version links 中文 to /zh/, where the position is simply not found). On click, the element at the
   // reading line (just under the header) that has an id is noted with its ancestors that have one, how far into it the
   // line is, and how far down the page we are. The other page goes to the first of these ids it also has (passage ids
   // "<section>-p<n>" only when that section has as many passages in both languages), else to the same percentage.
@@ -138,8 +147,8 @@
   function shown(el){return el.offsetParent!==null&&el.offsetHeight>0&&!el.closest('nav,aside,.g-toc,[hidden]')}
   function pcount(id){var m=/^(.+)-p\d+$/.exec(id);if(!m)return 0;var n=0,re=new RegExp('^'+m[1].replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'-p\\d+$');
     document.querySelectorAll('main [id]').forEach(function(e){if(re.test(e.id))n++});return n}
-  document.querySelectorAll('a.lang').forEach(function(a){a.addEventListener('click',function(e){
-    if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||window.scrollY<120)return;
+  document.querySelectorAll('.lang-menu a').forEach(function(a){a.addEventListener('click',function(e){
+    if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||window.scrollY<120||a.hasAttribute('data-home')||a.hasAttribute('aria-current'))return;
     var hd=document.querySelector('.site-header'),line=window.scrollY+(hd?hd.offsetHeight:0)+12,best=null,below=null;
     document.querySelectorAll('main [id]').forEach(function(el){
       if(!(el instanceof HTMLElement)||!shown(el))return;                          // hidden (closed answers, other tabs)

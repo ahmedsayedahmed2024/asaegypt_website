@@ -1,0 +1,85 @@
+import config
+# Simplified Chinese (zh-Hans): header / footer strings, services and the home page (/zh/).
+# Rules: CLAUDE.md, "Chinese (zh-Hans)"; fixed terms: data/glossary_zh.md.
+T = dict(
+    skip="跳至正文", home="首页", mainnav="主导航", menu="打开菜单", close="关闭菜单",
+    nav=dict(hexagon="ASA Hexagon", about="关于我们", services="专业服务", who="服务对象", china="中资企业服务",
+             approach="我们的方法", people="我们的团队", insights="洞察", briefing="动态简报", next="ASA NEXT",
+             contact="联系我们", privacy="隐私政策"),
+    cta_consult="申请咨询", linkedin="ASA 领英主页", learn="了解详情", firm="机构", photo="图片",
+    logo_alt="ASA Chartered Accountants and Consultants",
+    foot_about="独立的注册会计师与咨询机构，为埃及、沙特阿拉伯及其他地区的机构提供审计、会计、税务与咨询服务。",
+    more="……以及其他相关服务。",
+    address="58A Teraat El Zomor St., Al Haram, Giza, Egypt",
+    rights="ASA Chartered Accountants and Consultants. 版权所有。",
+    taxreg="税务登记号",
+    cta_k="", cta_h="在埃及开展业务，从一次面谈开始。",
+    cta_p="欢迎以中文或英文来信；会议与电话以英文进行。",
+    next_tagline="Your next step", next_band="", next_cta="",
+    lang="语言", en_tag="EN", en_tag_title="英文页面",
+)
+
+SERVICES = [
+    dict(key="svc-audit", slug="audit-assurance", icon="FaMagnifyingGlassChart", name="审计与鉴证",
+         short="法定审计、审阅及商定程序",
+         desc="独立的法定审计、审阅及商定程序，让董事会、贷款方和监管机构对您的财务数据更有信心。"),
+    dict(key="svc-tax", slug="tax-transfer-pricing", icon="FaFileInvoiceDollar", name="税务与转让定价",
+         short="合规申报、税务稽查应对、税收协定、转让定价",
+         desc="企业所得税、增值税与税务稽查应对，税收协定待遇，以及经得起审查的转让定价同期资料。"),
+    dict(key="svc-acc", slug="accounting-consolidation", icon="FaCalculator", name="会计与 IFRS",
+         short="IFRS 咨询、合并报表、会计外包",
+         desc="国际财务报告准则（IFRS）与埃及会计准则咨询、合并财务报表、会计政策、会计外包与财务报告，以及公司秘书与企业服务。"),
+    dict(key="svc-ecl", slug="ecl-solutions", icon="FaChartLine", name="ASA ECL Solutions",
+         short="预期信用损失研究、模型授权与培训",
+         desc="依据 IFRS 9 与埃及会计准则第 47 号的预期信用损失研究与模型：由我们编制，或授权贵公司团队使用，并提供培训与支持。"),
+    dict(key="svc-adv", slug="financial-advisory", icon="FaLightbulb", name="咨询服务",
+         short="尽职调查、内部审计、可行性研究",
+         desc="财务尽职调查、内部审计与内部控制评估、质量管理体系建设、可行性研究以及上市准备支持。"),
+    dict(key="svc-intl", slug="international-market-entry", icon="FaGlobe", name="国际业务与市场进入",
+         short="跨境业务与投资者支持",
+         desc="为跨国集团提供跨境税务与报告支持，为进入埃及的投资者提供市场进入方面的指导。"),
+]
+
+# ZH home page (approved copy, CLAUDE.md "Chinese (zh-Hans)"). The block "what changed since 2018" is shown only when
+# config.ZH_TAX_CHANGES_PUBLIC is True (its article is not written yet).
+HOME = dict(
+    title="埃及中资企业的审计与税务伙伴 | ASA",
+    desc="ASA Chartered Accountants and Consultants 为在埃及经营的中资企业提供审计、税务、会计与咨询服务，每一项业务均在专业监督下完成。",
+    kicker="注册会计师 · 税务 · 咨询 ｜ 埃及",
+    h1=["在埃及做项目，", "账要算清，税要合规，", "总部要放心。"],   # three lines on desktop; the last one in Lime
+    sub="您在埃及的财税伙伴——懂当地规则，也懂总部要求。",
+    lead="ASA Chartered Accountants and Consultants 为在埃及经营的中资企业提供审计、税务、会计与咨询服务。每一项业务均在专业监督下完成，力求让每一份报表与资料都经得起业主、税务机关和集团审计师的检验。",
+    cta2="了解中资企业服务",
+    strip=[("连续五个财年", "自成立以来，持续为中资企业在埃及的业务提供审计服务"),
+           ("欢迎中文书面沟通", "邮件与微信可使用中文；会议与电话以英文进行"),
+           ("埃及本地执业", "在册审计师，具备审计埃及股份公司的执业资格")],
+    concerns_k="中资企业服务", concerns_h="中资企业在埃及，最常遇到的六类问题",
+    concerns_p="我们围绕您实际面对的问题组织服务，而不是围绕会计科目。",
+    concerns=[("总部报表与集团审计", "埃及会计准则与中国企业会计准则、IFRS 之间的差异调节；按集团审计师的指引完成组成部分审计，按时提交报表包。"),
+              ("工程进度款与分包管理", "整理计量与进度款确认资料、分包合同与发票链条，形成能够经受业主、税务机关和集团审计核查的完整证据。"),
+              ("税务申报与协定待遇", "预扣税、增值税、印花税及电子发票合规；中埃税收协定待遇的申请与留档。"),
+              ("关联交易与转让定价", "总部管理费、技术服务费与特许权使用费的税前扣除；转让定价同期资料的准备。"),
+              ("利润汇回与资金安排", "利润汇回从第一天就要开始准备：股东决议、账簿记录与完税证明提前就绪，汇出时不再被动。"),
+              ("设立、变更与项目收尾", "分公司、子公司或代表处的选择与设立登记；项目结束后的税务清算与注销。")],
+    concerns_cta="查看中资企业服务详情",
+    # hidden until config.ZH_TAX_CHANGES_PUBLIC (the article it links to is not written yet)
+    changes_k="埃及财税动态", changes_h="2018 年以来，埃及财税规则变化不小",
+    changes_p="如果您参考的埃及税收资料编写于数年之前，以下几方面值得重新核对。",
+    changes=["电子发票与电子收据系统全面推行", "2025 年出台的一系列税收便利化措施",
+             "面向投资者的税务预先裁定机制", "增值税退税流程的调整"],
+    changes_cta="阅读全文：埃及财税规则的主要变化",
+    svc_k="ASA Hexagon", svc_h="六大专业服务",
+    # (route key, name, line): the six service groups, each linking to its Chinese page
+    svc=[("svc-audit", "审计与鉴证", "法定审计、审阅及商定程序"),
+         ("svc-tax", "税务与转让定价", "合规申报、税务稽查应对、税收协定、转让定价"),
+         ("svc-acc", "会计与 IFRS", "IFRS 咨询、合并报表、会计外包"),
+         ("svc-ecl", "ASA ECL Solutions", "预期信用损失研究、模型授权与培训"),
+         ("svc-adv", "咨询服务", "尽职调查、内部审计、可行性研究"),
+         ("svc-intl", "国际业务与市场进入", "跨境业务与投资者支持")],
+    sum_k="每月一期", sum_h="埃及财税要点",
+    sum_p="每月精选 3 至 5 条与中资企业相关的埃及动态——税务、海关、外汇、投资法规及苏伊士运河经济区——并逐条说明“对您意味着什么”。",
+    sum_btn="发送邮件订阅", sum_subject="订阅：每月埃及财税要点", sum_or="或扫描二维码，通过微信接收",
+    wechat_cap="微信扫码添加", wechat_alt="ASA 微信二维码",
+    wechat_note=["添加时请注明公司名称。", "微信用于初步沟通；正式文件与函件通过电子邮件往来。"],
+    cta_h="在埃及开展业务，从一次面谈开始。", cta_p="欢迎以中文或英文来信；会议与电话以英文进行。",
+)

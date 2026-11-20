@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ L }}" dir="{{ 'rtl' if L=='ar' else 'ltr' }}">
+<html lang="{{ HL }}" dir="{{ 'rtl' if L=='ar' else 'ltr' }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,7 +9,8 @@
 {% endif %}<link rel="canonical" href="{{ SITE }}{{ path }}">
 <link rel="alternate" hreflang="en" href="{{ SITE }}{{ alt_en }}">
 <link rel="alternate" hreflang="ar" href="{{ SITE }}{{ alt_ar }}">
-<link rel="alternate" hreflang="x-default" href="{{ SITE }}{{ alt_en }}">
+{% if alt_zh %}<link rel="alternate" hreflang="zh-Hans" href="{{ SITE }}{{ alt_zh }}">
+{% endif %}<link rel="alternate" hreflang="x-default" href="{{ SITE }}{{ alt_en }}">
 <meta property="og:site_name" content="{{ HEAD.site_name }}">
 <meta property="og:type" content="{{ HEAD.og_type }}">
 <meta property="og:title" content="{{ HEAD.og_title }}">
@@ -21,8 +22,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{{ HEAD.og_title }}">
 <meta property="og:locale" content="{{ HEAD.locale }}">
-<meta property="og:locale:alternate" content="{{ HEAD.locale_alt }}">
-{% if HEAD.published %}<meta property="article:published_time" content="{{ HEAD.published }}">
+{% for la in HEAD.locale_alt %}<meta property="og:locale:alternate" content="{{ la }}">
+{% endfor %}{% if HEAD.published %}<meta property="article:published_time" content="{{ HEAD.published }}">
 <meta property="article:modified_time" content="{{ HEAD.modified }}">
 <meta property="article:section" content="{{ HEAD.section }}">
 {% endif %}<meta name="twitter:card" content="summary_large_image">
@@ -45,13 +46,14 @@
 {{ schema|safe }}
 </head>
 <body>
+{%- set EN_TAG %}{% if ZH %}<span class="en-tag" lang="en" title="{{ T.en_tag_title }}">EN</span>{% endif %}{% endset %}
 <a class="skip" href="#main">{{ T.skip }}</a>
 <header class="site-header"{% if solid %} data-solid{% endif %}>
   <div class="wrap bar">
     <button class="menu-btn" data-open-menu aria-label="{{ T.menu }}" aria-expanded="false">{{ I('FaBars') }}</button>
     {#- logo (CLAUDE.md, "The site logo"): the full lockup (mark + ASA + name line + TM) only at the top of the homepage;
         everywhere else, and on the homepage once the header turns solid, the short lockup (mark + ASA + TM) #}
-    {%- set home_top = path in ('/', '/ar/') %}
+    {%- set home_top = path in ('/', '/ar/', '/zh/') %}
     <a class="logo{% if home_top %} logo-home{% endif %}" href="{{ P('home') }}" aria-label="ASA — {{ T.home }}">
       {% if home_top %}<img class="l-full" src="{{ R }}assets/img/logo-asa.svg" alt="{{ T.logo_alt }}" width="172" height="58">
       {% else %}<img class="l-light" src="{{ R }}assets/img/logo-asa-short.svg" alt="{{ T.logo_alt }}" width="195" height="50">
@@ -59,7 +61,7 @@
     </a>
     <nav aria-label="{{ T.mainnav }}">
       <ul class="nav">
-        <li><a href="{{ P('about') }}"{% if section=='about' %} aria-current="page"{% endif %}>{{ T.nav.about }}</a></li>
+        <li><a href="{{ P('about') }}"{% if section=='about' and not (ZH and '/our-approach/' in path) %} aria-current="page"{% endif %}>{{ T.nav.about }}</a></li>
 {% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"{% if section=='hexagon' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>Hexagon<i class="tmn">{{ TM_NAV }}</i></b></span></a></li>
 {% endif %}        {#- "Services": the label is a link to /services/; the chevron next to it toggles the dropdown (which also opens on hover) #}
         <li class="has-dd">
@@ -69,19 +71,32 @@
           </div>
         </li>
         <li><a href="{{ P('who') }}"{% if section=='who' %} aria-current="page"{% endif %}>{{ T.nav.who }}</a></li>
+{% if ZH %}{#- Chinese menu: the China page and Our Approach; Insights and Briefing open in English (the EN tag) #}
+        <li><a href="{{ P('china') }}"{% if section=='china' %} aria-current="page"{% endif %}>{{ T.nav.china }}</a></li>
+        <li><a href="{{ P('approach') }}"{% if path.startswith('/zh/our-approach/') %} aria-current="page"{% endif %}>{{ T.nav.approach }}</a></li>
         <li><a href="{{ P('people') }}"{% if section=='people' %} aria-current="page"{% endif %}>{{ T.nav.people }}</a></li>
+        <li><a href="{{ P('insights') }}" hreflang="en">{{ T.nav.insights }}{{ EN_TAG }}</a></li>
+        <li><a href="{{ P('briefing') }}" hreflang="en">{{ T.nav.briefing }}{{ EN_TAG }}</a></li>
+{% else %}        <li><a href="{{ P('people') }}"{% if section=='people' %} aria-current="page"{% endif %}>{{ T.nav.people }}</a></li>
         <li><a href="{{ P('insights') }}"{% if section=='insights' %} aria-current="page"{% endif %}>{{ T.nav.insights }}</a></li>
         <li><a href="{{ P('briefing') }}"{% if section=='briefing' %} aria-current="page"{% endif %}>{{ T.nav.briefing }}</a></li>
         <li><a class="nav-next" href="{{ P('next') }}"{% if section=='next' %} aria-current="page"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span></a></li>
-      </ul>
+{% endif %}      </ul>
     </nav>
-    <button type="button" class="search-btn" data-open-search aria-label="{{ T.search.btn }}" title="{{ T.search.btn }} (/)" aria-expanded="false" aria-controls="site-search">{{ I('Search') }}</button>
-    <div class="header-cta">
-      <a class="lang" href="{{ alt_other }}" lang="{{ 'en' if L=='ar' else 'ar' }}" hreflang="{{ 'en' if L=='ar' else 'ar' }}">{{ 'English' if L=='ar' else 'العربية' }}</a>
+{% if SEARCH %}    <button type="button" class="search-btn" data-open-search aria-label="{{ T.search.btn }}" title="{{ T.search.btn }} (/)" aria-expanded="false" aria-controls="site-search">{{ I('Search') }}</button>
+{% endif %}    <div class="header-cta">
+      {#- language switcher (English, العربية, 中文): the button shows the current language; the list opens below it.
+          A language without this page: 中文 opens /zh/ (site.js keeps the reading position between two versions of a page) #}
+      <details class="lang-sw">
+        <summary class="lang" title="{{ T.lang }}"><span class="sr">{{ T.lang }}: </span><span class="lang-cur">{{ LANG_SHORT }}</span>{{ I('FaChevronDown', 'lang-chev') }}</summary>
+        <ul class="lang-menu">{% for code, name, href, cur, same in LANG_OPTS %}
+          <li><a href="{{ href }}" lang="{{ code }}" hreflang="{{ code }}"{% if cur %} aria-current="true"{% endif %}{% if not same %} data-home{% endif %}><span{% if code == 'ar' %} dir="rtl"{% endif %}>{{ name }}</span>{% if cur %}{{ I('FaCheck', 'lang-ok') }}{% endif %}</a></li>{% endfor %}
+        </ul>
+      </details>
       <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }}</a>
     </div>
   </div>
-  <div class="search-panel" id="site-search" role="dialog" aria-label="{{ T.search.label }}" hidden data-cfg='{{ SEARCH|tojson }}'>
+{% if SEARCH %}  <div class="search-panel" id="site-search" role="dialog" aria-label="{{ T.search.label }}" hidden data-cfg='{{ SEARCH|tojson }}'>
     <div class="wrap">
       <form class="sp-form" role="search" action="{{ P('search') }}" method="get">
         <span class="sp-ico">{{ I('Search') }}</span>
@@ -97,8 +112,8 @@
       <p class="sp-status sr" role="status" aria-live="polite"></p>
     </div>
   </div>
-</header>
-<div class="search-scrim" data-close-search hidden></div>
+{% endif %}</header>
+{% if SEARCH %}<div class="search-scrim" data-close-search hidden></div>{% endif %}
 <div class="mobile-nav" aria-label="{{ T.mainnav }}">
   <div class="top"><img src="{{ R }}assets/img/logo-asa-short-plain.svg" alt="ASA" width="133" height="34"><button class="close" data-close-menu aria-label="{{ T.close }}">{{ I('FaXmark') }}</button></div>
   <a href="{{ P('home') }}">{{ T.home }}</a>
@@ -107,11 +122,12 @@
 {% endif %}  <div class="mn-dd"><a href="{{ P('services') }}">{{ T.nav.services }}</a><button type="button" class="mn-tgl" aria-expanded="{{ 'true' if section=='services' else 'false' }}" aria-controls="mn-services" aria-label="{{ T.nav.services }}">{{ I('FaChevronDown') }}</button></div>
   <div class="mn-sub" id="mn-services"{% if section!='services' %} hidden{% endif %}>{% for s in SERVICES %}<a class="sub" href="{{ P(s.key) }}">{{ s.name }}</a>{% endfor %}<p class="sub more">{{ T.more }}</p></div>
   <a href="{{ P('who') }}">{{ T.nav.who }}</a>
-  <a href="{{ P('approach') }}">{{ T.nav.approach }}</a>
+{% if ZH %}  <a href="{{ P('china') }}">{{ T.nav.china }}</a>
+{% endif %}  <a href="{{ P('approach') }}">{{ T.nav.approach }}</a>
   <a href="{{ P('people') }}">{{ T.nav.people }}</a>
-  <a href="{{ P('insights') }}">{{ T.nav.insights }}</a>
-  <a href="{{ P('briefing') }}">{{ T.nav.briefing }}</a>
-  <a class="nav-next" href="{{ P('next') }}"><span dir="ltr" lang="en">ASA <b>NEXT</b></span></a>
+  <a href="{{ P('insights') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.insights }}{{ EN_TAG }}</a>
+  <a href="{{ P('briefing') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.briefing }}{{ EN_TAG }}</a>
+  <a class="nav-next" href="{{ P('next') }}"{% if ZH %} hreflang="en"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span>{{ EN_TAG }}</a>
   <a href="{{ P('contact') }}">{{ T.nav.contact }}</a>
   <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }}</a>
 </div>
@@ -138,10 +154,11 @@
 {% if HEXAGON %}        <li><a class="nav-hex" href="{{ P('hexagon') }}"><span dir="ltr" lang="en">ASA <b>Hexagon</b></span></a></li>
 {% endif %}        <li><a href="{{ P('approach') }}">{{ T.nav.approach }}</a></li>
         <li><a href="{{ P('who') }}">{{ T.nav.who }}</a></li>
-        <li><a href="{{ P('people') }}">{{ T.nav.people }}</a></li>
-        <li><a href="{{ P('insights') }}">{{ T.nav.insights }}</a></li>
-        <li><a href="{{ P('briefing') }}">{{ T.nav.briefing }}</a></li>
-        <li><a class="nav-next" href="{{ P('next') }}"><span dir="ltr" lang="en">ASA <b>NEXT</b></span></a></li>
+{% if ZH %}        <li><a href="{{ P('china') }}">{{ T.nav.china }}</a></li>
+{% endif %}        <li><a href="{{ P('people') }}">{{ T.nav.people }}</a></li>
+        <li><a href="{{ P('insights') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.insights }}{{ EN_TAG }}</a></li>
+        <li><a href="{{ P('briefing') }}"{% if ZH %} hreflang="en"{% endif %}>{{ T.nav.briefing }}{{ EN_TAG }}</a></li>
+        <li><a class="nav-next" href="{{ P('next') }}"{% if ZH %} hreflang="en"{% endif %}><span dir="ltr" lang="en">ASA <b>NEXT</b></span>{{ EN_TAG }}</a></li>
         <li><a href="{{ P('privacy') }}">{{ T.nav.privacy }}</a></li>
       </ul>
     </div>
@@ -162,8 +179,8 @@
 </footer>
 <a class="wa" href="https://wa.me/201115652365" target="_blank" rel="noopener" aria-label="WhatsApp">{{ I('FaWhatsapp') }}</a>
 <script src="{{ R }}assets/js/site.js?v={{ V }}" defer></script>
-<script src="{{ R }}assets/js/search.js?v={{ V }}" defer></script>
-{% if not path.endswith('/latest/') %}{# the only analytics allowed (CLAUDE.md); not on the email-signature pages #}
+{% if SEARCH %}<script src="{{ R }}assets/js/search.js?v={{ V }}" defer></script>
+{% endif %}{% if not path.endswith('/latest/') %}{# the only analytics allowed (CLAUDE.md); not on the email-signature pages #}
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71544f838c17421fa4b97561eb2d5d4e"}'></script><!-- End Cloudflare Web Analytics -->
 {% endif %}</body>
 </html>

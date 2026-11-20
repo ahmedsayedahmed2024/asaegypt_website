@@ -4,7 +4,7 @@
 <section class="sec">
   <div class="wrap">
     {% for s in D.segments %}
-    <div class="seg-row rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s[0]) }}</span><div><h3>{{ s[1] }}</h3><p style="margin-top:10px">{{ s[2] }}</p></div><ul>{% for x in s[3] %}<li>{{ I('FaCheck') }}<span>{{ x }}</span></li>{% endfor %}</ul></div>
+    <div class="seg-row rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(s[0]) }}</span><div><h3>{{ s[1] }}</h3><p style="margin-top:10px">{{ s[2] }}</p>{% if s|length > 4 %}<p class="seg-link"><a class="link-arrow" href="{{ P(s[4][1]) }}">{{ s[4][0] }} {{ I('FaArrowRight') }}</a></p>{% endif %}</div><ul>{% for x in s[3] %}<li>{{ I('FaCheck') }}<span>{{ x }}</span></li>{% endfor %}</ul></div>
     {% endfor %}
   </div>
 </section>
