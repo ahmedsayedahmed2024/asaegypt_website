@@ -28,9 +28,15 @@
         <div class="row"><span class="hx">{{ I('FaEnvelope') }}</span><div><b>{{ D.write }}</b><a href="mailto:ahmed.sayed@asaegypt.com">ahmed.sayed@asaegypt.com</a></div></div>
         <div class="row"><span class="hx lime">{{ I('FaWhatsapp') }}</span><div><b>WhatsApp</b><a href="https://wa.me/201115652365" target="_blank" rel="noopener">{{ D.wa }}</a></div></div>
         <div class="row"><span class="hx">{{ I('FaClock') }}</span><div><b>{{ D.hours_t }}</b>{{ D.hours }}</div></div>
+{% if D.lang_note %}        <div class="row"><span class="hx lime">{{ I('FaLanguage') }}</span><div>{{ D.lang_note }}</div></div>
+{% endif %}      </div>
+{% if D.wechat_cap %}      {#- Chinese contact page: the WeChat QR (public/assets/img/wechat-qr.svg) instead of the map (no Google services on Chinese pages) #}
+      <div class="wechat wechat-card">
+        <figure class="wechat-qr"><img src="{{ R }}assets/img/wechat-qr.svg" alt="{{ D.wechat_alt }}" width="180" height="180"><figcaption>{{ D.wechat_cap }}</figcaption></figure>
+        <div class="wechat-txt"><b>{{ D.wechat_h }}</b>{% for t in D.wechat_note %}<p>{{ t }}</p>{% endfor %}</div>
       </div>
-      <div class="map"><iframe title="{{ D.map_t }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Teraat+El+Zomor+Street,+Al+Haram,+Giza,+Egypt&output=embed"></iframe></div>
-    </div>
+{% else %}      <div class="map"><iframe title="{{ D.map_t }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Teraat+El+Zomor+Street,+Al+Haram,+Giza,+Egypt&output=embed"></iframe></div>
+{% endif %}    </div>
   </div>
 </section>
 <script>if(location.search.indexOf('sent=1')>-1){document.querySelector('.form').style.display='none';document.getElementById('thanks').classList.add('show')}</script>

@@ -1,0 +1,92 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{#- Services for Chinese companies (/who-we-serve/chinese-companies/ in EN, AR and ZH). Text: pages_*.CHINA (approved).
+    Existing components only: page hero, cards, steps, the FAQ (FAQPage structured data from seo.py), the CTA band. #}
+{% block main %}
+<section class="page-hero">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <nav class="crumbs" aria-label="breadcrumb"><a href="{{ P('home') }}">{{ T.home }}</a><span aria-hidden="true">/</span><a href="{{ P('who') }}">{{ T.nav.who }}</a><span aria-hidden="true">/</span><span>{{ T.nav.china }}</span></nav>
+    <p class="kicker">{{ D.kicker }}</p>
+    <h1 class="h1-lines">{% for t in D.h1 %}<span{% if loop.last %} class="hl"{% endif %}>{{ t|bidi(L) }}</span>{% endfor %}</h1>
+    <p class="lead">{{ D.lead }}</p>
+    <div class="ctas"><a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a></div>
+    {% if D.note %}<p class="hero-note">{{ I('FaCircleCheck') }}<span>{{ D.note }}</span></p>{% endif %}
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.core_k }}</p><h2>{{ D.core_h }}</h2></div><p class="lead">{{ D.core_p }}</p></div>
+    <div class="grid-3">
+      {% for c in D.core %}<div class="pillar cn-core rv" style="transition-delay:{{ loop.index0*60 }}ms"><span class="hx {{ 'lime' if loop.index0 == 1 else '' }}">{{ I(['FaCalculator','FaFileInvoiceDollar','FaMagnifyingGlassChart'][loop.index0]) }}</span><h3>{{ c[0] }}</h3>
+        <ul class="ticks">{% for b in c[1] %}<li>{{ I('FaCheck') }}<span>{{ b|bidi(L) }}</span></li>{% endfor %}</ul></div>{% endfor %}
+    </div>
+    <h3 class="cn-other-h rv" id="other-services">{{ D.other_h }}</h3>
+    <ul class="cn-other rv">
+      {% for k, name, text in D.other %}<li><a href="{{ P(k) }}">{{ name|bidi(L) }}</a><span>{{ text|bidi(L) }}</span></li>{% endfor %}
+    </ul>
+    <p class="more cn-more" data-noindex>{{ T.more }}</p>
+  </div>
+</section>
+
+<section class="sec tint" id="stages">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.life_k }}</p><h2>{{ D.life_h }}</h2></div></div>
+    <div class="steps">
+      {% for s in D.life %}<div class="step rv" style="transition-delay:{{ loop.index0*90 }}ms"><div class="top"><span class="hx {{ 'dark' if loop.last else '' }}">{{ I(['FaHandshake','FaCubes','FaClipboardCheck','FaCircleCheck'][loop.index0]) }}</span><span class="line"></span></div><small>{{ D.stage }} 0{{ loop.index }}</small><h3>{{ s[0] }}</h3><p>{{ s[1]|bidi(L) }}</p></div>{% endfor %}
+    </div>
+    <p class="more cn-more" data-noindex>{{ T.more }}</p>
+  </div>
+</section>
+
+<section class="sec" id="tax-risks">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.risk_k }}</p><h2>{{ D.risk_h }}</h2></div><p class="lead">{{ D.risk_p }}</p></div>
+    <div class="grid-4">
+      {% for r in D.risks %}<div class="pillar rv" style="transition-delay:{{ loop.index0*60 }}ms"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(['FaFileContract','FaClock','FaGavel','FaScaleBalanced'][loop.index0]) }}</span><h3>{{ r[0] }}</h3><p>{{ r[1]|bidi(L) }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec tint" id="contractors">
+  <div class="wrap two-col" style="align-items:center">
+    <div class="prose rv"><p class="kicker">{{ D.con_k }}</p><h2>{% for t in D.con_h %}<span class="ln">{{ t }}</span>{% endfor %}</h2><p>{{ D.con_p }}</p></div>
+    <div class="grid-2" style="grid-template-columns:1fr">
+      {% for o in D.con %}<div class="offer rv"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(['FaBuilding','FaSitemap','FaClipboardCheck'][loop.index0]) }}</span><div><h3>{{ o[0] }}</h3><p>{{ o[1]|bidi(L) }}</p></div></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="how-we-work">
+  <div class="wrap">
+    <div class="sec-head rv"><div><p class="kicker">{{ D.work_k }}</p><h2>{{ D.work_h }}</h2></div></div>
+    <div class="grid-4 cn-work">
+      {% for w in D.work %}<div class="box rv" style="transition-delay:{{ loop.index0*60 }}ms"><span class="hx {{ 'lime' if loop.index0 % 2 else '' }}">{{ I(['FaLanguage','FaFileContract','FaUserTie','FaShieldHalved'][loop.index0]) }}</span><h3>{{ w[0] }}</h3><p>{{ w[1] }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap two-col">
+    <div class="rv"><p class="kicker">{{ D.faq_k }}</p><h2>{{ D.faq_h }}</h2></div>
+    <div class="faq rv">
+      {% for q in D.faq %}<div class="faq-item" data-passage><button aria-expanded="false">{{ q[0] }} {{ I('FaPlus') }}</button><div class="ans" hidden>{{ q[1] }}</div></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-band cta-wechat">
+  {{ MARK_BG|safe }}
+  <div class="wrap">
+    <div class="rv">
+      <h2>{{ D.cta_h }}</h2>
+      <p>{{ D.cta_p }}</p>
+      <div class="acts">
+        <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a>
+        <a class="cta-mail" href="mailto:ahmed.sayed@asaegypt.com">{{ I('FaEnvelope') }}<span class="sr">{{ D.email_t }}: </span><span dir="ltr">ahmed.sayed@asaegypt.com</span></a>
+      </div>
+    </div>
+    <figure class="wechat-qr rv"><img src="{{ R }}assets/img/wechat-qr.svg" alt="{{ D.wechat_alt }}" width="180" height="180"><figcaption>{{ D.wechat_cap }}</figcaption></figure>
+  </div>
+</section>
+{% endblock %}

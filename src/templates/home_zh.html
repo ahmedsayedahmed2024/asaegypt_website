@@ -1,0 +1,101 @@
+{% extends "base.html" %}{% import "macros.html" as m with context %}
+{#- Chinese home page (/zh/). Approved copy: content_zh.HOME (CLAUDE.md, "Chinese (zh-Hans)"). The latest items are not in
+    Chinese yet, so the hero shows the colour ASA mark (static, mark.py) in place of the rotating hexagon. #}
+{% block head %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>
+{% endblock %}
+{% block main %}
+{% set H = C.HOME %}
+<section class="hero hero-zh">
+  <div class="wrap">
+    <div>
+      <p class="kicker">{{ H.kicker }}</p>
+      <h1 class="h1-lines">{% for t in H.h1 %}<span{% if loop.last %} class="hl"{% endif %}>{{ t }}</span>{% endfor %}</h1>
+      <p class="hero-sub">{{ H.sub }}</p>
+      <p class="lead">{{ H.lead }}</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="{{ P('contact') }}">{{ T.cta_consult }} {{ I('FaArrowRight','arrow') }}</a>
+        <a class="btn btn-ghost" href="{{ P('china') }}">{{ H.cta2 }}</a>
+      </div>
+    </div>
+    <div class="art" aria-hidden="true">{{ MARK|safe }}</div>
+  </div>
+  <div class="stats stats-3">
+    <div class="wrap">
+      {% for s in H.strip %}<div class="stat"><b class="sm">{{ s[0] }}</b><span>{{ s[1] }}</span></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="concerns">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker">{{ H.concerns_k }}</p><h2>{{ H.concerns_h }}</h2></div>
+      <p class="lead">{{ H.concerns_p }}</p>
+    </div>
+    <div class="grid-3">
+      {% for c in H.concerns %}
+      <div class="card cn-concern rv" style="transition-delay:{{ loop.index0*60 }}ms">
+        <span class="num">0{{ loop.index }}</span>
+        <svg class="hxo-ico" viewBox="0 0 30 26" aria-hidden="true"><polygon points="7.5,1 22.5,1 29,13 22.5,25 7.5,25 1,13"/></svg>
+        <h3>{{ c[0] }}</h3>
+        <p>{{ c[1] }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="more cn-more" data-noindex>{{ T.more }}</p>
+    <p class="rv" style="margin-top:18px"><a class="link-arrow" href="{{ P('china') }}">{{ H.concerns_cta }} {{ I('FaArrowRight') }}</a></p>
+  </div>
+</section>
+
+{% if TAX_CHANGES %}{#- hidden until config.ZH_TAX_CHANGES_PUBLIC: its article is not written yet #}
+<section class="sec tint" id="tax-changes">
+  <div class="wrap two-col">
+    <div class="rv"><p class="kicker">{{ H.changes_k }}</p><h2>{{ H.changes_h }}</h2><p class="lead" style="margin-top:18px">{{ H.changes_p }}</p></div>
+    <div>
+      {% for r in H.changes %}<div class="reason rv"><span class="n">0{{ loop.index }}</span><div><h3>{{ r }}</h3></div></div>{% endfor %}
+      <p class="rv" style="margin-top:24px"><a class="link-arrow" href="{{ P('insights') }}" hreflang="en">{{ H.changes_cta }} {{ I('FaArrowRight') }}</a></p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="sec tint" id="services">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="kicker"><bdi lang="en">{{ H.svc_k }}</bdi></p><h2>{{ H.svc_h }}</h2></div>
+    </div>
+    <div class="grid-3">
+      {% for k, name, line in H.svc %}{% set s = SERVICES|selectattr('key', 'equalto', k)|first %}
+      <a class="card rv" href="{{ P(k) }}" style="transition-delay:{{ loop.index0*60 }}ms">
+        <span class="num">0{{ loop.index }}</span>
+        <span class="hx {{ 'lime' if loop.index0 in [1,3,5] else '' }}">{{ I(s.icon) }}</span>
+        <h3>{{ name }}</h3>
+        <p>{{ line }}</p>
+        <span class="link-arrow">{{ T.learn }} {{ I('FaArrowRight') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    <p class="more cn-more" data-noindex>{{ T.more }}</p>
+  </div>
+</section>
+
+<section class="sec" id="monthly">
+  <div class="wrap two-col cn-sum">
+    <div class="rv">
+      <p class="kicker">{{ H.sum_k }}</p>
+      <h2>{{ H.sum_h }}</h2>
+      <p class="lead" style="margin-top:18px">{{ H.sum_p }}</p>
+      <div class="cn-sum-act">
+        <a class="btn btn-dark" href="mailto:ahmed.sayed@asaegypt.com?subject={{ H.sum_subject|urlencode }}">{{ H.sum_btn }} {{ I('FaEnvelope','arrow') }}</a>
+        <span>{{ H.sum_or }}</span>
+      </div>
+    </div>
+    <div class="wechat rv">
+      <figure class="wechat-qr"><img src="{{ R }}assets/img/wechat-qr.svg" alt="{{ H.wechat_alt }}" width="180" height="180"><figcaption>{{ H.wechat_cap }}</figcaption></figure>
+      <div class="wechat-txt">{% for t in H.wechat_note %}<p>{{ t }}</p>{% endfor %}</div>
+    </div>
+  </div>
+</section>
+
+{% include "cta.html" %}
+{% endblock %}

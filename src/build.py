@@ -2,7 +2,7 @@ import datetime, json, os, re, shutil, sys, time, importlib
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 sys.path.insert(0, os.path.dirname(__file__))
-import mark, config, content_en, content_ar, articles_meta, news, photos, seo
+import mark, config, content_en, content_ar, content_zh, articles_meta, news, photos, seo
 import next as nextdata  # ASA NEXT (aliased: do not shadow the builtin next())
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,13 +18,17 @@ ICONS.update({
     'ChevPrev': _LINE + '<path d="m14.5 6-6 6 6 6"/></svg>',
     'ChevNext': _LINE + '<path d="m9.5 6 6 6-6 6"/></svg>',
 })
-C = {'en': content_en, 'ar': content_ar}
+C = {'en': content_en, 'ar': content_ar, 'zh': content_zh}
+LANGS = ('en', 'ar', 'zh')
+HTML_LANG = {'en': 'en', 'ar': 'ar', 'zh': 'zh-Hans'}  # <html lang> and hreflang
+LANG_NAME = {'en': 'English', 'ar': 'العربية', 'zh': '中文'}       # the language switcher (each in its own language)
+LANG_SHORT = {'en': 'EN', 'ar': 'عربي', 'zh': '中文'}
 
 # route key -> path (en); ar = '/ar' + path
 ROUTES = {'home': '/', 'about': '/about/', 'hexagon': '/hexagon/', 'services': '/services/', 'who': '/who-we-serve/',
           'approach': '/our-approach/', 'people': '/our-people/', 'insights': '/insights/',
           'briefing': '/briefing/', 'next': '/next/', 'contact': '/contact/', 'privacy': '/privacy/',
-          'search': '/search/', 'latest': '/latest/'}
+          'search': '/search/', 'latest': '/latest/', 'china': '/who-we-serve/chinese-companies/'}
 NO_SITEMAP = {'search', 'latest'}  # utility pages left out of sitemap.xml
 if not config.HEXAGON_PUBLIC:  # ASA Hexagon hidden (config.py): no page, no links, not in the sitemap or the search index
     del ROUTES['hexagon']
@@ -37,9 +41,19 @@ for n in news.NEWS:
 for x in nextdata.NEXT:
     ROUTES['nx-' + x['slug']] = f"/next/{x['slug']}/"
 
+# Simplified Chinese (/zh/): the fixed pages and the China page. Insights, Briefing, ASA NEXT, the reference guide,
+# /latest/, search and 404 have no Chinese version yet: on Chinese pages, links to them open the English pages, and
+# 中文 in the language switcher of such a page opens /zh/ (CLAUDE.md, "Chinese (zh-Hans)").
+ZH_KEYS = {'home', 'about', 'services', 'who', 'china', 'approach', 'people', 'contact', 'privacy'} | {s['key'] for s in content_en.SERVICES}
+if config.HEXAGON_PUBLIC:
+    ZH_KEYS.add('hexagon')
+
+def has_lang(key, L):
+    return L != 'zh' or key in ZH_KEYS
+
 def path_for(key, L):
     p = ROUTES[key]
-    return p if L == 'en' else '/ar' + p
+    return p if L == 'en' else f'/{L}' + p
 
 def icon(name, cls=None):
     s = ICONS[name]
@@ -69,12 +83,18 @@ def bidi(s, L):
     out.append(escape(s[last:]))
     return Markup('').join(out)
 env.filters['bidi'] = bidi
+
+def vwidth(s):
+    """Visual width of a value without its tags: CJK characters count double (stats and number grids)."""
+    t = re.sub(r'<[^>]+>', '', str(s))
+    return sum(2 if '\u2e80' <= ch <= '\u9fff' or '\uff00' <= ch <= '\uffef' else 1 for ch in t)
+env.filters['vw'] = vwidth
 import guide  # reference guides: **bold**, links and Arabic bidi in the guide text
 env.filters['rich'] = guide.rich
 env.filters['gcell'] = guide.cell
 
 def link(key, L, from_path):
-    target = path_for(key, L)
+    target = path_for(key, L if has_lang(key, L) else 'en')  # a Chinese page links to the English page when there is no Chinese one
     if not REL:
         return target
     depth = len([x for x in from_path.split('/') if x])
@@ -268,23 +288,47 @@ def search_cfg(L, R, from_path):
                 page=P('search'), page2=link('search', other, from_path), months=MONTHS[L], s={k: v for k, v in S.items() if k not in ('title', 'desc', 'kicker', 'h1', 'lead', 'nojs', 'notfound')},
                 links=[[nav['insights'], P('insights')], [nav['briefing'], P('briefing')], [nav['contact'], P('contact')]])
 
+def lang_options(key, L, from_path):
+    """The language switcher: [(lang code, name, href, current, same page)] in a fixed order. A language without this page:
+    中文 opens /zh/ (the Chinese home page)."""
+    return [(HTML_LANG[x], LANG_NAME[x], link(key if has_lang(key, x) else 'home', x, from_path), x == L, has_lang(key, x)) for x in LANGS]
+
 def render(tpl, key, L, title, desc, section=None, solid=False, schema='', **ctx):
     mod = C[L]
     path = path_for(key, L)
-    other = 'ar' if L == 'en' else 'en'
     depth = len([x for x in path.split('/') if x])
     R = ('../' * depth) if REL else '/'
     # sharing card, structured data and the other search / sharing tags of <head> (seo.py)
     HEAD = seo.head(sys.modules[__name__], key, L, title, desc, dict(ctx, schema=schema))
     html = env.get_template(tpl).render(
-        L=L, SITE=SITE, V=V, T=mod.T, C=mod, SERVICES=mod.SERVICES, I=icon, P=lambda k: link(k, L, path), R=R,
-        MARK=MARK, MARK_BG=MARK_BG, IMAGES=config.SHOW_IMAGES, title=title, desc=desc, path=path, SEARCH=search_cfg(L, R, path),
-        alt_en=path_for(key, 'en'), alt_ar=path_for(key, 'ar'), alt_other=link(key, other, path),
+        L=L, HL=HTML_LANG[L], ZH=L == 'zh', SITE=SITE, V=V, T=mod.T, C=mod, SERVICES=mod.SERVICES, I=icon, P=lambda k: link(k, L, path), R=R,
+        MARK=MARK, MARK_BG=MARK_BG, IMAGES=config.SHOW_IMAGES, title=title, desc=desc, path=path,
+        SEARCH=None if L == 'zh' else search_cfg(L, R, path),  # no search on Chinese pages yet (the index is EN / AR)
+        alt_en=path_for(key, 'en'), alt_ar=path_for(key, 'ar'), alt_zh=path_for(key, 'zh') if key in ZH_KEYS else None,
+        LANG_OPTS=lang_options(key, L, path), LANG_SHORT=LANG_SHORT[L],
         section=section, solid=solid, HEAD=HEAD, schema=Markup(HEAD['ld']), **ctx)
+    if L == 'zh':
+        html = zh_phrases(html)
     out = os.path.join(DIST, path.lstrip('/'), 'index.html')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w', encoding='utf-8').write(html)
     return path
+
+# Chinese headings: a line may break between any two characters, so a heading can split a phrase ("最 / 常遇到").
+# Each phrase of a heading (up to and including , 、 : ; and the like) becomes an inline-block (.zs), so lines break
+# between phrases; a phrase wider than the line still wraps inside. Layout only: the text is unchanged.
+ZH_HEADING = re.compile(r'(<h[1-4]\b[^>]*>|<p class="hero-sub">)(.*?)(</h[1-4]>|</p>)', re.S)
+ZH_PHRASE = re.compile(r'[^，、：；。！？]+[，、：；。！？]*|[，、：；。！？]+')
+
+def zh_phrases(html):
+    def text(t):
+        parts = ZH_PHRASE.findall(t)
+        if len(parts) < 2 or not re.search(r'[\u4e00-\u9fff]', t):
+            return t
+        return ''.join(f'<span class="zs">{p}</span>' for p in parts)
+    def heading(m):
+        return m.group(1) + ''.join(p if p.startswith('<') else text(p) for p in re.split(r'(<[^>]+>)', m.group(2))) + m.group(3)
+    return ZH_HEADING.sub(heading, html)
 
 def build(pages=None):
     built = []
@@ -316,6 +360,12 @@ def build(pages=None):
         import signature_banner
         importlib.reload(signature_banner)
         built += signature_banner.build_page(L, render, sys.modules[__name__])
+    # Simplified Chinese: the home page, the fixed pages, the services and the China page (no search, no items yet)
+    H = C['zh'].HOME
+    built.append(render('home_zh.html', 'home', 'zh', H['title'], H['desc'], TAX_CHANGES=config.ZH_TAX_CHANGES_PUBLIC))
+    built += pages.build_all('zh', render, featured, path_for, C, ROUTES)
+    if config.HEXAGON_PUBLIC:
+        built += hexagon.build('zh', render, path_for)
     import search
     for L, (n_pages, n_passages, size) in search.index_site(sys.modules[__name__]).items():  # after every page is written
         print(f"search index {L}: {n_pages} pages, {n_passages} passages, {size // 1024} KB")
@@ -331,7 +381,7 @@ HEXAGON_FILES = ['assets/js/hexagon.js', 'assets/img/og-hexagon-en.png', 'assets
 
 def build_redirects():
     for old, key in REDIRECTS.items():
-        for L in ('en', 'ar'):
+        for L in ('en', 'ar'):  # retired URLs had no Chinese version
             to = path_for(key, L)
             html = (f'<!doctype html><html lang="{L}"><head><meta charset="utf-8"><title>ASA</title>'
                     f'<meta name="robots" content="noindex"><link rel="canonical" href="{SITE}{to}">'
@@ -348,10 +398,11 @@ def build_redirects():
 def build_404():
     html = env.get_template('404.html').render(L='en', SITE=SITE, V=V, T=content_en.T, C=content_en, SERVICES=content_en.SERVICES, I=icon,
         P=lambda k: path_for(k, 'en'), R='/', MARK=MARK, MARK_BG=MARK_BG, title='Page not found | ASA', desc='', path='/404.html',
-        SEARCH=search_cfg('en', '/', '/404.html'), S_AR=content_ar.T['search'], noindex=True,
-        alt_en='/', alt_ar='/ar/', alt_other='/ar/', section=None, solid=False, schema='',
+        SEARCH=search_cfg('en', '/', '/404.html'), S_AR=content_ar.T['search'], noindex=True, HL='en', ZH=False,
+        alt_en='/', alt_ar='/ar/', alt_zh='/zh/', LANG_OPTS=lang_options('home', 'en', '/404.html'), LANG_SHORT=LANG_SHORT['en'],
+        section=None, solid=False, schema='',
         HEAD=dict(og_title='Page not found | ASA', og_image=SITE + seo.og_image(sys.modules[__name__], 'home', 'en', {}),
-                  og_type='website', og_image_type='image/png', locale='en_US', locale_alt='ar_EG', site_name=seo.FIRM['en']))
+                  og_type='website', og_image_type='image/png', locale='en_US', locale_alt=['ar_EG', 'zh_CN'], site_name=seo.FIRM['en']))
     open(os.path.join(DIST, '404.html'), 'w', encoding='utf-8').write(html)
 
 if __name__ == '__main__':

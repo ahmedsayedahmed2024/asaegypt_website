@@ -11,6 +11,10 @@ SHOW_IMAGES = True
 # True: the page, its animation, menu position and links.
 HEXAGON_PUBLIC = True
 
+# Chinese home page (/zh/): the block "2018 年以来，埃及财税规则变化不小" (four rows and a link to its article).
+# False until that article is published in Chinese; the block's text stays in content_zh.HOME.
+ZH_TAX_CHANGES_PUBLIC = False
+
 import datetime
 
 # Years of experience on Home, About and Our Team: full years since this date, computed at build time.

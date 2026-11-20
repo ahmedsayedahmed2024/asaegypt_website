@@ -15,14 +15,19 @@ hreflang, when two pages share a title, or when the sitemap and the pages disagr
 """
 import datetime, html, json, math, os, re, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
-import articles_meta, news, guide, config, pages_en, pages_ar
+import articles_meta, news, guide, config, pages_en, pages_ar, pages_zh
 import next as nextdata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://asaegypt.com'
-FIRM = {'en': 'ASA Chartered Accountants and Consultants', 'ar': 'ASA محاسبون قانونيون ومستشارون'}
+FIRM = {'en': 'ASA Chartered Accountants and Consultants', 'ar': 'ASA محاسبون قانونيون ومستشارون',
+        'zh': 'ASA Chartered Accountants and Consultants'}  # no Chinese name: the English name in Latin letters
 LEGAL = 'أحمد سيد أحمد محاسبون قانونيون ومستشارون'  # the firm's full Arabic legal name (CLAUDE.md, rule 4)
-PC = {'en': pages_en, 'ar': pages_ar}
+PC = {'en': pages_en, 'ar': pages_ar, 'zh': pages_zh}
+LANG_CODE = {'en': 'en', 'ar': 'ar', 'zh': 'zh-Hans'}   # inLanguage, hreflang
+LOCALE = {'en': 'en_US', 'ar': 'ar_EG', 'zh': 'zh_CN'}  # og:locale
+ZH_TITLE_MAX, ZH_DESC_MIN, ZH_DESC_MAX = 32, 50, 100    # Chinese pages (characters): check() warns outside these
+OG_ZH = '/assets/img/og-zh.png'  # the default Chinese sharing card (committed; python src/seo.py --og-zh redraws it)
 ORG_ID = SITE + '/#organization'
 SITE_ID = SITE + '/#website'
 LOGO = SITE + '/assets/img/logo_color@3x.png'  # the current logo file (never a new one)
@@ -124,12 +129,11 @@ def ld(obj):
 
 def organization(B, L):
     T = B.C[L].T
-    other = 'ar' if L == 'en' else 'en'
     hours = pages_en.CONTACT['hours']  # "Sunday – Thursday, 9:00 – 17:00" (contact page)
     m = re.search(r'(\d+):(\d\d)\s*–\s*(\d+):(\d\d)', hours)
     return {
         "@type": ["AccountingService", "Organization"], "@id": ORG_ID,
-        "name": FIRM[L], "alternateName": [FIRM[other], "ASA"], "legalName": LEGAL,
+        "name": FIRM[L], "alternateName": [FIRM[x] for x in ('en', 'ar') if FIRM[x] != FIRM[L]] + ["ASA"], "legalName": LEGAL,
         "url": SITE + B.path_for('home', L), "logo": {"@type": "ImageObject", "url": LOGO}, "image": LOGO,
         "description": T['foot_about'],
         "address": {"@type": "PostalAddress", "streetAddress": "58A Teraat El Zomor St., Al Haram",
@@ -159,9 +163,9 @@ SCOPE_HEADINGS_SKIP = {'svc-ecl'}
 
 def website(B, L):
     return {"@type": "WebSite", "@id": SITE_ID, "url": SITE + '/', "name": FIRM[L], "alternateName": "ASA",
-            "inLanguage": ["en", "ar"], "publisher": {"@id": ORG_ID},
-            "potentialAction": {"@type": "SearchAction",
-                                "target": {"@type": "EntryPoint", "urlTemplate": SITE + B.path_for('search', L) + "?q={search_term_string}"},
+            "inLanguage": ["en", "ar", "zh-Hans"], "publisher": {"@id": ORG_ID},
+            "potentialAction": {"@type": "SearchAction",  # no Chinese search page yet: the English one
+                                "target": {"@type": "EntryPoint", "urlTemplate": SITE + B.path_for('search', 'en' if L == 'zh' else L) + "?q={search_term_string}"},
                                 "query-input": "required name=search_term_string"}}
 
 
@@ -230,7 +234,7 @@ def news_article(B, key, L, x, image):
 
 
 def faq(B, key, L, qa):
-    return {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": L, "url": SITE + B.path_for(key, L),
+    return {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": LANG_CODE[L], "url": SITE + B.path_for(key, L),
             "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qa]}
 
 
@@ -243,7 +247,7 @@ def schema(B, key, L, title, desc, image, ctx):
     url = SITE + B.path_for(key, L)
     trail = crumbs(B, key, L)
     page = {"@type": PAGE_TYPE.get(key, 'WebPage'), "@id": url + '#webpage', "url": url, "name": title,
-            "description": desc, "inLanguage": L, "isPartOf": {"@id": SITE_ID},
+            "description": desc, "inLanguage": LANG_CODE[L], "isPartOf": {"@id": SITE_ID},
             "primaryImageOfPage": {"@type": "ImageObject", "url": image}}
     if key in ('home', 'about', 'contact'):
         page["about"] = {"@id": ORG_ID}
@@ -261,7 +265,7 @@ def schema(B, key, L, title, desc, image, ctx):
             out.append(faq(B, key, L, guide.faq(x['slug'], L)))
     elif kind == 'news':
         out.append(news_article(B, key, L, x, images))
-    elif key.startswith('svc-') and ctx.get('D', {}).get('faq'):  # the "Frequently asked questions" of a service page
+    elif (key.startswith('svc-') or key == 'china') and ctx.get('D', {}).get('faq'):  # the FAQ shown on a service page / the China page
         out.append(faq(B, key, L, ctx['D']['faq']))
     return '\n'.join(ld(o) for o in out)
 
@@ -373,8 +377,9 @@ def _wrap(text, font, width, kw):
     return lines + ([cur] if cur else [])
 
 
-def card(title, kicker, L, out):
-    """A 1200x630 sharing card: dark background, faint honeycomb, kicker, title, the firm's name. No logo mark."""
+def card(title, kicker, L, out, cjk=None):
+    """A 1200x630 sharing card: dark background, faint honeycomb, kicker, title, the firm's name. No logo mark.
+    cjk: a CJK font file for a Chinese title, given as a list of lines (the default Chinese card, card_zh())."""
     from PIL import Image, ImageDraw
     S = 2  # drawn at 2x, then reduced: smooth edges
     W, H = OG_W * S, OG_H * S
@@ -412,6 +417,13 @@ def card(title, kicker, L, out):
     # title: the largest size that fits in four lines above the foot
     width, room = (OG_W - 160) * S, 330 * S
     for size in (68, 62, 56, 50, 46, 42, 38, 34):
+        if cjk:  # Chinese: the title comes as its own lines (no spaces to wrap at), in a system CJK font
+            from PIL import ImageFont
+            f = ImageFont.truetype(cjk, size * S)
+            lines, lh = title, size * S * 1.32
+            if max(f.getlength(t) for t in lines) <= width and len(lines) * lh <= room:
+                break
+            continue
         f = _font('plexar-ar-700.woff2' if rtl else 'pjs-800.woff2', size * S)
         lines = _wrap(title, f, width, kw)
         lh = size * S * (1.36 if rtl else 1.18)
@@ -419,7 +431,9 @@ def card(title, kicker, L, out):
             break
     y = 160 * S
     for line in lines[:4]:
-        if rtl:
+        if cjk:
+            d.text((x0, y), line, font=f, fill=INK, anchor=anchor)
+        elif rtl:
             d.text((x0, y), line, font=f, fill=INK, anchor=anchor, **kw)
         else:
             for dx, piece in _pieces(line, f)[0]:
@@ -460,6 +474,8 @@ def og_image(B, key, L, ctx):
     if not _raqm() and not _warned:
         _warned.append(1)
         print('WARNING: Arabic text cannot be drawn (Pillow without raqm / FriBiDi, or fontTools missing); Arabic sharing cards use the English card')
+    if L == 'zh':  # one default Chinese card (drawn once and committed), else the English one
+        return OG_ZH if os.path.exists(os.path.join(ROOT, 'public' + OG_ZH)) else og_image(B, key, 'en', ctx)
     lang = L if _raqm() else 'en'
     if kind is None:
         rel = f'{OG_DIR}/site-{lang}.png'
@@ -495,7 +511,7 @@ def head(B, key, L, title, desc, ctx):
     og_title = field(x, 'title', L) if x else title
     h = dict(og_title=og_title, og_image=image, og_alt=og_title, og_type='article' if x else 'website',
              og_image_type='image/jpeg' if image.endswith('.jpg') else 'image/png',
-             locale='ar_EG' if L == 'ar' else 'en_US', locale_alt='en_US' if L == 'ar' else 'ar_EG', site_name=FIRM[L])
+             locale=LOCALE[L], locale_alt=[LOCALE[x] for x in B.LANGS if x != L and B.has_lang(key, x)], site_name=FIRM[L])
     if x:
         h['published'] = x.get('added') if kind == 'news' else x['date']
         h['modified'] = x.get('reviewed') or h['published']
@@ -522,8 +538,9 @@ def _item_day(x):
 
 
 # the source files of each fixed page (besides base.html and the shared header / footer text)
-PAGE_FILES = {'home': ['src/content_en.py', 'src/content_ar.py', 'src/templates/home.html'],
-              'services': ['src/pages_en.py', 'src/pages_ar.py', 'src/content_en.py', 'src/content_ar.py', 'src/templates/services.html']}
+PAGE_FILES = {'home': ['src/content_en.py', 'src/content_ar.py', 'src/content_zh.py', 'src/templates/home.html', 'src/templates/home_zh.html'],
+              'services': ['src/pages_en.py', 'src/pages_ar.py', 'src/pages_zh.py', 'src/content_en.py', 'src/content_ar.py',
+                           'src/content_zh.py', 'src/templates/services.html']}
 
 
 def lastmod(B, key):
@@ -535,8 +552,11 @@ def lastmod(B, key):
     files = PAGE_FILES.get(key)
     if files is None:
         tpl = {'who': 'who', 'approach': 'approach', 'people': 'people', 'contact': 'contact', 'privacy': 'privacy',
-               'about': 'about', 'insights': 'insights', 'briefing': 'briefing', 'next': 'next'}.get(key, 'service')
+               'about': 'about', 'insights': 'insights', 'briefing': 'briefing', 'next': 'next', 'china': 'china',
+               'hexagon': 'hexagon'}.get(key, 'service')
         files = ['src/pages_en.py', 'src/pages_ar.py', f'src/templates/{tpl}.html']
+        if key in B.ZH_KEYS:
+            files.append('src/pages_zh.py')
     days = [git_date(*files)]
     if key in ('home', 'insights'):
         days += [_item_day(a) for a in articles_meta.ARTICLES]
@@ -562,14 +582,13 @@ def sitemap(B):
     for key in B.ROUTES:
         if key in B.NO_SITEMAP:
             continue
-        en, ar = B.path_for(key, 'en'), B.path_for(key, 'ar')
-        if is_noindex(B, en) or is_noindex(B, ar):
+        paths = {L: B.path_for(key, L) for L in B.LANGS if B.has_lang(key, L)}  # zh only for pages with a Chinese version
+        if any(is_noindex(B, p) for p in paths.values()):
             continue
         day = lastmod(B, key)
-        alts = (f'<xhtml:link rel="alternate" hreflang="en" href="{SITE}{en}"/>'
-                f'<xhtml:link rel="alternate" hreflang="ar" href="{SITE}{ar}"/>'
-                f'<xhtml:link rel="alternate" hreflang="x-default" href="{SITE}{en}"/>')
-        for p in (en, ar):
+        alts = ''.join(f'<xhtml:link rel="alternate" hreflang="{LANG_CODE[L]}" href="{SITE}{p}"/>' for L, p in paths.items())
+        alts += f'<xhtml:link rel="alternate" hreflang="x-default" href="{SITE}{paths["en"]}"/>'
+        for p in paths.values():
             sm.append(f'<url><loc>{SITE}{p}</loc><lastmod>{day}</lastmod>{alts}</url>')
             n += 1
     sm.append('</urlset>')
@@ -596,15 +615,17 @@ def llms(B):
              f"- Office: {en.T['address']}",
              '- Clients: Egypt, Saudi Arabia and international',
              f"- Languages: English and Arabic. The website is in both: English at {SITE}/ and Arabic at {SITE}/ar/",
+             f"- Chinese (Simplified) pages are at {SITE}/zh/, including services for Chinese companies in Egypt: {SITE}{B.path_for('china', 'zh')}",
              f"- Contact: {u('contact')} · +20 111 565 2365 · ahmed.sayed@asaegypt.com · {P.CONTACT['hours']}",
              f"- Memberships: {'; '.join(t for _, t in en.HOME['trust'])}",
              f"- LinkedIn: {LINKEDIN}",
              '', '## Services', '']
     lines += [f"- [{s['name']}]({u(s['key'])}): {s['desc']}" for s in en.SERVICES] + [f"- {en.T['more'].lstrip('… ').capitalize()}"]
     lines += ['', '## Main pages', '']
-    for k in ('home', 'about', 'services', 'who', 'approach', 'people', 'insights', 'briefing', 'next', 'contact'):
+    for k in ('home', 'about', 'services', 'who', 'china', 'approach', 'people', 'insights', 'briefing', 'next', 'contact'):
         D = {'home': en.HOME, 'services': P.SERVICES_HUB, 'who': P.WHO, 'approach': P.APPROACH, 'people': P.PEOPLE,
-             'insights': P.INSIGHTS, 'briefing': P.BRIEFING, 'next': P.NEXT_PAGE, 'contact': P.CONTACT, 'about': P.ABOUT}[k]
+             'insights': P.INSIGHTS, 'briefing': P.BRIEFING, 'next': P.NEXT_PAGE, 'contact': P.CONTACT, 'about': P.ABOUT,
+             'china': P.CHINA}[k]
         lines.append(f"- [{page_name(B, k, 'en') if k != 'home' else 'Home'}]({u(k)}): {D['desc']}")
     arts = sorted(articles_meta.ARTICLES, key=lambda a: B.added_key(a, 'article'), reverse=True)
     guides = [a for a in arts if a['slug'] in guide.GUIDES]
@@ -620,7 +641,8 @@ def llms(B):
     lines += [f"- [{x['title_en']}]({u('nx-' + x['slug'])}): {x['summary_en']}" for x in nextdata.NEXT]
     lines += ['', '## Optional', '',
               f"- [Arabic site]({SITE}/ar/): the same pages in Arabic",
-              f"- [Sitemap]({SITE}/sitemap.xml): every public page in both languages",
+              f"- [Chinese site]({SITE}/zh/): the fixed pages and services in Simplified Chinese",
+              f"- [Sitemap]({SITE}/sitemap.xml): every public page in each of its languages",
               f"- [Privacy policy]({u('privacy')})"]
     return '\n'.join(lines) + '\n'
 
@@ -658,9 +680,13 @@ def check(dist):
                 errors.append(f'{url}: no canonical link')
             elif c.group(1) != SITE + url:
                 errors.append(f'{url}: canonical points to {c.group(1)}')
-            for lang in ('en', 'ar', 'x-default'):
+            zh = url.startswith('/zh/')
+            for lang in ('en', 'ar', 'x-default') + (('zh-Hans',) if zh else ()):
                 if not re.search(rf'<link rel="alternate" hreflang="{lang}" href="{re.escape(SITE)}/[^"]*"', head_):
                     errors.append(f'{url}: no hreflang="{lang}" link')
+            for alt in re.findall(rf'<link rel="alternate" hreflang="[^"]+" href="{re.escape(SITE)}(/[^"]*)"', head_):
+                if not os.path.exists(os.path.join(dist, alt.lstrip('/'), 'index.html')):
+                    errors.append(f'{url}: hreflang link to {alt}, which is not a page')
             for prop in ('og:title', 'og:description', 'og:url', 'og:image', 'og:type', 'og:locale'):
                 if f'property="{prop}"' not in head_:
                     errors.append(f'{url}: no {prop}')
@@ -672,14 +698,15 @@ def check(dist):
                     json.loads(block)
                 except ValueError as e:
                     errors.append(f'{url}: invalid JSON-LD ({e})')
+            t_max, d_min, d_max = (ZH_TITLE_MAX, ZH_DESC_MIN, ZH_DESC_MAX) if zh else (TITLE_MAX, DESC_MIN, DESC_MAX)
             if t:
                 titles.setdefault(t, []).append(url)
-                if len(t) > TITLE_MAX:
-                    warnings.append(f'{url}: title is {len(t)} characters (target {TITLE_MAX} or fewer)')
+                if len(t) > t_max:
+                    warnings.append(f'{url}: title is {len(t)} characters (target {t_max} or fewer)')
             if d.endswith('…'):
                 errors.append(f'{url}: description ends with "…"; it must end at a complete sentence')
-            if d and not DESC_MIN <= len(d) <= DESC_MAX:
-                warnings.append(f'{url}: description is {len(d)} characters (target {DESC_MIN}–{DESC_MAX})')
+            if d and not d_min <= len(d) <= d_max:
+                warnings.append(f'{url}: description is {len(d)} characters (target {d_min}–{d_max})')
     for t, urls in titles.items():
         if len(urls) > 1:
             errors.append(f'same <title> on {len(urls)} pages ({", ".join(sorted(urls))}): {t}')
@@ -693,3 +720,27 @@ def check(dist):
     else:
         errors.append('dist/sitemap.xml is missing')
     return errors, warnings, len(public)
+
+
+# ---------------------------------------------------------------- the default Chinese sharing card
+
+CJK_FONTS = ['/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc', '/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc',
+             '/System/Library/Fonts/PingFang.ttc']
+
+
+def card_zh():
+    """Draw public/assets/img/og-zh.png once (python src/seo.py --og-zh): the default card of the Chinese pages, in the
+    style of the other default cards (dark, faint honeycomb, the home page headline, the firm's name in Latin letters,
+    no logo mark). The build does not draw it (it needs a CJK font, which the site does not ship); it is committed."""
+    import content_zh
+    font = next((f for f in CJK_FONTS if os.path.exists(f)), None)
+    if not font:
+        sys.exit('No CJK font found (' + ', '.join(CJK_FONTS) + ')')
+    out = os.path.join(ROOT, 'public' + OG_ZH)
+    card(content_zh.HOME['h1'], '', 'zh', out, cjk=font)
+    print(f'{out}: {os.path.getsize(out) // 1024} KB (font: {font})')
+
+
+if __name__ == '__main__':
+    if '--og-zh' in sys.argv:
+        card_zh()
