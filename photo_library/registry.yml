@@ -219,3 +219,17 @@ photos:
   licence: Unsplash License
   dhash: 3c1e186b661e990e
   sha256: 0e921e56fe06b59c584302f72ed221310182e017c068c6e3555ae05807286a82
+- used_by: news:saudi-domestic-minimum-top-up-tax-january-2027
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:A_Look_at_Finance_(Unsplash).jpg
+  photographer: Brendan Church
+  licence: CC0
+  dhash: 5fde27a7c7472f26
+  sha256: 1fb58919bfd9ccb4760328f951f3e641987bf726df882499dd3fc38a08b98b90
+- used_by: news:iasb-november-2026-cryptoassets-ifrs-16-projects
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Desktop_with_laptop_and_calculator_(Unsplash).jpg
+  photographer: Unknown author
+  licence: CC0
+  dhash: 9f1f1edb63523400
+  sha256: 35f0ffb1b7b14c59b4f793b1610734a26185c4b335f43121bc13c98d18a95e02

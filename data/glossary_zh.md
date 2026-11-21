@@ -78,6 +78,16 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | FRA Board Decision No. 199 of 2026 | FRA 董事会 2026 年第 199 号决定 |
 | paid-up capital / Managing General Agent (MGA) | 实缴资本 / 管理总代理（MGA） |
 | risk assessment, inspection and loss adjustment experts | 风险评估、查勘与损失理算专家 |
+| Zakat, Tax and Customs Authority (ZATCA), Saudi Arabia | 沙特天课、税务和海关总局（ZATCA） |
+| Domestic Minimum Top-up Tax (DMTT) / top-up tax | 国内最低补足税（DMTT） / 补足税 |
+| Pillar Two / global minimum tax / effective tax rate | 支柱二 / 全球最低税 / 有效税率 |
+| multinational enterprise (MNE) group / constituent entity / ultimate parent entity | 跨国企业（MNE）集团 / 成员实体 / 最终母公司 |
+| OECD / G20 | 经济合作与发展组织（OECD） / 二十国集团（G20） |
+| IFRS Foundation / IASB | IFRS 基金会 / 国际会计准则理事会（IASB） on first use |
+| Post-implementation Review / work plan / narrow-scope project | 实施后审查 / 工作计划 / 范围有限的项目 |
+| cryptoassets / cryptocurrencies / stablecoins / cash equivalents | 加密资产 / 加密货币 / 稳定币 / 现金等价物 |
+| fair value through profit or loss / rent concessions | 以公允价值计量且其变动计入损益 / 租金减让 |
+| IFRS 16 Leases / IFRS 17 Insurance Contracts / IAS 7 Statement of Cash Flows / IAS 38 Intangible Assets | IFRS 16《租赁》 / IFRS 17《保险合同》 / IAS 7《现金流量表》 / IAS 38《无形资产》 |
 
 ## ASA Hexagon (fixed, never change)
 
