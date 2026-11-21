@@ -1643,8 +1643,8 @@ html[lang="ar"] .lang-cur{font-family:var(--f-ar)}
 .hero-zh h1{font-size:clamp(2rem,4.4vw,3.3rem)}
 .hero-zh .hero-sub{color:#fff;font-size:clamp(1.08rem,1.6vw,1.3rem);font-weight:600;margin:0 0 14px}
 .hero-zh .lead{font-size:clamp(1rem,1.3vw,1.1rem)}
-.hero-zh .art .mark .s{opacity:1;animation:none}
-.hero-zh .art .mark .nm-beam{animation:none}
+.hero-zh .art-mark .mark .s{opacity:1;animation:none}
+.hero-zh .art-mark .mark .nm-beam{animation:none}
 .hero .stats.stats-3 .wrap{grid-template-columns:repeat(3,minmax(0,1fr));background-size:1px 100%,1px 100%,0 0;background-position:calc(33.333% - .333px) 0,calc(66.667% + .333px) 0,0 0}
 .hero .stats.stats-3 .wrap::after{display:none}
 .stats-3 .stat:nth-child(n){padding-inline-start:24px}
@@ -1658,17 +1658,17 @@ html[lang="ar"] .lang-cur{font-family:var(--f-ar)}
 .cn-sum-act span{color:var(--muted);font-size:.95rem}
 @media (min-width:1081px){
   .hero-zh h1{font-size:clamp(2.1rem,min(3.7vw,7vh),3.4rem)}
-  .hero-zh .art{width:clamp(300px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129 * .8),88%)}
+  .hero-zh .art-mark{width:clamp(300px,calc((100vh - 84px - 2 * var(--hg)) * 111 / 96.129 * .8),88%)}
 }
 @media (max-width:1080px){
   .hero .stats.stats-3 .wrap{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:0;background-image:linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule)),linear-gradient(var(--rule),var(--rule))}
-  .hero-zh .art{width:min(240px,50%)}
+  .hero-zh .art-mark{width:min(240px,50%)}
 }
 @media (max-width:640px){
   /* phones: one item per row; the lines between rows are the 1px row gaps (the grid's own background), never cell borders */
   .hero .stats.stats-3 .wrap{grid-template-columns:1fr;row-gap:1px;background:linear-gradient(var(--rule),var(--rule)) content-box}
   .stats-3 .stat,.stats-3 .stat:nth-child(n){padding:16px 0;background:#1E2125}
-  .hero-zh .art{width:min(180px,46%)}
+  .hero-zh .art-mark{width:min(180px,46%)}
 }
 /* the Chinese menu has nine items (no search button): a little tighter on small desktops, so it stays on one line */
 @media (max-width:1240px) and (min-width:1081px){html[lang="zh-Hans"] .nav>li>a,html[lang="zh-Hans"] .nav>li>button{padding-inline:4px;font-size:.81rem}html[lang="zh-Hans"] .nav>li>a.dd-link{padding-inline-end:2px}}
@@ -1677,3 +1677,28 @@ html[lang="ar"] .lang-cur{font-family:var(--f-ar)}
 html[lang="zh-Hans"] p,html[lang="zh-Hans"] li{text-wrap:pretty}
 @media (min-width:1081px){.cn-sum{grid-template-columns:1.1fr .9fr}}
 html[lang="zh-Hans"] .page-hero h1{font-size:clamp(1.85rem,4vw,3.2rem)}
+
+/* Chinese header: fit with any system font (Microsoft YaHei on Windows is wider than PingFang or Noto). base.html measures
+   the header before the first paint, after the fonts load and on every resize; from 1081px up, when the logo, the menu
+   and the buttons do not fit, the page gets .hdr-compact: the compact header of tablets and phones (logo, language,
+   menu button), and the menu opens as a panel from the end side */
+@media (min-width:1081px){
+  html.hdr-compact .site-header .bar>nav,html.hdr-compact .header-cta .btn{display:none}
+  html.hdr-compact .menu-btn{display:flex;order:4}
+  html.hdr-compact .site-header .bar{justify-content:flex-start;gap:14px}
+  html.hdr-compact .logo{order:1}
+  html.hdr-compact .header-cta{order:2;margin-inline-start:auto}
+  html.hdr-compact .mobile-nav{inset-inline-start:auto;width:min(440px,100%)}
+  html.hdr-compact .mobile-nav.open{box-shadow:0 0 0 100vmax rgba(15,18,22,.45)}
+}
+/* Chinese Insights and Briefing lists: a quiet link to the full English list under the Chinese items */
+.more-en{margin-top:34px}
+.more-en .link-arrow{font-size:.95rem}
+/* ZH home: the rotating hexagon (home_zh.html, the same as EN / AR): Chinese labels without letter-spacing */
+html[lang="zh-Hans"] .brief-label{letter-spacing:.08em;font-size:clamp(11px,2.6cqi,13.5px)}
+html[lang="zh-Hans"] .brief-chip{letter-spacing:0;font-size:clamp(11px,2.4cqi,12.5px)}
+html[lang="zh-Hans"] .brief-h{letter-spacing:0;line-height:1.36;font-weight:700}
+/* ZH home, layout shift (CLAUDE.md, "Homepage hexagon"): until the stats strip arrives, keep its real desktop height free
+   (the Chinese three-item strip: 121px from 1081px, 105px from 1240px, where its lines no longer wrap) */
+@media (min-width:1081px){.hero-zh:not(:has(>.stats))>.wrap{margin-bottom:121px}}
+@media (min-width:1240px){.hero-zh:not(:has(>.stats))>.wrap{margin-bottom:105px}}

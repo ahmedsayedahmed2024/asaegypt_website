@@ -12,18 +12,25 @@
 # for search results (over 65 characters); the page itself keeps the full title (src/seo.py).
 # "seo_desc_en" / "seo_desc_ar" (optional): the meta description when the summary's first sentence is over 160
 # characters: whole sentences, 100–160 characters, only facts already in the summary (src/seo.py).
+# Chinese (CLAUDE.md, "Chinese (zh-Hans)"; REQUIRED on every new item, optional on older ones until their batch):
+#   title_zh, short_zh, summary_zh, body_zh (all four, or none: the item is then not published in Chinese),
+#   source_name_zh (optional: the source's Chinese name for the source line; else source_name),
+#   seo_title_zh / seo_desc_zh (optional: Chinese <title> over 32 characters / description outside 50–100),
+#   image alt_zh (inside image=dict(...), when the item has a photo), and a note's who_zh, accounting_zh, auditor_zh.
+#   Every figure, date, name and citation exactly as in the English item.
 
+# (English, Arabic, Chinese)
 CATEGORIES = {
-    'standards': ("Standards & Reporting", "المعايير والتقارير المالية"),
-    'tax': ("Egypt Tax", "الضرائب في مصر"),
-    'economy': ("Economy & Region", "الاقتصاد والمنطقة"),
-    'tech': ("Technology & AI", "التقنية والذكاء الاصطناعي"),
+    'standards': ("Standards & Reporting", "المعايير والتقارير المالية", "准则与报告"),
+    'tax': ("Egypt Tax", "الضرائب في مصر", "埃及税务"),
+    'economy': ("Economy & Region", "الاقتصاد والمنطقة", "经济与区域"),
+    'tech': ("Technology & AI", "التقنية والذكاء الاصطناعي", "技术与人工智能"),
 }
 
 REGIONS = {
-    'egypt': ("Egypt", "مصر"),
-    'gcc': ("GCC", "الخليج"),
-    'global': ("Global", "دولي"),
+    'egypt': ("Egypt", "مصر", "埃及"),
+    'gcc': ("GCC", "الخليج", "海湾地区"),
+    'global': ("Global", "دولي", "全球"),
 }
 
 NEWS = [
@@ -47,6 +54,16 @@ NEWS = [
           "وبلغت إيرادات ضريبة القيمة المضافة الموزَّعة على الحكومة الاتحادية والحكومات المحلية للإمارات عن الفترة من يناير إلى أغسطس 2026 نحو 28.27 مليار درهم، فيما بلغت إيرادات الضريبة الانتقائية عن الفترة نفسها نحو 1.4 مليار درهم.",
           "وعلى صعيد الالتزام، بلغ معدل تقديم إقرارات ضريبة الشركات في مواعيدها 91% في 2026، مقابل 87% في 2025، ووصل معدل سداد ضريبة الشركات في موعده إلى 97%. وبلغ معدل تقديم إقرارات ضريبة القيمة المضافة في مواعيدها 83% في 2026، مقابل 81% في 2025، وارتفع معدل سدادها في موعده إلى 98%. أما الضريبة الانتقائية، فبلغ معدل تقديم إقراراتها 92% في 2026، مقابل 91% في 2025، ووصل معدل سدادها في موعده إلى 98%.",
       ],
+      title_zh="阿联酋联邦税务局公布：企业所得税收入增长 33.9%，申报率提高",
+      short_zh="阿联酋企业所得税收入增长 33.9%，申报率提高",
+      summary_zh="阿联酋联邦税务局公布，2025 年结束的纳税期间企业所得税收入约为 465.2 亿迪拉姆，较 2024 年增长 33.9%。2026 年，企业所得税、增值税和消费税的按时申报率均有所提高。",
+      body_zh=[
+          "2026 年 11 月 11 日，阿拉伯联合酋长国联邦税务局（FTA）发布了企业所得税、增值税（VAT）和消费税的收入及合规率统计数据。",
+          "2025 财年内结束的纳税期间所征收的企业所得税收入约为 465.2 亿迪拉姆，2024 财年内结束的纳税期间约为 347.5 亿迪拉姆，增长 33.9%。自开征企业所得税至 2025 年底，各纳税期间累计征收的收入约为 812.7 亿迪拉姆。",
+          "2026 年 1 月至 8 月，分配给联邦政府和各酋长国政府的增值税收入约为 282.7 亿迪拉姆；同期消费税收入约为 14 亿迪拉姆。",
+          "合规方面，2026 年企业所得税申报表的按时申报率达到 91%（2025 年为 87%），企业所得税按时缴纳率达到 97%。2026 年增值税申报表的按时申报率达到 83%（2025 年为 81%），增值税按时缴纳率升至 98%。消费税方面，2026 年申报表提交率达到 92%（2025 年为 91%），按时缴纳率达到 98%。",
+      ],
+      source_name_zh="阿联酋联邦税务局（FTA）",
       source_name="Federal Tax Authority (FTA), UAE",
       source_url="https://tax.gov.ae/en/media.centre/News/fta.announces.corporate.tax.vat.and.excise.tax.and.tax.compliance.rates.statistics.aspx"),
  dict(slug="fra-insurance-capital-increase-deadline-july-2027", date="2026-11-12", added="2026-11-16", added_at="04:17", category="economy", region="egypt",
@@ -70,6 +87,16 @@ NEWS = [
           "ويمدّ قرار مجلس إدارة الهيئة رقم 200 لسنة 2026 مهلة توفيق أوضاع خبراء تقييم المخاطر والمعاينة وتسوية الخسائر حتى 10 يوليو 2027، بعد أن حدد قرار مجلس إدارة الهيئة رقم 54 لسنة 2026 شروط مزاولة نشاطهم وقواعده. وتوضح الهيئة أن الإطار الذي وضعته لهذه المهنة يُلزم بالنزاهة والحياد والاستقلالية، وتجنب تعارض المصالح، وتوثيق المعلومات التي تستند إليها التقارير الفنية.",
           "أما قرار مجلس إدارة الهيئة رقم 212 لسنة 2026 فيمنح شركات التأمين ووكلاء الاكتتاب المفوَّضين (MGAs) ثلاثة أشهر إضافية، حتى 21 يناير 2027، للالتزام بقرار مجلس إدارة الهيئة رقم 55 لسنة 2026. وكان ذلك القرار قد أنشأ لأول مرة سجلًا خاصًا لدى الهيئة لهؤلاء الوكلاء، وحظر على شركات التأمين العاملة في مصر التعامل مع الوكلاء غير المقيدين فيه.",
       ],
+      title_zh="埃及金融监管局：保险公司增资与合规期限延长",
+      short_zh="埃及金融监管局将保险公司增资期限延至 2027 年 7 月",
+      summary_zh="埃及金融监管局延长了保险公司增加实缴资本、使经营符合监管框架的期限。增资期限现延至 2027 年 7 月。",
+      body_zh=[
+          "2026 年 11 月 12 日，埃及金融监管局（FRA）宣布，其董事会已作出多项决定，延长保险公司增加实缴资本以及使经营符合法律与监管框架的期限。",
+          "根据 FRA 董事会 2026 年第 199 号决定，保险公司及从事保险相关职业的主体须在 2027 年 7 月前遵守董事会 2024 年第 196 号决定第 2 条关于增资的规定。据 FRA 介绍，新的期限与 2024 年第 155 号《统一保险法》所设合规宽限期第三年结束的时间一致。",
+          "FRA 董事会 2026 年第 200 号决定将风险评估、查勘与损失理算专家的合规期限延长至 2027 年 7 月 10 日。FRA 董事会 2026 年第 54 号决定规定了这些专家的执业条件和规则。FRA 指出，其为该职业制定的框架要求诚信、公正和独立，避免利益冲突，并对技术报告所依据的信息进行记录。",
+          "FRA 董事会 2026 年第 212 号决定给予保险公司和管理总代理（MGA）额外三个月，即至 2027 年 1 月 21 日，以遵守 FRA 董事会 2026 年第 55 号决定。该决定设立了 FRA 首个专门的 MGA 登记册，并禁止在埃及经营的保险公司与未登记的代理人开展业务。",
+      ],
+      source_name_zh="埃及金融监管局（FRA）",
       source_name="Financial Regulatory Authority (FRA)",
       source_url="https://fra.gov.eg/en/fra_news/%d9%87%d9%8a%d8%a6%d8%a9-%d8%a7%d9%84%d8%b1%d9%82%d8%a7%d8%a8%d8%a9-%d8%a7%d9%84%d9%85%d8%a7%d9%84%d9%8a%d8%a9-%d8%aa%d9%82%d8%b1%d8%b1-%d9%85%d8%af-%d8%a7%d9%84%d9%85%d9%87%d9%84%d8%a9-%d8%a7%d9%84/"),
  dict(slug="egypt-urban-inflation-october-2026", date="2026-11-09", added="2026-11-16", added_at="04:16", category="economy", region="egypt",

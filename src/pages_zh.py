@@ -350,6 +350,33 @@ CONTACT = dict(
     wechat_note=["添加时请注明公司名称。", "微信用于初步沟通；正式文件与函件通过电子邮件往来。"],
 )
 
+# Insights and Briefing lists (/zh/insights/, /zh/briefing/): only the items that have Chinese text, newest first;
+# a quiet line at the end links to the full English list.
+INSIGHTS = dict(
+    title="洞察：埃及审计、税务与 IFRS 专业文章 | ASA",
+    desc="ASA Chartered Accountants and Consultants 发布的中文专业文章，涉及审计、税务、国际财务报告准则（IFRS）、经济以及人工智能对会计行业的影响。",
+    kicker="洞察", h1="可付诸实践的专业思考。",
+    lead="关于准则、税务与财务报告的实务指引，由我们的团队为财务负责人和董事会撰写。",
+    filter="按主题筛选", all="全部",
+    more_en="更多内容（英文）",
+    disclaimer="文章仅供一般参考，不构成专业意见。如需讨论您的具体情况，欢迎与我们联系。",
+)
+
+BRIEFING = dict(
+    title="ASA 动态简报：埃及与海湾财税及经济动态",
+    desc="ASA 动态简报汇集财务报告准则、埃及与海湾地区税务、经济及技术方面的简要专业动态，每条均附官方来源链接，供在埃及经营的企业参考。",
+    kicker="专业动态", h1="ASA 动态简报",
+    lead="关于准则、税务、经济与技术的简要动态，均注明官方来源，并附 ASA 解读，说明其对财务报表和审计的影响。",
+    topics="按主题筛选", regions="按地区筛选", all="全部", impact_only="仅看影响解读",
+    badge="影响解读", empty="该主题的中文动态即将推出。",
+    source="来源：", related="相关文章", back="全部动态",
+    note_titles=dict(impact="ASA 影响解读", tech="ASA 技术解读"),
+    note_rows=dict(who="受影响对象", accounting="会计影响", auditor="对审计师而言"),
+    note_disc="一般性专业评论，不构成针对任何特定主体的建议。",
+    more_en="更多内容（英文）",
+    disclaimer="动态简报为官方发布内容的摘要，仅供一般参考。请始终以原始来源为准；如需讨论您的具体情况，欢迎与我们联系。",
+)
+
 PRIVACY = dict(
     title="隐私政策 | ASA",
     desc="本政策说明 ASA 如何收集、使用、共享和保护您通过 asaegypt.com 提交的个人信息，以及您可以作出的选择。",

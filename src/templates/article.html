@@ -35,7 +35,7 @@
 </section>
 <section class="sec tint">
   <div class="wrap">
-    <div class="sec-head rv"><div><p class="kicker">{{ T.nav.insights }}</p><h2>{{ AX.more }}</h2></div><p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ C.HOME.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p></div>
+    <div class="sec-head rv"><div><p class="kicker">{{ T.nav.insights }}</p><h2>{{ AX.more }}</h2></div><p style="justify-self:end"><a class="btn btn-line" href="{{ P('insights') }}">{{ T.ins_cta if ZH else C.HOME.ins_cta }} {{ I('FaArrowRight','arrow') }}</a></p></div>
     <div class="grid-3">{% for a in RELATED %}{{ m.post_card(a) }}{% endfor %}</div>
   </div>
 </section>

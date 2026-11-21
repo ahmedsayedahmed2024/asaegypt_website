@@ -1,11 +1,12 @@
 {% extends "base.html" %}{% import "macros.html" as m with context %}
-{#- Chinese home page (/zh/). Approved copy: content_zh.HOME (CLAUDE.md, "Chinese (zh-Hans)"). The latest items are not in
-    Chinese yet, so the hero shows the colour ASA mark (static, mark.py) in place of the rotating hexagon. #}
-{% block head %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>
+{#- Chinese home page (/zh/). Approved copy: content_zh.HOME (CLAUDE.md, "Chinese (zh-Hans)"). The hero shows the same
+    rotating hexagon as /en/ and /ar/ (brief.html), with the latest items that have Chinese text (build.brief_slots);
+    with fewer than build.BRIEF_MIN_ZH of them, the colour ASA mark (static, mark.py) instead. #}
+{% block head %}{% if BRIEF %}{% include "brief_head.html" %}{% endif %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>
 {% endblock %}
 {% block main %}
 {% set H = C.HOME %}
-<section class="hero hero-zh">
+<section class="hero hero-zh{{ ' hero-zh-brief' if BRIEF }}">
   <div class="wrap">
     <div>
       <p class="kicker">{{ H.kicker }}</p>
@@ -17,7 +18,11 @@
         <a class="btn btn-ghost" href="{{ P('china') }}">{{ H.cta2 }}</a>
       </div>
     </div>
-    <div class="art" aria-hidden="true">{{ MARK|safe }}</div>
+{% if BRIEF %}    <div class="art">
+{% include "brief.html" %}
+    </div>
+{% else %}    <div class="art art-mark" aria-hidden="true">{{ MARK|safe }}</div>
+{% endif %}
   </div>
   <div class="stats stats-3">
     <div class="wrap">

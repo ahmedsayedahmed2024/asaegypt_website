@@ -5,7 +5,9 @@
   <div class="wrap">
     <div class="filters filters-line" role="group" aria-label="{{ D.filter }}"><button aria-pressed="true" data-f="*">{{ D.all }}</button>{% for k, label in TABS %}<button aria-pressed="false" data-f="{{ k }}">{{ label }}</button>{% endfor %}</div>
     <div class="grid-3">{% for a in ALL %}{{ m.post_card(a) }}{% endfor %}</div>
-    <p style="margin-top:40px;color:var(--muted);font-size:.9rem">{{ D.disclaimer }}</p>
+{% if ZH %}    {#- the Chinese list holds only the articles that have Chinese text: a quiet link to the full English list #}
+    <p class="more-en" data-noindex><a class="link-arrow" href="{{ EN_LIST }}" hreflang="en">{{ D.more_en }} {{ I('FaArrowRight') }}</a></p>
+{% endif %}    <p style="margin-top:40px;color:var(--muted);font-size:.9rem">{{ D.disclaimer }}</p>
   </div>
 </section>
 <script>

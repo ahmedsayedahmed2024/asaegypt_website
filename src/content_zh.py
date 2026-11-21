@@ -17,6 +17,8 @@ T = dict(
     cta_p="欢迎以中文或英文来信；会议与电话以英文进行。",
     next_tagline="Your next step", next_band="", next_cta="",
     lang="语言", en_tag="EN", en_tag_title="英文页面",
+    # Insights and Briefing items (CLAUDE.md, "Chinese (zh-Hans)"): byline, reading time, links
+    team="ASA 洞察团队", by="作者：", read="约 {n} 分钟阅读", ins_cta="查看全部洞察",
 )
 
 SERVICES = [
@@ -82,4 +84,7 @@ HOME = dict(
     wechat_cap="微信扫码添加", wechat_alt="ASA 微信二维码",
     wechat_note=["添加时请注明公司名称。", "微信用于初步沟通；正式文件与函件通过电子邮件往来。"],
     cta_h="在埃及开展业务，从一次面谈开始。", cta_p="欢迎以中文或英文来信；会议与电话以英文进行。",
+    # the rotating hexagon in the hero (the latest items that have Chinese text; home_zh.html)
+    brief_label="ASA 动态简报", brief_read="阅读全文", brief_show="显示条目",
+    brief_prev="上一条", brief_next="下一条", brief_insight="洞察",
 )

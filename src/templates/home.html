@@ -2,10 +2,7 @@
 {% block head %}
 {#- speed (CLAUDE.md, "Homepage hexagon"): the first slide's photo is the page's largest image, so it is fetched at
     once, with high priority (the other slides' photos load later, from site.js); the font of the hero heading too #}
-{%- set f = BRIEF[0].image if BRIEF and BRIEF[0].image %}
-{%- if f %}<link rel="preload" as="image" href="{{ R }}{{ f.card if f.illustration else f.lg }}"{% if not f.illustration %} imagesrcset="{{ R }}{{ f.card }} 800w, {{ R }}{{ f.lg }} 1600w" imagesizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %} fetchpriority="high">
-{% endif -%}
-{% if L=='ar' %}<link rel="preload" href="{{ R }}assets/fonts/plexar-ar-700.woff2" as="font" type="font/woff2" crossorigin>{% else %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
+{%- include "brief_head.html" %}{% if L=='ar' %}<link rel="preload" href="{{ R }}assets/fonts/plexar-ar-700.woff2" as="font" type="font/woff2" crossorigin>{% else %}<link rel="preload" href="{{ R }}assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
 {% endblock %}
 {% block main %}
 {% set H = C.HOME %}
@@ -21,39 +18,7 @@
       </div>
     </div>
     <div class="art">
-      <section class="brief" id="brief" aria-label="{{ H.brief_label }}" aria-roledescription="carousel" tabindex="0">
-        {%- if BRIEF|selectattr('image')|list %}
-        {# item images, clipped to the hexagon under the faint mark; site.js loads the current and the next one. Each keeps its
-           alt text (for image search); the group stays aria-hidden because the slide text already says what each item is #}
-        <div class="brief-media" aria-hidden="true">
-          {% for b in BRIEF if b.image %}{% set i = b.image %}{% set at = '' if loop.first and b is sameas BRIEF[0] else 'data-' %}
-          <span class="brief-pic" data-i="{{ BRIEF.index(b) }}"><img style="object-position:{{ i.focus }}" {{ at }}src="{{ R }}{{ i.card if i.illustration else i.lg }}"{% if not i.illustration %} {{ at }}srcset="{{ R }}{{ i.card }} 800w, {{ R }}{{ i.lg }} 1600w" sizes="(max-width: 640px) 340px, (max-width: 1080px) 420px, 520px"{% endif %} width="{{ i.w }}" height="{{ i.h }}"{% if at %} loading="lazy" decoding="async"{% else %} loading="eager" fetchpriority="high"{% endif %} alt="{{ i.alt }}"></span>
-          {% endfor %}
-        </div>
-        {%- endif %}
-        {{ BRIEF_MARK|safe }}<span class="brief-glow" aria-hidden="true"></span>
-        <svg class="brief-hex" viewBox="-55.5 -48.0644 111 96.1288" aria-hidden="true"><polygon points="-27.75,-48.0644 27.75,-48.0644 55.5,0 27.75,48.0644 -27.75,48.0644 -55.5,0"/></svg>
-        <div class="brief-in">
-          <p class="brief-label"><span class="dot" aria-hidden="true"></span>{{ H.brief_label }}</p>
-          <div class="brief-slides" aria-live="off">
-            {% for b in BRIEF %}
-            <div class="brief-slide{% if loop.first %} on{% endif %}{% if b.image %} has-img{% endif %}" id="brief-{{ loop.index }}" data-kind="{{ b.kind }}">
-              <span class="brief-chip">{{ b.chip }}</span>
-              <p class="brief-h">{{ b.title }}</p>
-              <p class="brief-sum">{{ b.summary }}</p>
-              <p class="brief-meta"><bdi>{{ b.by }}</bdi>{% if b.date %} · <time datetime="{{ b.date_iso }}">{{ b.date }}</time>{% endif %}</p>
-              <a class="brief-read" href="{{ b.url }}">{{ H.brief_read }} <span aria-hidden="true">{{ '←' if L=='ar' else '→' }}</span><span class="sr">: {{ b.title }}</span></a>
-            </div>
-            {% endfor %}
-          </div>
-          <div class="brief-ctrl">
-            <button type="button" class="brief-arrow" data-step="-1" aria-label="{{ H.brief_prev }}" title="{{ H.brief_prev }}"><svg class="hxo" viewBox="0 0 30 26" aria-hidden="true"><polygon points="7.5,1 22.5,1 29,13 22.5,25 7.5,25 1,13"/></svg>{{ I('ChevPrev','chev') }}</button>
-            <div class="brief-bars">{% for b in BRIEF %}<button type="button" class="bar{% if loop.first %} on{% endif %}" aria-controls="brief-{{ loop.index }}" aria-label="{{ H.brief_show }} {{ loop.index }}/{{ BRIEF|length }}: {{ b.title }}"{% if loop.first %} aria-current="true"{% endif %}><span><i></i></span></button>{% endfor %}</div>
-            <button type="button" class="brief-arrow" data-step="1" aria-label="{{ H.brief_next }}" title="{{ H.brief_next }}"><svg class="hxo" viewBox="0 0 30 26" aria-hidden="true"><polygon points="7.5,1 22.5,1 29,13 22.5,25 7.5,25 1,13"/></svg>{{ I('ChevNext','chev') }}</button>
-          </div>
-        </div>
-      </section>
-      <script>(function(){var b=document.getElementById('brief'),m='still';if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){m='intro';try{if(sessionStorage.getItem('asaIntro'))m='quick';sessionStorage.setItem('asaIntro','1')}catch(e){}}b.className+=' js '+m})();</script>
+{% include "brief.html" %}
     </div>
   </div>
   <div class="stats">

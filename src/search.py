@@ -324,6 +324,15 @@ def index_site(B):
         with open(out, 'w', encoding='utf-8') as fh:
             json.dump(dict(v=2, pages=pages, h=crumbs, p=rows, al=al), fh, ensure_ascii=False, separators=(',', ':'))
         sizes[L] = (len(pages), len(rows), os.path.getsize(out))
+    # Chinese pages are not indexed (no Chinese search yet), but get the same passage ids as the English pages, so the
+    # language switch can keep the reading position between versions of a page (site.js)
+    for key in sorted(B.ZH_KEYS - NOT_INDEXED):
+        f = os.path.join(B.DIST, B.path_for(key, 'zh').lstrip('/'), 'index.html')
+        src = open(f, encoding='utf-8').read()
+        p = Passages(src)
+        p.feed(src)
+        p.close()
+        open(f, 'w', encoding='utf-8').write(p.result())
     return sizes
 
 

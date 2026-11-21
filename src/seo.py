@@ -15,7 +15,7 @@ hreflang, when two pages share a title, or when the sitemap and the pages disagr
 """
 import datetime, html, json, math, os, re, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
-import articles_meta, news, guide, config, pages_en, pages_ar, pages_zh
+import articles_meta, articles_zh, news, guide, config, pages_en, pages_ar, pages_zh
 import next as nextdata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,10 +42,13 @@ KINDS = {
     'news': ('briefing', ' | ASA Briefing', ' | إحاطة ASA', 'ASA BRIEFING', 'إحاطة ASA'),
     'nx': ('next', ' | ASA NEXT', ' | ASA NEXT', 'ASA NEXT', 'ASA NEXT'),
 }
+# Chinese items (title suffix, card kicker); ASA NEXT has no Chinese version yet
+KINDS_ZH = {'art': (' | ASA 洞察', 'ASA 洞察'), 'news': (' | ASA 动态简报', 'ASA 动态简报')}
 
 
 def ix(L):
-    return 0 if L == 'en' else 1
+    """Index of a language in the (en, ar, zh) category, region and section names."""
+    return {'en': 0, 'ar': 1, 'zh': 2}[L]
 
 
 def item(key):
@@ -58,7 +61,10 @@ def item(key):
 
 
 def field(x, name, L):
-    """An item's text in one language: articles keep (en, ar) tuples, Briefing and ASA NEXT name_en / name_ar."""
+    """An item's text in one language: articles keep (en, ar) tuples (their Chinese text is in articles_zh.ART_ZH),
+    Briefing and ASA NEXT name_en / name_ar / name_zh."""
+    if L == 'zh' and isinstance(x.get('title'), (tuple, list)):  # an article
+        return (articles_zh.ART_ZH.get(x['slug']) or {}).get(name)
     v = x.get(name)
     if isinstance(v, (tuple, list)):
         return v[ix(L)]
@@ -73,28 +79,32 @@ def item_title(key, L):
     then `short` alone. An optional `seo_title` (articles: (en, ar); Briefing / ASA NEXT: seo_title_en / _ar)
     replaces the title in these forms."""
     kind, x = item(key)
-    suffix = KINDS[kind][1 if L == 'en' else 2]
+    suffix = KINDS_ZH[kind][0] if L == 'zh' else KINDS[kind][1 if L == 'en' else 2]
     full = field(x, 'seo_title', L) or field(x, 'title', L)
     short = field(x, 'short', L)
     tries = [full + suffix] + ([short + suffix] if short else []) + [full] + ([short] if short else [])
-    return next((t for t in tries if len(t) <= TITLE_MAX), min(tries, key=len))
+    return next((t for t in tries if len(t) <= (ZH_TITLE_MAX if L == 'zh' else TITLE_MAX)), min(tries, key=len))
 
 
-# a sentence ends at . ! ? or the Arabic ؟ followed by a space, but not after a short abbreviation ("No. 197")
+# a sentence ends at . ! ? or the Arabic ؟ followed by a space, but not after a short abbreviation ("No. 197");
+# in Chinese at 。！？ (no space follows)
 SENTENCE_END = re.compile(r'(?<!\bNo)(?<!\be\.g)(?<!\bi\.e)(?<!\bvs)(?<=[.!?؟])\s+')
+SENTENCE_END_ZH = re.compile(r'(?<=[。！？])')
 DESC_SHORT = 100  # a description shorter than this takes the next whole sentence from the key takeaways, if it fits
 
 
-def sentences(s):
+def sentences(s, L='en'):
+    if L == 'zh':
+        return [x for x in SENTENCE_END_ZH.split(re.sub(r'\s+', ' ', s).strip()) if x]
     return [x for x in SENTENCE_END.split(re.sub(r'\s+', ' ', s).strip()) if x]
 
 
-def whole(parts, n=DESC_MAX):
+def whole(parts, n=DESC_MAX, sep=' '):
     """The longest run of whole sentences from the start that fits in n characters (never cut mid-sentence).
     When even the first sentence is longer than n, that sentence alone (complete) is returned."""
     out = ''
     for p in parts:
-        t = (out + ' ' + p).strip()
+        t = (out + sep + p).strip()
         if len(t) > n:
             break
         out = t
@@ -112,12 +122,14 @@ def item_desc(key, L, body_key=None):
     own = field(x, 'seo_desc', L)
     if own:
         return own
-    d = whole(sentences(field(x, 'summary', L)))
+    zh = L == 'zh'  # Chinese: 50–100 characters, sentences joined without a space
+    sep, short, most = ('', ZH_DESC_MIN, ZH_DESC_MAX) if zh else (' ', DESC_SHORT, DESC_MAX)
+    d = whole(sentences(field(x, 'summary', L), L), most, sep)
     for k in (body_key or []):
-        if len(d) >= DESC_SHORT:
+        if len(d) >= short:
             break
-        if len(d) + 1 + len(k) <= DESC_MAX and len(sentences(k)) == 1:
-            d = d + ' ' + k
+        if len(d) + len(sep) + len(k) <= most and len(sentences(k, L)) == 1:
+            d = d + sep + k
     return d
 
 
@@ -202,7 +214,7 @@ def publisher():
 def article(B, key, L, x, kind, image):
     url = SITE + B.path_for(key, L)
     if kind == 'art':
-        author, role = x['author_' + L], x['role_' + L]
+        author, role = B.author_of(x, L)  # as in the byline (Chinese: "ASA 洞察团队", or the name in Latin with 管理合伙人)
         if role:  # signed by a person: name and job title as in the byline
             who = {"@type": "Person", "name": author, "jobTitle": role, "worksFor": {"@id": ORG_ID}}
         else:     # "ASA Insights Team": the firm's team, not a person
@@ -214,7 +226,7 @@ def article(B, key, L, x, kind, image):
         section = nextdata.SECTIONS[x['section']][ix(L)]
         modified = x['date']
     return {"@context": "https://schema.org", "@type": "Article", "@id": url + '#article',
-            "headline": field(x, 'title', L), "description": field(x, 'summary', L), "inLanguage": L,
+            "headline": field(x, 'title', L), "description": field(x, 'summary', L), "inLanguage": LANG_CODE[L],
             "url": url, "mainEntityOfPage": url, "image": image, "articleSection": section,
             "datePublished": x['date'], "dateModified": modified, "author": who, "publisher": publisher(),
             "isPartOf": {"@id": SITE_ID}}
@@ -224,12 +236,13 @@ def news_article(B, key, L, x, image):
     url = SITE + B.path_for(key, L)
     added = x.get('added') or x['date']
     return {"@context": "https://schema.org", "@type": "NewsArticle", "@id": url + '#article',
-            "headline": x['title_' + L], "description": x['summary_' + L], "inLanguage": L,
+            "headline": x['title_' + L], "description": x['summary_' + L], "inLanguage": LANG_CODE[L],
             "url": url, "mainEntityOfPage": url, "image": image,
             "articleSection": news.CATEGORIES[x['category']][ix(L)],
             "datePublished": added, "dateModified": added,  # the day it went live here; the source's date is below
             "author": {"@type": "Organization", "@id": ORG_ID, "name": FIRM[L]}, "publisher": publisher(),
-            "isBasedOn": {"@type": "CreativeWork", "name": x['source_name'], "url": x['source_url'], "datePublished": x['date']},
+            "isBasedOn": {"@type": "CreativeWork", "name": x.get('source_name_' + L) or x['source_name'], "url": x['source_url'],
+                          "datePublished": x['date']},
             "isPartOf": {"@id": SITE_ID}}
 
 
@@ -377,9 +390,49 @@ def _wrap(text, font, width, kw):
     return lines + ([cur] if cur else [])
 
 
+ZH_NO_START = set('，。、；：！？）》」』”’…—%')  # never at the start of a Chinese line
+ZH_NO_END = set('（《「『“‘')                     # never at the end of one
+
+
+def _wrap_cjk(text, font, width):
+    """Lines of a Chinese title within width, broken between phrases (up to ，、：；。！？, like the headings on the
+    pages, build.zh_phrases); a phrase wider than the line breaks between characters (_wrap_chars)."""
+    lines, cur = [], ''
+    for ph in re.findall(r'[^，、：；。！？]+[，、：；。！？]*|[，、：；。！？]+', text):
+        if font.getlength(cur + ph) <= width:
+            cur += ph
+            continue
+        if cur:
+            lines.append(cur)
+        if font.getlength(ph) <= width:
+            cur = ph
+        else:
+            *full, cur = _wrap_chars(ph, font, width)
+            lines += full
+    return lines + ([cur] if cur else [])
+
+
+def _wrap_chars(text, font, width):
+    """Lines of Chinese text within width: a break between any two Chinese characters, but a Latin word or number stays
+    whole, closing punctuation stays with the character before it and opening punctuation with the one after it."""
+    tokens = re.findall(r'[A-Za-z0-9][A-Za-z0-9.,:%/+\-]*|\s+|.', text)
+    lines, cur = [], ''
+    for t in tokens:
+        if cur and font.getlength((cur + t).rstrip()) > width and t[0] not in ZH_NO_START and not t.isspace():
+            if cur[-1] in ZH_NO_END:  # carry the opening bracket or quote to the next line
+                lines.append(cur[:-1].rstrip())
+                cur = cur[-1]
+            else:
+                lines.append(cur.rstrip())
+                cur = ''
+        cur += '' if (not cur and t.isspace()) else t
+    return lines + ([cur.rstrip()] if cur.strip() else [])
+
+
 def card(title, kicker, L, out, cjk=None):
     """A 1200x630 sharing card: dark background, faint honeycomb, kicker, title, the firm's name. No logo mark.
-    cjk: a CJK font file for a Chinese title, given as a list of lines (the default Chinese card, card_zh())."""
+    cjk: a CJK font file for a Chinese title and kicker; the title is a string (wrapped here) or a list of lines
+    (the default Chinese card, card_zh())."""
     from PIL import Image, ImageDraw
     S = 2  # drawn at 2x, then reduced: smooth edges
     W, H = OG_W * S, OG_H * S
@@ -407,6 +460,9 @@ def card(title, kicker, L, out, cjk=None):
     d.rectangle([W - M - 56 * S, 84 * S, W - M, 90 * S] if rtl else [M, 84 * S, M + 56 * S, 90 * S], fill=LIME)
     if not kicker:
         pass
+    elif cjk:
+        from PIL import ImageFont
+        d.text((x0, 110 * S), kicker, font=ImageFont.truetype(cjk, 24 * S), fill=LIME, anchor=anchor)
     elif rtl:
         d.text((x0, 112 * S), kicker, font=_font('plexar-ar-600.woff2', 26 * S), fill=LIME, anchor=anchor, **kw)
     else:
@@ -420,8 +476,8 @@ def card(title, kicker, L, out, cjk=None):
         if cjk:  # Chinese: the title comes as its own lines (no spaces to wrap at), in a system CJK font
             from PIL import ImageFont
             f = ImageFont.truetype(cjk, size * S)
-            lines, lh = title, size * S * 1.32
-            if max(f.getlength(t) for t in lines) <= width and len(lines) * lh <= room:
+            lines, lh = (title if isinstance(title, list) else _wrap_cjk(title, f, width)), size * S * 1.32
+            if max(f.getlength(t) for t in lines) <= width and len(lines) <= 4 and len(lines) * lh <= room:
                 break
             continue
         f = _font('plexar-ar-700.woff2' if rtl else 'pjs-800.woff2', size * S)
@@ -474,8 +530,10 @@ def og_image(B, key, L, ctx):
     if not _raqm() and not _warned:
         _warned.append(1)
         print('WARNING: Arabic text cannot be drawn (Pillow without raqm / FriBiDi, or fontTools missing); Arabic sharing cards use the English card')
-    if L == 'zh':  # one default Chinese card (drawn once and committed), else the English one
+    if L == 'zh' and kind is None:  # one default Chinese card (drawn once and committed), else the English one
         return OG_ZH if os.path.exists(os.path.join(ROOT, 'public' + OG_ZH)) else og_image(B, key, 'en', ctx)
+    if L == 'zh':  # a Chinese article or Briefing item: the same card as in English and Arabic, in Chinese
+        return og_zh_item(B, kind, x, ctx)
     lang = L if _raqm() else 'en'
     if kind is None:
         rel = f'{OG_DIR}/site-{lang}.png'
@@ -498,6 +556,42 @@ def og_image(B, key, L, ctx):
     rel = f"{OG_DIR}/{sec}/{x['slug']}-{L}.png"
     if rel not in _done:
         card(field(x, 'title', lang), KINDS[kind][3 if lang == 'en' else 4], lang, os.path.join(B.DIST, rel))
+        _done.add(rel)
+    return '/' + rel
+
+
+def cjk_font():
+    """A CJK font file for the Chinese item cards (the one the default Chinese card was drawn with comes first when
+    present), or None."""
+    return next((f for f in CJK_FONTS if os.path.exists(f)), None)
+
+
+_warned_zh = []
+
+
+def og_zh_item(B, kind, x, ctx):
+    """Sharing image of a Chinese article or Briefing item, drawn the same way as the English and Arabic ones: the item's
+    photo cropped to 1200x630 (the same file in every language: a photo carries no text), else a dark card with the
+    Chinese title, the section in Chinese and the firm's name in Latin letters (no logo mark), drawn with a system CJK
+    font. Without a CJK font the default Chinese card is used and the build prints a warning."""
+    sec = KINDS[kind][0]
+    im = x.get('image') if config.SHOW_IMAGES else None
+    if im and im.get('kind') not in ('illustration', 'cover'):
+        rel = f"{OG_DIR}/{sec}/{x['slug']}.jpg"
+        if rel not in _done:
+            photo(os.path.join(B.DIST, B.image_for(x, {'art': 'article', 'news': 'news'}[kind], 'zh')['lg']), im.get('focus', '50% 50%'),
+                  os.path.join(B.DIST, rel))
+            _done.add(rel)
+        return '/' + rel
+    font = cjk_font()
+    if not font:
+        if not _warned_zh:
+            _warned_zh.append(1)
+            print('WARNING: no CJK font (' + ', '.join(CJK_FONTS) + '); Chinese items without a photo use the default Chinese sharing card')
+        return OG_ZH
+    rel = f"{OG_DIR}/{sec}/{x['slug']}-zh.png"
+    if rel not in _done:
+        card(field(x, 'title', 'zh'), KINDS_ZH[kind][1], 'zh', os.path.join(B.DIST, rel), cjk=font)
         _done.add(rel)
     return '/' + rel
 
@@ -639,9 +733,19 @@ def llms(B):
     lines += [f"- [{n['title_en']}]({u('news-' + n['slug'])}) ({n['date']}, source: {n['source_name']})" for n in items]
     lines += ['', '## ASA NEXT (for juniors in their first five years in audit, tax and advisory)', '']
     lines += [f"- [{x['title_en']}]({u('nx-' + x['slug'])}): {x['summary_en']}" for x in nextdata.NEXT]
+    zu = lambda k: SITE + B.path_for(k, 'zh')
+    zh_arts = [a for a in arts if a['slug'] in B.ZH_ARTICLES]
+    if zh_arts:
+        lines += ['', f"## Insights in Simplified Chinese ({zu('insights')})", '']
+        lines += [f"- [{field(a, 'title', 'zh')}]({zu('art-' + a['slug'])}) ({a['date']}; English: {u('art-' + a['slug'])})" for a in zh_arts][:10]
+    zh_news = [n for n in sorted(news.NEWS, key=lambda n: B.added_key(n, 'news'), reverse=True) if n['slug'] in B.ZH_NEWS]
+    if zh_news:
+        lines += ['', f"## Briefing in Simplified Chinese ({zu('briefing')})", '']
+        lines += [f"- [{n['title_zh']}]({zu('news-' + n['slug'])}) ({n['date']}, source: {n['source_name']}; English: {u('news-' + n['slug'])})"
+                  for n in zh_news][:10]
     lines += ['', '## Optional', '',
               f"- [Arabic site]({SITE}/ar/): the same pages in Arabic",
-              f"- [Chinese site]({SITE}/zh/): the fixed pages and services in Simplified Chinese",
+              f"- [Chinese site]({SITE}/zh/): the fixed pages and services in Simplified Chinese, and Insights and Briefing items in Chinese",
               f"- [Sitemap]({SITE}/sitemap.xml): every public page in each of its languages",
               f"- [Privacy policy]({u('privacy')})"]
     return '\n'.join(lines) + '\n'
@@ -655,6 +759,7 @@ def check(dist):
     not a public page, or a public page missing from the sitemap. Warnings for lengths outside the targets."""
     errors, warnings, titles = [], [], {}
     public = set()
+    alternates = {}  # url -> {hreflang: url} (public pages), for the reciprocity check below
     for root, _, files in os.walk(dist):
         for f in files:
             if not f.endswith('.html'):
@@ -684,7 +789,8 @@ def check(dist):
             for lang in ('en', 'ar', 'x-default') + (('zh-Hans',) if zh else ()):
                 if not re.search(rf'<link rel="alternate" hreflang="{lang}" href="{re.escape(SITE)}/[^"]*"', head_):
                     errors.append(f'{url}: no hreflang="{lang}" link')
-            for alt in re.findall(rf'<link rel="alternate" hreflang="[^"]+" href="{re.escape(SITE)}(/[^"]*)"', head_):
+            alternates[url] = dict(re.findall(rf'<link rel="alternate" hreflang="([^"]+)" href="{re.escape(SITE)}(/[^"]*)"', head_))
+            for alt in alternates[url].values():
                 if not os.path.exists(os.path.join(dist, alt.lstrip('/'), 'index.html')):
                     errors.append(f'{url}: hreflang link to {alt}, which is not a page')
             for prop in ('og:title', 'og:description', 'og:url', 'og:image', 'og:type', 'og:locale'):
@@ -707,6 +813,15 @@ def check(dist):
                 errors.append(f'{url}: description ends with "…"; it must end at a complete sentence')
             if d and not d_min <= len(d) <= d_max:
                 warnings.append(f'{url}: description is {len(d)} characters (target {d_min}–{d_max})')
+    # hreflang both ways: every language version a page names must name the same set of versions (a page with a
+    # Chinese version says so on all three versions, and the Chinese page names the English and Arabic ones)
+    for url, alts in alternates.items():
+        own = {k: v for k, v in alts.items() if k != 'x-default'}
+        if url not in own.values():
+            errors.append(f'{url}: its hreflang links do not include the page itself')
+        for lang, other in own.items():
+            if other != url and other in alternates and {k: v for k, v in alternates[other].items() if k != 'x-default'} != own:
+                errors.append(f'{url}: hreflang {lang} -> {other}, whose own hreflang links differ (not reciprocal)')
     for t, urls in titles.items():
         if len(urls) > 1:
             errors.append(f'same <title> on {len(urls)} pages ({", ".join(sorted(urls))}): {t}')
@@ -724,7 +839,9 @@ def check(dist):
 
 # ---------------------------------------------------------------- the default Chinese sharing card
 
-CJK_FONTS = ['/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc', '/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc',
+# WenQuanYi Zen Hei first: the font of the committed default card (og-zh.png), so the Chinese item cards drawn by the build
+# (the deploy installs fonts-wqy-zenhei) match it
+CJK_FONTS = ['/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc', '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc',
              '/System/Library/Fonts/PingFang.ttc']
 
 

@@ -47,6 +47,38 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | Egypt / Saudi Arabia (KSA) / Giza | 埃及 / 沙特阿拉伯 / 吉萨 |
 | Year founded / years of experience | 成立年份 / 年以上从业经验 |
 
+## Insights and Briefing (added with the first translated items, Nov 2026)
+
+| English | Chinese |
+|---|---|
+| Insights / Briefing (item title suffix, card kicker) | ASA 洞察 / ASA 动态简报 |
+| ASA Insights Team (byline) | 作者：ASA 洞察团队 |
+| Key takeaways / Published / Last updated / In this article | 要点 / 发布于 / 最后更新 / 本文目录 |
+| Photo: / Source: | 图片： / 来源： |
+| Impact note / ASA Impact Note / ASA Tech Note | 影响解读 / ASA 影响解读 / ASA 技术解读 |
+| More (in English) (link to the English list) | 更多内容（英文） |
+| Standards & Reporting / Egypt Tax / Economy & Region / Technology & AI (Briefing) | 准则与报告 / 埃及税务 / 经济与区域 / 技术与人工智能 |
+| Egypt / GCC / Global (Briefing regions) | 埃及 / 海湾地区 / 全球 |
+| AI & Technology / Economy / Tax / Reporting / Advisory / Startups / Professional guides (Insights) | 人工智能与技术 / 经济 / 税务 / 财务报告 / 咨询 / 初创企业 / 专业指南 |
+| IAASB | 国际审计与鉴证准则理事会（IAASB） on first use |
+| PCAOB | 美国公众公司会计监督委员会（PCAOB） on first use |
+| ISA 240 (Revised) | ISA 240（修订版） |
+| audit evidence / population / sampling / journal entry | 审计证据 / 总体 / 抽样 / 会计分录 |
+| professional judgement / professional scepticism | 职业判断 / 职业怀疑 |
+| management / those charged with governance | 管理层 / 治理层 |
+| fraud / material misstatement / reasonable assurance | 舞弊 / 重大错报 / 合理保证 |
+| segregation of duties / dual approval | 职责分离 / 双人审批 |
+| deepfake / phishing | 深度伪造 / 网络钓鱼 |
+| generative AI / exposure (ILO) | 生成式人工智能 / 暴露（暴露程度） |
+| World Economic Forum / International Labour Organization (ILO) | 世界经济论坛 / 国际劳工组织 |
+| UAE Federal Tax Authority (FTA) | 阿联酋联邦税务局（FTA） |
+| Corporate Tax (UAE) / Excise Tax / AED | 企业所得税 / 消费税 / 迪拉姆 |
+| timely filing rate / on-time payment rate | 按时申报率 / 按时缴纳率 |
+| Financial Regulatory Authority (FRA), Egypt | 埃及金融监管局（FRA） |
+| FRA Board Decision No. 199 of 2026 | FRA 董事会 2026 年第 199 号决定 |
+| paid-up capital / Managing General Agent (MGA) | 实缴资本 / 管理总代理（MGA） |
+| risk assessment, inspection and loss adjustment experts | 风险评估、查勘与损失理算专家 |
+
 ## ASA Hexagon (fixed, never change)
 
 | | Chinese |

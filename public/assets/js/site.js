@@ -7,6 +7,8 @@
   var mn=document.querySelector('.mobile-nav');
   document.querySelectorAll('[data-open-menu]').forEach(function(b){b.addEventListener('click',function(){mn.classList.add('open');document.body.style.overflow='hidden';b.setAttribute('aria-expanded','true')})});
   document.querySelectorAll('[data-close-menu]').forEach(function(b){b.addEventListener('click',function(){mn.classList.remove('open');document.body.style.overflow='';})});
+  // the compact Chinese header on a desktop (html.hdr-compact): the menu is a side panel, so a click beside it closes it
+  document.addEventListener('click',function(e){if(mn&&mn.classList.contains('open')&&!mn.contains(e.target)&&!e.target.closest('[data-open-menu]')){mn.classList.remove('open');document.body.style.overflow=''}});
 
   // "Services" menu: the label is a link to /services/; the chevron button toggles the dropdown (click, Enter/Space),
   // the dropdown also opens on hover (desktop); Escape and a click elsewhere close it. aria-expanded follows what is shown.
@@ -89,14 +91,15 @@
       if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.2)return;
       show(cur+((dx<0)!==rtl?1:-1));
     },{passive:true});
-    // summary: at most 2 lines, cut at a whole word with "…" (CSS line-clamp is the no-JS fallback)
-    var sums=br.querySelectorAll('.brief-sum');
+    // summary: at most 2 lines, cut at a whole word with "…" (CSS line-clamp is the no-JS fallback);
+    // Chinese has no spaces: cut between characters, with "……"
+    var sums=br.querySelectorAll('.brief-sum'),zh=document.documentElement.lang==='zh-Hans';
     var fit=function(){sums.forEach(function(el){
       var full=el.getAttribute('data-full');if(full===null){full=el.textContent.trim();el.setAttribute('data-full',full)}
       el.classList.add('fit');el.textContent=full;
       if(!el.offsetHeight)return; // hidden on small screens
-      var max=2*parseFloat(getComputedStyle(el).lineHeight)+1,words=full.split(/\s+/);
-      while(el.scrollHeight>max&&words.length>1){words.pop();el.textContent=words.join(' ').replace(/[\s,،;:.\-—–]+$/,'')+'…'}
+      var max=2*parseFloat(getComputedStyle(el).lineHeight)+1,words=zh?Array.from(full):full.split(/\s+/);
+      while(el.scrollHeight>max&&words.length>1){words.pop();el.textContent=zh?words.join('').replace(/[\s，。、；：,.;:（“]+$/,'')+'……':words.join(' ').replace(/[\s,،;:.\-—–]+$/,'')+'…'}
     })};
     fit();
     var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(fit,150)});
