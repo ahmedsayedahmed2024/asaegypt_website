@@ -4,10 +4,11 @@ One row per Insights article and Briefing item. Update it in every PR that adds 
 From 20 Nov 2026 every new article and Briefing item is published in EN, AR and ZH on the same day; older items are translated in batches.
 "Date" is the item's own date (for Briefing, the source's publication date); rows are ordered by the day each item was added to the site, newest first.
 
-Done: 7 of 39.
+Done: 8 of 40.
 
 | Slug | Type | Chinese done | Date | Chinese added |
 |---|---|---|---|---|
+| `uae-fta-vat-directive-total-loss-insured-assets` | Briefing | yes | 2026-11-18 | 2026-11-23 |
 | `saudi-domestic-minimum-top-up-tax-january-2027` | Briefing | yes | 2026-11-19 | 2026-11-21 |
 | `iasb-november-2026-cryptoassets-ifrs-16-projects` | Briefing | yes | 2026-11-19 | 2026-11-21 |
 | `uae-fta-tax-revenue-compliance-statistics-2026` | Briefing | yes | 2026-11-11 | 2026-11-20 |

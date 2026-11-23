@@ -74,6 +74,8 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | UAE Federal Tax Authority (FTA) | 阿联酋联邦税务局（FTA） |
 | Corporate Tax (UAE) / Excise Tax / AED | 企业所得税 / 消费税 / 迪拉姆 |
 | timely filing rate / on-time payment rate | 按时申报率 / 按时缴纳率 |
+| directive on tax transactions (UAE) / supply of goods / consideration | 税务交易指令 / 货物供应 / 对价 |
+| insurer / insured / total loss / insurance claim settlement | 保险公司 / 被保险人 / 全损 / 保险理赔结算 |
 | Financial Regulatory Authority (FRA), Egypt | 埃及金融监管局（FRA） |
 | FRA Board Decision No. 199 of 2026 | FRA 董事会 2026 年第 199 号决定 |
 | paid-up capital / Managing General Agent (MGA) | 实缴资本 / 管理总代理（MGA） |
