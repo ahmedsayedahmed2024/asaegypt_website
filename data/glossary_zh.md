@@ -80,6 +80,9 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | FRA Board Decision No. 199 of 2026 | FRA 董事会 2026 年第 199 号决定 |
 | paid-up capital / Managing General Agent (MGA) | 实缴资本 / 管理总代理（MGA） |
 | risk assessment, inspection and loss adjustment experts | 风险评估、查勘与损失理算专家 |
+| insurance policy in a foreign language / international insurance programme | 外文保险单 / 国际保险计划 |
+| reinsurance cession / reinsurer / sum insured / deductible | 再保险分出 / 再保险人 / 保险金额 / 免赔比例 |
+| policyholders' rights / Egyptian Official Gazette (Al-Waqa'i' al-Misriyya) | 保单持有人权益 / 埃及官方公报（Al-Waqa'i' al-Misriyya） |
 | Zakat, Tax and Customs Authority (ZATCA), Saudi Arabia | 沙特天课、税务和海关总局（ZATCA） |
 | Domestic Minimum Top-up Tax (DMTT) / top-up tax | 国内最低补足税（DMTT） / 补足税 |
 | Pillar Two / global minimum tax / effective tax rate | 支柱二 / 全球最低税 / 有效税率 |

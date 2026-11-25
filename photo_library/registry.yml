@@ -233,3 +233,10 @@ photos:
   licence: CC0
   dhash: 9f1f1edb63523400
   sha256: 35f0ffb1b7b14c59b4f793b1610734a26185c4b335f43121bc13c98d18a95e02
+- used_by: news:fra-foreign-language-insurance-policies
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Marco_Polo_at_Dusk.jpg
+  photographer: GuavaTrain
+  licence: CC0
+  dhash: d1d93337cece67e7
+  sha256: 09d23cb85d072aaf9990cdc766834b010c1e5a21b8c8dce575fbf50a3ca3cd49
