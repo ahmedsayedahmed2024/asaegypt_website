@@ -240,3 +240,10 @@ photos:
   licence: CC0
   dhash: d1d93337cece67e7
   sha256: 09d23cb85d072aaf9990cdc766834b010c1e5a21b8c8dce575fbf50a3ca3cd49
+- used_by: news:iasb-ifrs-16-post-implementation-review-completed
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Skyscraper_windows_(Unsplash).jpg
+  photographer: Mike Wilson
+  licence: CC0
+  dhash: 27272727a7a7a7e7
+  sha256: a90e464ccabeea8e70cb5e217c3ca5f3d7a77511bbc95bf5f72f6a7fbe64ef83

@@ -93,6 +93,12 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | cryptoassets / cryptocurrencies / stablecoins / cash equivalents | 加密资产 / 加密货币 / 稳定币 / 现金等价物 |
 | fair value through profit or loss / rent concessions | 以公允价值计量且其变动计入损益 / 租金减让 |
 | IFRS 16 Leases / IFRS 17 Insurance Contracts / IAS 7 Statement of Cash Flows / IAS 38 Intangible Assets | IFRS 16《租赁》 / IFRS 17《保险合同》 / IAS 7《现金流量表》 / IAS 38《无形资产》 |
+| Project Summary and Feedback Statement / Request for Information / comment letter | 项目摘要及反馈声明 / 信息征询 / 意见函 |
+| lessee / lease-related cash outflows / Statement of Cash Flows and Related Matters project | 承租人 / 租赁相关现金流出 / “现金流量表及相关事项”项目 |
+| US Financial Accounting Standards Board (FASB) | 美国财务会计准则委员会（FASB） |
+| consumer finance / standard contract / Consumer Finance Law No. 18 of 2020 / FinTech Law No. 5 of 2022 | 消费金融 / 标准合同 / 2020 年第 18 号《消费金融法》 / 2022 年第 5 号《金融科技法》 |
+| creditworthiness / credit limit / instalment / early settlement fee / late fee / commercial payment card | 信用状况 / 信用额度 / 分期付款 / 提前还款费用 / 滞纳金 / 商业支付卡 |
+| Economic Courts (Egypt) / Egyptian Center for Voluntary Arbitration and Settlement of Non-Banking Financial Disputes | 经济法院 / 埃及非银行金融争议自愿仲裁与调解中心 |
 
 ## ASA Hexagon (fixed, never change)
 
