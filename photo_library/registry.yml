@@ -254,3 +254,11 @@ photos:
   licence: CC0
   dhash: 065716164a942603
   sha256: b634f526afd7274e43db88a6700b9eb91eda3bed6bf207fe5d3684afded23102
+- used_by: news:uae-fta-corporate-tax-loss-transfer-clarifications
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Night_skylines_of_Doha_by_Ahmed_A._Ghaffar.jpg
+  photographer: Ahmed A. Ghaffar
+  licence: CC0
+  library: economy/doha-skyline-night
+  dhash: 0058262b2b211302
+  sha256: 9173e30ee75866fb025c15e62210b5729e193d72e20157ed0d8c40e371d961c5

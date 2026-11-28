@@ -98,6 +98,9 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | US Financial Accounting Standards Board (FASB) | 美国财务会计准则委员会（FASB） |
 | consumer finance / standard contract / Consumer Finance Law No. 18 of 2020 / FinTech Law No. 5 of 2022 | 消费金融 / 标准合同 / 2020 年第 18 号《消费金融法》 / 2022 年第 5 号《金融科技法》 |
 | creditworthiness / credit limit / instalment / early settlement fee / late fee / commercial payment card | 信用状况 / 信用额度 / 分期付款 / 提前还款费用 / 滞纳金 / 商业支付卡 |
+| UAE Corporate Tax Law (Federal Decree-Law No. 47 of 2022 on the Taxation of Corporations and Business) / public clarification | 《企业所得税法》（2022 年第 47 号联邦法令《公司和企业税法》） / 公开澄清 |
+| Tax Loss / Taxable Person / Taxable Income / Tax Period / ownership interest | 税务亏损 / 应税人 / 应税收入 / 纳税期间 / 所有权权益 |
+| Resident Person / Non-Resident Person / Exempt Person / juridical person / natural person | 居民人士 / 非居民人士 / 豁免人士 / 法人 / 自然人 |
 | Economic Courts (Egypt) / Egyptian Center for Voluntary Arbitration and Settlement of Non-Banking Financial Disputes | 经济法院 / 埃及非银行金融争议自愿仲裁与调解中心 |
 | SAFE (Simple Agreement for Future Equity) | SAFE（未来股权简单协议） |
 | valuation cap (pre-money / post-money) / discount / MFN | 估值上限（投前 / 投后） / 折扣 / 最惠条款（MFN） |
