@@ -47,7 +47,8 @@ for x in nextdata.NEXT:
 # text) open the English pages. 中文 in the language switcher of a page without a Chinese version opens the Chinese
 # list of its section (an article: /zh/insights/, a Briefing item: /zh/briefing/), else /zh/ (CLAUDE.md, "Chinese (zh-Hans)").
 NEWS_ZH = ('title_zh', 'short_zh', 'summary_zh', 'body_zh')  # all four, or none
-ZH_ROLES = {'Managing Partner': '管理合伙人'}  # a person's job title in a Chinese byline (the name stays in Latin letters)
+ZH_ROLES = {'Managing Partner': '管理合伙人',  # a person's job title in a Chinese byline (the name stays in Latin letters)
+            'Bookkeeping Manager': '记账部经理', 'Deputy Bookkeeping Manager': '记账部副经理'}
 
 def zh_news(n):
     """True when a Briefing item has its Chinese text. Some but not all of it stops the build."""
@@ -60,6 +61,17 @@ def zh_news(n):
                 sys.exit(f"ERROR: Briefing '{n['slug']}' has Chinese text but its note has no {f}")
     return bool(have)
 
+def signers(a):
+    """The people (or the team) who sign an article, in byline order: the `authors` list when the article has one
+    (two or more named staff members), else the single author_en / author_ar / role_en / role_ar."""
+    if a.get('authors'):
+        for p in a['authors']:
+            for f in ('name_en', 'name_ar', 'role_en', 'role_ar'):
+                if not p.get(f):
+                    sys.exit(f"ERROR: article '{a['slug']}': an author in `authors` has no {f}")
+        return a['authors']
+    return [dict(name_en=a['author_en'], name_ar=a['author_ar'], role_en=a['role_en'], role_ar=a['role_ar'])]
+
 def zh_article(a):
     """True when an article has its Chinese text (articles_zh.ART_ZH). Reference guides are not translated yet."""
     d = articles_zh.ART_ZH.get(a['slug'])
@@ -68,8 +80,9 @@ def zh_article(a):
     for f in ('title', 'summary', 'key', 'body'):
         if not d.get(f):
             sys.exit(f"ERROR: articles_zh.ART_ZH['{a['slug']}'] has no {f}")
-    if a.get('role_en') and a['role_en'] not in ZH_ROLES:
-        sys.exit(f"ERROR: article '{a['slug']}': no Chinese job title for {a['role_en']!r} (build.ZH_ROLES)")
+    for p in signers(a):
+        if p['role_en'] and p['role_en'] not in ZH_ROLES:
+            sys.exit(f"ERROR: article '{a['slug']}': no Chinese job title for {p['role_en']!r} (build.ZH_ROLES)")
     return True
 
 for x in articles_zh.ART_ZH:
@@ -154,19 +167,46 @@ def by_date():
 def latest(n):
     return [a['slug'] for a in by_date()[:n]]
 
-def author_of(a, L):
-    """(author, role) of an article in one language. Chinese: a team article is by "ASA 洞察团队"; an article signed
-    by a person keeps the name in Latin letters with the Chinese job title (ZH_ROLES)."""
-    if L != 'zh':
-        return a['author_' + L], a['role_' + L]
-    if not a['role_en']:
-        return content_zh.T['team'], ''
-    return a['author_en'], ZH_ROLES[a['role_en']]
+def people(a, L):
+    """[(name, role)] of an article's signers in one language. Chinese: a team article is by "ASA 洞察团队"; a person
+    keeps the name in Latin letters with the Chinese job title (ZH_ROLES)."""
+    out = []
+    for p in signers(a):
+        if L != 'zh':
+            out.append((p['name_' + L], p['role_' + L]))
+        elif not p['role_en']:
+            out.append((content_zh.T['team'], ''))
+        else:
+            out.append((p['name_en'], ZH_ROLES[p['role_en']]))
+    return out
 
-def byline(author, role, L):
+def author_of(a, L):
+    """(author, role) of an article in one language: the names alone when it has several signers (role ""),
+    e.g. on the homepage hexagon (EN "A and B", AR «A وB», ZH "A、B")."""
+    ps = people(a, L)
+    if len(ps) == 1:
+        return ps[0]
+    names = [n for n, _ in ps]
     if L == 'zh':
-        return content_zh.T['by'] + author + ('，' + role if role else '')
-    return (f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else "")
+        return '、'.join(names), ''
+    if L == 'ar':
+        return '، '.join(names[:-1]) + ' و' + names[-1], ''
+    return (', ' if len(names) > 2 else ' ').join(names[:-1]) + (',' if len(names) > 2 else '') + ' and ' + names[-1], ''
+
+def byline(ps, L):
+    """The byline of an article from people(): one signer as before ("By A, Role" / «بقلم A، Role» / "作者：A，Role");
+    several: EN "By A, Role A, and B, Role B", AR «بقلم A، Role A، وB، Role B», ZH "作者：A（Role A）、B（Role B）"."""
+    if len(ps) == 1:
+        author, role = ps[0]
+        if L == 'zh':
+            return content_zh.T['by'] + author + ('，' + role if role else '')
+        return (f"By {author}" if L == 'en' else f"بقلم {author}") + ((", " if L == 'en' else "، ") + role if role else "")
+    if L == 'zh':
+        return content_zh.T['by'] + '、'.join(f"{n}（{r}）" if r else n for n, r in ps)
+    one = [f"{n}, {r}" if r and L == 'en' else f"{n}، {r}" if r else n for n, r in ps]
+    if L == 'ar':
+        return "بقلم " + '، '.join(one[:-1]) + '، و' + one[-1]
+    return "By " + ', '.join(one[:-1]) + ', and ' + one[-1]
 
 def featured(L, slugs, from_path='/'):
     """Article cards and details, newest first. On Chinese pages only the articles that have Chinese text."""
@@ -183,11 +223,13 @@ def featured(L, slugs, from_path='/'):
             title, short, summary = a['title'][i], a.get('short', a['title'])[i], a['summary'][i]
             minutes = guide.minutes(a['slug']) if a['slug'] in guide.GUIDES else a['minutes']
         author, role = author_of(a, L)
+        ps = people(a, L)
         out.append(dict(slug=a['slug'], url=link('art-' + a['slug'], L, from_path),
                         cat=a['category'], tag=articles_meta.CATEGORIES[a['category']][i], title=title,
                         card_title=short,
                         reviewed_iso=a.get('reviewed'), reviewed=a.get('reviewed') and fmt_date(a['reviewed'], L),
-                        summary=summary, author=author, role=role, byline=byline(author, role, L),
+                        summary=summary, author=author, role=role, byline=byline(ps, L),
+                        people=[dict(name=n, role=r) for n, r in ps],
                         date_iso=a['date'], date=fmt_date(a['date'], L), image=image_for(a, 'article', L),
                         read=read_time(minutes, L)))
     return out

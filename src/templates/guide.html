@@ -115,7 +115,7 @@
         {% endif %}
       </section>
       {% endfor %}
-      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div><b>{{ A.author }}</b>{% if A.role %}<span>{{ A.role }}</span>{% endif %}<span>{{ AX.published }} <time datetime="{{ A.date_iso }}">{{ A.date }}</time></span></div></div>
+      <div class="author"><span class="hx" style="width:64px;height:56px;font-size:22px">{{ I('FaPeopleGroup') }}</span><div>{% for p in A.people %}<b>{{ p.name }}</b>{% if p.role %}<span>{{ p.role }}</span>{% endif %}{% endfor %}<span>{{ AX.published }} <time datetime="{{ A.date_iso }}">{{ A.date }}</time></span></div></div>
       <p class="disc">{{ AX.disc }}</p>
     </article>
   </div>

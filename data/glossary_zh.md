@@ -99,6 +99,17 @@ that uses them). Rules: CLAUDE.md, "Chinese (zh-Hans)".
 | consumer finance / standard contract / Consumer Finance Law No. 18 of 2020 / FinTech Law No. 5 of 2022 | 消费金融 / 标准合同 / 2020 年第 18 号《消费金融法》 / 2022 年第 5 号《金融科技法》 |
 | creditworthiness / credit limit / instalment / early settlement fee / late fee / commercial payment card | 信用状况 / 信用额度 / 分期付款 / 提前还款费用 / 滞纳金 / 商业支付卡 |
 | Economic Courts (Egypt) / Egyptian Center for Voluntary Arbitration and Settlement of Non-Banking Financial Disputes | 经济法院 / 埃及非银行金融争议自愿仲裁与调解中心 |
+| SAFE (Simple Agreement for Future Equity) | SAFE（未来股权简单协议） |
+| valuation cap (pre-money / post-money) / discount / MFN | 估值上限（投前 / 投后） / 折扣 / 最惠条款（MFN） |
+| pro rata rights / side letter / qualifying financing round | 按比例参与权 / 附函 / 合格融资轮次 |
+| liquidity event / dissolution event / liquidation preference | 流动性事件 / 解散事件 / 清算优先额 |
+| convertible instrument / convertible loan / embedded derivative / hybrid contract | 可转换工具 / 可转换贷款 / 嵌入衍生工具 / 混合合同 |
+| financial liability / equity instrument / own credit risk / other comprehensive income | 金融负债 / 权益工具 / 自身信用风险 / 其他综合收益 |
+| SPPI test / fair value hierarchy Level 3 | 合同现金流量特征测试（SPPI） / 公允价值层次第三层次 |
+| cap table / employee option pool / pre-emption rights | 股权结构表 / 员工期权池 / 优先认购权 |
+| venture capital / offshore holding company / flip | 风险投资 / 境外控股公司 / 架构翻转（Flip） |
+| escrow agent / MCDR | 托管执行人（Escrow Agent） / 埃及清算、存管与中央登记公司（MCDR） |
+| Bookkeeping Manager / Deputy Bookkeeping Manager | 记账部经理 / 记账部副经理 |
 
 ## ASA Hexagon (fixed, never change)
 

@@ -4,6 +4,11 @@
 #   added_at (optional "HH:MM" UTC; only orders items added on the same day; missing = end of that day),
 #   author_en, author_ar, role_en, role_ar: a named author with their job title, or for team articles
 #     author "ASA Insights Team" / "فريق ASA" with empty roles (byline "By ASA Insights Team" / «بقلم فريق ASA»),
+#   authors (instead of author_* / role_*, for an article signed by two or more named staff members): a list, in byline
+#     order, of dict(name_en, name_ar, role_en, role_ar), every field required (build.signers()). Byline:
+#     "By A, Role A, and B, Role B" / «بقلم A، Role A، وB، Role B» / "作者：A（Role A）、B（Role B）"; the author box
+#     lists each name with its job title under it; the homepage hexagon shows the names alone ("A and B" / «A وB» / "A、B");
+#     JSON-LD "author" is a list of Person objects. Each role_en needs a Chinese job title in build.ZH_ROLES.
 #   category (a key of CATEGORIES below), title(en, ar), summary(en, ar),
 #   short (optional): (en, ar) shorter title for the homepage hexagon, cards and the email banner,
 #   seo_title (optional): (en, ar), either may be None: the title used in the page's <title> when the title is too long
@@ -20,7 +25,7 @@
 # Chinese text (title, summary, short, key takeaways, body, image alt) is in articles_zh.py -> ART_ZH[slug]; an article
 # without it is not published in Chinese. On Chinese pages a team article is by "ASA 洞察团队"; a person's name stays
 # in Latin letters with the Chinese job title (build.ZH_ROLES: "Managing Partner" -> 管理合伙人).
-# The byline (author + role) is the only place a person's name may appear on the site, besides the founder's
+# The byline (author + role, or each of `authors`) is the only place a person's name may appear on the site, besides the founder's
 # name in the About page story (CLAUDE.md rules 1 and 8).
 
 # The one place for Insights categories (EN, AR, ZH). The tabs on /insights/ are built from the categories
@@ -39,6 +44,23 @@ CATEGORIES = {
 }
 
 ARTICLES = [
+ dict(slug="safe-agreements-startup-financing", minutes=20,
+      added="2026-11-28", added_at="00:30",
+      date="2026-11-28",
+      authors=[dict(name_en="Mahmoud El-Sayed Abdel-Galil", name_ar="محمود السيد عبد الجليل",
+                    role_en="Bookkeeping Manager", role_ar="مدير قسم مسك الدفاتر"),
+               dict(name_en="Amr Mohamed Abdalla", name_ar="عمرو محمد عبد الله",
+                    role_en="Deputy Bookkeeping Manager", role_ar="نائب مدير قسم مسك الدفاتر")],
+      category="startups",
+      seo_title=("SAFE Agreements: IFRS and Egyptian Practice", "اتفاقيات SAFE: المعالجة المحاسبية والإطار المصري"),
+      seo_desc=("A SAFE lets a startup raise money now and set the share price later. We explain its legal nature, accounting under IAS 32 and IFRS 9, and the rules in Egypt.",
+                "تتيح SAFE للشركة الناشئة الحصول على التمويل الآن وتأجيل تحديد سعر السهم. نشرح جوهرها القانوني ومعالجتها وفق IAS 32 وIFRS 9 وإطارها التنظيمي في مصر."),
+      title=("SAFE agreements for startup financing: a legal, accounting and investment perspective under IFRS and Egyptian practice",
+             "اتفاقيات SAFE لتمويل الشركات الناشئة: دراسة قانونية ومحاسبية واستثمارية في ضوء المعايير الدولية والتطبيق المصري"),
+      short=("SAFE agreements: legal, accounting and investment essentials",
+             "اتفاقيات SAFE: الجوانب القانونية والمحاسبية والاستثمارية"),
+      summary=("A SAFE lets a startup raise money now and defer agreeing a share price to a later round. We explain its legal nature, how the conversion price is calculated, its accounting under IAS 32 and IFRS 9, the regulatory framework in Egypt and what to check before signing.",
+               "تتيح اتفاقية SAFE للشركة الناشئة الحصول على التمويل الآن وتأجيل الاتفاق على سعر السهم إلى جولة لاحقة. نشرح جوهرها القانوني، وطريقة حساب سعر التحويل، ومعالجتها المحاسبية وفق IAS 32 وIFRS 9، وإطارها التنظيمي في مصر، وما ينبغي فحصه قبل التوقيع.")),
  dict(slug="global-accounting-auditing-institutions", minutes=20,
       added="2026-10-18", added_at="19:18",
       date="2026-10-18", reviewed="2026-10-19", author_en="Ahmed Sayed Ahmed", author_ar="أحمد سيد أحمد",
