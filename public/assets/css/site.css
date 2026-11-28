@@ -552,7 +552,7 @@ svg.mark{width:100%;height:auto}
 html[lang="ar"] .toc b{letter-spacing:0;font-size:.9rem}
 .toc ol{list-style:none;display:grid;gap:10px;border-inline-start:2px solid var(--line);padding-inline-start:16px}
 .toc a{color:var(--muted)}.toc a:hover{color:var(--blue-dk)}
-.article{max-width:760px}
+.article{max-width:760px;min-width:0}
 .article p,.article li{font-size:1.06rem;line-height:1.8}
 html[lang="ar"] .article p,html[lang="ar"] .article li{line-height:1.95}
 .article h2{font-size:1.6rem;margin:52px 0 16px;scroll-margin-top:100px}
@@ -565,6 +565,9 @@ html[lang="ar"] .article p,html[lang="ar"] .article li{line-height:1.95}
 html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
 .callout b{display:block;margin-bottom:6px;color:var(--ink)}
 .article table{width:100%;border-collapse:collapse;margin:22px 0;font-size:.95rem}
+/* a table wider than a phone scrolls inside its own box, never the page */
+.article .tbl{margin:22px 0;overflow-x:auto}
+.article .tbl table{margin:0}
 .article th,.article td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
 .article th{background:var(--graphite);color:#fff;font-weight:700}
 .author{display:flex;gap:18px;align-items:center;margin-top:50px;padding-top:30px;border-top:1px solid var(--line)}
@@ -572,6 +575,7 @@ html[dir="rtl"] .callout{border-radius:var(--radius) 0 0 var(--radius)}
 .author b{display:block;color:var(--ink)}
 .author span{font-size:.9rem;color:var(--muted)}
 .author div span{display:block}
+.author span+b{margin-top:10px}
 .disc{font-size:.88rem;color:var(--muted);margin-top:26px}
 @media (max-width:1080px){.art-grid{grid-template-columns:1fr;gap:30px}.toc{position:static}}
 

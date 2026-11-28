@@ -1,7 +1,7 @@
 # asaegypt.com — instructions for Claude
 
 Website of **ASA Chartered Accountants and Consultants** (أحمد سيد أحمد محاسبون قانونيون ومستشارون), Giza, Egypt.
-Owner: Ahmed Sayed, Managing Partner.
+Owner: Ahmed Sayed Ahmed, Managing Partner.
 **Ahmed's title everywhere: "Managing Partner" / «الشريك المدير» (never "Founder").**
 
 ## How the site is built
@@ -63,7 +63,7 @@ Owner: Ahmed Sayed, Managing Partner.
 - PR description: a short plain-language summary of what changed, in English.
 
 ## Non-negotiable content rules
-1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article, and the founder's name in the About page story (rule 8).** The team page stays collective.
+1. **No names or photos of individual people anywhere on the site, EXCEPT the author name and job title shown as the byline of an Insights article, and the founder's name in the About page story (rule 8).** An Insights article may be signed by one or more named staff members, each with name and job title (`authors` in `articles_meta.py`, see "Insights (articles)"). The team page stays collective.
 2. **No client names.**
 3. **No team headcount.** Use "a highly qualified professional team" / «فريق مهني على مستوى عالٍ من الكفاءة».
 4. **The firm's name** is «ASA محاسبون قانونيون ومستشارون» in Arabic and "ASA Chartered Accountants and Consultants" in English, everywhere (templates, data, meta titles and descriptions, Schema.org, Open Graph, footer, privacy page, email-signature pages). Never «ASA للمحاسبة والاستشارات», "ASA Accounting & Consulting", "ASA for Accounting and Consulting" or any other form. The full legal name «أحمد سيد أحمد محاسبون قانونيون ومستشارون» appears, always complete, only in: the Arabic page titles of About, Who We Serve, Our Team and Privacy (plus the noindex search page and the hidden ASA Hexagon page, left as they are); the Arabic home page description; the Arabic privacy policy text; the footer; and the schema `legalName`. Other Arabic titles use «ASA محاسبون قانونيون ومستشارون» or " | ASA".
@@ -205,7 +205,7 @@ It refuses a photo already used (same source URL or the same image, even resized
 - Metadata in `src/articles_meta.py` → `ARTICLES`; text in `articles_en.py` / `articles_ar.py` → `ART[slug]`, and the Chinese text in `articles_zh.py` → `ART_ZH[slug]`.
 - **Every new article is published in EN, AR and ZH** (`ART_ZH` entry required, same day; see "Insights and Briefing in Chinese" in "Chinese (zh-Hans)").
 - Each article has `added` (see above) and `category`: a key of `CATEGORIES` in `articles_meta.py`.
-- Byline: the default for articles not signed by a person is **"ASA Insights Team" / «فريق ASA»**: `author_en="ASA Insights Team"`, `author_ar="فريق ASA"`, `role_en=""`, `role_ar=""`. It shows as "By ASA Insights Team" / «بقلم فريق ASA». Articles signed by a person keep their name and job title (e.g. "By Ahmed Sayed Ahmed, Managing Partner" / «بقلم أحمد سيد أحمد، الشريك المدير»).
+- Byline: the default for articles not signed by a person is **"ASA Insights Team" / «فريق ASA»**: `author_en="ASA Insights Team"`, `author_ar="فريق ASA"`, `role_en=""`, `role_ar=""`. It shows as "By ASA Insights Team" / «بقلم فريق ASA». Articles signed by a person keep their name and job title (e.g. "By Ahmed Sayed Ahmed, Managing Partner" / «بقلم أحمد سيد أحمد، الشريك المدير»). An article may be signed by one or more named staff members, each with name and job title: for two or more, `authors=[dict(name_en, name_ar, role_en, role_ar), ...]` in byline order replaces `author_*` / `role_*` (byline "By A, Role A, and B, Role B" / «بقلم A، Role A، وB، Role B» / «作者：A（Role A）、B（Role B）»; the author box lists each name with its job title; JSON-LD `author` is a list of `Person`; every `role_en` needs its Chinese title in `ZH_ROLES` in `build.py`). Articles without `authors` are unchanged.
 - `CATEGORIES` is the one place for Insights categories (EN + AR names). The tabs on `/insights/` are built from it automatically: a tab appears only when at least one article uses that category; order is All, then categories by number of articles (most first).
 - **When a new article needs a category that does not exist yet, add it to `CATEGORIES` in both languages.** Its tab then appears automatically. Never hard-code tabs in the template.
 - `short` (optional, `(en, ar)`): a shorter title used in the homepage hexagon, the cards and the email banner; the article page keeps the full title.
@@ -298,6 +298,7 @@ It refuses a photo already used (same source URL or the same image, even resized
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.
 - Arabic: eloquent Modern Standard Arabic (فصحى), not a literal translation of the English.
+- In new Arabic text, write the fath tanween on the alif, not on the letter before it: «مثلاً، دائماً، جنيهاً، سهماً» (never «مثلًا، دائمًا»). Tanween on taa marbuta stays as it is («ةً»). Older pages are not changed in this PR.
 - Arabic reading times (built by `read_time()` in `src/build.py`): 3–10 minutes take «دقائق» («7 دقائق قراءة»); 11–99 take «دقيقة» («18 دقيقة قراءة»).
 - Fixed terms:
   - Share-based payments in Arabic: always «المدفوعات المبنية على أسهم» (never «المبنية على الأسهم» or «على أساس الأسهم»).

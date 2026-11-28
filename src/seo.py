@@ -214,11 +214,12 @@ def publisher():
 def article(B, key, L, x, kind, image):
     url = SITE + B.path_for(key, L)
     if kind == 'art':
-        author, role = B.author_of(x, L)  # as in the byline (Chinese: "ASA 洞察团队", or the name in Latin with 管理合伙人)
-        if role:  # signed by a person: name and job title as in the byline
-            who = {"@type": "Person", "name": author, "jobTitle": role, "worksFor": {"@id": ORG_ID}}
+        signed = B.people(x, L)  # as in the byline (Chinese: "ASA 洞察团队", or the name in Latin with its Chinese job title)
+        if signed[0][1]:  # signed by one or more people: name and job title as in the byline (several: a list)
+            who = [{"@type": "Person", "name": n, "jobTitle": r, "worksFor": {"@id": ORG_ID}} for n, r in signed]
+            who = who[0] if len(who) == 1 else who
         else:     # "ASA Insights Team": the firm's team, not a person
-            who = {"@type": "Organization", "name": author, "url": SITE + B.path_for('insights', L), "parentOrganization": {"@id": ORG_ID}}
+            who = {"@type": "Organization", "name": signed[0][0], "url": SITE + B.path_for('insights', L), "parentOrganization": {"@id": ORG_ID}}
         section = articles_meta.CATEGORIES[x['category']][ix(L)]
         modified = x.get('reviewed') or x['date']
     else:
