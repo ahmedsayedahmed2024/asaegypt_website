@@ -247,3 +247,10 @@ photos:
   licence: CC0
   dhash: 27272727a7a7a7e7
   sha256: a90e464ccabeea8e70cb5e217c3ca5f3d7a77511bbc95bf5f72f6a7fbe64ef83
+- used_by: article:safe-agreements-startup-financing
+  site: Wikimedia Commons
+  source: https://commons.wikimedia.org/wiki/File:Minimalist_meeting_room_(Unsplash).jpg
+  photographer: Breather
+  licence: CC0
+  dhash: 065716164a942603
+  sha256: b634f526afd7274e43db88a6700b9eb91eda3bed6bf207fe5d3684afded23102
