@@ -298,7 +298,7 @@ It refuses a photo already used (same source URL or the same image, even resized
 ## Writing style
 - English: clear, professional, Big-4 tone, no hype.
 - Arabic: eloquent Modern Standard Arabic (فصحى), not a literal translation of the English.
-- In new Arabic text, write the fath tanween on the alif, not on the letter before it: «مثلاً، دائماً، جنيهاً، سهماً» (never «مثلًا، دائمًا»). Tanween on taa marbuta stays as it is («ةً»). Older pages are not changed in this PR.
+- In new Arabic text, write the fath tanween on the alif, not on the letter before it: «مثلاً، دائماً، جنيهاً، سهماً» (never «مثلًا، دائمًا»). Tanween on taa marbuta stays as it is («ةً»). Older pages will be updated in a separate PR.
 - Arabic reading times (built by `read_time()` in `src/build.py`): 3–10 minutes take «دقائق» («7 دقائق قراءة»); 11–99 take «دقيقة» («18 دقيقة قراءة»).
 - Fixed terms:
   - Share-based payments in Arabic: always «المدفوعات المبنية على أسهم» (never «المبنية على الأسهم» or «على أساس الأسهم»).

@@ -20,6 +20,7 @@ ART_ZH = {
  title="SAFE 协议与初创企业融资：国际准则与埃及实务下的法律、会计与投资分析",
  short="SAFE 协议：初创企业融资的法律与会计要点",
  seo_title="SAFE 协议：法律、会计与埃及实务",
+ alt="明亮空旷的办公室里，一张白色长会议桌两侧摆放深色椅子，背后是高窗",
  seo_desc="SAFE 协议使初创企业得以先行融资，而将股价商定推迟至后续轮次。本文分析其法律性质、转换价格计算、IAS 32 与 IFRS 9 下的会计处理及埃及监管框架。",
  summary="SAFE 协议使初创企业得以先行获得资金，而将股价的商定推迟至后续融资轮次。本文分析其法律性质、转换价格的计算方法，以及依据 IAS 32 和 IFRS 9 的会计处理、在埃及的监管框架和签署前应核查的事项。",
  related=['startups-first-audit', 'financial-due-diligence', 'ecl-model-ifrs-9'],
